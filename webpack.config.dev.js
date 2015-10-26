@@ -26,7 +26,7 @@ module.exports = {
     preLoaders: [
       {
         test: /\.js$/,
-        loader: "source-map-loader"
+        loader: 'source-map-loader'
       }
     ],
     loaders: [
