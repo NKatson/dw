@@ -1,16 +1,15 @@
-'use strict';
-
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: [
-    'webpack-hot-middleware/client', './src/index'
+    'webpack-hot-middleware/client',
+    './src/index',
   ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/dist'
+    publicPath: '/dist',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
