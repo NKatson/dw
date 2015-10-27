@@ -3,12 +3,7 @@ import {connectReduxForm} from 'redux-form';
 import {Link} from 'react-router';
 import validation from './validation';
 
-@connectReduxForm({
-  form: 'registration',
-  fields: ['email', 'password', 'confirmPassword'],
-  validate: validation,
-})
-export default class Registration extends React.Component {
+class Registration extends React.Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -66,3 +61,11 @@ export default class Registration extends React.Component {
     );
   }
 }
+
+Registration = connectReduxForm({
+  form: 'registration',
+  fields: ['email', 'password', 'confirmPassword'],
+  validate: validation,
+})(Registration);
+
+export default Registration;
