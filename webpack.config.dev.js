@@ -28,17 +28,34 @@ module.exports = {
         loader: 'source-map-loader'
       }
     ],
-    loaders: [
+  loaders :
+    [
       {
         test: /\.js$/,
         loaders: ['babel'],
         include: path.join(__dirname, 'src')
-      }, {
+      },
+      {
         test: /\.css$/,
         loaders: [
           'style', 'css'
         ]
-      }
+      },
+      {
+        test: /\.png$/,
+        loader: 'url?.[ext]&mimetype=image/png',
+        include: path.join(__dirname, 'src/public/images')
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url?limit=10000&mimetype=application/font-woff',
+        include: path.join(__dirname, 'src/public/fonts')
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file',
+        include: path.join(__dirname, 'src/public/fonts')
+      },
     ]
   }
 };

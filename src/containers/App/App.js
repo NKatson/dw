@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 
+require('./styles');
+
 class App extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
