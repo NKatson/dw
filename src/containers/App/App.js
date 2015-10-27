@@ -1,30 +1,27 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {Registration} from '../../components';
+import {Link} from 'react-router';
 require('./styles');
 
 class App extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
   };
-  handleSubmit() {
-    console.log('Handle submit here!');
-  }
   render() {
     return (
       <div className="main-wrap">
         <div className="wide-block main-header">
             <div className="container container-1">
-                <a href="#" className="main-logo"></a> Text
+                <Link to="/" className="main-logo"></Link>Text
+                <Link to="/signup">Sign Up</Link>
+                <Link to="/signin">Sign In</Link>
                 <div className="cabinet">
                     <span></span>
                 </div>
             </div>
         </div>
         <div className="wide-block">
-          <Registration
-            onSubmit={this.handleSubmit.bind(this)}
-          />
+          {this.props.children}
         </div>
         <div className="wide-block main-footer">
             <div className="container container-1">

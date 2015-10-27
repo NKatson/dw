@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react';
 import {connectReduxForm} from 'redux-form';
+import {Link} from 'react-router';
 import validation from './validation';
 
 @connectReduxForm({
-  form: 'form',
+  form: 'registration',
   fields: ['email', 'password', 'confirmPassword'],
   validate: validation,
 })
@@ -58,7 +59,7 @@ export default class Registration extends React.Component {
                   <div className="input-wrap">
                       <button onClick={handleSubmit} className="btn btn_blue w-308">Sign Up</button>
                   </div>
-                  <div>Already have an account? <a href="#">Sign In.</a></div>
+                  <div>Already have an account? <Link to="/signin">Sign In.</Link></div>
               </form>
           </div>
       </div>
