@@ -5,13 +5,14 @@ import {Link} from 'react-router';
 class Authorization extends React.Component {
   static propTypes = {
     user: PropTypes.object,
-    login: PropTypes.func,
+    loginError: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
   }
   handleSubmit(event) {
     event.preventDefault();
     const input = this.refs.email;
     const password = this.refs.password;
-    this.props.login(input.value, password.value);
+    // this.props.login(input.value, password.value);
     input.value = '';
     password.value = '';
   }
