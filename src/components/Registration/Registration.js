@@ -4,21 +4,25 @@ import {connectReduxForm} from 'redux-form';
 function validateRegistration(data) {
   const errors = {};
   if (!data.email) {
-    errors.name = 'Required';
+    errors.email = 'Required';
   }
-  if (data.password && data.password.length > 50) {
-    errors.password = 'Must be fewer than 50 characters';
+  const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  if (data.email && !emailReg.test(data.email)) {
+    errors.email = 'Please use valid email address';
+  }
+  if (data.password && data.password.length < 8) {
+    errors.password = 'Passwords must be minimum 8 characters long';
   }
   if (!data.confirmPassword) {
-    errors.confirmPassword = 'Required';
-  } else if (!/\d{3}-\d{3}-\d{4}/.test(data.confirmPassword)) {
-    errors.confirmPassword = 'Phone must match the form "999-999-9999"';
+    errors.confirmPassword = 'Please enter password again';
+  } else if (data.password !== data.confirmPassword) {
+    errors.confirmPassword = 'Passwords are not equal';
   }
   return errors;
 }
 
 @connectReduxForm({
-  form: 'registration',
+  form: 'form',
   fields: ['email', 'password', 'confirmPassword'],
   validate: validateRegistration,
 })

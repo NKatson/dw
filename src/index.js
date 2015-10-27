@@ -10,15 +10,17 @@ import routes from './routes';
 import {App} from './containers';
 
 const reducers = {
-  registrationForm: formReducer,
+  form: formReducer,
 };
 const reducer = combineReducers(reducers);
 const store = createStore(reducer);
 const history = createBrowserHistory();
 
 render(
-  <Provider store={store} key="provider">
-    <App />
-  </Provider>,
+    <Provider store={store} key="provider">
+      <Router routes={routes} history={history}>
+        <App />
+      </Router>
+    </Provider>,
   document.getElementById('root')
 );
