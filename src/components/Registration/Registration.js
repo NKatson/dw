@@ -1,7 +1,28 @@
 import React, {PropTypes} from 'react';
-import {reduxForm} from 'redux-form';
+import {connectReduxForm} from 'redux-form';
 
-class Registration extends React.Component {
+function validateRegistration(data) {
+  const errors = {};
+  if (!data.email) {
+    errors.name = 'Required';
+  }
+  if (data.password && data.password.length > 50) {
+    errors.password = 'Must be fewer than 50 characters';
+  }
+  if (!data.confirmPassword) {
+    errors.confirmPassword = 'Required';
+  } else if (!/\d{3}-\d{3}-\d{4}/.test(data.confirmPassword)) {
+    errors.confirmPassword = 'Phone must match the form "999-999-9999"';
+  }
+  return errors;
+}
+
+@connectReduxForm({
+  form: 'registration',
+  fields: ['email', 'password', 'confirmPassword'],
+  validate: validateRegistration,
+})
+export default class Registration extends React.Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -14,7 +35,7 @@ class Registration extends React.Component {
     const renderInput = (field, placeholder, icon) =>
       <div className={'input-wrap input-wrap_with-icon' + (field.error && field.touched ? ' input-wrap_error' : '')}>
           <div className="input-wrap__icon"><span aria-hidden="true" className={'glyphicon ' + icon }></span></div>
-          <input type="text" className="text full-width" placeholder={placeholder} />
+          <input type="text" className="text full-width" placeholder={placeholder} {...field} />
           {
             field.error && field.touched ?
               <div className="input-wrap__error-msg">
@@ -36,7 +57,7 @@ class Registration extends React.Component {
                   {renderInput(confirmPassword, 'Confirm password', 'glyphicon-lock')}
 
                   <div className="input-wrap">
-                      <button className="btn btn_blue w-308">Sign Up</button>
+                      <button onClick={handleSubmit} className="btn btn_blue w-308">Sign Up</button>
                   </div>
                   <div>Already have an account? <a href="#">Sign In.</a></div>
               </form>
@@ -45,10 +66,3 @@ class Registration extends React.Component {
     );
   }
 }
-
-Registration = reduxForm({
-  form: 'registration',
-  fields: ['email', 'password', 'confirmPassword'],
-})(Registration);
-
-export default Registration;

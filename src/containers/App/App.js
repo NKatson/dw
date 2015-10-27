@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-
+import {connect} from 'react-redux';
 import {Registration} from '../../components';
 require('./styles');
 
@@ -7,6 +7,9 @@ class App extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
   };
+  handleSubmit() {
+    console.log('Handle submit here!');
+  }
   render() {
     return (
       <div className="main-wrap">
@@ -19,7 +22,9 @@ class App extends React.Component {
             </div>
         </div>
         <div className="wide-block">
-          <Registration />
+          <Registration
+            onSubmit={this.handleSubmit.bind(this)}
+          />
         </div>
         <div className="wide-block main-footer">
             <div className="container container-1">
@@ -32,4 +37,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect()(App);
