@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router';
+require('./styles');
 
 class App extends React.Component {
   static propTypes = {
@@ -7,14 +9,29 @@ class App extends React.Component {
   };
   render() {
     return (
-      <div>
-        <Link to="/reset">Reset</Link>
-        <Link to="/signin">Sign In</Link>
-        <Link to="/signup">Sign Up</Link>
+      <div className="main-wrap">
+        <div className="wide-block main-header">
+            <div className="container container-1">
+                <Link to="/" className="main-logo"></Link>Text
+                <Link to="/signup">Sign Up</Link>
+                <Link to="/signin">Sign In</Link>
+                <div className="cabinet">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div className="wide-block">
           {this.props.children}
+        </div>
+        <div className="wide-block main-footer">
+            <div className="container container-1">
+                <div className="main-footer__copy"><span></span></div>
+                Disclaimer
+            </div>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+export default connect()(App);

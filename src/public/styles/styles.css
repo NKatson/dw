@@ -1,0 +1,272 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,400italic);
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.22;
+  background-color: #e4e6e8;
+}
+a,
+a:active,
+a:visited {
+  color: #48aff8;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  font-weight: 400;
+}
+a:hover {
+  color: #2fa4f7;
+  text-decoration: none;
+}
+p {
+  line-height: 1.4;
+}
+h1 {
+  color: #4c5760;
+  font-size: 30px;
+  font-weight: 400;
+  margin-top: 0;
+}
+.bg-white {
+  background-color: #fff;
+}
+.main-wrap {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 80px;
+}
+.container-1 {
+  width: 1200px;
+  padding: 0 49px;
+}
+.wide-block {
+  min-width: 1200px;
+}
+.main-header {
+  background-color: #3f3f3f;
+  height: 80px;
+  line-height: 80px;
+  color: #f1f2ff;
+}
+.main-header .container-1 {
+  position: relative;
+}
+.main-logo {
+  display: inline-block;
+  vertical-align: middle;
+  width: 35px;
+  height: 38px;
+  background: url("../images/logo.png") no-repeat 0 0;
+  margin-right: 4px;
+}
+.cabinet {
+  position: absolute;
+  right: 49px;
+  top: 0;
+}
+.cabinet span {
+  display: inline-block;
+  vertical-align: middle;
+  width: 58px;
+  height: 22px;
+  background-color: #8da836;
+  border-radius: 3px;
+}
+.main-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 80px;
+  background-color: #9b9b9b;
+  line-height: 80px;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 300;
+}
+.main-footer .container-1 {
+  position: relative;
+}
+.main-footer__copy {
+  position: absolute;
+  left: 49px;
+  top: 0;
+}
+.main-footer__copy span {
+  width: 58px;
+  height: 22px;
+  background-color: white;
+  border-radius: 3px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.login-block {
+  width: 524px;
+  background-color: white;
+  border: 1px solid #979797;
+  border-radius: 10px;
+  margin: 76px auto 122px;
+  padding: 30px 20px;
+  text-align: center;
+  font-weight: 300;
+}
+.login-block__site-title {
+  font-family: "Roboto", arial, sans-serif;
+  font-weight: 500;
+  color: #334c61;
+  font-size: 72px;
+  line-height: 85px;
+}
+.login-block__site-descr {
+  color: #979ea4;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.2;
+}
+.full-width {
+  width: 100%;
+}
+.login-form {
+  margin-top: 40px;
+}
+input.text,
+textarea.text {
+  border: 2px solid #d4d3db;
+  border-radius: 3px;
+  padding-left: 14px;
+  padding-right: 14px;
+  font-weight: 400;
+}
+input.text:-moz-placeholder,
+textarea.text:-moz-placeholder {
+  color: #cecece;
+  font-size: 20px;
+  font-style: italic;
+}
+input.text::-webkit-input-placeholder,
+textarea.text::-webkit-input-placeholder {
+  color: #cecece;
+  font-size: 20px;
+  font-style: italic;
+}
+input.text:-ms-input-placeholder,
+textarea.text:-ms-input-placeholder {
+  color: #cecece;
+  font-size: 20px;
+  font-style: italic;
+}
+input.text {
+  height: 60px;
+}
+.input-wrap {
+  margin-bottom: 42px;
+}
+.input-wrap_with-icon {
+  position: relative;
+}
+.input-wrap_with-icon input.text {
+  padding-left: 74px;
+}
+.input-wrap__icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  background-color: #d4d3db;
+  border-radius: 3px;
+  line-height: 60px;
+  text-align: center;
+  color: #a5a3aa;
+  font-size: 24px;
+}
+.input-wrap__error-msg {
+  color: #ca2539;
+  font-size: 14px;
+  font-weight: 400;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+}
+.pad-01 {
+  position: relative;
+  top: -16px;
+  margin-bottom: 16px;
+}
+.btn {
+  display: inline-block;
+  vertical-align: middle;
+  height: 57px;
+  line-height: 50px;
+  color: white!important;
+  font-size: 25px;
+  font-weight: 300;
+  padding: 0 60px;
+  background-color: #777;
+  border: 0;
+  border-radius: 5px;
+  text-align: center;
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+.btn:hover {
+  background-color: #6a6a6a;
+}
+.btn:disabled {
+  background-color: #cecece;
+  opacity: 1;
+}
+.btn .spinner {
+  display: inline-block;
+  vertical-align: middle;
+}
+.btn_blue {
+  background-color: #48aff8;
+}
+.btn_blue:hover:not(:disabled) {
+  background-color: #2fa4f7;
+}
+.w-308 {
+  width: 308px;
+}
+.pad-02 {
+  margin-top: 60px;
+}
+.input-wrap_error .input-wrap__icon {
+  background-color: #d0021b;
+  color: #fff;
+}
+.input-wrap_error input.text {
+  border-color: #d0021b;
+}
+.message {
+  background-color: #ccc;
+  color: #000;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 18px;
+  text-align: left;
+  line-height: 1.3;
+}
+.message_error {
+  background-color: #ffefef;
+  color: #b13544;
+}
