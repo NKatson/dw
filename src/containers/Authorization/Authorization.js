@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
+import {login} from '../../actions/auth';
 
 class Authorization extends React.Component {
   static propTypes = {
@@ -10,10 +11,10 @@ class Authorization extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    const input = this.refs.email;
+    const email = this.refs.email;
     const password = this.refs.password;
-    // this.props.login(input.value, password.value);
-    input.value = '';
+    this.props.dispatch(login(email.value, password.value));
+    email.value = '';
     password.value = '';
   }
   render() {
