@@ -5,7 +5,7 @@ import {login} from '../../redux/actions/auth';
 
 class Authorization extends React.Component {
   static propTypes = {
-    user: PropTypes.object,
+    user: PropTypes.string,
     loginError: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
   }
@@ -20,8 +20,6 @@ class Authorization extends React.Component {
   render() {
     return (
       <div className="container container-1">
-        {this.props.user}
-        {this.props.loginError}
             <div className="login-block">
               <img src={require('../../public/images/logo-big.png')} alt=""/>
                 <div className="login-block__site-title">Worth.fm</div>
@@ -48,7 +46,6 @@ class Authorization extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   const {auth} = state;
   if (auth) return {user: auth.user, loginError: auth.loginError};
 

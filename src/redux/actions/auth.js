@@ -1,13 +1,12 @@
-// import fetch from 'whatwg-fetch';
+import 'whatwg-fetch';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-function loginRequest(email) {
+function loginRequest() {
   return {
     type: LOGIN_REQUEST,
-    email: email,
   };
 }
 
@@ -15,7 +14,6 @@ function loginSuccess(data) {
   return {
     type: LOGIN_SUCCESS,
     user: data.username,
-    role: data.role,
   };
 }
 
@@ -29,9 +27,9 @@ function loginFailure(email, error) {
 
 export function login(email, password) {
   return dispatch => {
-    dispatch(loginRequest(email));
+    dispatch(loginRequest());
 
-    return fetch('https://www.google.com/search?q=secret+sauce', {
+    return fetch('/api/auth', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
@@ -42,8 +40,11 @@ export function login(email, password) {
         password: password,
       }),
     })
-    .then(() => dispatch(loginSuccess(
-      {user: 'John Doe', role: 'user'})))
-     .catch(error => dispatch(loginFailure('test', error)));
+    .then(res => {
+      return dispatch(loginSuccess({
+        username: 'John Doe',
+        role: 'user',
+      }));
+    });
   };
 }

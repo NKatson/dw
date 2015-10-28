@@ -9,13 +9,15 @@ var compiler = webpack(config);
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath,
-  stats: { colors: true },
+  inline: true,
+  lazy: false,
+  headers: {'Access-Control-Allow-Origin': '*'},
+  stats: {colors: true},
 });
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler);
 
 app.use(devMiddleware);
-
 app.use(hotMiddleware);
 
 app.get('*', function(req, res) {
