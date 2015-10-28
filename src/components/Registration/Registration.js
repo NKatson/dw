@@ -8,11 +8,23 @@ class Registration extends React.Component {
     fields: PropTypes.object.isRequired,
     handleSubmit: PropTypes.func.isRequired,
   };
+  formIsValid() {
+    const fields = this.props.fields;
+    const formValid = Object.keys(fields).reduce((prev, cur) => {
+      let error = fields[cur].error ? 0 : 1;
+      let touched = fields[cur].touched ? 1 : 0;
+
+      return prev * error * touched;
+    }, 1);
+
+    return formValid;
+  }
   render() {
     const {
       fields: { email, password, confirmPassword },
       handleSubmit,
     } = this.props;
+
     const renderInput = ({ field, placeholder, icon, type = 'text' }) =>
       <div className={'input-wrap input-wrap_with-icon' + (field.error && field.touched ? ' input-wrap_error' : '')}>
           <div className="input-wrap__icon"><span aria-hidden="true" className={'glyphicon ' + icon }></span></div>
@@ -52,7 +64,11 @@ class Registration extends React.Component {
                     type: 'password',
                   })}
                   <div className="input-wrap">
-                      <button onClick={handleSubmit} className="btn btn_blue w-308">Sign Up</button>
+                      <button
+                        className="btn btn_blue w-308"
+                        onClick={handleSubmit}
+                        disabled={::this.formIsValid() ? false : true}
+                      >Sign Up</button>
                   </div>
                   <div>Already have an account? <Link to="/signin">Sign In.</Link></div>
               </form>
