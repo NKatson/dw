@@ -15,11 +15,11 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-    __CLIENT__: true,
-    __SERVER__: false,
-    __DEVELOPMENT__: true,
-    __DEVTOOLS__: false
-  })
+      __CLIENT__: true,
+      __SERVER__: false,
+      __DEVELOPMENT__: true,
+     __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false'))
+   }),
   ],
   module: {
     preLoaders: [

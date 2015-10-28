@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "lint": "eslint src",
-    "start": "node server.js"
+    "start": "node server.js",
+    "devtools": "DEV_TOOLS=1 npm start"
   },
   "author": "",
   "license": "ISC",
@@ -35,6 +36,8 @@
     "react-transform-hmr": "^1.0.1",
     "redbox-react": "^1.1.1",
     "redux-devtools": "^2.1.5",
+    "redux-devtools-dock-monitor": "^1.0.0-beta-3",
+    "redux-devtools-log-monitor": "^1.0.0-beta-3",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
