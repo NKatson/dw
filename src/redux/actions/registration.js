@@ -12,13 +12,13 @@ function registrationRequest() {
 
 function registrationSuccess() {
   return {
-    type: LOGIN_SUCCESS,
+    type: REGISTRATION_SUCCESS,
   };
 }
 
 function registrationFailure() {
   return {
-    type: LOGIN_FAILURE,
+    type: REGISTRATION_FAILURE,
   };
 }
 
