@@ -21,6 +21,12 @@ module.exports = {
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false'))
    }),
   ],
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   module: {
     preLoaders: [
       {

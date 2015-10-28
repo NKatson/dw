@@ -3,7 +3,6 @@ import {render} from 'react-dom';
 import {Router} from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import {Provider} from 'react-redux';
-import {DevTools, DebugPanel, LogMonitor} from 'redux-devtools/lib/react';
 
 import createStore from './redux/create';
 import routes from './routes';
@@ -28,13 +27,12 @@ render(
 );
 
 if (__DEVTOOLS__) {
+  const DevTools = require('./containers/DevTools/DevTools');
   render(
     <Provider store={store} key="provider">
       <div>
         {component}
-        <DebugPanel top right bottom>
-           <DevTools store={store} monitor={LogMonitor} />
-         </DebugPanel>
+         <DevTools />
       </div>
     </Provider>,
     root

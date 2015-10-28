@@ -3,6 +3,9 @@ export default function validation(data) {
   if (!data.email) {
     errors.email = 'Required';
   }
+  if (!data.password) {
+    errors.password = 'Required';
+  }
   const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
   if (data.email && !emailReg.test(data.email)) {
     errors.email = 'Please use valid email address';
