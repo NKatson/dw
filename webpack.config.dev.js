@@ -2,10 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+  devtool: 'inline-source-map',
   entry: [
     'webpack-hot-middleware/client',
     './src/index',
   ],
+  node: {
+    __dirname: true,
+    net: "empty",
+  },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -14,6 +19,10 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({ "global.GENTLY": false }),
+    new webpack.ProvidePlugin({
+     'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+   }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
@@ -21,12 +30,6 @@ module.exports = {
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false'))
    }),
   ],
-  node: {
-    console: true,
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
-  },
   module: {
     preLoaders: [
       {

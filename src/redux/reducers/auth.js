@@ -12,15 +12,15 @@ export default function auth(state = initialState, action = {}) {
     return {
       ...state,
       loggingIn: false,
-      user: null,
-      role: null,
+      username: null,
+      email: null,
       loginError: action.error,
     };
   case LOGIN_SUCCESS:
     return Object.assign({}, state, {
       loggingIn: false,
-      user: action.user,
-      role: action.role,
+      username: action.username,
+      email: action.email,
     });
   default:
     return state;

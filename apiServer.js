@@ -1,22 +1,40 @@
-var nock = require('nock');
 var express = require('express');
+var cors = require('cors');
 var app = express();
+var bodyParser = require('body-parser');
 
-nock('http://localhost:2000/')
-  .get('auth', {
-    email: 'example@gmail.com',
-    password: 'Passworrrd',
-  })
-  .reply(200, {
-    _id: '123ABC',
-    _rev: '946B7D1C',
-    username: 'pgte',
-    email: 'pedro.teixeira@gmail.com',
+app.use(bodyParser.json());
+app.use(cors());
+
+app.post('/api/login', function (req, res) {
+   const email = req.body.email;
+   const password = req.body.password;
+
+   if (email === 'user@user.com' && password === '1') {
+     return res.status(200).json({
+       'username': 'John Doe',
+       'email': email
+     });
+   }
+
+   return res.status(404).json('Incorrect email or password');
+});
+
+app.post('/api/register', function (req, res) {
+  res.status(200).json({
+    'username': 'John Doe',
+    'role': 'ADMIN',
+    'email': 'example@asdf.com'
   });
+});
 
-app.listen(2000, function () {
+app.get('*', function (request, response){
+  response.json({});
+})
+
+var server = app.listen(8080, function () {
   var host = 'localhost';
-  var port = 2000;
+  var port = 8080;
 
-  console.log('Mock server is listening at http://%s:%s', host, port);
+  console.log('Example app listening at http://%s:%s', host, port);
 });

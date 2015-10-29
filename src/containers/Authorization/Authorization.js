@@ -14,8 +14,8 @@ class Authorization extends React.Component {
     const email = this.refs.email;
     const password = this.refs.password;
     this.props.dispatch(login(email.value, password.value));
-    email.value = '';
-    password.value = '';
+    // email.value = '';
+    // password.value = '';
   }
   render() {
     return (

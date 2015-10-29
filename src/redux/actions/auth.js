@@ -1,10 +1,8 @@
-import 'whatwg-fetch';
+import * as api from '../../api/api';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-
-const host = 'http://localhost:2000/';
 
 function loginRequest() {
   return {
@@ -12,17 +10,17 @@ function loginRequest() {
   };
 }
 
-function loginSuccess(data) {
+function loginSuccess({email, username}) {
   return {
     type: LOGIN_SUCCESS,
-    user: data.username,
+    email,
+    username,
   };
 }
 
-function loginFailure(email, error) {
+function loginFailure(error) {
   return {
     type: LOGIN_FAILURE,
-    email,
     error,
   };
 }
@@ -30,27 +28,12 @@ function loginFailure(email, error) {
 export function login(email, password) {
   return dispatch => {
     dispatch(loginRequest());
-
-    return fetch(host + 'auth', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+    api.login({
+      email,
+      password,
+      cb: (err, body) => {
+        return err ? dispatch(loginFailure(err)) : dispatch(loginSuccess(body));
       },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    })
-    .then(res => {
-      console.log(res);
-      return dispatch(loginSuccess({
-        username: 'John Doe',
-        role: 'user',
-      }));
-    })
-    .catch(function(error) {
-      console.log(error);
     });
   };
 }
