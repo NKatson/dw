@@ -17,7 +17,7 @@ app.post('/api/login', function (req, res) {
      });
    }
 
-   return res.status(404).json('Incorrect email or password');
+   return res.status(404).json('Sorry! That email and password combinations are not valid.');
 });
 
 app.post('/api/register', function (req, res) {

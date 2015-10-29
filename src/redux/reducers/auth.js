@@ -1,7 +1,7 @@
 import {LOGIN_REQUEST, LOGIN_FAILURE, LOGIN_SUCCESS} from '../actions/auth';
 
 const initialState = {
-  auth: null,
+  user: null,
 };
 
 export default function auth(state = initialState, action = {}) {
@@ -11,16 +11,21 @@ export default function auth(state = initialState, action = {}) {
   case LOGIN_FAILURE:
     return {
       ...state,
-      loggingIn: false,
-      username: null,
-      email: null,
       loginError: action.error,
+      user: {
+        username: null,
+        email: null,
+      },
     };
   case LOGIN_SUCCESS:
     return Object.assign({}, state, {
       loggingIn: false,
-      username: action.username,
-      email: action.email,
+      loggedIn: true,
+      loginError: false,
+      user: {
+        username: action.username,
+        email: action.email,
+      },
     });
   default:
     return state;

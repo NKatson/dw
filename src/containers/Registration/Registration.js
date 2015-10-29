@@ -22,7 +22,6 @@ class Registration extends React.Component {
       fields: { email, password, confirmPassword },
       handleSubmit,
     } = this.props;
-    console.log(email);
     return (
       <div className="container container-1">
           <div className="login-block">
