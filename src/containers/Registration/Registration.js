@@ -1,13 +1,11 @@
 import React, {PropTypes} from 'react';
 import {connectReduxForm} from 'redux-form';
 import {Link} from 'react-router';
-import validation from './validation';
+
+import {registration as validation} from '../validation';
+import {Input} from '../../components';
 
 class Registration extends React.Component {
-  static propTypes = {
-    fields: PropTypes.object.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-  };
   formIsValid() {
     const fields = this.props.fields;
     const formValid = Object.keys(fields).reduce((prev, cur) => {
@@ -24,20 +22,7 @@ class Registration extends React.Component {
       fields: { email, password, confirmPassword },
       handleSubmit,
     } = this.props;
-
-    const renderInput = ({ field, placeholder, icon, type = 'text' }) =>
-      <div className={'input-wrap input-wrap_with-icon' + (field.error && field.touched ? ' input-wrap_error' : '')}>
-          <div className="input-wrap__icon"><span aria-hidden="true" className={'glyphicon ' + icon }></span></div>
-          <input type={type} className="text full-width" placeholder={placeholder} {...field} />
-          {
-            field.error && field.touched ?
-              <div className="input-wrap__error-msg">
-                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                 {field.error}
-              </div>
-              : null
-          }
-      </div>;
+    console.log(email);
     return (
       <div className="container container-1">
           <div className="login-block">
@@ -45,24 +30,24 @@ class Registration extends React.Component {
               <div className="login-block__site-title">Worth.fm</div>
               <div className="login-block__site-descr">Invest in possibility.</div>
               <form onSubmit={handleSubmit} className="common-form login-form">
-                  {renderInput({
-                    field: email,
-                    placeholder: 'Email',
-                    icon: 'glyphicon-user',
-                    type: 'email',
-                  })}
-                  {renderInput({
-                    field: password,
-                    placeholder: 'Password',
-                    icon: 'glyphicon-lock',
-                    type: 'password',
-                  })}
-                  {renderInput({
-                    field: confirmPassword,
-                    placeholder: 'Confirm password',
-                    icon: 'glyphicon-user',
-                    type: 'password',
-                  })}
+                <Input
+                  field={email}
+                  icon="glyphicon-user"
+                  placeholder="Email"
+                  type="email"
+                />
+                <Input
+                  field={password}
+                  icon="glyphicon-lock"
+                  placeholder="Password"
+                  type="password"
+                />
+                <Input
+                  field={confirmPassword}
+                  icon="glyphicon-lock"
+                  placeholder="Confirm password"
+                  type="password"
+                />
                   <div className="input-wrap">
                       <button
                         className="btn btn_blue w-308"
@@ -77,6 +62,11 @@ class Registration extends React.Component {
     );
   }
 }
+
+Registration.propTypes = {
+  fields: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+};
 
 Registration = connectReduxForm({
   form: 'registration',

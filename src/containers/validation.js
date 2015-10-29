@@ -1,4 +1,4 @@
-export default function validation(data) {
+function checkIfEmpty(data) {
   const errors = {};
   if (!data.email) {
     errors.email = 'Required';
@@ -6,7 +6,13 @@ export default function validation(data) {
   if (!data.password) {
     errors.password = 'Required';
   }
+  return errors;
+}
+
+export function registration(data) {
+  const errors = checkIfEmpty(data);
   const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
   if (data.email && !emailReg.test(data.email)) {
     errors.email = 'Please use valid email address';
   }
@@ -27,4 +33,8 @@ export default function validation(data) {
     errors.confirmPassword = 'Passwords must be equal';
   }
   return errors;
+}
+
+export function authorization(data) {
+  return checkIfEmpty(data);
 }

@@ -12,10 +12,10 @@ export function login({ email, password, cb }) {
     });
 }
 
-export function registration({ email, password, cb }) {
+export function registration({ data, cb }) {
   request
-    .post(host + '/api/login')
-    .send({email, password})
+    .post(host + '/api/registration')
+    .send(data)
     .set('Accept', 'application/json')
     .end((error, { body } = {}) => {
       if (error) return cb(body);

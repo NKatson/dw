@@ -1,4 +1,4 @@
-import * as api from '../../api/api';
+import * as api from '../../utils/api';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
