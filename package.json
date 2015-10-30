@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "lint": "eslint src",
+    "build" : "webpack --config webpack.config.prod.js",
     "start": "node server.js & node apiServer.js",
     "devtools": "DEV_TOOLS=1 npm start",
-    "start-api": "babel-node apiServer.js"
+    "start-api": "babel-node apiServer.js",
+    "lint": "eslint src"
   },
   "author": "",
   "license": "ISC",
