@@ -1,51 +1,36 @@
 import * as actions from '../actions/auth';
+import {Map, fromJS} from 'immutable';
 
-const initialState = {
-  user: null,
+const initialState = Map({
   loggedIn: false,
-  loggingIn: false,
-};
+});
 
 export default function auth(state = initialState, action = {}) {
   switch (action.type) {
   case actions.LOGIN_REQUEST:
-    return Object.assign({}, state, {
+    return state.merge(Map({
       loggingIn: true,
-      loginError: '',
-    });
+    }));
   case actions.LOGIN_FAILURE:
-    return {
-      ...state,
+    return state.merge(Map({
       loggingIn: false,
       loginError: action.error,
-      user: null,
-    };
+    }));
   case actions.LOGIN_SUCCESS:
-    return Object.assign({}, state, {
-      loggingIn: false,
+    return fromJS({
       loggedIn: true,
-      loginError: '',
       user: action.user,
     });
   case actions.LOGOUT_REQUEST:
-    return {
-      ...state,
+    return state.merge(Map({
       loggingOut: true,
-    };
+    }));
   case actions.LOGOUT_SUCCESS:
-    return {
-      ...state,
-      loggingOut: false,
-      loggedIn: false,
-      logoutError: '',
-      user: null,
-    };
+    return initialState;
   case actions.LOGOUT_FAILURE:
-    return {
-      ...state,
-      loggingOut: false,
+    return state.merge(Map({
       logoutError: action.error,
-    };
+    }));
   default:
     return state;
   }

@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build" : "webpack --config webpack.config.prod.js",
+    "build": "webpack --config webpack.config.prod.js",
     "start": "node server.js & node apiServer.js",
     "devtools": "DEV_TOOLS=1 npm start",
     "start-api": "babel-node apiServer.js",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "test": "mocha --compilers js:babel/register --require ./test/helper.js --recursive",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +17,7 @@
     "babel": "^5.8.23",
     "exports-loader": "^0.6.2",
     "history": "^1.12.6",
+    "immutable": "^3.7.5",
     "imports-loader": "^0.6.5",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
@@ -32,6 +35,8 @@
     "babel-loader": "^5.3.2",
     "babel-plugin-react-transform": "^1.1.1",
     "body-parser": "^1.14.1",
+    "chai": "^3.4.0",
+    "chai-immutable": "^1.4.0",
     "cors": "^2.7.1",
     "css-loader": "^0.20.2",
     "eslint": "^1.7.2",

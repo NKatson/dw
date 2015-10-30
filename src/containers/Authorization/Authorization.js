@@ -31,7 +31,7 @@ class Authorization extends React.Component {
               <div className="login-block__site-descr">Invest in possibility.</div>
               <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
                 {
-                  loginError && loginError.length > 0 ?
+                  loginError ?
                   <div className="message message_error">{loginError}</div> :
                   null
                 }
@@ -52,7 +52,7 @@ class Authorization extends React.Component {
                   <SubmitButton
                     fields={this.props.fields}
                     handleSubmit={::this.handleSubmit}
-                    pending={loggingIn}
+                    pending={loggingIn ? true : false}
                     text="Sign In"
                   />
                 </div>
@@ -68,7 +68,7 @@ class Authorization extends React.Component {
 Authorization.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   loginError: PropTypes.string,
-  loggingIn: PropTypes.bool.isRequired,
+  loggingIn: PropTypes.bool,
   user: PropTypes.object,
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -82,10 +82,10 @@ Authorization = connectReduxForm({
 
 function mapStateToProps(state) {
   return {
-    loginError: state.auth.loginError,
-    loggingIn: state.auth.loggingIn,
-    loggedIn: state.auth.loggedIn,
-    user: state.auth.user,
+    loginError: state.auth.get('loginError'),
+    loggingIn: state.auth.get('loggingIn'),
+    loggedIn: state.auth.get('loggedIn'),
+    user: state.auth.get('user'),
     form: state.auth,
   };
 }

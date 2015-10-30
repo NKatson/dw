@@ -26,11 +26,11 @@ class Registration extends React.Component {
       registrationError,
       loggedIn,
       registeringIn,
-      user,
+      username,
     } = this.props;
     return (
       <div className="container container-1">
-          {loggedIn ? `Hello, ${user.username}!` :
+          {loggedIn ? `Hello, ${username}!` :
           <div className="login-block">
               <img src={require('../../public/images/logo-big.png')} alt=""/>
               <div className="login-block__site-title">Worth.fm</div>
@@ -63,7 +63,7 @@ class Registration extends React.Component {
                     <SubmitButton
                       fields={this.props.fields}
                       handleSubmit={::this.handleSubmit}
-                      pending={registeringIn}
+                      pending={registeringIn ? true : false}
                       text="Sign Up"
                     />
                   </div>
@@ -79,8 +79,8 @@ class Registration extends React.Component {
 Registration.propTypes = {
   registrationError: PropTypes.string,
   registeredIn: PropTypes.bool,
-  registeringIn: PropTypes.bool.isRequired,
-  user: PropTypes.object,
+  registeringIn: PropTypes.bool,
+  username: PropTypes.string,
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
@@ -94,10 +94,10 @@ Registration = connectReduxForm({
 
 function mapStateToProps(state) {
   return {
-    registrationError: state.registration.registrationError,
-    loggedIn: state.auth.loggedIn,
-    registeringIn: state.registration.registeringIn,
-    user: state.auth.user,
+    registrationError: state.registration.get('registrationError'),
+    loggedIn: state.auth.get('loggedIn'),
+    registeringIn: state.registration.get('registeringIn'),
+    username: state.auth.getIn(['user', 'username']),
     form: state.registration,
   };
 }
