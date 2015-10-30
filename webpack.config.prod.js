@@ -4,7 +4,6 @@ const webpack = require('webpack');
 module.exports = {
   devtool: 'inline-source-map',
   entry: [
-    'webpack-hot-middleware/client',
     './src/index',
   ],
   node: {
@@ -19,15 +18,19 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({ "global.GENTLY": false }),
-    new webpack.ProvidePlugin({
-     'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-   }),
+    new webpack.optimize.UglifyJsPlugin({
+          output: {
+            comments: false
+          },
+          compressor: {
+            warnings: false
+          }
+        }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
-      __DEVELOPMENT__: true,
-     __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false'))
+      __DEVELOPMENT__: false,
+     __DEVTOOLS__: false,
    }),
   ],
   module: {

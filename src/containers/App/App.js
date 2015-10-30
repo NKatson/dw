@@ -5,14 +5,14 @@ require('./styles');
 
 class App extends React.Component {
   static propTypes = {
-    children: PropTypes.object.isRequired,
+    children: PropTypes.object,
   };
   render() {
     return (
       <div className="main-wrap">
         <div className="wide-block main-header">
             <div className="container container-1">
-                <Link to="/" className="main-logo"></Link>Text
+                <Link to="/" className="main-logo" />Text
                 <Link to="/signup">Sign Up</Link>
                 <Link to="/signin">Sign In</Link>
                 <div className="cabinet">

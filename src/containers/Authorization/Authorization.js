@@ -1,55 +1,93 @@
 import React, { PropTypes } from 'react';
 import {connect} from 'react-redux';
+import {connectReduxForm} from 'redux-form';
 import {Link} from 'react-router';
-import {login} from '../../actions/auth';
+import {login} from '../../redux/actions/auth';
+
+import {Input} from '../../components';
+import {SubmitButton} from '../../components';
+import {authorization as validation} from '../validation';
 
 class Authorization extends React.Component {
-  static propTypes = {
-    user: PropTypes.object,
-    loginError: PropTypes.object,
-    dispatch: PropTypes.func.isRequired,
-  }
   handleSubmit(event) {
     event.preventDefault();
-    const email = this.refs.email;
-    const password = this.refs.password;
+    const {email, password} = this.props.fields;
     this.props.dispatch(login(email.value, password.value));
-    email.value = '';
-    password.value = '';
   }
   render() {
+    const {
+      fields: { email, password },
+      loginError,
+      loggingIn,
+      loggedIn,
+      user,
+    } = this.props;
     return (
       <div className="container container-1">
-            <div className="login-block">
-              <img src={require('../../public/images/logo-big.png')} alt=""/>
-                <div className="login-block__site-title">Worth.fm</div>
-                <div className="login-block__site-descr">Invest in possibility.</div>
-                <form className="common-form login-form" onSubmit={::this.handleSubmit}>
-                  <div className={'input-wrap input-wrap_with-icon'}>
-                      <div className="input-wrap__icon"><span aria-hidden="true" className="glyphicon glyphicon-user"></span></div>
-                      <input ref="email" type="email" className="text full-width" placeholder="Email" />
-                  </div>
-                  <div className={'input-wrap input-wrap_with-icon'}>
-                      <div className="input-wrap__icon"><span aria-hidden="true" className="glyphicon glyphicon-lock"></span></div>
-                      <input ref="password" type="password" className="text full-width" placeholder="Password" />
-                  </div>
-                  <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
-                  <div className="input-wrap">
-                      <button className="btn btn_blue w-308" trype="submit">Sign In</button>
-                  </div>
-                  <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
-                </form>
-            </div>
+          {loggedIn ? `Hello, ${user.username}!` :
+          <div className="login-block">
+            <img src={require('../../public/images/logo-big.png')} alt="" />
+              <div className="login-block__site-title">Worth.fm</div>
+              <div className="login-block__site-descr">Invest in possibility.</div>
+              <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
+                {
+                  loginError && loginError.length > 0 ?
+                  <div className="message message_error">{loginError}</div> :
+                  null
+                }
+                <Input
+                  field={email}
+                  icon="glyphicon-user"
+                  placeholder="Email"
+                  type="email"
+                />
+                <Input
+                  field={password}
+                  icon="glyphicon-lock"
+                  placeholder="Password"
+                  type="password"
+                />
+                <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
+                <div className="input-wrap">
+                  <SubmitButton
+                    fields={this.props.fields}
+                    handleSubmit={::this.handleSubmit}
+                    pending={loggingIn}
+                    text="Sign In"
+                  />
+                </div>
+                <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
+              </form>
+          </div>
+          }
         </div>
       );
   }
 }
 
-function mapStateToProps(state) {
-  const {auth} = state;
-  if (auth) return {user: auth.user, loginError: auth.loginError};
+Authorization.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  loginError: PropTypes.string,
+  loggingIn: PropTypes.bool.isRequired,
+  user: PropTypes.object,
+  fields: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
 
-  return {user: null};
+Authorization = connectReduxForm({
+  form: 'authorization',
+  fields: ['email', 'password'],
+  validate: validation,
+})(Authorization);
+
+function mapStateToProps(state) {
+  return {
+    loginError: state.auth.loginError,
+    loggingIn: state.auth.loggingIn,
+    loggedIn: state.auth.loggedIn,
+    user: state.auth.user,
+    form: state.auth,
+  };
 }
 
 export default connect(mapStateToProps)(Authorization);

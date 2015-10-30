@@ -7,15 +7,20 @@ var app = express();
 var compiler = webpack(config);
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
+  contentBase: 'http://localhost:3001',
   noInfo: true,
+  quiet: true,
+  hot: true,
   publicPath: config.output.publicPath,
-  stats: { colors: true },
+  inline: true,
+  lazy: false,
+  headers: { "Access-Control-Allow-Origin": "*" },
+  stats: {colors: true},
 });
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler);
 
 app.use(devMiddleware);
-
 app.use(hotMiddleware);
 
 app.get('*', function(req, res) {

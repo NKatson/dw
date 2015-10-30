@@ -1,12 +1,22 @@
-export default function validation(data) {
+export function authorization(data) {
   const errors = {};
   if (!data.email) {
     errors.email = 'Required';
   }
+  if (!data.password) {
+    errors.password = 'Required';
+  }
   const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
   if (data.email && !emailReg.test(data.email)) {
     errors.email = 'Please use valid email address';
   }
+  return errors;
+}
+
+export function registration(data) {
+  const errors = authorization(data);
+
   if (data.password && data.password.length < 8) {
     errors.password = 'Passwords must be minimum 8 characters long';
   }
