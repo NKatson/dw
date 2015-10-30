@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {connect} from 'react-redux';
-import {connectReduxForm, reduxForm} from 'redux-form';
+import {connectReduxForm} from 'redux-form';
 import {Link} from 'react-router';
 import {login} from '../../redux/actions/auth';
 
@@ -27,54 +27,59 @@ class Authorization extends React.Component {
   render() {
     const {
       fields: { email, password },
+      loginError,
+      loggedIn,
+      user,
     } = this.props;
     return (
       <div className="container container-1">
-            <div className="login-block">
-              <img src={require('../../public/images/logo-big.png')} alt="" />
-                <div className="login-block__site-title">Worth.fm</div>
-                <div className="login-block__site-descr">Invest in possibility.</div>
-                <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
-                  {
-                    this.props.loginError ?
-                    <div className="message message_error">{this.props.loginError}</div> :
-                    null
-                  }
-                  <Input
-                    field={email}
-                    icon="glyphicon-user"
-                    placeholder="Email"
-                    type="email"
-                  />
-                  <Input
-                    field={password}
-                    icon="glyphicon-lock"
-                    placeholder="Password"
-                    type="password"
-                  />
-                  <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
-                  <div className="input-wrap">
-                      <button
-                        className="btn btn_blue w-308"
-                        disabled={::this.formIsValid() ? false : true}
-                        onClick={this.handleSubmit.bind(this)}
-                        type="submit"
-                        >Sign In</button>
-                  </div>
-                  <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
-                </form>
-            </div>
+          {loggedIn ? `Hello, ${user.username}!` :
+          <div className="login-block">
+            <img src={require('../../public/images/logo-big.png')} alt="" />
+              <div className="login-block__site-title">Worth.fm</div>
+              <div className="login-block__site-descr">Invest in possibility.</div>
+              <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
+                {
+                  loginError && loginError.length > 0 ?
+                  <div className="message message_error">{this.props.loginError}</div> :
+                  null
+                }
+                <Input
+                  field={email}
+                  icon="glyphicon-user"
+                  placeholder="Email"
+                  type="email"
+                />
+                <Input
+                  field={password}
+                  icon="glyphicon-lock"
+                  placeholder="Password"
+                  type="password"
+                />
+                <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
+                <div className="input-wrap">
+                    <button
+                      className="btn btn_blue w-308"
+                      disabled={::this.formIsValid() ? false : true}
+                      onClick={this.handleSubmit.bind(this)}
+                      type="submit"
+                      >Sign In</button>
+                </div>
+                <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
+              </form>
+          </div>
+          }
         </div>
       );
   }
 }
 
 Authorization.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  loginError: PropTypes.string,
+  user: PropTypes.object,
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
-  loginError: PropTypes.string,
-  user: PropTypes.object.isRequired,
-  loggedIn: PropTypes.boolean,
 };
 
 Authorization = connectReduxForm({
@@ -87,7 +92,7 @@ function mapStateToProps(state) {
   return {
     loginError: state.auth.loginError,
     loggedIn: state.auth.loggedIn,
-    user: state.auth,
+    user: state.auth.user,
     form: state.auth,
   };
 }

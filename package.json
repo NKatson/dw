@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "lint": "eslint src",
-    "start": "node server.js",
+    "start": "node server.js & node apiServer.js",
     "devtools": "DEV_TOOLS=1 npm start",
     "start-api": "babel-node apiServer.js"
   },

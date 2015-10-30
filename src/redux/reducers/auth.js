@@ -1,32 +1,56 @@
-import {LOGIN_REQUEST, LOGIN_FAILURE, LOGIN_SUCCESS} from '../actions/auth';
+import * as actions from '../actions/auth';
 
 const initialState = {
   user: null,
+  loggedIn: false,
 };
 
 export default function auth(state = initialState, action = {}) {
   switch (action.type) {
-  case LOGIN_REQUEST:
-    return Object.assign({}, state, {loggingIn: true});
-  case LOGIN_FAILURE:
+  case actions.LOGIN_REQUEST:
+    return Object.assign({}, state, {
+      loggingIn: true,
+      loginError: '',
+    });
+  case actions.LOGIN_FAILURE:
     return {
       ...state,
+      loggingIn: false,
       loginError: action.error,
       user: {
         username: null,
         email: null,
       },
     };
-  case LOGIN_SUCCESS:
+  case actions.LOGIN_SUCCESS:
     return Object.assign({}, state, {
       loggingIn: false,
       loggedIn: true,
-      loginError: false,
+      loginError: '',
       user: {
         username: action.username,
         email: action.email,
       },
     });
+  case actions.LOGOUT_REQUEST:
+    return {
+      ...state,
+      loggingOut: true,
+    };
+  case actions.LOGOUT_SUCCESS:
+    return {
+      ...state,
+      loggingOut: false,
+      user: null,
+      loggedIn: false,
+      logoutError: '',
+    };
+  case actions.LOGOUT_FAILURE:
+    return {
+      ...state,
+      loggingOut: false,
+      logoutError: action.error,
+    };
   default:
     return state;
   }

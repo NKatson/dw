@@ -20,11 +20,14 @@ app.post('/api/login', function (req, res) {
    return res.status(404).json('Sorry! That email and password combinations are not valid.');
 });
 
+app.post('/api/logout', function (req, res) {
+   return res.status(200).json('OK!');
+});
+
 app.post('/api/register', function (req, res) {
   res.status(200).json({
     'username': 'John Doe',
-    'role': 'ADMIN',
-    'email': 'example@asdf.com'
+    'email': 'example@user.com'
   });
 });
 
