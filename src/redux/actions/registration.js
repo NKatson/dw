@@ -1,4 +1,5 @@
 import * as api from '../../utils/api';
+import {loginSuccess} from '../actions/auth';
 
 export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';
 export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
@@ -10,13 +11,12 @@ function registrationRequest() {
   };
 }
 
-function registrationSuccess({email, username}) {
+function registrationSuccess() {
   return {
     type: REGISTRATION_SUCCESS,
-    email,
-    username,
   };
 }
+
 
 function registrationFailure(error) {
   return {
@@ -31,7 +31,10 @@ export function registration(data) {
     api.registration({
       data,
       cb: (err, body) => {
-        return err ? dispatch(registrationFailure(err)) : dispatch(registrationSuccess(body));
+        if (err) return dispatch(registrationFailure(err));
+
+        dispatch(registrationSuccess());
+        return dispatch(loginSuccess(body));
       },
     });
   };

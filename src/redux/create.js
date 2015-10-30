@@ -1,8 +1,9 @@
 import { createStore as _createStore, compose, applyMiddleware} from 'redux' ;
 import thunk from 'redux-thunk';
+import multi from 'redux-multi';
 
 export default function createStore() {
-  const middleware = [thunk];
+  const middleware = [thunk, multi];
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
     const { persistState } = require('redux-devtools');

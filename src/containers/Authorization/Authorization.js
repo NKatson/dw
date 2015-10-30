@@ -5,20 +5,10 @@ import {Link} from 'react-router';
 import {login} from '../../redux/actions/auth';
 
 import {Input} from '../../components';
+import {SubmitButton} from '../../components';
 import {authorization as validation} from '../validation';
 
 class Authorization extends React.Component {
-  formIsValid() {
-    const fields = this.props.fields;
-    const formValid = Object.keys(fields).reduce((prev, cur) => {
-      let error = fields[cur].error ? 0 : 1;
-      let value = fields[cur].value && fields[cur].value.length > 0 ? 1 : 0;
-
-      return prev * error * value;
-    }, 1);
-
-    return formValid;
-  }
   handleSubmit(event) {
     event.preventDefault();
     const {email, password} = this.props.fields;
@@ -41,7 +31,7 @@ class Authorization extends React.Component {
               <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
                 {
                   loginError && loginError.length > 0 ?
-                  <div className="message message_error">{this.props.loginError}</div> :
+                  <div className="message message_error">{loginError}</div> :
                   null
                 }
                 <Input
@@ -58,12 +48,11 @@ class Authorization extends React.Component {
                 />
                 <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
                 <div className="input-wrap">
-                    <button
-                      className="btn btn_blue w-308"
-                      disabled={::this.formIsValid() ? false : true}
-                      onClick={this.handleSubmit.bind(this)}
-                      type="submit"
-                      >Sign In</button>
+                  <SubmitButton
+                    fields={this.props.fields}
+                    handleSubmit={::this.handleSubmit}
+                    text="Sign In"
+                  />
                 </div>
                 <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
               </form>

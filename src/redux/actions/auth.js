@@ -16,11 +16,10 @@ function loginRequest() {
   };
 }
 
-function loginSuccess({email, username}) {
+export function loginSuccess(user) {
   return {
     type: LOGIN_SUCCESS,
-    email,
-    username,
+    user: user,
   };
 }
 

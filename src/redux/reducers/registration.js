@@ -1,27 +1,20 @@
-import {LOGIN_REQUEST, LOGIN_FAILURE, LOGIN_SUCCESS} from '../actions/auth';
+import * as actions from '../actions/registration';
 
-const initialState = {
-  auth: null,
-};
-
-export default function auth(state = initialState, action = {}) {
+export default function registration(state = {}, action = {}) {
   switch (action.type) {
-  case LOGIN_REQUEST:
-    return Object.assign({}, state, {loggingIn: true});
-  case LOGIN_FAILURE:
+  case actions.REGISTRATION_REQUEST:
+    return Object.assign({}, state, {
+      registeringIn: true,
+      registrationError: '',
+    });
+  case actions.REGISTRATION_FAILURE:
     return {
       ...state,
-      loggingIn: false,
-      user: null,
-      role: null,
-      loginError: action.error,
+      registeringIn: false,
+      registrationError: action.error,
     };
-  case LOGIN_SUCCESS:
-    return Object.assign({}, state, {
-      loggingIn: false,
-      user: action.user,
-      role: action.role,
-    });
+  case actions.REGISTRATION_SUCCESS:
+    return {registeringIn: false};
   default:
     return state;
   }

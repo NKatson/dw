@@ -26,7 +26,7 @@ export function logout({ user, cb }) {
 
 export function registration({ data, cb }) {
   request
-    .post(host + '/api/registration')
+    .post(host + '/api/register')
     .send(data)
     .set('Accept', 'application/json')
     .end((error, { body } = {}) => {

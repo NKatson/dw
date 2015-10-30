@@ -17,7 +17,7 @@ app.post('/api/login', function (req, res) {
      });
    }
 
-   return res.status(404).json('Sorry! That email and password combinations are not valid.');
+   return res.status(409).json('Sorry! That email and password combinations are not valid.');
 });
 
 app.post('/api/logout', function (req, res) {
@@ -25,9 +25,17 @@ app.post('/api/logout', function (req, res) {
 });
 
 app.post('/api/register', function (req, res) {
-  res.status(200).json({
+  const email = req.body.email;
+  const password = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+
+  if (email === 'user@user.com') {
+    return res.status(409).json('Sorry! This email is already in use.');
+  }
+
+  return res.status(200).json({
     'username': 'John Doe',
-    'email': 'example@user.com'
+    'email': email
   });
 });
 

@@ -17,20 +17,14 @@ export default function auth(state = initialState, action = {}) {
       ...state,
       loggingIn: false,
       loginError: action.error,
-      user: {
-        username: null,
-        email: null,
-      },
+      user: null,
     };
   case actions.LOGIN_SUCCESS:
     return Object.assign({}, state, {
       loggingIn: false,
       loggedIn: true,
       loginError: '',
-      user: {
-        username: action.username,
-        email: action.email,
-      },
+      user: action.user,
     });
   case actions.LOGOUT_REQUEST:
     return {
@@ -41,9 +35,9 @@ export default function auth(state = initialState, action = {}) {
     return {
       ...state,
       loggingOut: false,
-      user: null,
       loggedIn: false,
       logoutError: '',
+      user: null,
     };
   case actions.LOGOUT_FAILURE:
     return {
