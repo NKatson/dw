@@ -3,6 +3,7 @@ import * as actions from '../actions/auth';
 const initialState = {
   user: null,
   loggedIn: false,
+  loggingIn: false,
 };
 
 export default function auth(state = initialState, action = {}) {

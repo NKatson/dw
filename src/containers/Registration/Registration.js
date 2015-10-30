@@ -25,6 +25,7 @@ class Registration extends React.Component {
       fields: { email, password, confirmPassword },
       registrationError,
       loggedIn,
+      registeringIn,
       user,
     } = this.props;
     return (
@@ -62,6 +63,7 @@ class Registration extends React.Component {
                     <SubmitButton
                       fields={this.props.fields}
                       handleSubmit={::this.handleSubmit}
+                      pending={registeringIn}
                       text="Sign Up"
                     />
                   </div>
@@ -77,6 +79,7 @@ class Registration extends React.Component {
 Registration.propTypes = {
   registrationError: PropTypes.string,
   registeredIn: PropTypes.bool,
+  registeringIn: PropTypes.bool.isRequired,
   user: PropTypes.object,
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -93,6 +96,7 @@ function mapStateToProps(state) {
   return {
     registrationError: state.registration.registrationError,
     loggedIn: state.auth.loggedIn,
+    registeringIn: state.registration.registeringIn,
     user: state.auth.user,
     form: state.registration,
   };

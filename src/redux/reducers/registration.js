@@ -1,6 +1,10 @@
 import * as actions from '../actions/registration';
 
-export default function registration(state = {}, action = {}) {
+const initialState = {
+  registeringIn: false,
+};
+
+export default function registration(state = initialState, action = {}) {
   switch (action.type) {
   case actions.REGISTRATION_REQUEST:
     return Object.assign({}, state, {

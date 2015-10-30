@@ -13,13 +13,29 @@ class SubmitButton extends React.Component {
     return formValid;
   }
   render() {
-    const {className = 'btn btn_blue w-308', handleSubmit, text} = this.props;
+    const {
+      className = 'btn btn_blue w-308',
+      handleSubmit,
+      pending,
+      text,
+    } = this.props;
     return (
       <button
         className={className}
         onClick={handleSubmit}
         disabled={::this.formIsValid() ? false : true}
-      >{text}</button>
+      > {pending ?
+        <div className="spinner la-ball-spin-clockwise">
+          <div></div>
+           <div></div>
+           <div></div>
+           <div></div>
+           <div></div>
+           <div></div>
+           <div></div>
+           <div></div>
+        </div> : text}
+       </button>
     );
   }
 }
@@ -28,6 +44,7 @@ SubmitButton.propTypes = {
   className: PropTypes.string,
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  pending: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
 };
 

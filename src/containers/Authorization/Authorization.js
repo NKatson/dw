@@ -18,6 +18,7 @@ class Authorization extends React.Component {
     const {
       fields: { email, password },
       loginError,
+      loggingIn,
       loggedIn,
       user,
     } = this.props;
@@ -51,6 +52,7 @@ class Authorization extends React.Component {
                   <SubmitButton
                     fields={this.props.fields}
                     handleSubmit={::this.handleSubmit}
+                    pending={loggingIn}
                     text="Sign In"
                   />
                 </div>
@@ -66,6 +68,7 @@ class Authorization extends React.Component {
 Authorization.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   loginError: PropTypes.string,
+  loggingIn: PropTypes.bool.isRequired,
   user: PropTypes.object,
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
@@ -80,6 +83,7 @@ Authorization = connectReduxForm({
 function mapStateToProps(state) {
   return {
     loginError: state.auth.loginError,
+    loggingIn: state.auth.loggingIn,
     loggedIn: state.auth.loggedIn,
     user: state.auth.user,
     form: state.auth,
