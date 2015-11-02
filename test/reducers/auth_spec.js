@@ -5,7 +5,7 @@ import * as actions from '../../src/redux/actions/auth';
 import reducer from '../../src/redux/reducers/auth';
 
 
-describe('Auth reducer', () => {
+describe('Authorization reducer', () => {
 
   it('handles LOGIN_REQUEST', () => {
     const initialState = Map({});
