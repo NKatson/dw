@@ -6,16 +6,28 @@ import {Provider} from 'react-redux';
 import {Map, fromJS} from 'immutable';
 
 import createStore from '../../src/redux/create';
-import {Authorization} from '../../src/containers/Authorization/Authorization';
+import conectedAuthorization, {Authorization} from '../../src/containers/Authorization/Authorization';
 import reducer from '../../src/redux/reducer';
 
 const {renderIntoDocument} = ReactTestUtils;
 
 describe('Authorization component', () => {
   const store = createStore(reducer);
+  const props = {
+    loggedIn: false,
+    dispatch: function() {},
+    fields: {
+      email: {
+        value: null,
+      },
+      password: {
+        value: null,
+      }
+    }
+  }
   const component = renderIntoDocument(
     <Provider store={store} key="provider">
-      <Authorization />
+      <Authorization {...props} />
     </Provider>
   );
   const dom = ReactDOM.findDOMNode(component);
