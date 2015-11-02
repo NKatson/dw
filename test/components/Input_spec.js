@@ -4,8 +4,8 @@ import {Input} from '../../src/components';
 
 const {renderIntoDocument} = ReactTestUtils;
 
-describe('Component', () => {
-  it('Input renders correctly', () => {
+describe('Input component', () => {
+  it('renders correctly.', () => {
     const component = renderIntoDocument(
       <Input
         field={{error: null, touched: false}}

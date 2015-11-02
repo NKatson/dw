@@ -8,7 +8,7 @@ import {registration as validation} from '../validation';
 import {Input} from '../../components';
 import {SubmitButton} from '../../components';
 
-class Registration extends React.Component {
+export class Registration extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {email, password, confirmPassword} = this.props.fields;
@@ -32,7 +32,7 @@ class Registration extends React.Component {
       <div className="container container-1">
           {loggedIn ? `Hello, ${username}!` :
           <div className="login-block">
-              <img src={require('../../public/images/logo-big.png')} alt=""/>
+            <img src={__CLIENT__ ? require('../../public/images/logo-big.png') : ''} alt="" />
               <div className="login-block__site-title">Worth.fm</div>
               <div className="login-block__site-descr">Invest in possibility.</div>
               <form onSubmit={::this.handleSubmit} className="common-form login-form">

@@ -6,16 +6,16 @@ import {Provider} from 'react-redux';
 import {Map, fromJS} from 'immutable';
 
 import createStore from '../../src/redux/create';
-import {Authorization} from '../../src/containers/Authorization/Authorization';
+import {Registration} from '../../src/containers/Registration/Registration';
 import reducer from '../../src/redux/reducer';
 
 const {renderIntoDocument} = ReactTestUtils;
 
-describe('Authorization component', () => {
+describe('Registration component', () => {
   const store = createStore(reducer);
   const component = renderIntoDocument(
     <Provider store={store} key="provider">
-      <Authorization />
+      <Registration />
     </Provider>
   );
   const dom = ReactDOM.findDOMNode(component);

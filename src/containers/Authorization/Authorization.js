@@ -15,7 +15,6 @@ export class Authorization extends React.Component {
     this.props.dispatch(login(email.value, password.value));
   }
   render() {
-    const isBrowser = process.env.NODE_ENV === 'test' ? false : true;
     const {
       fields: { email, password },
       loginError,
@@ -27,7 +26,7 @@ export class Authorization extends React.Component {
       <div className="container container-1">
           {loggedIn ? `Hello, ${user.username}!` :
           <div className="login-block">
-            <img src={isBrowser ? require('../../public/images/logo-big.png') : ''} alt="" />
+            <img src={__CLIENT__ ? require('../../public/images/logo-big.png') : ''} alt="" />
               <div className="login-block__site-title">Worth.fm</div>
               <div className="login-block__site-descr">Invest in possibility.</div>
               <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
