@@ -24,6 +24,9 @@ const config = {
   host: 'localhost',
 };
 
+const dest = document.getElementById('content');
+const store = createStore();
+
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
 app.use(require('serve-static')(path.join(__dirname, '..', 'static')));

@@ -50,7 +50,6 @@ module.exports = {
     'main': [
       'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
       // 'bootstrap-sass!./src/theme/bootstrap.config.js',
-      // 'font-awesome-webpack!./src/theme/font-awesome.config.js',
       './src/client.js'
     ]
   },
@@ -62,24 +61,16 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']},
+      { test: /\.js$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery)]},
+      { test: /\.css$/, loaders: [ 'style', 'css' ] },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.png$/, loader: 'url?.[ext]&mimetype=image/png', include: path.join(__dirname, 'src/public/images') },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff", include: path.join(__dirname, 'src/public/fonts') },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff", include: path.join(__dirname, 'src/public/fonts') },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream", include: path.join(__dirname, 'src/public/fonts') },
+      { test: /\.png$/, loader: 'url?.[ext]&mimetype=image/png', include: path.join(__dirname, '../src/public/images') },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000&mimetype=application/font-woff", include: path.join(__dirname, '../src/public/fonts') },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream", include: path.join(__dirname, '../src/public/fonts') },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
       { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' },
     ]
-  },
-  progress: true,
-  resolve: {
-    modulesDirectories: [
-      'src',
-      'node_modules'
-    ],
-    extensions: ['', '.json', '.js']
   },
   plugins: [
     // hot reload
