@@ -49,7 +49,6 @@ module.exports = {
   entry: {
     'main': [
       'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
-      // 'bootstrap-sass!./src/theme/bootstrap.config.js',
       './src/client.js'
     ]
   },
@@ -64,6 +63,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery)]},
       { test: /\.css$/, loaders: [ 'style', 'css' ] },
       { test: /\.json$/, loader: 'json-loader' },
+      { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap' },
       { test: /\.png$/, loader: 'url?.[ext]&mimetype=image/png', include: path.join(__dirname, '../src/public/images') },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000&mimetype=application/font-woff", include: path.join(__dirname, '../src/public/fonts') },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream", include: path.join(__dirname, '../src/public/fonts') },

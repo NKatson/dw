@@ -43,6 +43,10 @@ export function login(email, password) {
   };
 }
 
+export function isLoaded(globalState) {
+  return globalState.auth && globalState.auth.loggedIn;
+}
+
 // Logout actions
 
 function logoutRequest(user) {

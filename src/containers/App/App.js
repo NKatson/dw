@@ -2,7 +2,9 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
-require('./styles');
+if (__CLIENT__) {
+  require('./App.css');
+}
 
 class App extends React.Component {
   static propTypes = {

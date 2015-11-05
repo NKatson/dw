@@ -2,15 +2,18 @@ import 'babel-core/polyfill';
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import {ReduxRouter} from 'redux-router';
+import {reduxReactRouter, ReduxRouter} from 'redux-router';
+import createHistory from 'history/lib/createBrowserHistory';
 
 import createStore from './redux/create';
-import routes from './routes';
+import getRoutes from './routes';
 
-const store = createStore();
+const store = createStore(reduxReactRouter, getRoutes, createHistory);
 const component = (
-  <ReduxRouter routes={routes} />
+  <ReduxRouter routes={getRoutes()} />
 );
+
+const root = document.getElementById('root');
 
 render(
   <div>
