@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build" : "webpack --config webpack.config.prod.js",
-    "start": "node server.js & node apiServer.js",
+    "start": "npm run watch-client & npm run start-dev & npm run start-dev-api",
+    "watch-client": "node webpack/webpack-dev-server",
+    "start-dev" : "node ./bin/server.js",
+    "start-dev-api": "node ./bin/api",
     "devtools": "DEV_TOOLS=1 npm start",
-    "start-api": "babel-node apiServer.js",
     "lint": "eslint src"
   },
   "author": "",
@@ -24,7 +25,8 @@
     "redux-form": "^2.4.5",
     "redux-multi": "^0.1.10",
     "redux-thunk": "^1.0.0",
-    "superagent": "^1.4.0"
+    "superagent": "^1.4.0",
+    "webpack-isomorphic-tools": "^2.2.7"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",
