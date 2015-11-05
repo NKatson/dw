@@ -4,9 +4,11 @@ var webpack = require('webpack');
 var webpackConfig = require('./dev.config');
 var compiler = webpack(webpackConfig);
 
-var host = process.env.HOST || 'localhost';
+var host = 'localhost';
 var port = 3001;
+
 var serverOptions = {
+  contentBase: 'http://' + host + ':' + port,
   quiet: true,
   noInfo: true,
   hot: true,
