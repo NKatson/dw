@@ -1,81 +1,66 @@
-import path from 'path';
-import express from 'express';
+import Express from 'express';
 import React from 'react';
-import ReactDOM from 'react-dom/server';
-import favicon from 'serve-favicon';
-import createStore from './redux/create';
-import Html from './helpers/Html';
-import PrettyError from 'pretty-error';
+import { renderToString } from 'react-dom/server'
+import { match, RoutingContext } from 'react-router';
+import { Provider } from 'react-redux'
+import { Router } from 'react-router';
 
-import {ReduxRouter} from 'redux-router';
-import createHistory from 'history/lib/createMemoryHistory';
-import {reduxReactRouter, match} from 'redux-router/server';
-import {Provider} from 'react-redux';
-import qs from 'query-string';
+import createStore from './redux/create';
+import config from './config';
 import getRoutes from './routes';
 
-const pretty = new PrettyError();
-const app = express();
+const app = new Express();
 
-const config = {
-  port: 3000,
-  host: 'localhost',
-};
+function renderFullPage(html, initialState) {
+  return `
+    <!doctype html>
+    <html>
+      <head>
+        <title>Redux Universal Example</title>
+      </head>
+      <body>
+        <div id="root">${html}</div>
+        <script src="http://localhost:3001/dist/bundle.js" defer></script>
+      </body>
+    </html>
+    `
+}
 
-app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
+function handleRender(req, res, renderProps) {
+  const store = createStore();
 
-app.use(require('serve-static')(path.join(__dirname, '..', 'static')));
+  const html = renderToString(
+   <Provider store={store} key="provider">
+     <RoutingContext {...renderProps} />
+   </Provider>
+ );
 
-app.use((req, res) => {
-  if (__DEVELOPMENT__) {
-    // Do not cache webpack stats: the script file would change since
-    // hot module replacement is enabled in the development env
-    webpackIsomorphicTools.refresh();
-  }
+  const initialState = store.getState();
+  res.send(renderFullPage(html, initialState));
+}
 
-  const store = createStore(reduxReactRouter, getRoutes, createHistory);
-
-  function hydrateOnClient() {
-    res.send('<!doctype html>\n' +
-      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
-  }
-
-  // if (__DISABLE_SSR__) {
-  //   hydrateOnClient();
-  //   return;
-  // }
-
-  store.dispatch(match(req.originalUrl, (error, redirectLocation, routerState) => {
-    if (redirectLocation) {
-      res.redirect(redirectLocation.pathname + redirectLocation.search);
-    } else if (error) {
-      console.error('ROUTER ERROR:', pretty.render(error));
-      res.status(500);
-      hydrateOnClient();
-    } else if (!routerState) {
-      res.status(500);
-      hydrateOnClient();
+app.get('*', (req, res) => {
+  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      handleRender(req, res, renderProps);
     } else {
-      // Workaround redux-router query string issue:
-      // https://github.com/rackt/redux-router/issues/106
-      if (routerState.location.search && !routerState.location.query) {
-        routerState.location.query = qs.parse(routerState.location.search);
-      }
-      const component = (
-        <Provider store={store} key="provider">
-          <ReduxRouter/>
-        </Provider>
-      );
-
-      res.send('<!doctype html>\n' +
-        ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+      res.status(404).send('Not found');
     }
-  }));
+  });
 });
 
-app.listen(config.port, config.host, (err) => {
-  if (err) {
-    console.log(err);
-  }
-  console.info('==> 💻  Open http://localhost:%s in a browser to view the app.', config.port);
-});
+if (config.port) {
+  app.listen(config.port, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    console.info('----\n==> ✅  %s is running, talking to API server on %s.', config.app.title, config.apiPort);
+    console.info('==> 💻  Open http://%s:%s in a browser to view the app.', (process.env.HOST || 'localhost'), config.port);
+  });
+} else {
+  console.error('==>     ERROR: No PORT environment variable has been specified');
+}

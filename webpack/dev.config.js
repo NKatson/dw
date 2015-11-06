@@ -1,87 +1,81 @@
-require('babel-core/polyfill');
-var fs = require('fs');
-var path = require('path');
-var webpack = require('webpack');
-var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
+const path = require('path');
+const webpack = require('webpack');
+
 var assetsPath = path.resolve(__dirname, '../static/dist');
-var host = 'localhost';
-var port = 3001;
-
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
-var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
-var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
-
-var babelrc = fs.readFileSync('./.babelrc');
-var babelrcObject = {};
-
-try {
-  babelrcObject = JSON.parse(babelrc);
-} catch (err) {
-  console.error('==>     ERROR: Error parsing your .babelrc.');
-  console.error(err);
-}
-
-var babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {};
-var babelLoaderQuery = Object.assign({}, babelrcObject, babelrcObjectDevelopment);
-delete babelLoaderQuery.env;
-
-babelLoaderQuery.plugins = babelLoaderQuery.plugins || [];
-if (babelLoaderQuery.plugins.indexOf('react-transform') < 0) {
-  babelLoaderQuery.plugins.push('react-transform');
-}
-
-babelLoaderQuery.extra = babelLoaderQuery.extra || {};
-if (!babelLoaderQuery.extra['react-transform']) {
-  babelLoaderQuery.extra['react-transform'] = {};
-}
-if (!babelLoaderQuery.extra['react-transform'].transforms) {
-  babelLoaderQuery.extra['react-transform'].transforms = [];
-}
-babelLoaderQuery.extra['react-transform'].transforms.push({
-  transform: 'react-transform-hmr',
-  imports: ['react'],
-  locals: ['module']
-});
+var host = (process.env.HOST || 'localhost');
+var port = parseInt(process.env.PORT) + 1 || 3001;
 
 module.exports = {
   devtool: 'inline-source-map',
-  context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
-      'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
-      './src/client.js'
+        'webpack-hot-middleware/client',
+        './src/client.js'
     ]
   },
   output: {
     path: assetsPath,
-    filename: '[name]-[hash].js',
-    chunkFilename: '[name]-[chunkhash].js',
-    publicPath: 'http://' + host + ':' + port + '/dist/'
-  },
-  module: {
-    loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery)]},
-      { test: /\.css$/, loaders: [ 'style', 'css' ] },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap' },
-      { test: /\.png$/, loader: 'url?.[ext]&mimetype=image/png', include: path.join(__dirname, '../src/public/images') },
-      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url?limit=10000&mimetype=application/font-woff", include: path.join(__dirname, '../src/public/fonts') },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream", include: path.join(__dirname, '../src/public/fonts') },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
-      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' },
-    ]
+    filename: 'bundle.js',
+    publicPath: '/dist',
   },
   plugins: [
-    // hot reload
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.IgnorePlugin(/webpack-stats\.json$/),
+    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: true,
-      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false')),
-    }),
-    webpackIsomorphicToolsPlugin.development()
-  ]
+     __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false'))
+   }),
+  ],
+  module: {
+    loaders : [
+        {
+          test: /\.js$/,
+          loader: 'babel',
+          include: path.join(__dirname, '../src'),
+          query: {
+            stage: 2,
+            optional: ['es7.classProperties'],
+            loose: 'all',
+            plugins: ['react-transform'],
+            extra: {
+              'react-transform': {
+                'transforms': [
+                  {
+                    'transform': 'react-transform-hmr',
+                    'imports': ['react'],
+                    'locals': ['module']
+                  }, {
+                    'transform': 'react-transform-catch-errors',
+                    'imports': ['react', 'redbox-react']
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          test: /\.css$/,
+          loaders: [
+            'style', 'css'
+          ]
+        },
+        {
+          test: /\.png$/,
+          loader: 'url?.[ext]&mimetype=image/png',
+          include: path.join(__dirname, '../static/images')
+        },
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'url?limit=10000&mimetype=application/font-woff',
+          include: path.join(__dirname, '../static/fonts')
+        },
+        {
+          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file',
+          include: path.join(__dirname, '../static/fonts')
+        },
+      ]
+  }
 };

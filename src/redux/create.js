@@ -2,7 +2,7 @@ import thunk from 'redux-thunk';
 import multi from 'redux-multi';
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 
-export default function createStore(reduxReactRouter, getRoutes, createHistory) {
+export default function createStore(initialState) {
   const middleware = [thunk, multi];
 
   let finalCreateStore;
@@ -18,10 +18,8 @@ export default function createStore(reduxReactRouter, getRoutes, createHistory) 
     finalCreateStore = applyMiddleware(...middleware)(_createStore);
   }
 
-  finalCreateStore = reduxReactRouter({ getRoutes, createHistory })(finalCreateStore);
-
   const reducer = require('./reducer');
-  const store = finalCreateStore(reducer);
+  const store = finalCreateStore(reducer, initialState);
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./reducer', () => {

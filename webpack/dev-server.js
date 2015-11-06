@@ -1,12 +1,13 @@
 var Express = require('express');
 var webpack = require('webpack');
+var path = require('path');
 
+var config = require('../src/config');
 var webpackConfig = require('./dev.config');
 var compiler = webpack(webpackConfig);
 
-var host = 'localhost';
-var port = 3001;
-
+var host = process.env.HOST || 'localhost';
+var port = parseInt(config.port, 10) + 1 || 3001;
 var serverOptions = {
   contentBase: 'http://' + host + ':' + port,
   quiet: true,
