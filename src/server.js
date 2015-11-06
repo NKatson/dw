@@ -1,4 +1,5 @@
-import Express from 'express';
+import express from 'express';
+import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server'
 import { match, RoutingContext } from 'react-router';
@@ -7,11 +8,10 @@ import { Router } from 'react-router';
 
 import createStore from './redux/create';
 import config from './config';
-//import getRoutes from './routes';
-import getRoutes from './fakeRoutes';
+import getRoutes from './routes';
+// import getRoutes from './fakeRoutes';
 const routes = getRoutes();
-
-const app = new Express();
+const app = express();
 
 function renderFullPage(html, initialState) {
   return `
@@ -33,15 +33,14 @@ function renderFullPage(html, initialState) {
 
 function handleRender(req, res, renderProps) {
   const store = createStore();
-  const html = renderToString(<RoutingContext {...renderProps} />);
+ // const html = renderToString(<RoutingContext {...renderProps} />);
 
+  const html = renderToString(
+   <Provider store={store} key="provider">
+     <RoutingContext {...renderProps} />
+   </Provider>
+ );
 
- //  const html = renderToString(
- //   <Provider store={store} key="provider">
- //     <RoutingContext {...renderProps} />
- //   </Provider>
- // );
- //
   const initialState = store.getState();
   res.send(renderFullPage(html, initialState));
 }

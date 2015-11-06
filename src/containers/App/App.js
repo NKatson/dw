@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
 if (__CLIENT__) {
-  require('./App.css');
+  require('./style.js');
 }
 
 class App extends React.Component {

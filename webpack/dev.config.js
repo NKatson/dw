@@ -1,7 +1,9 @@
-const path = require('path');
 const webpack = require('webpack');
+var path = require('path');
 
-var assetsPath = path.resolve(__dirname, '../static/dist');
+var assetsPath = path.resolve(__dirname, '../static/');
+console.log('ASSSSS');
+console.log(assetsPath);
 var host = (process.env.HOST || 'localhost');
 var port = parseInt(process.env.PORT) + 1 || 3001;
 
@@ -9,18 +11,17 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: {
     'main': [
-        'webpack-hot-middleware/client',
+        'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
         './src/client.js'
     ]
   },
   output: {
     path: assetsPath,
     filename: 'bundle.js',
-    publicPath: '/dist',
+    publicPath: 'http://' + host + ':' + port + '/dist/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
@@ -28,6 +29,14 @@ module.exports = {
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false'))
    }),
   ],
+  progress: true,
+  resolve: {
+    modulesDirectories: [
+      'src',
+      'node_modules'
+    ],
+    extensions: ['', '.json', '.js']
+  },
   module: {
     loaders : [
         {
@@ -35,7 +44,7 @@ module.exports = {
           loader: 'babel',
           include: path.join(__dirname, '../src'),
           query: {
-            stage: 2,
+            stage: 0,
             optional: ['es7.classProperties'],
             loose: 'all',
             plugins: ['react-transform'],
@@ -55,27 +64,10 @@ module.exports = {
             }
           }
         },
-        {
-          test: /\.css$/,
-          loaders: [
-            'style', 'css'
-          ]
-        },
-        {
-          test: /\.png$/,
-          loader: 'url?.[ext]&mimetype=image/png',
-          include: path.join(__dirname, '../static/images')
-        },
-        {
-          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'url?limit=10000&mimetype=application/font-woff',
-          include: path.join(__dirname, '../static/fonts')
-        },
-        {
-          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file',
-          include: path.join(__dirname, '../static/fonts')
-        },
+        { test: /\.css$/, loaders: ['style', 'css'] },
+        { test: /\.png$/, loader: 'url-loader?&mimetype=image/png' },
+        { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+        { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
       ]
   }
 };
