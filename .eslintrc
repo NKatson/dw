@@ -1,12 +1,16 @@
 {
   "extends" : "eslint-config-airbnb",
-  "globals": {
-    "__DEVELOPMENT__": true,
-    "__CLIENT__": true,
-    "__SERVER__": true,
-    "__DISABLE_SSR__": true,
-    "__DEVTOOLS__": true,
-    "socket": true,
-    "webpackIsomorphicTools": true
+  "globals" : {
+    "describe": false,
+    "it": false,
+    "__DEVELOPMENT__"      : false,
+    "__CLIENT__"    : false,
+    "__SERVER__" : false,
+    "__DEVTOOLS__" : false
+  },
+  "rules": {
+    "new-cap": [2, {
+      "capIsNewExceptions":  ["Map", "List"]
+    }]
   }
 }

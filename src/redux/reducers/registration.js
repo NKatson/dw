@@ -1,24 +1,21 @@
 import * as actions from '../actions/registration';
+import {Map} from 'immutable';
 
-const initialState = {
-  registeringIn: false,
-};
+const initialState = Map();
 
 export default function registration(state = initialState, action = {}) {
   switch (action.type) {
   case actions.REGISTRATION_REQUEST:
-    return Object.assign({}, state, {
+    return state.merge(Map({
       registeringIn: true,
-      registrationError: '',
-    });
+    }));
   case actions.REGISTRATION_FAILURE:
-    return {
-      ...state,
+    return state.merge(Map({
       registeringIn: false,
       registrationError: action.error,
-    };
+    }));
   case actions.REGISTRATION_SUCCESS:
-    return {registeringIn: false};
+    return initialState;
   default:
     return state;
   }
