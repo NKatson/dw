@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\"",
+    "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
     "watch-client": "node webpack/dev-server.js",
-    "start-dev": "NODE_ENV=development PORT=3000 APIPORT=3030 node ./bin/server",
-    "start-dev-api": "node ./bin/api",
+    "start-dev": "NODE_ENV=development PORT=3000 node ./bin/server",
+    "start-dev-api": "APIPORT=8080 node ./bin/apiServer",
     "devtools": "DEV_TOOLS=1 npm start",
     "lint": "eslint src"
   },

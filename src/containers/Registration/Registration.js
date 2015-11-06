@@ -5,8 +5,7 @@ import {Link} from 'react-router';
 
 import {registration} from '../../redux/actions/registration';
 import {registration as validation} from '../validation';
-import {Input} from '../../components';
-import {SubmitButton} from '../../components';
+import { Input, SubmitButton, FormHeader } from '../../components';
 
 class Registration extends React.Component {
   handleSubmit(event) {
@@ -32,8 +31,7 @@ class Registration extends React.Component {
       <div className="container container-1">
           {loggedIn ? `Hello, ${user.username}!` :
           <div className="login-block">
-              <div className="login-block__site-title">Worth.fm</div>
-              <div className="login-block__site-descr">Invest in possibility.</div>
+              <FormHeader />
               <form onSubmit={::this.handleSubmit} className="common-form login-form">
                 {
                   registrationError && registrationError.length > 0 ?

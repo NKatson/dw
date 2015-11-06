@@ -4,8 +4,7 @@ import {connectReduxForm} from 'redux-form';
 import {Link} from 'react-router';
 import {login} from '../../redux/actions/auth';
 
-import {Input} from '../../components';
-import {SubmitButton} from '../../components';
+import { Input, SubmitButton, FormHeader } from '../../components';
 import {authorization as validation} from '../validation';
 
 class Authorization extends React.Component {
@@ -26,9 +25,7 @@ class Authorization extends React.Component {
       <div className="container container-1">
           {loggedIn ? `Hello, ${user.username}!` :
           <div className="login-block">
-            
-              <div className="login-block__site-title">Worth.fm</div>
-              <div className="login-block__site-descr">Invest in possibility.</div>
+              <FormHeader />
               <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
                 {
                   loginError && loginError.length > 0 ?

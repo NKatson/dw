@@ -23,8 +23,7 @@ render(
   </Provider>,
   root
 );
-// -------------------
-//
+
 if (__DEVTOOLS__) {
   const DevTools = require('./containers/DevTools/DevTools');
   render(

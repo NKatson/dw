@@ -9,7 +9,6 @@ import { Router } from 'react-router';
 import createStore from './redux/create';
 import config from './config';
 import getRoutes from './routes';
-// import getRoutes from './fakeRoutes';
 const routes = getRoutes();
 const app = express();
 
@@ -33,7 +32,6 @@ function renderFullPage(html, initialState) {
 
 function handleRender(req, res, renderProps) {
   const store = createStore();
- // const html = renderToString(<RoutingContext {...renderProps} />);
 
   const html = renderToString(
    <Provider store={store} key="provider">
@@ -64,7 +62,6 @@ if (config.port) {
     if (err) {
       console.error(err);
     }
-    console.info('----\n==> ✅  %s is running, talking to API server on %s.', config.app.title, config.apiPort);
     console.info('==> 💻  Open http://%s:%s in a browser to view the app.', (process.env.HOST || 'localhost'), config.port);
   });
 } else {

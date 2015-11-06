@@ -2,8 +2,6 @@ const webpack = require('webpack');
 var path = require('path');
 
 var assetsPath = path.resolve(__dirname, '../static/');
-console.log('ASSSSS');
-console.log(assetsPath);
 var host = (process.env.HOST || 'localhost');
 var port = parseInt(process.env.PORT) + 1 || 3001;
 
@@ -26,7 +24,7 @@ module.exports = {
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: true,
-     __DEVTOOLS__: true,
+     __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false')),
    }),
   ],
   progress: true,
