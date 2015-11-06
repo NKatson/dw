@@ -1,3 +1,4 @@
 webpack*.js
 server.js
 apiServer.js
+test/*

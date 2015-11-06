@@ -2,15 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  devtool: 'inline-source-map',
   entry: [
     'webpack-hot-middleware/client',
     './src/index',
   ],
-  node: {
-    __dirname: true,
-    net: "empty",
-  },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -19,10 +14,6 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({ "global.GENTLY": false }),
-    new webpack.ProvidePlugin({
-     'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-   }),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
@@ -31,40 +22,53 @@ module.exports = {
    }),
   ],
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'source-map-loader'
-      }
-    ],
-  loaders :
-    [
-      {
-        test: /\.js$/,
-        loaders: ['babel'],
-        include: path.join(__dirname, 'src')
-      },
-      {
-        test: /\.css$/,
-        loaders: [
-          'style', 'css'
-        ]
-      },
-      {
-        test: /\.png$/,
-        loader: 'url?.[ext]&mimetype=image/png',
-        include: path.join(__dirname, 'src/public/images')
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff',
-        include: path.join(__dirname, 'src/public/fonts')
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'file',
-        include: path.join(__dirname, 'src/public/fonts')
-      },
-    ]
+    loaders : [
+        {
+          test: /\.js$/,
+          loader: 'babel',
+          include: path.join(__dirname, 'src'),
+          query: {
+            stage: 2,
+            optional: ['es7.classProperties'],
+            loose: 'all',
+            plugins: ['react-transform'],
+            extra: {
+              'react-transform': {
+                'transforms': [
+                  {
+                    'transform': 'react-transform-hmr',
+                    'imports': ['react'],
+                    'locals': ['module']
+                  }, {
+                    'transform': 'react-transform-catch-errors',
+                    'imports': ['react', 'redbox-react']
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          test: /\.css$/,
+          loaders: [
+            'style', 'css'
+          ]
+        },
+        {
+          test: /\.png$/,
+          loader: 'url?.[ext]&mimetype=image/png',
+          include: path.join(__dirname, 'src/public/images')
+        },
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'url?limit=10000&mimetype=application/font-woff',
+          include: path.join(__dirname, 'src/public/fonts')
+        },
+        {
+          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file',
+          include: path.join(__dirname, 'src/public/fonts')
+        },
+      ]
   }
 };
