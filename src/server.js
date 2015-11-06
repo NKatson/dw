@@ -7,7 +7,9 @@ import { Router } from 'react-router';
 
 import createStore from './redux/create';
 import config from './config';
-import getRoutes from './routes';
+//import getRoutes from './routes';
+import getRoutes from './fakeRoutes';
+const routes = getRoutes();
 
 const app = new Express();
 
@@ -20,6 +22,9 @@ function renderFullPage(html, initialState) {
       </head>
       <body>
         <div id="root">${html}</div>
+        <script>
+         window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+        </script>
         <script src="http://localhost:3001/dist/bundle.js" defer></script>
       </body>
     </html>
@@ -28,13 +33,15 @@ function renderFullPage(html, initialState) {
 
 function handleRender(req, res, renderProps) {
   const store = createStore();
+  const html = renderToString(<RoutingContext {...renderProps} />);
 
-  const html = renderToString(
-   <Provider store={store} key="provider">
-     <RoutingContext {...renderProps} />
-   </Provider>
- );
 
+ //  const html = renderToString(
+ //   <Provider store={store} key="provider">
+ //     <RoutingContext {...renderProps} />
+ //   </Provider>
+ // );
+ //
   const initialState = store.getState();
   res.send(renderFullPage(html, initialState));
 }
