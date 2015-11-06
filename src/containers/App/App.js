@@ -2,8 +2,8 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
-if (process.env.NODE_ENV !== 'test') {
-  require('./styles');
+if (__CLIENT__) {
+  require('./style.js');
 }
 
 class App extends React.Component {

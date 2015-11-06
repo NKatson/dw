@@ -1,9 +1,10 @@
-import { createStore as _createStore, compose, applyMiddleware} from 'redux' ;
 import thunk from 'redux-thunk';
 import multi from 'redux-multi';
+import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 
-export default function createStore() {
+export default function createStore(initialState) {
   const middleware = [thunk, multi];
+
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
     const { persistState } = require('redux-devtools');
@@ -18,7 +19,7 @@ export default function createStore() {
   }
 
   const reducer = require('./reducer');
-  const store = finalCreateStore(reducer);
+  const store = finalCreateStore(reducer, initialState);
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./reducer', () => {

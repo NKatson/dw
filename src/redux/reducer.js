@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import {reducer as form} from 'redux-form';
 import auth from './reducers/auth';
 import registration from './reducers/registration';
