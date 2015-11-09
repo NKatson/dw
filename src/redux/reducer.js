@@ -2,9 +2,11 @@ import {combineReducers} from 'redux';
 import {reducer as form} from 'redux-form';
 import auth from './reducers/auth';
 import registration from './reducers/registration';
+import resetPassword from './reducers/resetPassword';
 
 export default combineReducers({
   form,
   auth,
   registration,
+  resetPassword,
 });
