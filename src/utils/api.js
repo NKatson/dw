@@ -13,6 +13,18 @@ export function login({ email, password, cb }) {
     });
 }
 
+export function reset({ email, cb }) {
+  request
+    .post(host + '/api/reset')
+    .send({email})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      return cb(null, res.body);
+    });
+}
+
 export function logout({ user, cb }) {
   request
     .post(host + '/api/logout')

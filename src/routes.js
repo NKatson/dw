@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router';
-import { ResetPassword } from './components';
 
 import {
     App,
     Registration,
     Authorization,
+    ResetPassword,
   } from './containers';
 
 export default () => (

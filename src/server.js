@@ -34,9 +34,9 @@ function handleRender(req, res, renderProps) {
   const store = createStore();
 
   const html = renderToString(
-   <Provider store={store} key="provider">
-     <RoutingContext {...renderProps} />
-   </Provider>
+    <Provider store={store} key="provider">
+        <RoutingContext {...renderProps} />
+    </Provider>
  );
 
   const initialState = store.getState();

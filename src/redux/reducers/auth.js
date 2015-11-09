@@ -6,6 +6,7 @@ const initialState = Map({
 });
 
 export default function auth(state = initialState, action = {}) {
+  
   switch (action.type) {
   case actions.LOGIN_REQUEST:
     return state.merge(Map({

@@ -1,5 +1,6 @@
 import thunk from 'redux-thunk';
 import multi from 'redux-multi';
+import { fromJS } from 'immutable';
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 
 export default function createStore(initialState) {
@@ -19,6 +20,13 @@ export default function createStore(initialState) {
   }
 
   const reducer = require('./reducer');
+
+  if (typeof initialState === 'object') {
+    initialState.auth = fromJS(initialState.auth);
+    initialState.resetPassword = fromJS(initialState.resetPassword);
+    initialState.registration = fromJS(initialState.registration);
+  }
+
   const store = finalCreateStore(reducer, initialState);
 
   if (__DEVELOPMENT__ && module.hot) {
