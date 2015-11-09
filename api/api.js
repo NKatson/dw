@@ -39,6 +39,16 @@ app.post('/api/register', (req, res) => {
   });
 });
 
+app.post('/api/reset', (req, res) => {
+  const email = req.body.email;
+
+  if (email === 'user@user.com') {
+    return res.status(200).json('OK');
+  }
+
+  return res.status(409).json('Sorry! That email is not registered with us.');
+});
+
 app.get('*', (req, res) => {
   res.json({});
 });

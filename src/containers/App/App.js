@@ -16,6 +16,7 @@ class App extends React.Component {
                 <Link to="/" className="main-logo" />Text
                 <Link to="/signup">Sign Up</Link>
                 <Link to="/signin">Sign In</Link>
+                <Link to="/reset">Reset</Link>
                 <div className="cabinet">
                     <span></span>
                 </div>

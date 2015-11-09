@@ -23,6 +23,7 @@ export default function createStore(initialState) {
 
   if (typeof initialState === 'object') {
     initialState.auth = fromJS(initialState.auth);
+    initialState.resetPassword = fromJS(initialState.resetPassword);
     initialState.registration = fromJS(initialState.registration);
   }
 
