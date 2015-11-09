@@ -32,7 +32,8 @@
     "redux-thunk": "^1.0.0",
     "serialize-javascript": "^1.1.2",
     "serve-favicon": "^2.3.0",
-    "superagent": "^1.4.0"
+    "superagent": "^1.4.0",
+    "webpack-isomorphic-tools": "^2.2.11"
   },
   "devDependencies": {
     "babel-core": "^5.8.25",
@@ -46,7 +47,7 @@
     "cors": "^2.7.1",
     "css-loader": "^0.20.2",
     "eslint": "^1.7.2",
-    "eslint-config-airbnb": "^0.1.0",
+    "eslint-config-airbnb": "1.0.0",
     "eslint-loader": "^1.1.0",
     "eslint-plugin-react": "^3.6.3",
     "express": "^4.13.3",

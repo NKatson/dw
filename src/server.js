@@ -9,38 +9,23 @@ import { Router } from 'react-router';
 import createStore from './redux/create';
 import config from './config';
 import getRoutes from './routes';
+import Html from './helpers/Html';
+
 const routes = getRoutes();
 const app = express();
 
-function renderFullPage(html, initialState) {
-  return `
-    <!doctype html>
-    <html>
-      <head>
-        <title>Redux Universal Example</title>
-      </head>
-      <body>
-        <div id="root">${html}</div>
-        <script>
-         window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
-        </script>
-        <script src="http://localhost:3001/dist/bundle.js" defer></script>
-      </body>
-    </html>
-    `
-}
-
 function handleRender(req, res, renderProps) {
-  const store = createStore();
-
-  const html = renderToString(
-    <Provider store={store} key="provider">
-        <RoutingContext {...renderProps} />
-    </Provider>
- );
-
-  const initialState = store.getState();
-  res.send(renderFullPage(html, initialState));
+    if (__DEVELOPMENT__) {
+      webpackIsomorphicTools.refresh();
+    }
+    const store = createStore();
+    const component = (
+      <Provider store={store} key="provider">
+          <RoutingContext {...renderProps} />
+        </Provider>
+      );
+    const content = renderToString(<Html component={component} assets={webpackIsomorphicTools.assets()} store={store}/>);
+    res.send('<!doctype html>' + content);
 }
 
 app.get('*', (req, res) => {
