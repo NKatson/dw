@@ -14,6 +14,7 @@ import serialize from 'serialize-javascript';
 class Html extends Component {
   render() {
     const { assets, component, store } = this.props;
+    console.log(assets);
     const content = component ? ReactDOM.renderToString(component) : '';
 // <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
     return (

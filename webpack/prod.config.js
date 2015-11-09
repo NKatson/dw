@@ -5,11 +5,11 @@ var path = require('path');
 var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var strip = require('strip-loader');
 
 var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./isomorphic-config'));
 
@@ -29,19 +29,15 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/,
-      },
-        { test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css') },
+      { test: /\.js$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel'], include: path.join(__dirname, '../src')},
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style', 'css') },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
-      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' },
+      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' }
     ]
   },
   progress: true,
@@ -54,6 +50,7 @@ module.exports = {
   },
   plugins: [
     new CleanPlugin([relativeAssetsPath]),
+
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
     new webpack.DefinePlugin({
@@ -79,8 +76,8 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-          warnings: false
-        }
+        warnings: false
+      }
     }),
 
     webpackIsomorphicToolsPlugin
