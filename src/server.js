@@ -14,6 +14,8 @@ import Html from './helpers/Html';
 const routes = getRoutes();
 const app = express();
 
+app.use('/dist', express.static('./static/dist'));
+
 function handleRender(req, res, renderProps) {
     if (__DEVELOPMENT__) {
       webpackIsomorphicTools.refresh();
