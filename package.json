@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
+    "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-api\"",
     "watch-client": "node webpack/dev-server.js",
     "start-dev": "NODE_ENV=development PORT=3000 node ./bin/server",
-    "start-dev-api": "APIPORT=8080 node ./bin/apiServer",
     "devtools": "DEV_TOOLS=1 npm start",
+    "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
+    "prod": "concurrent --kill-others \"npm run start-prod\" \"npm run start-api\"",
+    "start-prod": "NODE_ENV=production PORT=3000 node ./bin/server",
+    "start-api": "APIPORT=8080 node ./bin/apiServer",
     "lint": "eslint src",
     "test": "NODE_ENV=test mocha --compilers js:babel/register --require ./test/helper.js --recursive",
     "test:watch": "npm run test -- --watch"
@@ -16,7 +19,9 @@
   "license": "ISC",
   "dependencies": {
     "babel": "^5.8.23",
+    "clean-webpack-plugin": "^0.1.4",
     "exports-loader": "^0.6.2",
+    "extract-text-webpack-plugin": "^0.9.1",
     "history": "^1.12.6",
     "immutable": "^3.7.5",
     "imports-loader": "^0.6.5",
@@ -32,7 +37,6 @@
     "redux-thunk": "^1.0.0",
     "serialize-javascript": "^1.1.2",
     "serve-favicon": "^2.3.0",
-    "superagent": "^1.4.0",
     "webpack-isomorphic-tools": "^2.2.11"
   },
   "devDependencies": {

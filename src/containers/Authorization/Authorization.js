@@ -19,11 +19,11 @@ export class Authorization extends React.Component {
       loginError,
       loggingIn,
       loggedIn,
-      user,
+      username,
     } = this.props;
     return (
       <div className="container container-1">
-          {loggedIn ? `Hello, ${user.username}!` :
+          {loggedIn ? `Hello, ${username}!` :
           <div className="login-block">
               <FormHeader />
               <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
@@ -66,7 +66,7 @@ Authorization.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   loginError: PropTypes.string,
   loggingIn: PropTypes.bool,
-  user: PropTypes.object,
+  username: PropTypes.string,
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
@@ -82,7 +82,7 @@ function mapStateToProps(state) {
     loginError: state.auth.get('loginError'),
     loggingIn: state.auth.get('loggingIn'),
     loggedIn: state.auth.get('loggedIn'),
-    user: state.auth.get('user'),
+    username: state.auth.getIn(['user', 'username']),
     form: state.auth,
   };
 }
