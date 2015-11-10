@@ -8,9 +8,9 @@ import createHistory from 'history/lib/createBrowserHistory';
 import createStore from './redux/create';
 import getRoutes from './routes';
 
-const initialState = window.__INITIAL_STATE__;
+// const initialState = window.__INITIAL_STATE__;
 const history = createHistory();
-const store = createStore(initialState);
+const store = createStore();
 const root = document.getElementById('root');
 
 const component = (

@@ -1,12 +1,17 @@
 const webpack = require('webpack');
 var path = require('path');
 
-var assetsPath = path.resolve(__dirname, '../static/');
+// Isomorphic tools plugin
+var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
+var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./isomorphic-config'));
+
+var assetsPath = path.resolve(__dirname, '../static/dist');
 var host = (process.env.HOST || 'localhost');
 var port = parseInt(process.env.PORT) + 1 || 3001;
 
 module.exports = {
   devtool: 'inline-source-map',
+  context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
         'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
@@ -15,7 +20,8 @@ module.exports = {
   },
   output: {
     path: assetsPath,
-    filename: 'bundle.js',
+    filename: '[name]-[hash].js',
+    chunkFilename: '[name]-[chunkhash].js',
     publicPath: 'http://' + host + ':' + port + '/dist/'
   },
   plugins: [
@@ -26,6 +32,7 @@ module.exports = {
       __DEVELOPMENT__: true,
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false')),
    }),
+    webpackIsomorphicToolsPlugin.development(),
   ],
   progress: true,
   resolve: {
@@ -63,9 +70,13 @@ module.exports = {
           }
         },
         { test: /\.css$/, loaders: ['style', 'css'] },
-        { test: /\.png$/, loader: 'url-loader?&mimetype=image/png' },
-        { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
-        { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+        { test: /\.json$/, loader: 'json-loader' },
+        { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
+        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
+        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
+        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
+        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
+        { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' },
       ]
   }
 };

@@ -6,6 +6,13 @@ Open your terminal and add following commands.
 * `cd dailyworth-client`
 * `npm install`
 
-## Run application
+## Running dev server
 
-Type `npm run start` in project root directory and open [http://localhost:3000](http://localhost:3000).
+* `npm run start`
+* Open application in [http://localhost:3000](http://localhost:3000)
+
+## Building and running production SERVER
+
+* `npm run build`
+* `npm run prod`
+* Open application in [http://localhost:3000](http://localhost:3000)
