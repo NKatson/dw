@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
 import {registration} from '../../redux/actions/registration';
-import {registration as validation} from '../validation';
+import {registration as validation} from '../../utils/validation';
 import { Input, SubmitButton, FormHeader } from '../../components';
 
 export class Registration extends React.Component {

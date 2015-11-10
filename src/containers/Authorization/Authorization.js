@@ -5,7 +5,7 @@ import {Link} from 'react-router';
 import {login} from '../../redux/actions/auth';
 
 import { Input, SubmitButton, FormHeader } from '../../components';
-import {authorization as validation} from '../validation';
+import {authorization as validation} from '../../utils/validation';
 
 export class Authorization extends React.Component {
   handleSubmit(event) {

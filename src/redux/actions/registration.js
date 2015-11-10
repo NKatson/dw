@@ -1,4 +1,4 @@
-import * as api from '../../utils/api';
+import * as api from '../../utils/apiClient';
 import {loginSuccess} from '../actions/auth';
 
 export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';

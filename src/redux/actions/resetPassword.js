@@ -1,4 +1,4 @@
-import * as api from '../../utils/api';
+import * as api from '../../utils/apiClient';
 
 export const RESET_REQUEST = 'RESET_REQUEST';
 export const RESET_SUCCESS = 'RESET_SUCCESS';
