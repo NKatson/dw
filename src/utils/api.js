@@ -1,5 +1,10 @@
 import request from 'superagent';
-const host = 'http://localhost:8080';
+import config from '../config';
+
+const apiPort = config.apiPort || 'localhost';
+const apiHost = config.apiHost || 8080;
+
+const host = `http://${apiPort}:${apiHost}`;
 
 export function login({ email, password, cb }) {
   request
