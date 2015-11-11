@@ -10,16 +10,10 @@ import {
   } from './containers';
 
 export default (store) => {
-  const requireLogin = (nextState, replaceState, cb) => {
-    console.log(nextState);
-    replaceState({ nextPathname: nextState.location.pathname }, '/signin');
-  };
   return (
     <Route path="/" component={App}>
-      { /* Routes requiring login */ }
-      <Route onEnter={requireLogin}>
-        <Route path="reset" component={ResetPassword} />
-      </Route>
+      <Route path="reset" component={ResetPassword} />
+      <Route path="welcome" component={Welcome} />
       <Route path="signin" component={Authorization} />
       <Route path="signup" component={Registration} />
     </Route>

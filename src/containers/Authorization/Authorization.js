@@ -22,42 +22,45 @@ export class Authorization extends React.Component {
       userEmail,
     } = this.props;
     return (
-      <div className="container container-1">
-          {loggedIn ? `Hello, ${userEmail}!` :
-          <div className="login-block">
-              <FormHeader />
-              <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
-                {
-                  loginError ?
-                  <div className="message message_error">{loginError}</div> :
-                  null
-                }
-                <Input
-                  field={email}
-                  icon="glyphicon-user"
-                  placeholder="Email"
-                  type="email"
-                />
-                <Input
-                  field={password}
-                  icon="glyphicon-lock"
-                  placeholder="Password"
-                  type="password"
-                />
-                <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
-                <div className="input-wrap">
-                  <SubmitButton
-                    fields={this.props.fields}
-                    handleSubmit={::this.handleSubmit}
-                    pending={loggingIn ? true : false}
-                    text="Sign In"
+      <div className="wide-block">
+        <div className="container container-1">
+            {loggedIn ? `Hello, ${userEmail}!` :
+            <div className="login-block">
+                <FormHeader />
+                <form className="common-form login-form" onSubmit={this.handleSubmit.bind(this)}>
+                  {
+                    loginError ?
+                    <div className="message message_error">{loginError}</div> :
+                    null
+                  }
+                  <Input
+                    field={email}
+                    icon="glyphicon-user"
+                    placeholder="Email"
+                    type="email"
                   />
-                </div>
-                <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
-              </form>
+                  <Input
+                    field={password}
+                    icon="glyphicon-lock"
+                    placeholder="Password"
+                    type="password"
+                  />
+                  <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
+                  <div className="input-wrap">
+                    <SubmitButton
+                      fields={this.props.fields}
+                      handleSubmit={::this.handleSubmit}
+                      pending={loggingIn ? true : false}
+                      text="Sign In"
+                    />
+                  </div>
+                  <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
+                </form>
+            </div>
+            }
           </div>
-          }
-        </div>
+      </div>
+
       );
   }
 }

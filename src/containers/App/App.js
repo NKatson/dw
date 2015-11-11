@@ -22,9 +22,7 @@ class App extends React.Component {
                 </div>
             </div>
         </div>
-        <div className="wide-block">
           {this.props.children}
-        </div>
         <div className="wide-block main-footer">
             <div className="container container-1">
                 <div className="main-footer__copy"><span></span></div>
