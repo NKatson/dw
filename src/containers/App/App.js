@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
-
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { Footer } from '../../components';
 require('./App.css');
 
 class App extends React.Component {
@@ -23,12 +23,7 @@ class App extends React.Component {
             </div>
         </div>
           {this.props.children}
-        <div className="wide-block main-footer">
-            <div className="container container-1">
-                <div className="main-footer__copy"><span></span></div>
-                Disclaimer
-            </div>
-        </div>
+        <Footer />
       </div>
     );
   }
