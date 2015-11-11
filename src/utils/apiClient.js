@@ -3,11 +3,11 @@ import config from '../config';
 
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
-const host = `http://${apiHost}`;
+const host = `http://worthfm.4xxi.com`;
 
 export function login({ email, password, cb }) {
   request
-    .post(host + '/api/sign_in')
+    .post(host + '/api/auth/sign_in')
     .send({email, password})
     .set('Accept', 'application/json')
     .end((err, res) => {
@@ -20,8 +20,8 @@ export function login({ email, password, cb }) {
 
 export function reset({ email, cb }) {
   request
-    .post(host + '/api/password')
-    .send({email})
+    .post(host + '/api/auth/password')
+    .send({email: email, redirect_url: 'http://worthfm.4xxi.com/'})
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');

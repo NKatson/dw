@@ -14,7 +14,7 @@ export class Registration extends React.Component {
     const data = {
       email: email.value,
       password: password.value,
-      confirmPassword: confirmPassword.value,
+      password_confirmation: confirmPassword.value,
     };
 
     this.props.dispatch(registration(data));
