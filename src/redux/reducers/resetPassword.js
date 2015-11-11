@@ -19,6 +19,7 @@ export default function reset(state = initialState, action = {}) {
   case actions.RESET_SUCCESS:
     return fromJS({
       sent: true,
+      message: action.message,
     });
   default:
     return state;

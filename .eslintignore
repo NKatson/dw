@@ -1,5 +1,5 @@
 webpack
 server.js
 src/server.js
-apiServer.js
+api/apiServer.js
 test/*

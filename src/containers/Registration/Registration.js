@@ -14,7 +14,7 @@ export class Registration extends React.Component {
     const data = {
       email: email.value,
       password: password.value,
-      confirmPassword: confirmPassword.value,
+      password_confirmation: confirmPassword.value,
     };
 
     this.props.dispatch(registration(data));
@@ -25,11 +25,11 @@ export class Registration extends React.Component {
       registrationError,
       loggedIn,
       registeringIn,
-      username,
+      userEmail,
     } = this.props;
     return (
       <div className="container container-1">
-          {loggedIn ? `Hello, ${username}!` :
+          {loggedIn ? `Hello, ${userEmail}!` :
           <div className="login-block">
               <FormHeader />
               <form onSubmit={::this.handleSubmit} className="common-form login-form">
@@ -94,7 +94,7 @@ function mapStateToProps(state) {
     registrationError: state.registration.get('registrationError'),
     loggedIn: state.auth.get('loggedIn'),
     registeringIn: state.registration.get('registeringIn'),
-    username: state.auth.getIn(['user', 'username']),
+    userEmail: state.auth.getIn(['user', 'email']),
     form: state.registration,
   };
 }

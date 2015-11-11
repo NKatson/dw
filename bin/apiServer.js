@@ -1,2 +1,2 @@
 require('./server.babel');
-require('../api/api');
+require('../api/apiServer');
