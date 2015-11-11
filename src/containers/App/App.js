@@ -13,7 +13,7 @@ class App extends React.Component {
       <div className="main-wrap">
         <div className="wide-block main-header">
             <div className="container container-1">
-                <Link to="/" className="main-logo" />Text
+                <Link to="/" className="main-logo" />Worth.fm &nbsp;
                 <Link to="/signup">Sign Up</Link>
                 <Link to="/signin">Sign In</Link>
                 <Link to="/reset">Reset</Link>
