@@ -1,4 +1,4 @@
-import * as api from '../../utils/api';
+import * as api from '../../utils/apiClient';
 import {loginSuccess} from '../actions/auth';
 
 export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';
@@ -18,10 +18,10 @@ function registrationSuccess() {
 }
 
 
-function registrationFailure(error) {
+function registrationFailure({ errors: { full_messages }}) {
   return {
     type: REGISTRATION_FAILURE,
-    error,
+    error: full_messages.length > 0 ? full_messages[0] : 'Unexpected error.',
   };
 }
 

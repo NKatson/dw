@@ -1,4 +1,4 @@
-import * as api from '../../utils/api';
+import * as api from '../../utils/apiClient';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -16,17 +16,21 @@ function loginRequest() {
   };
 }
 
-export function loginSuccess(user) {
+export function loginSuccess({ data: { email, name, nickname }}) {
   return {
     type: LOGIN_SUCCESS,
-    user: user,
+    user: {
+      email,
+      name,
+      nickname,
+    },
   };
 }
 
-function loginFailure(error) {
+function loginFailure({ errors }) {
   return {
     type: LOGIN_FAILURE,
-    error,
+    error: (errors && errors.length > 0) ? errors[0] : 'Unexpected error.',
   };
 }
 
