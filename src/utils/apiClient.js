@@ -3,8 +3,7 @@ import config from '../config';
 
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
-
-const host = `http://${apiHost}:${apiPort}`;
+const host = `http://${apiHost}`;
 
 export function login({ email, password, cb }) {
   request
