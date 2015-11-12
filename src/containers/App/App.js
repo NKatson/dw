@@ -9,14 +9,16 @@ class App extends React.Component {
     children: PropTypes.object,
   };
   render() {
+    const { loggedIn } = this.props;
     return (
       <div className="main-wrap">
         <div className="wide-block main-header">
             <div className="container container-1">
                 <Link to="/" className="main-logo" />Worth.fm &nbsp;
-                <Link to="/signup">Sign Up</Link>
-                <Link to="/signin">Sign In</Link>
+                {loggedIn ? null : <Link to="/signup">Sign Up</Link>}
+                {loggedIn ? null : <Link to="/signin">Sign In</Link>}
                 <Link to="/reset">Reset</Link>
+                <Link to="/welcome">Welcome</Link>
                 <div className="cabinet">
                     <span></span>
                 </div>
@@ -29,4 +31,10 @@ class App extends React.Component {
   }
 }
 
-export default connect()(App);
+function mapStateToProps(state) {
+  return {
+    loggedIn: state.auth.get('loggedIn'),
+  }
+}
+
+export default connect(mapStateToProps)(App);
