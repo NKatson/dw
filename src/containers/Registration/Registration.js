@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
 import {registration} from '../../redux/actions/registration';
-import {registration as validation} from '../validation';
+import {registration as validation} from '../../utils/validation';
 import { Input, SubmitButton, FormHeader } from '../../components';
 
 export class Registration extends React.Component {
@@ -28,46 +28,48 @@ export class Registration extends React.Component {
       userEmail,
     } = this.props;
     return (
-      <div className="container container-1">
-          {loggedIn ? `Hello, ${userEmail}!` :
-          <div className="login-block">
-              <FormHeader />
-              <form onSubmit={::this.handleSubmit} className="common-form login-form">
-                {
-                  registrationError && registrationError.length > 0 ?
-                  <div className="message message_error">{registrationError}</div> :
-                  null
-                }
-                <Input
-                  field={email}
-                  icon="glyphicon-user"
-                  placeholder="Email"
-                  type="email"
-                />
-                <Input
-                  field={password}
-                  icon="glyphicon-lock"
-                  placeholder="Password"
-                  type="password"
-                />
-                <Input
-                  field={confirmPassword}
-                  icon="glyphicon-lock"
-                  placeholder="Confirm password"
-                  type="password"
-                />
-                  <div className="input-wrap">
-                    <SubmitButton
-                      fields={this.props.fields}
-                      handleSubmit={::this.handleSubmit}
-                      pending={registeringIn ? true : false}
-                      text="Sign Up"
-                    />
-                  </div>
-                  <div>Already have an account? <Link to="/signin">Sign In.</Link></div>
-              </form>
-          </div>
-          }
+      <div className="wide-block">
+        <div className="container container-1">
+            {loggedIn ? `Hello, ${userEmail}!` :
+            <div className="login-block">
+                <FormHeader />
+                <form onSubmit={::this.handleSubmit} className="common-form login-form">
+                  {
+                    registrationError && registrationError.length > 0 ?
+                    <div className="message message_error">{registrationError}</div> :
+                    null
+                  }
+                  <Input
+                    field={email}
+                    icon="glyphicon-user"
+                    placeholder="Email"
+                    type="email"
+                  />
+                  <Input
+                    field={password}
+                    icon="glyphicon-lock"
+                    placeholder="Password"
+                    type="password"
+                  />
+                  <Input
+                    field={confirmPassword}
+                    icon="glyphicon-lock"
+                    placeholder="Confirm password"
+                    type="password"
+                  />
+                    <div className="input-wrap">
+                      <SubmitButton
+                        fields={this.props.fields}
+                        handleSubmit={::this.handleSubmit}
+                        pending={registeringIn ? true : false}
+                        text="Sign Up"
+                      />
+                    </div>
+                    <div>Already have an account? <Link to="/signin">Sign In.</Link></div>
+                </form>
+            </div>
+            }
+        </div>
       </div>
     );
   }

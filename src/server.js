@@ -11,8 +11,9 @@ import config from './config';
 import getRoutes from './routes';
 import Html from './helpers/Html';
 
-const routes = getRoutes();
 const app = express();
+const store = createStore();
+const routes = getRoutes(store);
 
 app.use('/dist', express.static('./static/dist'));
 
@@ -20,7 +21,6 @@ function handleRender(req, res, renderProps) {
     if (__DEVELOPMENT__) {
       webpackIsomorphicTools.refresh();
     }
-    const store = createStore();
     const component = (
       <Provider store={store} key="provider">
           <RoutingContext {...renderProps} />

@@ -14,7 +14,7 @@ const store = createStore();
 const root = document.getElementById('root');
 
 const component = (
-  <Router routes={getRoutes()} history={history} />
+  <Router routes={getRoutes(store)} history={history} />
 );
 
 render(

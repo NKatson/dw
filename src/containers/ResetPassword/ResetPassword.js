@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { connectReduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import { authorization as validation } from '../validation';
+import { authorization as validation } from '../../utils/validation';
 import { Input, SubmitButton, ResetPasswordSent } from '../../components';
 import { reset } from '../../redux/actions/resetPassword';
 

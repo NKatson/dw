@@ -16,13 +16,16 @@ function loginRequest() {
   };
 }
 
-export function loginSuccess({ data: { email, name, nickname }}) {
+export function loginSuccess({ data: { email, name, nickname }, accessToken, uid, client}) {
   return {
     type: LOGIN_SUCCESS,
     user: {
       email,
       name,
       nickname,
+      accessToken,
+      uid,
+      client,
     },
   };
 }
@@ -41,14 +44,18 @@ export function login(email, password) {
       email,
       password,
       cb: (err, body) => {
-        return err ? dispatch(loginFailure(err)) : dispatch(loginSuccess(body));
+        if (err) return dispatch(loginFailure(err));
+        localStorage.accessToken = body.accessToken;
+        localStorage.uid = body.uid;
+        localStorage.client = body.client;
+        dispatch(loginSuccess(body));
       },
     });
   };
 }
 
-export function isLoaded(globalState) {
-  return globalState.auth && globalState.auth.loggedIn;
+export function isLoggedIn() {
+  return localStorage.accessToken ? true : false;
 }
 
 // Logout actions
@@ -73,13 +80,17 @@ function logoutFailure(error) {
   };
 }
 
-export function logout(user) {
+export function logout() {
   return dispatch => {
     dispatch(logoutRequest());
     api.logout({
-      user,
       cb: (err, body) => {
-        return err ? dispatch(logoutFailure(err)) : dispatch(logoutSuccess());
+        if (err) return dispatch(logoutFailure(err));
+        delete localStorage.accessToken;
+        delete localStorage.uid;
+        delete localStorage.client;
+
+        return  dispatch(logoutSuccess());
       },
     });
   };
