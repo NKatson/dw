@@ -9,16 +9,17 @@ class App extends React.Component {
     children: PropTypes.object,
   };
   render() {
-    const { loggedIn } = this.props;
+    const { loggedIn, userEmail } = this.props;
     return (
       <div className="main-wrap">
         <div className="wide-block main-header">
             <div className="container container-1">
                 <Link to="/" className="main-logo" />Worth.fm &nbsp;
-                {loggedIn ? null : <Link to="/signup">Sign Up</Link>}
-                {loggedIn ? null : <Link to="/signin">Sign In</Link>}
-                <Link to="/reset">Reset</Link>
-                <Link to="/welcome">Welcome</Link>
+                {loggedIn ? <Link to="/reset">Reset</Link> : null }
+                {loggedIn ? <Link to="/welcome">Welcome</Link> : null }
+                {!loggedIn ? <Link to="/signin">Sign In</Link> : null }
+                {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }&nbsp;
+                {loggedIn ? `Hi, ${userEmail}` : null}
                 <div className="cabinet">
                     <span></span>
                 </div>
@@ -34,6 +35,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     loggedIn: state.auth.get('loggedIn'),
+    userEmail: state.auth.getIn(['user', 'email']),
   }
 }
 

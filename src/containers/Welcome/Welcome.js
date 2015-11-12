@@ -5,6 +5,11 @@ class Welcome extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
   }
+  handleRadioClick() {
+    console.log('Radio click!');
+    console.log(this);
+
+  }
   renderRadios() {
     const radios = [
       {
@@ -23,6 +28,8 @@ class Welcome extends React.Component {
     return radios.map((item, index) => {
       return (
         <Radio
+          handleClick={() => {}}
+          key={index}
           {...item}
           isChecked={index === 1 ? true : false}
         />
@@ -44,7 +51,7 @@ class Welcome extends React.Component {
         description: "Last step: Transfer your money! Then the real magic begins.",
       },
     ];
-    return steps.map((item) => <Step {...item} />);
+    return steps.map((item, index) => <Step key={index} {...item} />);
   }
   render() {
     const imgUrl = require('../../../static/spoiler/wide-bg.jpg');
