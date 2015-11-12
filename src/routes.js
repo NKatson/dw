@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import {isLoggedIn} from './redux/actions/auth';
 
 import {
     App,
@@ -7,13 +8,14 @@ import {
     Authorization,
     ResetPassword,
     Welcome,
+    Logout,
   } from './containers';
+
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
     function checkAuth() {
-      const user = store.getState().auth.get('loggedIn');
-      if (!user) {
+      if (!isLoggedIn()) {
         replaceState(null, '/signin');
       }
       cb();
