@@ -50,7 +50,7 @@ module.exports = {
           include: path.join(__dirname, '../src'),
           query: {
             stage: 0,
-            optional: ['es7.classProperties'],
+            optional: 'runtime',
             loose: 'all',
             plugins: ['react-transform'],
             extra: {
