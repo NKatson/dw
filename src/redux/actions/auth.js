@@ -38,7 +38,7 @@ function loginFailure({ errors }) {
   };
 }
 
-export function login(email, password) {
+export function login(email, password, cb) {
   return dispatch => {
     dispatch(loginRequest());
     api.login({
@@ -49,14 +49,17 @@ export function login(email, password) {
         localStorage.accessToken = body.accessToken;
         localStorage.uid = body.uid;
         localStorage.client = body.client;
-        dispatch(loginSuccess({confirmed: true, ...body}));
+
+        dispatch(loginSuccess({confirmed: true, ...body})).then(() => {
+          cb();
+        });
       },
     });
   };
 }
 
-export function isLoggedIn() {
-  return localStorage.accessToken ? true : false;
+export function isLoggedIn(state) {
+  return (state.auth.get('loggedIn') || localStorage.accessToken) ? true : false;
 }
 
 // Logout actions

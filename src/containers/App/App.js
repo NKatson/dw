@@ -16,8 +16,7 @@ class App extends React.Component {
     this.props.dispatch(auth.logout());
   }
   render() {
-    const { userEmail } = this.props;
-    const loggedIn = auth.isLoggedIn();
+    const { userEmail, loggedIn } = this.props;
     return (
       <div className="main-wrap">
         <div className="wide-block main-header">

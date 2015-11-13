@@ -15,7 +15,7 @@ import {
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
     function checkAuth() {
-      if (!isLoggedIn()) {
+      if (!isLoggedIn(store.getState())) {
         replaceState(null, '/signin');
       }
       cb();

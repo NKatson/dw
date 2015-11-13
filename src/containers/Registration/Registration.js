@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connectReduxForm} from 'redux-form';
-import { History } from 'react-router'
+import { History } from 'react-router';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
@@ -28,7 +28,9 @@ let Registration = React.createClass({
       password_confirmation: confirmPassword.value,
     };
 
-    this.props.dispatch(registration(data));
+    this.props.dispatch(registration(data, () => {
+      this.history.replaceState(null, '/welcome');
+    }));
   },
   render() {
     const {
@@ -38,9 +40,9 @@ let Registration = React.createClass({
       registeringIn,
       userEmail,
     } = this.props;
-    if (loggedIn) {
-      this.history.replaceState(null, '/welcome');
-    }
+    // if (loggedIn) {
+    //   this.history.replaceState(null, '/welcome');
+    // }
     return (
       <div className="wide-block">
         <div className="container container-1">
