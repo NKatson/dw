@@ -7,7 +7,7 @@ module.exports = function(shipit) {
       workspace: '/tmp/frontend',
       deployTo: '/home/deploy/frontend',
       branch: 'develop',
-      repositoryUrl: 'https://github.com/DailyWorth/dailyworth-client.git',
+      repositoryUrl: 'git@github.com:DailyWorth/dailyworth-client.git',
       ignores: ['.git', 'node_modules', 'static/dist', 'webpack-assets.json'],
       rsync: ['--del'],
       keepReleases: 2,
@@ -15,7 +15,7 @@ module.exports = function(shipit) {
     },
     staging: {
       servers: 'deploy@worthfm.4xxi.com'
-    },
+    }
   });
 
   shipit.blTask('build', function() {
