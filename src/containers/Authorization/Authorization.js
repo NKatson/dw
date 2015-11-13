@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { History } from 'react-router'
 import { connectReduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { login } from '../../redux/actions/auth';
@@ -17,7 +16,6 @@ let Authorization = React.createClass({
     fields: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
   },
-  mixins: [ History ],
   handleSubmit(event) {
     const { dispatch, fields: { email, password } } = this.props;
     event.preventDefault();
@@ -31,9 +29,6 @@ let Authorization = React.createClass({
       loggedIn,
       userEmail,
     } = this.props;
-    if (loggedIn) {
-      this.history.replaceState(null, '/welcome');
-    }
     return (
       <div className="wide-block">
         <div className="container container-1">

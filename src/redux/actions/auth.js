@@ -16,9 +16,10 @@ function loginRequest() {
   };
 }
 
-export function loginSuccess({ data: { email, name, nickname }, accessToken, uid, client}) {
+export function loginSuccess({ data: { email, name, nickname }, accessToken, uid, client, confirmed}) {
   return {
     type: LOGIN_SUCCESS,
+    confirmed,
     user: {
       email,
       name,
@@ -48,7 +49,7 @@ export function login(email, password) {
         localStorage.accessToken = body.accessToken;
         localStorage.uid = body.uid;
         localStorage.client = body.client;
-        dispatch(loginSuccess(body));
+        dispatch(loginSuccess({confirmed: true, ...body}));
       },
     });
   };

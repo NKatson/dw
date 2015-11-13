@@ -34,7 +34,7 @@ export function registration(data) {
         if (err) return dispatch(registrationFailure(err));
 
         dispatch(registrationSuccess());
-        return dispatch(loginSuccess(body));
+        return dispatch(loginSuccess({confirmed: false, ...body}));
       },
     });
   };
