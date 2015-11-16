@@ -33,6 +33,7 @@ export function reset({ email, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+      const { headers } = res;
       return cb(null, {
         ...res.body,
         accessToken: headers['access-token'],
@@ -48,6 +49,7 @@ export function logout({ user = null, cb }) {
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
+
       return cb(null, res.body);
     });
 }
@@ -65,6 +67,7 @@ export function registration({ data, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
+      const { headers } = res;
       return cb(null, {
         ...res.body,
         accessToken: headers['access-token'],
