@@ -11,7 +11,7 @@ if (apiPort === 8080 && apiHost === 'localhost') {
 
 export function getForm(cb) {
   request
-    .get(host + '/api/form')
+    .get(host + '/api/forms')
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');

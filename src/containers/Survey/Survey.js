@@ -2,45 +2,44 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { getData } from '../../redux/actions/survey';
 import { connect } from 'react-redux';
+import { DynamicForm, Category } from '../../components';
 
 class Survey extends React.Component {
   componentDidMount() {
     console.log('Request');
-    this.props.dispatch(getData());
+    if (!this.props.requesting) {
+      this.props.dispatch(getData());
+    }
   }
   handleSubmit() {
   }
-  // generateFields(form) {
-  //   return form.questions.reduce((fields, question) => {
-  //     if (question.type === 'checkbox' || question.type === 'radio') {
-  //       let names = question.answers.map(answer => answer.name);
-  //       fields.push(...names);
-  //       return fields;
-  //     }
-  //     fields.push(question.name);
-  //     return fields;
-  //   }, []);
-  // }
-  renderCategories() {
-
+  generateFields(form) {
+    return form.questions.reduce((fields, question) => {
+      if (question.type === 'checkbox' || question.type === 'radio') {
+        let names = question.answers.map(answer => answer.name);
+        fields.push(...names);
+        return fields;
+      }
+      fields.push(question.name);
+      return fields;
+    }, []);
   }
-  // renderForms() {
-  //   return forms.map((form, index) => {
-  //     return  <DynamicForm
-  //               key={index}
-  //               title={form.title}
-  //               formKey={form.formKey}
-  //               fields={::this.generateFields(form)}
-  //               questions={form.questions}
-  //              />
-  //          });
-  // }
+  renderCategories(categories) {
+    return categories.map((cat, index) => {
+      return <Category isActive={false} title={cat.name} isLast={index === categories.length - 1 ? true : false } />
+    });
+  }
   render () {
+    const { data } = this.props;
+    let categories = [];
+    if (typeof data !== 'undefined' ) {
+      categories = ::this.renderCategories(data.get('categories').toJS());
+    }
     return (
       <div className="wide-block bg-white common-block">
         <div className="container container-1">
           <div className="wfm-steps">
-
+            {categories}
           </div>
         </div>
       </div>
@@ -48,4 +47,14 @@ class Survey extends React.Component {
   }
 }
 
-export default connect()(Survey);
+Survey.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    data: state.survey.get('data'),
+    requesting: state.survey.get('requesting'),
+  };
+}
+export default connect(mapStateToProps)(Survey);

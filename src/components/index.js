@@ -5,3 +5,8 @@ export ResetPasswordSent from './ResetPasswordSent/ResetPasswordSent';
 export Radio from './Radio/Radio';
 export Step from './Step/Step';
 export Footer from './Footer/Footer';
+export DynamicForm from './DynamicForm/DynamicForm';
+export Category from './Category/Category';
+export InputCheckbox from './InputCheckbox/InputCheckbox';
+export InputText from './InputText/InputText';
+export Option from './Option/Option';

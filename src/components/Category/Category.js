@@ -7,14 +7,7 @@ class Category extends React.Component {
           <div class="wfm-step__text">{title}</div>
       </div>;
     return (
-      {isLast ?
-        {component}
-       :
-       <div>
-         {component}
-         <div class="wfm-steps__dvdr"></div>
-       </div>
-     }
+      {component}
     );
   }
 }
@@ -22,7 +15,7 @@ class Category extends React.Component {
 Category.propTypes = {
   isActive: PropTypes.bool,
   title: PropTypes.string.isRequired,
-  isLast: PropTYpes.bool,
+  isLast: PropTypes.bool,
 };
 
 export default Category;
