@@ -85,12 +85,14 @@ h2 {
   top: 0;
 }
 .cabinet span {
-  display: inline-block;
+  /*display: inline-block;*/
   vertical-align: middle;
   width: 58px;
   height: 22px;
   background-color: #8da836;
   border-radius: 3px;
+  padding: 5px;
+  color: white;
 }
 .main-footer {
   position: absolute;
