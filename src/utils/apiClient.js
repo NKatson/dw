@@ -3,12 +3,15 @@ import config from '../config';
 
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
-const host = `http://worthfm.4xxi.com`;
+let host = `http://${apiHost}`;
+
+if (apiPort === 8080 && apiHost === 'localhost') {
+  host += `:${apiPort}`;
+}
 
 export function getForm(cb) {
   request
-    .post(host + '/api/form')
-    .send({email, password, 'access-token': localStorage.accessToken})
+    .get(host + '/api/form')
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');

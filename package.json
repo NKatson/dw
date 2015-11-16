@@ -10,7 +10,7 @@
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "prod": "concurrent --kill-others \"npm run start-prod\" \"npm run start-api\"",
     "start-prod": "NODE_ENV=production PORT=3000 node ./bin/server",
-    "start-api": "API_PORT=8080 node ./bin/apiServer",
+    "start-api": "API_PORT=8080 node ./bin/apiServer API_HOST=localhost",
     "lint": "eslint src",
     "test": "NODE_ENV=test mocha --compilers js:babel/register --require ./test/helper.js --recursive",
     "test:watch": "npm run test -- --watch"
