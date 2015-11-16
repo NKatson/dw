@@ -16,3 +16,8 @@ Open your terminal and add following commands.
 * `npm run build`
 * `npm run prod`
 * Open application in [http://localhost:3000](http://localhost:3000)
+
+
+## Deploy
+* `npm install shipit-cli`
+* `shipit staging deploy`
