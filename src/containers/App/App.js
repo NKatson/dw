@@ -23,14 +23,13 @@ class App extends React.Component {
             <div className="container container-1">
                 <Link to="/" className="main-logo" />Worth.fm &nbsp;
                 {loggedIn ? <Link to="/reset">Reset</Link> : null }
-                {loggedIn ? <a href="#" onClick={::this.handleLogout}>Logout</a> : null }
-                {loggedIn ? <Link to="/welcome">Welcome</Link> : null }
-                {!loggedIn ? <Link to="/signin">Sign In</Link> : null }
-                {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }&nbsp;
+                {loggedIn ? <Link to="/welcome">Welcome</Link> : null }&nbsp;
                 {loggedIn ? `Hi, ${localStorage.uid}` : null}
                 <Link to="/survey">Survey</Link>
                 <div className="cabinet">
-                    <span></span>
+                {loggedIn ? <a href="#" onClick={::this.handleLogout}>Logout</a> : null }
+                    {!loggedIn ? <Link to="/signin"><span>Sign In</span></Link> : null }
+                    {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }
                 </div>
             </div>
         </div>

@@ -1,9 +1,9 @@
 import express from 'express';
 import path from 'path';
 import React from 'react';
-import { renderToString } from 'react-dom/server'
+import { renderToString } from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
 import createStore from './redux/create';
