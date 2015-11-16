@@ -28,7 +28,7 @@ class App extends React.Component {
                 {!loggedIn ? <Link to="/signin">Sign In</Link> : null }
                 {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }&nbsp;
                 {loggedIn ? `Hi, ${localStorage.uid}` : null}
-
+                <Link to="/survey">Survey</Link>
                 <div className="cabinet">
                     <span></span>
                 </div>

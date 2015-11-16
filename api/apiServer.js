@@ -1,3 +1,4 @@
+import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -9,6 +10,82 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+
+// Forms
+app.get('/api/forms', (req, res) => {
+  const data = {
+    "categories": [{
+        "name": "Personal",
+        "steps": [{
+            "formKey": "Personal-step-1",
+            "title": "The Basics",
+            "description": "This is the easy stuff.",
+            "questions": [
+              {
+                "name": "firstName",
+                "type": "text",
+                "placeholder": "First Name",
+              },
+              {
+                "name": "lastName",
+                "type": "text",
+                "placeholder": "Last Name",
+              },
+              {
+                "name": "address",
+                "type": "text",
+                "placeholder": "Address",
+              },
+              {
+                "name": "city",
+                "type": "text",
+                "placeholder": "City",
+              },
+              {
+                "name": "state",
+                "type": "select",
+                "placeholder": "State",
+                "answers" : [
+                  {
+                    "label": "FL",
+                    "value": "FL",
+                    "name": "state-fl",
+                  },
+                  {
+                    "label": "NY",
+                    "value": "NY",
+                    "name": "state-ny",
+                  },
+                ]
+              },
+              {
+                "name": "zipcode",
+                "type": "text",
+                "placeholder": "Zip Code",
+              },
+              {
+                "name": "phone",
+                "type": "text",
+                "placeholder": "Phone",
+              },
+              {
+                "name": "ssn",
+                "type": "text",
+                "placeholder": "SSN",
+              },
+              {
+                "name": "dateOfBirth",
+                "type": "text",
+                "placeholder": "Date of Birth (MM/DD/YYYY)",
+              },
+            ]
+          },
+        ]
+      }
+    ]
+  }
+  return res.status(200).json(data);
+});
 
 // Authorization
 app.post('/api/sign_in', (req, res) => {

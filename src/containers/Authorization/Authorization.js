@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { connectReduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { login } from '../../redux/actions/auth';
 
@@ -72,11 +72,6 @@ let Authorization = React.createClass({
   }
 });
 
-Authorization = connectReduxForm({
-  form: 'authorization',
-  fields: ['email', 'password'],
-  validate: validation,
-})(Authorization);
 
 function mapStateToProps(state) {
   return {
@@ -87,5 +82,11 @@ function mapStateToProps(state) {
     form: state.auth,
   };
 }
+
+Authorization = reduxForm({
+  form: 'authorization',
+  fields: ['email', 'password'],
+  validate: validation,
+}, mapStateToProps)(Authorization);
 
 export default connect(mapStateToProps)(Authorization);

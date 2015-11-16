@@ -5,6 +5,21 @@ const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
 const host = `http://worthfm.4xxi.com`;
 
+export function getForm(cb) {
+  request
+    .post(host + '/api/form')
+    .send({email, password, 'access-token': localStorage.accessToken})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      return cb(null, {
+        ...res.body,
+      });
+    });
+}
+
 export function login({ email, password, cb }) {
   request
     .post(host + '/api/auth/sign_in')

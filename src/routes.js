@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router';
 import {isLoggedIn} from './redux/actions/auth';
 
 import {
@@ -8,7 +8,7 @@ import {
     Authorization,
     ResetPassword,
     Welcome,
-    Logout,
+    Survey,
   } from './containers';
 
 
@@ -31,6 +31,7 @@ export default (store) => {
       </Route>
       <Route path="signin" component={Authorization} />
       <Route path="signup" component={Registration} />
+      <Route path="survey" component={Survey} />
     </Route>
   );
 };

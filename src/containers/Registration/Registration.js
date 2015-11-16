@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {connectReduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { History } from 'react-router';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
@@ -89,11 +89,6 @@ let Registration = React.createClass({
   },
 });
 
-Registration = connectReduxForm({
-  form: 'registration',
-  fields: ['email', 'password', 'confirmPassword'],
-  validate: validation,
-})(Registration);
 
 function mapStateToProps(state) {
   return {
@@ -104,5 +99,12 @@ function mapStateToProps(state) {
     form: state.registration,
   };
 }
+
+Registration = reduxForm({
+  form: 'registration',
+  fields: ['email', 'password', 'confirmPassword'],
+  validate: validation,
+}, mapStateToProps)(Registration);
+
 
 export default connect(mapStateToProps)(Registration);
