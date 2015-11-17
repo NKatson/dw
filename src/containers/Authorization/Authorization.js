@@ -4,8 +4,9 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { login } from '../../redux/actions/auth';
 
-import { Input, SubmitButton, FormHeader } from '../../components';
-import {authorization as validation} from '../../utils/validation';
+import { InputText } from '../../atoms';
+import { SubmitButton, FormHeader } from '../../components';
+import { authorization as validation } from '../../utils/validation';
 
 let Authorization = React.createClass({
   propTypes: {
@@ -41,18 +42,18 @@ let Authorization = React.createClass({
                     <div className="message message_error">{loginError}</div> :
                     null
                   }
-                  <Input
-                    field={email}
-                    icon="glyphicon-user"
-                    placeholder="Email"
-                    type="email"
-                  />
-                  <Input
-                    field={password}
-                    icon="glyphicon-lock"
-                    placeholder="Password"
-                    type="password"
-                  />
+                  <InputText
+                      field={email}
+                      icon="glyphicon-user"
+                      placeholder="Email"
+                      type="email"
+                    />
+                  <InputText
+                      field={password}
+                      icon="glyphicon-lock"
+                      placeholder="Password"
+                      type="password"
+                    />
                   <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
                   <div className="input-wrap">
                     <SubmitButton

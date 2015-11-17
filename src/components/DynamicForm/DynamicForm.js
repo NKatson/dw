@@ -2,29 +2,23 @@ import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import { InputText, InputCheckbox, Select } from '../../atoms/index';
 
-class DynamicForm extends Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    questions: PropTypes.array.isRequired,
-  }
-  //
-  // renderOption(question , fields) {
-  //   return question.answers.map((answer, index) => {
-  //     const field = fields[answer.name];
-  //     return <Option
-  //       field={field}
-  //       index={index}
-  //       label={answer.label}
-  //       value={answer.value}
-  //       />
-  //   });
-  // }
+function validate(data) {
+  const errors = {};
 
+  if (!data.firstName) {
+    errors.firstName = 'Required';
+  }
+
+  return errors;
+}
+
+class DynamicForm extends Component {
   renderInput(question, fields) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       return question.answers.map((answer, index) => {
         const field = fields[answer.name];
         return <InputCheckbox
+                additionalClass={question.class ? question.class : ''}
                 index={index}
                 htmlName={question.htmlName}
                 label={answer.label}
@@ -34,11 +28,13 @@ class DynamicForm extends Component {
     } else
      if (question.type === 'select') {
       return <Select
+            additionalClass={question.class ? question.class : ''}
             options={question.answers}
             />
     } else {
       const field = fields[question.name];
       return <InputText
+                additionalClass={question.class ? question.class : ''}
                 key={question.name}
                 field={field}
                 placeholder={question.placeholder}
@@ -50,19 +46,16 @@ class DynamicForm extends Component {
       if (question.type === 'plain-text') {
         return <div className={'input-wrap ' + (question.class ? question.class : '')}>{question.text}</div>;
       }
-      return (
-        <div className={'input-wrap ' + (question.class ? question.class : '')}>
-          {::this.renderInput(question, fields)}
-        </div>
-      );
+      return (::this.renderInput(question, fields));
     });
   }
   render() {
-    const { title, fields, questions, description, hint } = this.props;
+    const { title, fields, questions, description, hint, key } = this.props;
     return (
-      <form className="common-form personal-info-form" key={}>
+      <form className="common-form personal-info-form" key={key}>
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
+          {hint ? <p className="wfm-hint">{hint}</p> : null}
           {::this.renderQuestions(questions, fields)}
 
         <div className="clearfix pad-05">
@@ -74,4 +67,11 @@ class DynamicForm extends Component {
   }
 }
 
-export default reduxForm({form: 'dynamic'})(DynamicForm);
+DynamicForm.propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    questions: PropTypes.array.isRequired,
+    hint: PropTypes.stirng,
+};
+
+export default reduxForm({form: 'dynamic', validate})(DynamicForm);

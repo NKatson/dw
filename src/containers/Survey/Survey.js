@@ -6,7 +6,6 @@ import { DynamicForm, Category } from '../../components';
 
 class Survey extends React.Component {
   componentDidMount() {
-    console.log('Request');
     if (!this.props.requesting) {
       this.props.dispatch(getData());
     }
@@ -25,22 +24,28 @@ class Survey extends React.Component {
     }, []);
   }
   renderCategories(categories) {
-    return categories.map((cat, index) => {
-      return <Category
-              isActive={index === 0}
-              title={cat.name}
-              isLast={index === categories.length - 1 ? true : false }
-              key={'category-' + index}
-              />
+    let result = [];
+    categories.map((cat, index) => {
+      result.push(<Category
+                  isActive={index === 0}
+                  title={cat.name}
+                  isLast={index === categories.length - 1 ? true : false }
+                  key={'category-' + index}
+                  />);
+      if (index !== categories.length - 1) {
+        result.push(<div className="wfm-steps__dvdr"></div>);
+      }
     });
+    return result;
   }
   renderForms(categories) {
     return categories.map(category => {
       return category.steps.map((form, index) => {
         return  <DynamicForm
-                  key={form + index}
+                  key={form.title}
                   title={form.title}
                   description={form.description}
+                  hint={form.hint}
                   formKey={form.formKey}
                   fields={::this.generateFields(form)}
                   questions={form.questions}

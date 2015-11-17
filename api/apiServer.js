@@ -104,8 +104,10 @@ app.get('/api/forms', (req, res) => {
             ]
           },
         ]
+      }, {
+        "name": "Invest",
+        "steps" : []
       }
-
     ]
   }
   return res.status(200).json(data);

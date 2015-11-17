@@ -6,7 +6,8 @@ import {Link} from 'react-router';
 
 import {registration} from '../../redux/actions/registration';
 import {registration as validation} from '../../utils/validation';
-import { Input, SubmitButton, FormHeader } from '../../components';
+import { SubmitButton, FormHeader } from '../../components';
+import { InputText } from '../../atoms';
 
 let Registration = React.createClass({
   propTypes: {
@@ -49,29 +50,29 @@ let Registration = React.createClass({
             <div className="login-block">
                 <FormHeader />
                 <form onSubmit={this.handleSubmit} className="common-form login-form">
-                  {
-                    registrationError && registrationError.length > 0 ?
-                    <div className="message message_error">{registrationError}</div> :
-                    null
-                  }
-                  <Input
-                    field={email}
-                    icon="glyphicon-user"
-                    placeholder="Email"
-                    type="email"
-                  />
-                  <Input
-                    field={password}
-                    icon="glyphicon-lock"
-                    placeholder="Password"
-                    type="password"
-                  />
-                  <Input
-                    field={confirmPassword}
-                    icon="glyphicon-lock"
-                    placeholder="Confirm password"
-                    type="password"
-                  />
+                    {
+                      registrationError && registrationError.length > 0 ?
+                      <div className="message message_error">{registrationError}</div> :
+                      null
+                    }
+                    <InputText
+                      field={email}
+                      icon="glyphicon-user"
+                      placeholder="Email"
+                      type="email"
+                    />
+                    <InputText
+                      field={password}
+                      icon="glyphicon-lock"
+                      placeholder="Password"
+                      type="password"
+                    />
+                    <InputText
+                      field={confirmPassword}
+                      icon="glyphicon-lock"
+                      placeholder="Confirm password"
+                      type="password"
+                    />
                     <div className="input-wrap">
                       <SubmitButton
                         fields={this.props.fields}
