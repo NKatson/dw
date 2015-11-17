@@ -41,18 +41,36 @@ class DynamicForm extends Component {
     }
   }
 
+  renderForms() {
+    return forms.map((form, index) => {
+      return  <DynamicForm
+                key={index}
+                title={form.title}
+                formKey={form.formKey}
+                fields={::this.generateFields(form)}
+                questions={form.questions}
+               />
+           });
+  }
+
   render() {
-    const { title, fields, questions } = this.props;
+    const { title, fields, questions, description, hint } = this.props;
     return (
-      <form>
+      <form className="common-form personal-info-form">
         <h2>{title}</h2>
-        {questions.map((question, index) => {
-          return <div key={index}>
-            <label>{question.label}</label>
+         {description ? <p>{description}</p> : null}
+         {hint ? <p className="wfm-hint">(Hint: You definitely know all the answers to these questions!)</p> : null}
+
+         {questions.map((question, index) => {
+          return <div key={question.title} className="input-wrap">
             {::this.renderInput(question, fields)}
           </div>
         })}
-        <button>Submit</button>
+
+        <div className="clearfix pad-05">
+            <a href="#" className="pull-left pad-05__link"> Go Back</a>
+            <button className="btn btn_blue w-308 pull-right" disabled>Next ></button>
+        </div>
     </form>
     );
   }

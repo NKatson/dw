@@ -16,6 +16,8 @@ app.get('/api/forms', (req, res) => {
   const data = {
     "categories": [{
         "name": "Personal",
+        "description" : "This is the easy stuff.",
+        "hint" : "(Hint: You definitely know all the answers to these questions!)",
         "steps": [{
             "formKey": "Personal-step-1",
             "title": "The Basics",

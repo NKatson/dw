@@ -26,21 +26,43 @@ class Survey extends React.Component {
   }
   renderCategories(categories) {
     return categories.map((cat, index) => {
-      return <Category isActive={false} title={cat.name} isLast={index === categories.length - 1 ? true : false } />
+      return <Category
+              isActive={index === 0}
+              title={cat.name}
+              isLast={index === categories.length - 1 ? true : false }
+              key={'category-' + index}
+              />
+    });
+  }
+  renderForms(categories) {
+    return categories.map(category => {
+      return category.steps.map((form, index) => {
+        return  <DynamicForm
+                  key={form + index}
+                  title={form.title}
+                  description={form.description}
+                  formKey={form.formKey}
+                  fields={::this.generateFields(form)}
+                  questions={form.questions}
+                 />
+      });
     });
   }
   render () {
     const { data } = this.props;
     let categories = [];
+    let steps = [];
     if (typeof data !== 'undefined' ) {
       categories = ::this.renderCategories(data.get('categories').toJS());
+      steps = ::this.renderForms(data.get('categories').toJS());
     }
     return (
       <div className="wide-block bg-white common-block">
         <div className="container container-1">
           <div className="wfm-steps">
-            {categories}
+             {categories}
           </div>
+          {steps}
         </div>
       </div>
     );
