@@ -46,6 +46,7 @@ app.get('/api/forms', (req, res) => {
               {
                 "name": "state",
                 "type": "select",
+                "class" : "inline-block pad-04",
                 "placeholder": "State",
                 "answers" : [
                   {
@@ -63,21 +64,42 @@ app.get('/api/forms', (req, res) => {
               {
                 "name": "zipcode",
                 "type": "text",
+                "class" : "inline-block w-210",
                 "placeholder": "Zip Code",
               },
               {
                 "name": "phone",
                 "type": "text",
+                "class" : "w-342 inline-block valign-mid",
                 "placeholder": "Phone",
+              },
+              {
+                "type": "plain-text",
+                "class" : "input-wrap__descr w-136",
+                "text": "We will send your phone a text confirmation",
               },
               {
                 "name": "ssn",
                 "type": "text",
+                "class" : "w-342 inline-block valign-mid",
                 "placeholder": "SSN",
+              },
+              {
+                "type": "checkbox",
+                "htmlName": "personal-show",
+                "class" : "input-wrap__descr w-136 input-wrap__addit-checkbox",
+                "answers": [
+                  {
+                    "label": "Show",
+                    "value": "show",
+                    "name": "personal-show",
+                  }
+                ]
               },
               {
                 "name": "dateOfBirth",
                 "type": "text",
+                "class" : "w-342",
                 "placeholder": "Date of Birth (MM/DD/YYYY)",
               },
             ]
