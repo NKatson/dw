@@ -30,7 +30,7 @@ module.exports = function (shipit) {
         return shipit.remote('cd /home/deploy/frontend/current && NODE_ENV=production HOST=worthfm.4xxi.com PORT=8080 API_HOST=worthfm.4xxi.com pm2 start ./bin/server.js');
     });
 
-    shipit.blTask('run', ['deploy', 'stop-server', 'build', 'run-server'], function () {
+    shipit.blTask('run', ['stop-server', 'deploy', 'build', 'run-server'], function () {
         return shipit.remote('echo "Done!"');
     });
 };
