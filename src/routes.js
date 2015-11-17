@@ -29,9 +29,9 @@ export default (store) => {
           <Route path="welcome" component={Welcome} />
           <Route path="reset" component={ResetPassword} />
       </Route>
+      <Route path="survey" component={Survey} />
       <Route path="signin" component={Authorization} />
       <Route path="signup" component={Registration} />
-      <Route path="survey" component={Survey} />
     </Route>
   );
 };

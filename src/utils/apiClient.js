@@ -3,7 +3,7 @@ import config from '../config';
 
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
-let host = `http://${apiHost}`;
+let host = `http://${apiHost}` ;
 
 if (apiPort === 8080 && apiHost === 'localhost') {
   host += `:${apiPort}`;

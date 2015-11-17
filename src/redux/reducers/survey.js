@@ -1,21 +1,21 @@
 import * as actions from '../actions/survey';
 import { Map, fromJS } from 'immutable';
 
-const initialState = Map({
+const initialState = {
   requesting: false,
-});
+};
 
 export default function survey(state = initialState, action = {}) {
   switch (action.type) {
   case actions.INITIAL_REQUEST:
-    return state.merge({
+    return {
       requesting: true,
-    });
+    }
   case actions.FILL_STATE:
-    return state.merge({
+    return {
       requesting: false,
       data: action.data,
-    });
+    }
   default:
     return state;
   }

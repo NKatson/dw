@@ -80,7 +80,6 @@ function mapStateToProps(state) {
     loggingIn: state.auth.get('loggingIn'),
     loggedIn: state.auth.get('loggedIn'),
     userEmail: state.auth.getIn(['user', 'email']),
-    form: state.auth,
   };
 }
 

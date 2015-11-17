@@ -15,6 +15,7 @@ Category.propTypes = {
   isActive: PropTypes.bool,
   title: PropTypes.string.isRequired,
   isLast: PropTypes.bool,
+  key: PropTypes.string.isRequired,
 };
 
 export default Category;

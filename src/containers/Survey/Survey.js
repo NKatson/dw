@@ -10,8 +10,6 @@ class Survey extends React.Component {
       this.props.dispatch(getData());
     }
   }
-  handleSubmit() {
-  }
   generateFields(form) {
     return form.questions.reduce((fields, question) => {
       if (question.type === 'checkbox' || question.type === 'radio') {
@@ -57,9 +55,9 @@ class Survey extends React.Component {
     const { data } = this.props;
     let categories = [];
     let steps = [];
-    if (typeof data !== 'undefined' ) {
-      categories = ::this.renderCategories(data.get('categories').toJS());
-      steps = ::this.renderForms(data.get('categories').toJS());
+    if (typeof data !== 'undefined') {
+      categories = ::this.renderCategories(data.categories);
+      steps = ::this.renderForms(data.categories);
     }
     return (
       <div className="wide-block bg-white common-block">
@@ -79,9 +77,10 @@ Survey.propTypes = {
 };
 
 function mapStateToProps(state) {
+  console.log(state.survey);
   return {
-    data: state.survey.get('data'),
-    requesting: state.survey.get('requesting'),
+    data: state.survey.data,
+    requesting: state.survey.requesting,
   };
 }
 export default connect(mapStateToProps)(Survey);

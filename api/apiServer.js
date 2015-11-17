@@ -49,19 +49,24 @@ app.get('/api/forms', (req, res) => {
                 "placeholder": "State",
                 "answers" : [
                   {
-                    "label": "FL",
-                    "value": "FL",
-                    "name": "state-fl",
+                    "label": "Alabama",
+                    "value": "al",
+                    "name": "state-al",
                   },
                   {
-                    "label": "NY",
-                    "value": "NY",
-                    "name": "state-ny",
+                    "label": "Alaska",
+                    "value": "ak",
+                    "name": "state-ak",
+                  },
+                  {
+                    "label": " Arizona",
+                    "value": "az",
+                    "name": "state-az",
                   },
                 ]
               },
               {
-                "name": "zipcode",
+                "name": "zipCode",
                 "type": "text",
                 "class" : "inline-block w-210",
                 "placeholder": "Zip Code",
@@ -79,7 +84,7 @@ app.get('/api/forms', (req, res) => {
               },
               {
                 "name": "ssn",
-                "type": "text",
+                "type": "password",
                 "class" : "w-342 inline-block valign-mid",
                 "placeholder": "SSN",
               },
