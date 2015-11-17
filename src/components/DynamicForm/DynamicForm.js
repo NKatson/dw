@@ -60,7 +60,7 @@ class DynamicForm extends Component {
   render() {
     const { title, fields, questions, description, hint } = this.props;
     return (
-      <form className="common-form personal-info-form">
+      <form className="common-form personal-info-form" key={}>
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {::this.renderQuestions(questions, fields)}
