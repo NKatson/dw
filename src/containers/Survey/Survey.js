@@ -77,7 +77,6 @@ Survey.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state.survey);
   return {
     data: state.survey.data,
     requesting: state.survey.requesting,

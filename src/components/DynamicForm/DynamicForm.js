@@ -47,6 +47,11 @@ function validate(data) {
 }
 
 class DynamicForm extends Component {
+  handleShowClick() {
+    console.log('Here!');
+  }
+  handleChange() {
+  }
   renderInput(question, fields) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       return question.answers.map((answer, index) => {
@@ -54,22 +59,24 @@ class DynamicForm extends Component {
         return <InputCheckbox
                 additionalClass={question.class ? question.class : ''}
                 index={index}
+                handleClick={answer.name === 'personal-show' ? ::this.handleShowClick : null}
                 htmlName={question.htmlName}
                 label={answer.label}
                 field={field}
               />
       });
-    } else
-     if (question.type === 'select') {
+    } else if (question.type === 'select') {
       return <Select
             additionalClass={question.class ? question.class : ''}
             options={question.answers}
             />
     } else {
       const field = fields[question.name];
+      const normalizedFields = ['phone', 'dateOfBirth', 'ssn'];
       return <InputText
                 additionalClass={question.class ? question.class : ''}
                 key={question.name}
+                isNormalized={normalizedFields.indexOf(question.name) !== -1 ? true : false}
                 field={field}
                 type={question.type}
                 placeholder={question.placeholder}
