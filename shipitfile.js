@@ -22,15 +22,14 @@ module.exports = function (shipit) {
         return shipit.remote('cd /home/deploy/frontend/current && npm run build');
     });
 
-    shipit.blTask('stop-server', function () {
-        return shipit.remote('cd /home/deploy/frontend/current && pm2 stop ./bin/server.js');
-    });
-
     shipit.blTask('run-server', function () {
-        return shipit.remote('cd /home/deploy/frontend/current && NODE_ENV=production HOST=worthfm.4xxi.com PORT=8080 API_HOST=worthfm.4xxi.com pm2 start ./bin/server.js');
+        return shipit.remote('cd /home/deploy/frontend/current && pm2 start app.json');
     });
 
-    shipit.blTask('run', ['stop-server', 'deploy', 'build', 'run-server'], function () {
+    shipit.blTask('run', ['deploy', 'build'], function () {
+        return shipit.remote('echo "Done!"');
+    });
+    shipit.blTask('init', ['deploy', 'build', 'run-server'], function () {
         return shipit.remote('echo "Done!"');
     });
 };
