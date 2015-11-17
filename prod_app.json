@@ -3,7 +3,7 @@
     {
       "name": "fontend-server",
       "script": "./bin/server.js",
-      "watch": true,
+      "watch": false,
       "cwd": "/home/deploy/frontend/current",
       "env": {
         "NODE_ENV": "production",

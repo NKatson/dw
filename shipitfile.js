@@ -23,13 +23,10 @@ module.exports = function (shipit) {
     });
 
     shipit.blTask('run-server', function () {
-        return shipit.remote('cd /home/deploy/frontend/current && pm2 start app.json');
+        return shipit.remote('cd /home/deploy/frontend/current && pm2 start prod_app.json');
     });
 
-    shipit.blTask('run', ['deploy', 'build'], function () {
-        return shipit.remote('echo "Done!"');
-    });
-    shipit.blTask('init', ['deploy', 'build', 'run-server'], function () {
+    shipit.blTask('run', ['deploy', 'build', 'run-server'], function () {
         return shipit.remote('echo "Done!"');
     });
 };
