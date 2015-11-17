@@ -31,7 +31,7 @@ class Survey extends React.Component {
                   key={'category-' + index}
                   />);
       if (index !== categories.length - 1) {
-        result.push(<div className="wfm-steps__dvdr"></div>);
+        result.push(<div key={'dvdr-' + index} className="wfm-steps__dvdr"></div>);
       }
     });
     return result;

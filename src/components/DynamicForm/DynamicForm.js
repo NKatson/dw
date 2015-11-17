@@ -50,13 +50,12 @@ class DynamicForm extends Component {
   handleShowClick() {
     console.log('Here!');
   }
-  handleChange() {
-  }
   renderInput(question, fields) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       return question.answers.map((answer, index) => {
         const field = fields[answer.name];
         return <InputCheckbox
+                key={question.name + '-answer-' + index}
                 additionalClass={question.class ? question.class : ''}
                 index={index}
                 handleClick={answer.name === 'personal-show' ? ::this.handleShowClick : null}
@@ -67,6 +66,7 @@ class DynamicForm extends Component {
       });
     } else if (question.type === 'select') {
       return <Select
+            key={question.name}
             additionalClass={question.class ? question.class : ''}
             options={question.answers}
             />
@@ -74,6 +74,7 @@ class DynamicForm extends Component {
       const field = fields[question.name];
       const normalizedFields = ['phone', 'dateOfBirth', 'ssn'];
       return <InputText
+                key={question.name}
                 additionalClass={question.class ? question.class : ''}
                 key={question.name}
                 isNormalized={normalizedFields.indexOf(question.name) !== -1 ? true : false}
@@ -92,9 +93,9 @@ class DynamicForm extends Component {
     });
   }
   render() {
-    const { title, fields, questions, description, hint, key } = this.props;
+    const { title, fields, questions, description, hint } = this.props;
     return (
-      <form className="common-form personal-info-form" key={key}>
+      <form className="common-form personal-info-form">
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
@@ -113,7 +114,7 @@ DynamicForm.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     questions: PropTypes.array.isRequired,
-    hint: PropTypes.stirng,
+    hint: PropTypes.string,
 };
 
 export default reduxForm({form: 'dynamic', validate})(DynamicForm);
