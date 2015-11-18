@@ -100,25 +100,21 @@ app.get('/api/forms', (req, res) => {
                   {
                     "label": "Who do you work for?",
                     "type": "text",
-                    "value": 11,
                     "name": "employ-employed-who"
                   },
                   {
                     "label": "Whats your title?",
                     "type": "text",
-                    "value": 12,
                     "name": "employ-employed-title"
                   },
                   {
                     "label": "Whats your industry?",
                     "type": "text",
-                    "value": 13,
                     "name": "employ-employed-industry"
                   },
                   {
                     "label": "How much do you make?",
                     "type": "text",
-                    "value": 14,
                     "name": "employ-employed-how-much"
                   },
                 ]
@@ -133,14 +129,12 @@ app.get('/api/forms', (req, res) => {
                 "dynamicFields" : [ // dynamic fields
                   {
                     "label": "What's you main source of income?",
-                    "value": 21,
                     "type": "text",
                     "name": "employ-not-working-whats"
                   },
                   {
                     "label": "How much do you make?",
                     "type": "text",
-                    "value": 22,
                     "name": "employ-not-working-how"
                   },
                 ]

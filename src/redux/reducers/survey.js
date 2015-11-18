@@ -21,7 +21,11 @@ export default function survey(state = initialState, action = {}) {
     });
   case actions.TOGGLE_SSN:
     return state.merge({
-      showSsn: state.get('showSsn') ? false : true,
+      showSsn: state.get('showSsn')  ? false : true,
+    });
+  case actions.SELECT_CHANGE:
+    return state.merge({
+      selectValue: action.value,
     });
   default:
     return state;

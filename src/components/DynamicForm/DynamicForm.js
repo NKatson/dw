@@ -4,7 +4,7 @@ import { InputText, InputCheckbox, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 
 class DynamicForm extends Component {
-  renderInput(question, fields) {
+  renderInput(question, fields, isDynamic = false) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       return question.answers.map((answer, index) => {
         const field = fields[answer.name];
@@ -31,7 +31,14 @@ class DynamicForm extends Component {
       question.answers.map((answer, index) => {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
-            result.push(::this.renderInput(field, fields));
+            result.push(<InputText
+                      key={field.name}
+                      label={field.label}
+                      field={field}
+                      additionalClass=""
+                      parentValue={answer.label}
+                      stateSelectValue={this.props.stateSelectValue}
+                    />)
           });
         }
       });
@@ -107,6 +114,7 @@ DynamicForm.propTypes = {
     showSsn: PropTypes.bool,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
+    stateSelectValue: PropTypes.string.isRequired,
 };
 
 export default reduxForm({form: 'dynamic', validate})(DynamicForm);

@@ -3,14 +3,14 @@ import { reduxForm } from 'redux-form';
 import { getData } from '../../redux/actions/survey';
 import { connect } from 'react-redux';
 import { DynamicForm, Category } from '../../components';
-import { toggleSsn } from '../../redux/actions/survey';
+import { toggleSsn, selectChange } from '../../redux/actions/survey';
 
 class Survey extends React.Component {
   handleShowSsnClick() {
     this.props.dispatch(toggleSsn());
   }
   handleSelectChange(e) {
-    console.log(e.target);
+    this.props.dispatch(selectChange(e.target.value));
   }
   componentDidMount() {
     if (!this.props.requesting) {
@@ -78,6 +78,7 @@ class Survey extends React.Component {
                   handleShowSsnClick={::this.handleShowSsnClick}
                   showSsn={this.props.showSsn ? true : false}
                   handleSelectChange={::this.handleSelectChange}
+                  stateSelectValue={this.props.stateSelectValue}
                  />);
       });
     }
@@ -115,6 +116,7 @@ function mapStateToProps(state) {
     showSsn: state.survey.get('showSsn'),
     category: state.survey.get('category'),
     step: state.survey.get('step'),
+    stateSelectValue: state.survey.get('selectValue'),
   };
 }
 export default connect(mapStateToProps)(Survey);
