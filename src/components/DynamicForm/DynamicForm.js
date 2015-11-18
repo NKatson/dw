@@ -4,7 +4,7 @@ import { InputText, InputCheckbox, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 
 class DynamicForm extends Component {
-  renderInput(question, fields, parentValue = null) {
+  renderInput(question, fields) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       return question.answers.map((answer, index) => {
         const field = fields[answer.name];
@@ -33,7 +33,10 @@ class DynamicForm extends Component {
       question.answers.map((answer, index) => {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
-            result.push(::this.renderInput(field, fields, answer.label));
+            // is parent selected ?
+            if (answer.label === this.props.stateSelectValue) {
+              result.push(::this.renderInput(field, fields));
+            }
           });
         }
       });
@@ -50,8 +53,6 @@ class DynamicForm extends Component {
                 field={field}
                 type={question.type}
                 placeholder={question.placeholder}
-                parentValue={parentValue}
-                stateSelectValue={this.props.stateSelectValue}
               />;
    }
   }
