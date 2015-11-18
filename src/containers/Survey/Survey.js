@@ -9,18 +9,35 @@ class Survey extends React.Component {
   handleShowSsnClick() {
     this.props.dispatch(toggleSsn());
   }
+  handleSelectChange(e) {
+    console.log(e.target);
+  }
   componentDidMount() {
     if (!this.props.requesting) {
       this.props.dispatch(getData());
     }
   }
+  parseMultipleNames(question) {
+    let names = [];
+    question.answers.map(answer => {
+      names.push(answer.name);
+      if (answer.dynamicFields && answer.dynamicFields.length > 0) {
+        answer.dynamicFields.map(field => {
+          names.push(field.name);
+        });
+      }
+    });
+    return names;
+  }
   generateFields(form) {
+    const multiple = ['checkbox', 'radio', 'dropdown'];
     return form.questions.reduce((fields, question) => {
-      if (question.type === 'checkbox' || question.type === 'radio') {
-        let names = question.answers.map(answer => answer.name);
+      if (multiple.indexOf(question.type) !== -1) {
+        const names = ::this.parseMultipleNames(question);
         fields.push(...names);
         return fields;
       }
+
       fields.push(question.name);
       return fields;
     }, []);
@@ -60,6 +77,7 @@ class Survey extends React.Component {
                   questions={form.questions}
                   handleShowSsnClick={::this.handleShowSsnClick}
                   showSsn={this.props.showSsn ? true : false}
+                  handleSelectChange={::this.handleSelectChange}
                  />);
       });
     }
@@ -95,6 +113,8 @@ function mapStateToProps(state) {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
     showSsn: state.survey.get('showSsn'),
+    category: state.survey.get('category'),
+    step: state.survey.get('step'),
   };
 }
 export default connect(mapStateToProps)(Survey);

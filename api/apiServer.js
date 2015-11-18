@@ -22,6 +22,7 @@ app.get('/api/forms', (req, res) => {
         "hint": "(Hint: You definitely know all the answers to these questions!)",
         "questions": [
           {
+            "label" : "First Name",
             "name": "firstName",
             "type": "text",
             "placeholder": "First Name"
@@ -39,7 +40,7 @@ app.get('/api/forms', (req, res) => {
             "placeholder": "City"
           }, {
             "name": "state",
-            "type": "select",
+            "type": "dropdown",
             "class": "inline-block pad-04",
             "placeholder": "State",
             "answers": [
@@ -83,24 +84,83 @@ app.get('/api/forms', (req, res) => {
       {
         "formKey": "Personal-step-2",
         "title": "Employment status",
-        "description" : "Where do you currently work?",
-        "questions": []
-      }
-    ],
-    "Invest": [
-      {
-        "formKey" : "Invest-step-1",
-        "title" : "Finding the Right Investment for you",
-        "description" : "The next steps will help us recommend",
+        "description" : "Where do you currently work? Do you like it and if so, are they hiring? ",
         "questions": [
           {
-            "name": "lalal",
-            "type": "text",
-            "class": "inline-block w-210",
-            "placeholder": "Zip"
-          },
+            "name": "employ",
+            "type": "dropdown",
+            "class": "full-width",
+            "label" : "What's your employment status?",
+            "answers": [
+              {
+                "label": "Employed",
+                "value": 1,
+                "name": "employ-employed",
+                "dynamicFields" : [ // dynamic fields
+                  {
+                    "label": "Who do you work for?",
+                    "type": "text",
+                    "value": 11,
+                    "name": "employ-employed-who"
+                  },
+                  {
+                    "label": "Whats your title?",
+                    "type": "text",
+                    "value": 12,
+                    "name": "employ-employed-title"
+                  },
+                  {
+                    "label": "Whats your industry?",
+                    "type": "text",
+                    "value": 13,
+                    "name": "employ-employed-industry"
+                  },
+                  {
+                    "label": "How much do you make?",
+                    "type": "text",
+                    "value": 14,
+                    "name": "employ-employed-how-much"
+                  },
+                ]
+              }, {
+                "label": "Self-Employed",
+                "value": 2,
+                "name": "employ-self-employed"
+              }, {
+                "label": "Not Currently Working",
+                "value": 3,
+                "name": "employ-not-working",
+                "dynamicFields" : [ // dynamic fields
+                  {
+                    "label": "What's you main source of income?",
+                    "value": 21,
+                    "type": "text",
+                    "name": "employ-not-working-whats"
+                  },
+                  {
+                    "label": "How much do you make?",
+                    "type": "text",
+                    "value": 22,
+                    "name": "employ-not-working-how"
+                  },
+                ]
+              }, {
+                "label": "Student",
+                "value": 4,
+                "name": "employ-student"
+              }
+            ]
+          }
         ]
       }
+    ],
+    "Invest" : [
+      {
+        "formKey": "Invest-step-1",
+        "title": "Finding the Right Investment for you",
+        "description": "The next steps will help us recommend",
+        "questions" : []
+    }
     ],
   }
   return res.status(200).json(data);

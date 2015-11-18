@@ -12,8 +12,11 @@ export default function survey(state = initialState, action = {}) {
       requesting: true,
     });
   case actions.FILL_STATE:
+  const categories = Object.keys(action.data);
     return state.merge({
       requesting: false,
+      category: categories.length > 0 ? categories[0] : null,
+      step: 0,
       data: action.data,
     });
   case actions.TOGGLE_SSN:

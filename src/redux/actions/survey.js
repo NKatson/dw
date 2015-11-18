@@ -17,6 +17,10 @@ function fillState(data) {
   };
 }
 
+export function selectChange() {
+
+}
+
 export function toggleSsn() {
   return {
     type: TOGGLE_SSN

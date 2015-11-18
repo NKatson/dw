@@ -17,19 +17,33 @@ class DynamicForm extends Component {
                 field={field}
               />
       });
-    } else if (question.type === 'select') {
-      return <Select
+    } else if (question.type === 'dropdown') {
+      let result = [];
+      // render select field
+      result.push(<Select
             key={question.name}
+            label={question.label}
             additionalClass={question.class ? question.class : ''}
             options={question.answers}
-            />
+            handleChange={::this.props.handleSelectChange}
+            />);
+      // render dynamic fields
+      question.answers.map((answer, index) => {
+        if (answer.dynamicFields && answer.dynamicFields.length > 0) {
+          answer.dynamicFields.map((field, index) => {
+            result.push(::this.renderInput(field, fields));
+          });
+        }
+      });
+
+      return result;
     } else {
       const field = fields[question.name];
       const normalizedFields = ['phone', 'dateOfBirth'];
       return <InputText
                 key={question.name}
                 additionalClass={question.class ? question.class : ''}
-                key={question.name}
+                label={question.label}
                 isNormalized={normalizedFields.indexOf(question.name) !== -1 ? true : false}
                 field={field}
                 type={question.type}
@@ -49,6 +63,7 @@ class DynamicForm extends Component {
                     additionalClass={question.class ? question.class : ''}
                     key={question.name}
                     isNormalized={true}
+                    label={question.label}
                     field={fields[question.name]}
                     type={this.props.showSsn ? 'text' : 'password'}
                     placeholder={question.placeholder}
@@ -91,6 +106,7 @@ DynamicForm.propTypes = {
     hint: PropTypes.string,
     showSsn: PropTypes.bool,
     handleShowSsnClick: PropTypes.func.isRequired,
+    handleSelectChange: PropTypes.func.isRequired,
 };
 
 export default reduxForm({form: 'dynamic', validate})(DynamicForm);

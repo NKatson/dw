@@ -2,14 +2,12 @@ import React, { PropTypes } from 'react'
 
 class Select extends React.Component {
   render() {
-    const { options, additionalClass, label, handleChange } = this.props;
+    const { options, additionalClass } = this.props;
     return (
       <div className={'input-wrap ' + additionalClass}>
-        {label ? <p><b>{label}</b><br /></p> : null}
-        <select className="full-width" onChange={handleChange}>
-          <option key='default'>Choose One</option>
+        <select className="full-width">
           {options.map((option, index) => {
-            return <option  key={option.value}>{option.label}</option>;
+            return <option value={option.value} key={option.value}>{option.label}</option>;
           })}
         </select>
       </div>
@@ -19,8 +17,6 @@ class Select extends React.Component {
 
 Select.propTypes = {
   additionalClass: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
-  label: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({
      value: PropTypes.string.isRequired,
      label: PropTypes.string.isRequired,
