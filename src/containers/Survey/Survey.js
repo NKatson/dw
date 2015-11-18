@@ -25,25 +25,32 @@ class Survey extends React.Component {
       return fields;
     }, []);
   }
-  renderCategories(categories) {
+  renderCategories(data) {
     let result = [];
-    categories.map((cat, index) => {
+    let index = 0;
+    const count = Object.keys(data).length;
+
+    for (let category in data) {
       result.push(<Category
                   isActive={index === 0}
-                  title={cat.name}
-                  isLast={index === categories.length - 1 ? true : false }
-                  key={'category-' + index}
+                  title={category}
+                  isLast={index === data.length - 1 ? true : false }
+                  key={'category-' + category}
                   />);
-      if (index !== categories.length - 1) {
+      if (index !== count - 1) {
         result.push(<div key={'dvdr-' + index} className="wfm-steps__dvdr"></div>);
       }
-    });
+      index++;
+    }
+
     return result;
   }
-  renderForms(categories) {
-    return categories.map(category => {
-      return category.steps.map((form, index) => {
-        return  <DynamicForm
+  renderForms(data) {
+    let result = [];
+    let index = 0;
+    for (let category in data) {
+      data[category].map((form, index) => {
+        result.push(<DynamicForm
                   key={form.title}
                   title={form.title}
                   description={form.description}
@@ -53,17 +60,18 @@ class Survey extends React.Component {
                   questions={form.questions}
                   handleShowSsnClick={::this.handleShowSsnClick}
                   showSsn={this.props.showSsn ? true : false}
-                 />
+                 />);
       });
-    });
+    }
+    return result;
   }
   render () {
     const { data } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
-      categories = ::this.renderCategories(data.get('categories').toJS());
-      steps = ::this.renderForms(data.get('categories').toJS());
+      categories = ::this.renderCategories(data.toJS());
+      steps = ::this.renderForms(data.toJS());
     }
     return (
       <div className="wide-block bg-white common-block">

@@ -14,89 +14,94 @@ app.use(cors());
 // Forms
 app.get('/api/forms', (req, res) => {
   const data = {
-    "categories": [{
-        "name": "Personal",
-        "steps": [{
-            "formKey": "Personal-step-1",
-            "title": "The Basics",
-            "description": "This is the easy stuff.",
-            "hint" : "(Hint: You definitely know all the answers to these questions!)",
-            "questions": [
+    "Personal": [
+      {
+        "formKey": "Personal-step-1",
+        "title": "The Basics",
+        "description": "This is the easy stuff.",
+        "hint": "(Hint: You definitely know all the answers to these questions!)",
+        "questions": [
+          {
+            "name": "firstName",
+            "type": "text",
+            "placeholder": "First Name"
+          }, {
+            "name": "lastName",
+            "type": "text",
+            "placeholder": "Last Name"
+          }, {
+            "name": "address",
+            "type": "text",
+            "placeholder": "Address"
+          }, {
+            "name": "city",
+            "type": "text",
+            "placeholder": "City"
+          }, {
+            "name": "state",
+            "type": "select",
+            "class": "inline-block pad-04",
+            "placeholder": "State",
+            "answers": [
               {
-                "name": "firstName",
-                "type": "text",
-                "placeholder": "First Name",
-              },
-              {
-                "name": "lastName",
-                "type": "text",
-                "placeholder": "Last Name",
-              },
-              {
-                "name": "address",
-                "type": "text",
-                "placeholder": "Address",
-              },
-              {
-                "name": "city",
-                "type": "text",
-                "placeholder": "City",
-              },
-              {
-                "name": "state",
-                "type": "select",
-                "class" : "inline-block pad-04",
-                "placeholder": "State",
-                "answers" : [
-                  {
-                    "label": "Alabama",
-                    "value": "al",
-                    "name": "state-al",
-                  },
-                  {
-                    "label": "Alaska",
-                    "value": "ak",
-                    "name": "state-ak",
-                  },
-                  {
-                    "label": " Arizona",
-                    "value": "az",
-                    "name": "state-az",
-                  },
-                ]
-              },
-              {
-                "name": "zipCode",
-                "type": "text",
-                "class" : "inline-block w-210",
-                "placeholder": "Zip Code",
-              },
-              {
-                "name": "phone",
-                "type": "text",
-                "class" : "w-342 inline-block valign-mid",
-                "placeholder": "Phone",
-              },
-              {
-                "name": "ssn",
-                "type": "password",
-                "class" : "w-342 inline-block valign-mid",
-                "placeholder": "SSN",
-              },
-              {
-                "name": "dateOfBirth",
-                "type": "text",
-                "class" : "w-342",
-                "placeholder": "Date of Birth (MM/DD/YYYY)",
-              },
+                "label": "Alabama",
+                "value": "al",
+                "name": "state-al"
+              }, {
+                "label": "Alaska",
+                "value": "ak",
+                "name": "state-ak"
+              }, {
+                "label": " Arizona",
+                "value": "az",
+                "name": "state-az"
+              }
             ]
+          }, {
+            "name": "zipCode",
+            "type": "text",
+            "class": "inline-block w-210",
+            "placeholder": "Zip Code"
+          }, {
+            "name": "phone",
+            "type": "text",
+            "class": "w-342 inline-block valign-mid",
+            "placeholder": "Phone"
+          }, {
+            "name": "ssn",
+            "type": "password",
+            "class": "w-342 inline-block valign-mid",
+            "placeholder": "SSN"
+          }, {
+            "name": "dateOfBirth",
+            "type": "text",
+            "class": "w-342",
+            "placeholder": "Date of Birth (MM/DD/YYYY)"
+          }
+        ]
+      },
+      {
+        "formKey": "Personal-step-2",
+        "title": "Employment status",
+        "description" : "Where do you currently work?",
+        "questions": []
+      }
+    ],
+    "Invest": [
+      {
+        "formKey" : "Invest-step-1",
+        "title" : "Finding the Right Investment for you",
+        "description" : "The next steps will help us recommend",
+        "questions": [
+          {
+            "name": "lalal",
+            "type": "text",
+            "class": "inline-block w-210",
+            "placeholder": "Zip"
           },
         ]
-      }, {
-        "name": "Invest",
-        "steps" : []
       }
-    ]
+    ],
   }
   return res.status(200).json(data);
 });
