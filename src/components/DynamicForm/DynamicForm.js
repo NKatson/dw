@@ -4,7 +4,7 @@ import { InputText, InputCheckbox, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 
 class DynamicForm extends Component {
-  renderInput(question, fields, isDynamic = false) {
+  renderInput(question, fields, parentValue = null) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       return question.answers.map((answer, index) => {
         const field = fields[answer.name];
@@ -19,7 +19,8 @@ class DynamicForm extends Component {
       });
     } else if (question.type === 'dropdown') {
       let result = [];
-      // render select field
+
+      // render parent select field
       result.push(<Select
             key={question.name}
             label={question.label}
@@ -27,18 +28,12 @@ class DynamicForm extends Component {
             options={question.answers}
             handleChange={::this.props.handleSelectChange}
             />);
-      // render dynamic fields
+
+      // render child dynamic fields
       question.answers.map((answer, index) => {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
-            result.push(<InputText
-                      key={field.name}
-                      label={field.label}
-                      field={field}
-                      additionalClass=""
-                      parentValue={answer.label}
-                      stateSelectValue={this.props.stateSelectValue}
-                    />)
+            result.push(::this.renderInput(field, fields, answer.label));
           });
         }
       });
@@ -55,6 +50,8 @@ class DynamicForm extends Component {
                 field={field}
                 type={question.type}
                 placeholder={question.placeholder}
+                parentValue={parentValue}
+                stateSelectValue={this.props.stateSelectValue}
               />;
    }
   }
