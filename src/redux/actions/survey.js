@@ -2,6 +2,7 @@ import * as api from '../../utils/apiClient';
 
 export const INITIAL_REQUEST = 'INITIAL_REQUEST';
 export const FILL_STATE = 'FILL_STATE';
+export const TOGGLE_SSN = 'TOGGLE_SSN';
 
 function initialRequest() {
   return {
@@ -14,6 +15,12 @@ function fillState(data) {
     type: FILL_STATE,
     data,
   };
+}
+
+export function toggleSsn() {
+  return {
+    type: TOGGLE_SSN
+  }
 }
 
 export function getData() {

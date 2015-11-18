@@ -3,8 +3,12 @@ import { reduxForm } from 'redux-form';
 import { getData } from '../../redux/actions/survey';
 import { connect } from 'react-redux';
 import { DynamicForm, Category } from '../../components';
+import { toggleSsn } from '../../redux/actions/survey';
 
 class Survey extends React.Component {
+  handleShowSsnClick() {
+    this.props.dispatch(toggleSsn());
+  }
   componentDidMount() {
     if (!this.props.requesting) {
       this.props.dispatch(getData());
@@ -47,6 +51,8 @@ class Survey extends React.Component {
                   formKey={form.formKey}
                   fields={::this.generateFields(form)}
                   questions={form.questions}
+                  handleShowSsnClick={::this.handleShowSsnClick}
+                  showSsn={this.props.showSsn ? true : false}
                  />
       });
     });
@@ -56,8 +62,8 @@ class Survey extends React.Component {
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
-      categories = ::this.renderCategories(data.categories);
-      steps = ::this.renderForms(data.categories);
+      categories = ::this.renderCategories(data.get('categories').toJS());
+      steps = ::this.renderForms(data.get('categories').toJS());
     }
     return (
       <div className="wide-block bg-white common-block">
@@ -78,8 +84,9 @@ Survey.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    data: state.survey.data,
-    requesting: state.survey.requesting,
+    data: state.survey.get('data'),
+    requesting: state.survey.get('requesting'),
+    showSsn: state.survey.get('showSsn'),
   };
 }
 export default connect(mapStateToProps)(Survey);

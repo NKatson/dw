@@ -77,29 +77,12 @@ app.get('/api/forms', (req, res) => {
                 "class" : "w-342 inline-block valign-mid",
                 "placeholder": "Phone",
               },
-              // {
-              //   "type": "plain-text",
-              //   "class" : "input-wrap__descr w-136",
-              //   "text": "We will send your phone a text confirmation",
-              // },
               {
                 "name": "ssn",
                 "type": "password",
                 "class" : "w-342 inline-block valign-mid",
                 "placeholder": "SSN",
               },
-              // {
-              //   "type": "checkbox",
-              //   "htmlName": "personal-show",
-              //   "class" : "input-wrap__descr w-136 input-wrap__addit-checkbox",
-              //   "answers": [
-              //     {
-              //       "label": "Show",
-              //       "value": "show",
-              //       "name": "personal-show",
-              //     }
-              //   ]
-              // },
               {
                 "name": "dateOfBirth",
                 "type": "text",

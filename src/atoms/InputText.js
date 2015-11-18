@@ -6,6 +6,9 @@ class InputText extends React.Component {
     const { field, placeholder, additionalClass, icon, type, isNormalized } = this.props;
     let mask = '111-111-1111';
 
+    if (field.name === 'ssn') {
+    }
+
     if (field.name === 'dateOfBirth') {
       mask = '11/11/1111';
     } else if (field.name === 'ssn') {
@@ -36,6 +39,7 @@ InputText.propTypes = {
   placeholder: PropTypes.string,
   additionalClass: PropTypes.string.isRequired,
   icon: PropTypes.string,
+  type: PropTypes.string,
 }
 
 export default InputText;
