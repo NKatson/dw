@@ -6,7 +6,7 @@ class Select extends React.Component {
     return (
       <div className={'input-wrap ' + additionalClass}>
         {label ? <p><b>{label}</b><br /></p> : null}
-        <select className="full-width" onChange={handleChange}>
+        <select className="full-width dropdown" onChange={handleChange}>
           <option key='default'>Choose One</option>
           {options.map((option, index) => {
             return <option  key={option.value}>{option.label}</option>;

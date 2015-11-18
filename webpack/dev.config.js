@@ -33,6 +33,11 @@ module.exports = {
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false')),
    }),
     webpackIsomorphicToolsPlugin.development(),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery"
+    })
   ],
   progress: true,
   resolve: {

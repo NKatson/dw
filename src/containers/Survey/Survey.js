@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { getData } from '../../redux/actions/survey';
 import { connect } from 'react-redux';
 import { DynamicForm, Category } from '../../components';
-import { toggleSsn, selectChange } from '../../redux/actions/survey';
+import { toggleSsn, selectChange, nextClicked, prevClicked } from '../../redux/actions/survey';
 
 class Survey extends React.Component {
   handleShowSsnClick() {
@@ -11,6 +11,14 @@ class Survey extends React.Component {
   }
   handleSelectChange(e) {
     this.props.dispatch(selectChange(e.target.value));
+  }
+  handleNextClick(e) {
+    e.preventDefault();
+    this.props.dispatch(nextClicked());
+  }
+  handlePrevClick(e) {
+    e.preventDefault();
+    this.props.dispatch(prevClicked());
   }
   componentDidMount() {
     if (!this.props.requesting) {
@@ -67,19 +75,24 @@ class Survey extends React.Component {
     let index = 0;
     for (let category in data) {
       data[category].map((form, index) => {
-        result.push(<DynamicForm
-                  key={form.title}
-                  title={form.title}
-                  description={form.description}
-                  hint={form.hint}
-                  formKey={form.formKey}
-                  fields={::this.generateFields(form)}
-                  questions={form.questions}
-                  handleShowSsnClick={::this.handleShowSsnClick}
-                  showSsn={this.props.showSsn ? true : false}
-                  handleSelectChange={::this.handleSelectChange}
-                  stateSelectValue={this.props.stateSelectValue}
-                 />);
+        if (index === this.props.currentStep && category == this.props.currentCategory) {
+          result.push(<DynamicForm
+                    key={form.title}
+                    title={form.title}
+                    description={form.description}
+                    hint={form.hint}
+                    formKey={form.formKey}
+                    fields={::this.generateFields(form)}
+                    questions={form.questions}
+                    handleShowSsnClick={::this.handleShowSsnClick}
+                    showSsn={this.props.showSsn ? true : false}
+                    currentStep={this.props.currentStep}
+                    handleSelectChange={::this.handleSelectChange}
+                    stateSelectValue={this.props.stateSelectValue}
+                    handleNextClick={::this.handleNextClick}
+                    handlePrevClick={::this.handlePrevClick}
+                   />);
+        }
       });
     }
     return result;
@@ -114,8 +127,8 @@ function mapStateToProps(state) {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
     showSsn: state.survey.get('showSsn'),
-    category: state.survey.get('category'),
-    step: state.survey.get('step'),
+    currentCategory: state.survey.get('category'),
+    currentStep: state.survey.get('step'),
     stateSelectValue: state.survey.get('selectValue'),
   };
 }

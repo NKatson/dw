@@ -27,6 +27,14 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       selectValue: action.value,
     });
+  case actions.NEXT_CLICKED:
+    return state.merge({
+      step: state.get('step') + 1
+    });
+  case actions.PREV_CLICKED:
+    return state.merge({
+      step: state.get('step') > 0 ? state.get('step') - 1 : 0
+    });
   default:
     return state;
   }

@@ -61,14 +61,27 @@ function checkRegex({ data, fieldName, regex, errors, message }) {
   return errors;
 }
 
+function checkIncome(data, fieldName, errors) {
+  if (errors[fieldName]) return errors;
+
+  if (data[fieldName] && data[fieldName] < 8000) {
+    errors[fieldName] = 'Please confirm your annual income.';
+  }
+
+  return errors;
+}
+
 export function validateSurvey(data) {
   let errors = {};
   const addressRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
 
-  for (let field in data) {
-    errors = checkRequired(data, field, errors);
+  for (let fieldName in data) {
+    errors = checkRequired(data, fieldName, errors);
+    if (fieldName.substr(fieldName.length - 6, fieldName.length - 1) === 'income') {
+      errors = checkIncome(data, fieldName, errors);
+    }
   }
 
   errors = checkLength({ data, fieldName: 'firstName', errors, min: 2 });

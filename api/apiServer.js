@@ -67,7 +67,8 @@ app.get('/api/forms', (req, res) => {
             "name": "phone",
             "type": "text",
             "class": "w-342 inline-block valign-mid",
-            "placeholder": "Phone"
+            "placeholder": "Phone",
+            "needNormalize" : true,
           }, {
             "name": "ssn",
             "type": "password",
@@ -77,7 +78,8 @@ app.get('/api/forms', (req, res) => {
             "name": "dateOfBirth",
             "type": "text",
             "class": "w-342",
-            "placeholder": "Date of Birth (MM/DD/YYYY)"
+            "placeholder": "Date of Birth (MM/DD/YYYY)",
+            "needNormalize" : true,
           }
         ]
       },
@@ -98,50 +100,92 @@ app.get('/api/forms', (req, res) => {
                 "name": "employ-employed",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "Who do you work for?",
+                    "label": "Employer Name",
                     "type": "text",
+                    "value" : "I Own My Business",
                     "name": "employ-employed-who"
                   },
                   {
-                    "label": "Whats your title?",
+                    "label": "Occupation",
                     "type": "text",
                     "name": "employ-employed-title"
                   },
                   {
-                    "label": "Whats your industry?",
+                    "label": "Type of Business",
                     "type": "text",
                     "name": "employ-employed-industry"
                   },
                   {
-                    "label": "How much do you make?",
+                    "label": "Yearly income",
                     "type": "text",
-                    "name": "employ-employed-how-much"
+                    "name": "employ-employed-yearly-income",
+                    "needNormalize" : true,
                   },
                 ]
               }, {
                 "label": "Self-Employed",
                 "value": 2,
-                "name": "employ-self-employed"
+                "name": "employ-self-employed",
+                "dynamicFields" : [ // dynamic fields
+                  {
+                    "label": "Occupation",
+                    "type": "text",
+                    "name": "employ-self-employed-occ"
+                  },
+                  {
+                    "label": "Type of Business",
+                    "type": "text",
+                    "name": "employ-employed-industry"
+                  },
+                  {
+                    "label": "Yearly income",
+                    "type": "text",
+                    "name": "employ-self-employed-yearly-income",
+                      "needNormalize" : true,
+                  },
+                ]
               }, {
                 "label": "Not Currently Working",
                 "value": 3,
                 "name": "employ-not-working",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "What's you main source of income?",
+                    "label": "Source of Income",
                     "type": "text",
-                    "name": "employ-not-working-whats"
+                    "name": "employ-not-working-source"
                   },
                   {
-                    "label": "How much do you make?",
+                    "label": "Yearly income",
                     "type": "text",
-                    "name": "employ-not-working-how"
+                    "name": "employ-not-working-yearly-income",
+                    "needNormalize" : true,
                   },
                 ]
               }, {
                 "label": "Student",
                 "value": 4,
-                "name": "employ-student"
+                "name": "employ-student",
+                "dynamicFields" : [ // dynamic fields
+                  {
+                    "label": "Yearly income",
+                    "type": "text",
+                    "name": "employ-student-yearly-income",
+                    "needNormalize" : true,
+                  },
+                ]
+              },
+              {
+                "label": "Retired",
+                "value": 5,
+                "name": "employ-redired",
+                "dynamicFields" : [ // dynamic fields
+                  {
+                    "label": "Yearly income",
+                    "type": "text",
+                    "name": "employ-retired-yearly-income",
+                    "needNormalize" : true,
+                  },
+                ]
               }
             ]
           }

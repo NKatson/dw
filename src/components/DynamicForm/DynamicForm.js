@@ -44,12 +44,11 @@ class DynamicForm extends Component {
       return result;
     } else {
       const field = fields[question.name];
-      const normalizedFields = ['phone', 'dateOfBirth'];
       return <InputText
                 key={question.name}
                 additionalClass={question.class ? question.class : ''}
                 label={question.label}
-                isNormalized={normalizedFields.indexOf(question.name) !== -1 ? true : false}
+                isNormalized={question.needNormalize ? true : false}
                 field={field}
                 type={question.type}
                 placeholder={question.placeholder}
@@ -87,7 +86,7 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint } = this.props;
+    const { title, fields, questions, description, hint, handleNextClick, handlePrevClick, currentStep } = this.props;
     return (
       <form className="common-form personal-info-form">
         <h2>{title}</h2>
@@ -96,8 +95,8 @@ class DynamicForm extends Component {
           {::this.renderQuestions(questions, fields)}
 
         <div className="clearfix pad-05">
-            <a href="#" className="pull-left pad-05__link"> Go Back</a>
-            <button className="btn btn_blue w-308 pull-right" disabled>Next ></button>
+          {currentStep > 0 ?  <a href="#" className="pull-left pad-05__link" onClick={handlePrevClick}> Go Back</a> : null}
+            <button className="btn btn_blue w-308 pull-right" onClick={handleNextClick}>Next ></button>
         </div>
     </form>
     );
@@ -110,9 +109,12 @@ DynamicForm.propTypes = {
     questions: PropTypes.array.isRequired,
     hint: PropTypes.string,
     showSsn: PropTypes.bool,
+    currentStep: PropTypes.number.isRequired,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
     stateSelectValue: PropTypes.string.isRequired,
+    handlePrevClick: PropTypes.func.isRequired,
+    handleNextClick: PropTypes.func.isRequired,
 };
 
-export default reduxForm({form: 'dynamic', validate})(DynamicForm);
+export default reduxForm({form: 'dynamic', validate, destroyOnUnmount: false})(DynamicForm);
