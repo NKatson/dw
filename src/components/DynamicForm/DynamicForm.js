@@ -4,6 +4,11 @@ import { InputText, InputMultiple, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 
 class DynamicForm extends Component {
+  chooseNextClickType(e) {
+    e.preventDefault();
+    const { handleNextClick, type } = this.props;
+    handleNextClick(type);
+  }
   renderInput(question, fields) {
     if (question.type === 'checkbox' || question.type === 'radio') {
       const inputs = question.answers.map((answer, index) => {
@@ -92,9 +97,9 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint, handleNextClick, handlePrevClick, categoryIndex, step } = this.props;
+    const { title, fields, questions, description, hint, handleNextClick, handlePrevClick, categoryIndex, step, handleSubmit } = this.props;
     return (
-      <form className="common-form personal-info-form">
+      <form className="common-form personal-info-form" >
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
@@ -102,7 +107,7 @@ class DynamicForm extends Component {
 
         <div className="clearfix pad-05">
           {categoryIndex > 0 || step > 0 ?  <a href="#" className="pull-left pad-05__link" onClick={handlePrevClick}> Go Back</a> : null}
-            <button className="btn btn_blue w-308 pull-right" onClick={handleNextClick}>Next ></button>
+            <button className="btn btn_blue w-308 pull-right" onClick={::this.chooseNextClickType}>Next ></button>
         </div>
     </form>
     );
@@ -110,6 +115,7 @@ class DynamicForm extends Component {
 }
 
 DynamicForm.propTypes = {
+    type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     questions: PropTypes.array.isRequired,
@@ -117,11 +123,12 @@ DynamicForm.propTypes = {
     showSsn: PropTypes.bool,
     categoryIndex: PropTypes.number.isRequired,
     step: PropTypes.number.isRequired,
+    stateSelectValue: PropTypes.string,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
-    stateSelectValue: PropTypes.string,
     handlePrevClick: PropTypes.func.isRequired,
     handleNextClick: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func,
 };
 
 export default reduxForm({form: 'dynamic', validate, destroyOnUnmount: false})(DynamicForm);

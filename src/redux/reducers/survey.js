@@ -28,6 +28,15 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       selectValue: action.value,
     });
+  case actions.NEXT_RECOMMEND_CLICKED:
+    return state.merge({
+      step: state.get('step') + 1,
+      stepType: 'recommend',
+    });
+  case actions.ACCOUNT_TYPE_CHANGED:
+    return state.merge({
+      accountType: action.accountType
+    });
   case actions.NEXT_CLICKED:
     const data = state.get('data').toJS();
     const categoriesNames = Object.keys(data);

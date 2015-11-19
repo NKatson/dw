@@ -77,12 +77,12 @@ export function validateSurvey(data) {
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
 
-  for (let fieldName in data) {
-    errors = checkRequired(data, fieldName, errors);
-    if (fieldName.substr(fieldName.length - 6, fieldName.length - 1) === 'income') {
-      errors = checkIncome(data, fieldName, errors);
-    }
-  }
+  // for (let fieldName in data) {
+  //   errors = checkRequired(data, fieldName, errors);
+  //   if (fieldName.substr(fieldName.length - 6, fieldName.length - 1) === 'income') {
+  //     errors = checkIncome(data, fieldName, errors);
+  //   }
+  // }
 
   errors = checkLength({ data, fieldName: 'firstName', errors, min: 2 });
   errors = checkLength({ data, fieldName: 'lastName', errors, min: 2 });

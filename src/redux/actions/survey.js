@@ -5,7 +5,10 @@ export const FILL_STATE = 'FILL_STATE';
 export const TOGGLE_SSN = 'TOGGLE_SSN';
 export const SELECT_CHANGE = 'SELECT_CHANGE';
 export const NEXT_CLICKED = 'NEXT_CLICKED';
+export const NEXT_RECOMMEND_CLICKED = 'NEXT_RECOMMEND_CLICKED';
+export const NEXT_SELECTED_CLICKED = 'NEXT_SELECTED_CLICKED';
 export const PREV_CLICKED = 'PREV_CLICKED';
+export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 
 function initialRequest() {
   return {
@@ -27,9 +30,27 @@ export function selectChange(value) {
   }
 }
 
-export function nextClicked() {
+export function accountTypeChanged(type) {
   return {
-    type: NEXT_CLICKED,
+    type: ACCOUNT_TYPE_CHANGED,
+    accountType: type,
+  }
+}
+
+export function nextClicked(type = 'default') {
+  switch (type) {
+    case 'default':
+      return {
+        type: NEXT_CLICKED,
+      }
+    case 'recommend':
+      return {
+        type: NEXT_RECOMMEND_CLICKED,
+      }
+    case 'selected':
+      return {
+        type: NEXT_SELECTED_CLICKED,
+      }
   }
 }
 

@@ -47,15 +47,12 @@ app.get('/api/forms', (req, res) => {
               {
                 "label": "Alabama",
                 "value": "al",
-                "name": "state-al"
               }, {
                 "label": "Alaska",
                 "value": "ak",
-                "name": "state-ak"
               }, {
                 "label": " Arizona",
                 "value": "az",
-                "name": "state-az"
               }
             ]
           }, {
@@ -196,7 +193,7 @@ app.get('/api/forms', (req, res) => {
       {
         "type": "recommend",
         "title" : "Finding the Right Investment for You",
-        "description" : "The next few steps will help uos to recommend the best savings & investment strategy for you",
+        "description" : "The next few steps will help us to recommend the best savings & investment strategy for you",
         "questions" : [
           {
             "label" : "When will you need access the money you invest?",

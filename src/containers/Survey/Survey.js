@@ -3,26 +3,34 @@ import { reduxForm } from 'redux-form';
 import { getData } from '../../redux/actions/survey';
 import { connect } from 'react-redux';
 import { DynamicForm, Category } from '../../components';
-import { toggleSsn, selectChange, nextClicked, prevClicked } from '../../redux/actions/survey';
+import { SurveyFormHeader } from '../../atoms';
+import * as surveyActions from '../../redux/actions/survey';
 
 class Survey extends React.Component {
+  handleSubmit(data) {
+    console.log(data);
+  }
   handleShowSsnClick() {
-    this.props.dispatch(toggleSsn());
+    this.props.dispatch(surveyActions.toggleSsn());
   }
   handleSelectChange(e) {
-    this.props.dispatch(selectChange(e.target.value));
+    this.props.dispatch(surveyActions.selectChange(e.target.value));
   }
-  handleNextClick(e) {
-    e.preventDefault();
-    this.props.dispatch(nextClicked());
+  handleNextClick(type) {
+    // account type
+    if (type === 'recommend') {
+       this.props.dispatch(surveyActions.accountTypeChanged('New account type'));
+    }
+    // handler
+    this.props.dispatch(surveyActions.nextClicked(type));
   }
   handlePrevClick(e) {
     e.preventDefault();
-    this.props.dispatch(prevClicked());
+    this.props.dispatch(surveyActions.prevClicked());
   }
   componentDidMount() {
     if (!this.props.requesting) {
-      this.props.dispatch(getData());
+      this.props.dispatch(surveyActions.getData());
     }
   }
   parseMultipleNames(question) {
@@ -78,6 +86,7 @@ class Survey extends React.Component {
         if (index === this.props.step && category == this.props.category) {
           result.push(<DynamicForm
                     key={`${category}-step-${index}`}
+                    type={form.type ? form.type : 'default'}
                     title={form.title}
                     description={form.description}
                     hint={form.hint}
@@ -92,6 +101,7 @@ class Survey extends React.Component {
                     stateSelectValue={this.props.stateSelectValue}
                     handleNextClick={::this.handleNextClick}
                     handlePrevClick={::this.handlePrevClick}
+                    onSubmit={this.handleSubmit}
                    />);
         }
       });
@@ -99,7 +109,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data } = this.props;
+    const { data, stepType } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
@@ -107,13 +117,22 @@ class Survey extends React.Component {
       steps = ::this.renderForms(data.toJS());
     }
     return (
-      <div className="wide-block bg-white common-block">
-        <div className="container container-1">
-          <div className="wfm-steps">
-             {categories}
+      <div>
+        <div className="wide-block bg-white common-block">
+          <div className="container container-1">
+            <div className="wfm-steps">
+               {categories}
+            </div>
           </div>
-          {steps}
         </div>
+        {stepType ? <SurveyFormHeader title={stepType} text="lalala" /> : null}
+        <div className="wide-block bg-white">
+          <div className="container container-1">
+              <div className="container-small">
+                  {steps}
+              </div>
+          </div>
+      </div>
       </div>
     );
   }
@@ -131,6 +150,7 @@ function mapStateToProps(state) {
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     step: state.survey.get('step'),
+    stepType: state.survey.get('stepType'),
     stateSelectValue: state.survey.get('selectValue'),
   };
 }
