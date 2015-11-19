@@ -37,10 +37,9 @@ export function accountTypeChanged(type) {
   }
 }
 
-export function submitNext(data) {
+export function submitNext() {
   return {
     type: SUBMIT_NEXT,
-    data,
   }
 }
 

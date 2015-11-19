@@ -1,6 +1,7 @@
 import React from 'react';
-import { Route } from 'react-router';
-import {isLoggedIn} from './redux/actions/auth';
+import { Route, IndexRoute } from 'react-router';
+import { isLoggedIn } from './redux/actions/auth';
+import { Category } from './components';
 
 import {
     App,
@@ -9,6 +10,7 @@ import {
     ResetPassword,
     Welcome,
     Survey,
+    FormContainer,
   } from './containers';
 
 
@@ -30,6 +32,9 @@ export default (store) => {
           <Route path="reset" component={ResetPassword} />
       </Route>
       <Route path="survey" component={Survey}>
+          <IndexRoute component={FormContainer} />
+          <Route path=":category/q/:number" component={FormContainer} />
+      </Route>
       <Route path="signin" component={Authorization} />
       <Route path="signup" component={Registration} />
     </Route>

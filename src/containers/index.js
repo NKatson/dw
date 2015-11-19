@@ -4,3 +4,4 @@ export Registration from './Registration/Registration';
 export ResetPassword from './ResetPassword/ResetPassword';
 export Welcome from './Welcome/Welcome';
 export Survey from './Survey/Survey';
+export FormContainer from './FormContainer/FormContainer';
