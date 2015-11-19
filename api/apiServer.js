@@ -203,22 +203,22 @@ app.get('/api/forms', (req, res) => {
             "answers" : [
               {
                 "label" : "I might need to withdraw this money within a few years" ,
-                "name" : "invest-q1-a1",
+                "name" : "invest-q1",
                 "value": "Savings account",
               },
               {
                 "label" : "Not soon, but I plan to withdraw some of this money before I retire" ,
-                "name" : "invest-q1-a2",
+                "name" : "invest-q1",
                 "value": "Investment account",
               },
               {
                 "label" : "I won't need it until I retire" ,
-                "name" : "invest-q1-a3",
+                "name" : "invest-q1",
                 "value": "Retirement account",
               },
               {
                 "label" : "I don't know" ,
-                "name" : "invest-q1-a4",
+                "name" : "invest-q1",
                 "value": "General investment account",
               }
             ]

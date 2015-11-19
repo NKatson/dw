@@ -8,6 +8,7 @@ import * as surveyActions from '../../redux/actions/survey';
 
 class Survey extends React.Component {
   handleSubmit(data) {
+    console.log(data);
     if (this.props.formType === 'recommend') {
       this.props.dispatch(surveyActions.showRecommend());
     }
