@@ -25,6 +25,9 @@ class FormContainer extends React.Component {
     e.preventDefault();
     this.props.dispatch(surveyActions.prevClicked());
   }
+  chooseAccount(e) {
+    this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
+  }
   parseMultipleNames(question) {
     let names = [];
     question.answers.map(answer => {
@@ -63,6 +66,7 @@ class FormContainer extends React.Component {
                     description={form.description}
                     hint={form.hint}
                     formKey={form.formKey}
+                    formType={this.props.formType}
                     fields={::this.generateFields(form)}
                     questions={form.questions}
                     handleShowSsnClick={() => {}}
@@ -71,6 +75,7 @@ class FormContainer extends React.Component {
                     step={this.props.step}
                     handleSelectChange={::this.handleSelectChange}
                     stateSelectValue={this.props.stateSelectValue}
+                    chooseAccount={::this.chooseAccount}
                    />);
         }
       });

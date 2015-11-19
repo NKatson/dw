@@ -47,6 +47,12 @@ class Survey extends React.Component {
             </div>
           </div>
         </div>
+        {showRecommend ? <SurveyFormHeader 
+          title={"We recommend..."} 
+          accountType={this.props.accountType}
+          handleClick={() => {
+            this.props.dispatch(surveyActions.hideRecommend())
+          }} /> : null}
         <div className="wide-block bg-white">
           <div className="container container-1">
               <div className="container-small">
@@ -70,6 +76,7 @@ function mapStateToProps(state) {
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     showRecommend: state.survey.get('showRecommend'),
+    accountType: state.survey.get('accountType'),
   };
 }
 export default connect(mapStateToProps)(Survey);

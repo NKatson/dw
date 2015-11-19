@@ -66,9 +66,17 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       selectValue: action.value,
     });
+  case actions.ACCOUNT_TYPE_CHANGED:
+    return state.merge({
+      accountType: action.accountType,
+    });
   case actions.SHOW_RECOMMEND:
     return state.merge({
       showRecommend: true,
+    });
+  case actions.HIDE_RECOMMEND:
+    return state.merge({
+      showRecommend: false,
     });
   case actions.CHANGE_QUESTION: 
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
@@ -84,6 +92,8 @@ export default function survey(state = initialState, action = {}) {
       step: action.number,
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
       prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
+      formType: data[nextCategory][action.number].type,
+      showRecommend: state.get('formType') === 'recommend' ? true : false,
     });
   default:
     return state;

@@ -6,10 +6,9 @@ export const TOGGLE_SSN = 'TOGGLE_SSN';
 export const SELECT_CHANGE = 'SELECT_CHANGE';
 export const SUBMIT_NEXT = 'SUBMIT_NEXT';
 export const SHOW_RECOMMEND = 'SHOW_RECOMMEND';
-export const NEXT_SELECTED_CLICKED = 'NEXT_SELECTED_CLICKED';
-export const PREV_CLICKED = 'PREV_CLICKED';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 export const CHANGE_QUESTION = 'CHANGE_QUESTION';
+export const HIDE_RECOMMEND = 'HIDE_RECOMMEND';
 
 function initialRequest() {
   return {
@@ -46,20 +45,15 @@ export function changeQuestion(category, number) {
   }
 }
 
-export function submitNext() {
-  return {
-    type: SUBMIT_NEXT,
-  }
-}
-
 export function showRecommend() {
   return {
     type: SHOW_RECOMMEND,
   }
 }
-export function prevClicked() {
+
+export function hideRecommend() {
   return {
-    type: PREV_CLICKED,
+    type: HIDE_RECOMMEND,
   }
 }
 

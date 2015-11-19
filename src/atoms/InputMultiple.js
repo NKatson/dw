@@ -6,14 +6,19 @@ class InputMultiple extends React.Component {
     return (
       <div className={'input-wrap ' + additionalClass}>
         {inputs.map(input => {
+          let iProps = {
+            type: type ? type : 'radio',
+            name: htmlName,
+            value: input.value,
+          }
+          if (handleClick) {
+            iProps.onClick = handleClick;
+          }
           return (
               <p className="radio-chbx-wrap">
                 <input
                   {...input.field}
-                  type={type ? type : 'radio'}
-                  name={htmlName}
-                  value={input.value}
-                  onClick={handleClick}
+                  {...iProps}
                 /> <label>{input.label}</label>
               </p>
           );
@@ -27,6 +32,7 @@ InputMultiple.propTypes = {
   type: PropTypes.string.isRequired,
   htmlName: PropTypes.string,
   additionalClass: PropTypes.string.isRequired,
+  handleClick: PropTypes.func,
   inputs: PropTypes.arrayOf(PropTypes.shape({
      label: PropTypes.string.isRequired,
      field: PropTypes.object.isRequired,

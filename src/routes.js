@@ -11,6 +11,7 @@ import {
     Welcome,
     Survey,
     FormContainer,
+    Account,
   } from './containers';
 
 
@@ -33,6 +34,7 @@ export default (store) => {
       </Route>
       <Route path="survey" component={Survey}>
           <IndexRoute component={FormContainer} />
+          <Route path="/account" component={Account} />
           <Route path=":category/q/:number" component={FormContainer} />
       </Route>
       <Route path="signin" component={Authorization} />

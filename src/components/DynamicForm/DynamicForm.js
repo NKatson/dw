@@ -24,6 +24,7 @@ class DynamicForm extends Component {
               inputs={inputs}
               additionalClass={question.class ? question.class : ''}
               htmlName={question.htmlName}
+              handleClick={this.props.formType === 'recommend' ? this.props.chooseAccount : null}
             />
     } else if (question.type === 'dropdown') {
       let result = [];

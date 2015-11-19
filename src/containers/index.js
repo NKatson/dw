@@ -5,3 +5,4 @@ export ResetPassword from './ResetPassword/ResetPassword';
 export Welcome from './Welcome/Welcome';
 export Survey from './Survey/Survey';
 export FormContainer from './FormContainer/FormContainer';
+export Account from './Account/Account';
