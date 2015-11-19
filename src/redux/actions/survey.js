@@ -4,8 +4,8 @@ export const INITIAL_REQUEST = 'INITIAL_REQUEST';
 export const FILL_STATE = 'FILL_STATE';
 export const TOGGLE_SSN = 'TOGGLE_SSN';
 export const SELECT_CHANGE = 'SELECT_CHANGE';
-export const NEXT_CLICKED = 'NEXT_CLICKED';
-export const NEXT_RECOMMEND_CLICKED = 'NEXT_RECOMMEND_CLICKED';
+export const SUBMIT_NEXT = 'SUBMIT_NEXT';
+export const SHOW_RECOMMEND = 'SHOW_RECOMMEND';
 export const NEXT_SELECTED_CLICKED = 'NEXT_SELECTED_CLICKED';
 export const PREV_CLICKED = 'PREV_CLICKED';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
@@ -37,23 +37,18 @@ export function accountTypeChanged(type) {
   }
 }
 
-export function nextClicked(type = 'default') {
-  switch (type) {
-    case 'default':
-      return {
-        type: NEXT_CLICKED,
-      }
-    case 'recommend':
-      return {
-        type: NEXT_RECOMMEND_CLICKED,
-      }
-    case 'selected':
-      return {
-        type: NEXT_SELECTED_CLICKED,
-      }
+export function submitNext(data) {
+  return {
+    type: SUBMIT_NEXT,
+    data,
   }
 }
 
+export function showRecommend() {
+  return {
+    type: SHOW_RECOMMEND,
+  }
+}
 export function prevClicked() {
   return {
     type: PREV_CLICKED,

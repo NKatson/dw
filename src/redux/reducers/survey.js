@@ -6,6 +6,10 @@ const initialState = Map({
 });
 
 export default function survey(state = initialState, action = {}) {
+  const data = state.get('data') ? state.get('data').toJS() : {};
+  const categoriesNames = Object.keys(data);
+  const currentIndex = state.get('categoryIndex');
+
   switch (action.type) {
   case actions.INITIAL_REQUEST:
     return state.merge({
@@ -17,6 +21,7 @@ export default function survey(state = initialState, action = {}) {
       requesting: false,
       category: categories.length > 0 ? categories[0] : null,
       categoryIndex: 0,
+      formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
       data: action.data,
     });
@@ -28,20 +33,11 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       selectValue: action.value,
     });
-  case actions.NEXT_RECOMMEND_CLICKED:
+  case actions.SHOW_RECOMMEND:
     return state.merge({
-      step: state.get('step') + 1,
-      stepType: 'recommend',
+      showRecommend: true,
     });
-  case actions.ACCOUNT_TYPE_CHANGED:
-    return state.merge({
-      accountType: action.accountType
-    });
-  case actions.NEXT_CLICKED:
-    const data = state.get('data').toJS();
-    const categoriesNames = Object.keys(data);
-    const currentIndex = state.get('categoryIndex');
-
+  case actions.SUBMIT_NEXT:
     // if last step switch current category
     if (state.get('step') === state.getIn(['data', state.get('category')]).size - 1) {
       let nextCategory = null;
@@ -49,19 +45,41 @@ export default function survey(state = initialState, action = {}) {
         nextCategory = categoriesNames[currentIndex + 1];
       }
 
+      const nextFormType = nextCategory ? data[nextCategory][0].type : null;
       return state.merge({
         step: 0,
         categoryIndex: currentIndex + 1,
         category: nextCategory,
+        formType: nextFormType,
       });
     }
 
+    const nextStep = state.get('step') + 1;
     return state.merge({
-      step: state.get('step') + 1
+      step: nextStep,
+      formType: data[state.get('category')][nextStep].type,
     });
   case actions.PREV_CLICKED:
+    // if first step switch current category
+    if (state.get('step') === 0) {
+      let prevCategory = null;
+      if (currentIndex > 0) {
+        prevCategory = categoriesNames[currentIndex - 1];
+      }
+
+      return state.merge({
+        step: data[prevCategory].length - 1,
+        categoryIndex: currentIndex - 1,
+        category: prevCategory,
+        showRecommend: false,
+      });
+    }
+
+    const prevStep = state.get('step') - 1;
     return state.merge({
-      step: state.get('step') > 0 ? state.get('step') - 1 : 0
+      showRecommend: false,
+      step: prevStep,
+      formType: data[state.get('category')][prevStep].type,
     });
   default:
     return state;

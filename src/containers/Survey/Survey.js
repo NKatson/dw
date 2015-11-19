@@ -8,7 +8,10 @@ import * as surveyActions from '../../redux/actions/survey';
 
 class Survey extends React.Component {
   handleSubmit(data) {
-    console.log(data);
+    if (this.props.formType === 'recommend') {
+      this.props.dispatch(surveyActions.showRecommend());
+    }
+    this.props.dispatch(surveyActions.submitNext(data));
   }
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
@@ -16,14 +19,14 @@ class Survey extends React.Component {
   handleSelectChange(e) {
     this.props.dispatch(surveyActions.selectChange(e.target.value));
   }
-  handleNextClick(type) {
-    // account type
-    if (type === 'recommend') {
-       this.props.dispatch(surveyActions.accountTypeChanged('New account type'));
-    }
-    // handler
-    this.props.dispatch(surveyActions.nextClicked(type));
-  }
+  // handleNextClick(type) {
+  //   // account type
+  //   if (type === 'recommend') {
+  //      this.props.dispatch(surveyActions.accountTypeChanged('New account type'));
+  //   }
+  //   // handler
+  //   this.props.dispatch(surveyActions.nextClicked(type));
+  // }
   handlePrevClick(e) {
     e.preventDefault();
     this.props.dispatch(surveyActions.prevClicked());
@@ -99,9 +102,8 @@ class Survey extends React.Component {
                     step={this.props.step}
                     handleSelectChange={::this.handleSelectChange}
                     stateSelectValue={this.props.stateSelectValue}
-                    handleNextClick={::this.handleNextClick}
                     handlePrevClick={::this.handlePrevClick}
-                    onSubmit={this.handleSubmit}
+                    onSubmit={::this.handleSubmit}
                    />);
         }
       });
@@ -109,7 +111,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType } = this.props;
+    const { data, stepType, showRecommend } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
@@ -125,7 +127,7 @@ class Survey extends React.Component {
             </div>
           </div>
         </div>
-        {stepType ? <SurveyFormHeader title={stepType} text="lalala" /> : null}
+        {showRecommend ? <SurveyFormHeader title={"We recommend..."} text="lalala" /> : null}
         <div className="wide-block bg-white">
           <div className="container container-1">
               <div className="container-small">
@@ -150,8 +152,9 @@ function mapStateToProps(state) {
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     step: state.survey.get('step'),
-    stepType: state.survey.get('stepType'),
+    formType: state.survey.get('formType'),
     stateSelectValue: state.survey.get('selectValue'),
+    showRecommend: state.survey.get('showRecommend'),
   };
 }
 export default connect(mapStateToProps)(Survey);

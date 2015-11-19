@@ -97,9 +97,9 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint, handleNextClick, handlePrevClick, categoryIndex, step, handleSubmit } = this.props;
+    const { title, fields, questions, description, hint, handlePrevClick, categoryIndex, step, handleSubmit } = this.props;
     return (
-      <form className="common-form personal-info-form" >
+      <form className="common-form personal-info-form" onSubmit={handleSubmit}>
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
@@ -107,7 +107,7 @@ class DynamicForm extends Component {
 
         <div className="clearfix pad-05">
           {categoryIndex > 0 || step > 0 ?  <a href="#" className="pull-left pad-05__link" onClick={handlePrevClick}> Go Back</a> : null}
-            <button className="btn btn_blue w-308 pull-right" onClick={::this.chooseNextClickType}>Next ></button>
+            <button className="btn btn_blue w-308 pull-right" onClick={handleSubmit}>Next ></button>
         </div>
     </form>
     );
@@ -127,7 +127,6 @@ DynamicForm.propTypes = {
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
     handlePrevClick: PropTypes.func.isRequired,
-    handleNextClick: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func,
 };
 
