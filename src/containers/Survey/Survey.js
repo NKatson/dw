@@ -57,7 +57,7 @@ class Survey extends React.Component {
 
     for (let category in data) {
       result.push(<Category
-                  isActive={index === 0}
+                  isCompleted={index <= this.props.categoryIndex ? true : false}
                   title={category}
                   isLast={index === data.length - 1 ? true : false }
                   key={'category-' + category}
@@ -75,9 +75,9 @@ class Survey extends React.Component {
     let index = 0;
     for (let category in data) {
       data[category].map((form, index) => {
-        if (index === this.props.currentStep && category == this.props.currentCategory) {
+        if (index === this.props.step && category == this.props.category) {
           result.push(<DynamicForm
-                    key={form.title}
+                    key={`${category}-step-${index}`}
                     title={form.title}
                     description={form.description}
                     hint={form.hint}
@@ -86,7 +86,8 @@ class Survey extends React.Component {
                     questions={form.questions}
                     handleShowSsnClick={::this.handleShowSsnClick}
                     showSsn={this.props.showSsn ? true : false}
-                    currentStep={this.props.currentStep}
+                    categoryIndex={this.props.categoryIndex}
+                    step={this.props.step}
                     handleSelectChange={::this.handleSelectChange}
                     stateSelectValue={this.props.stateSelectValue}
                     handleNextClick={::this.handleNextClick}
@@ -127,8 +128,9 @@ function mapStateToProps(state) {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
     showSsn: state.survey.get('showSsn'),
-    currentCategory: state.survey.get('category'),
-    currentStep: state.survey.get('step'),
+    category: state.survey.get('category'),
+    categoryIndex: state.survey.get('categoryIndex'),
+    step: state.survey.get('step'),
     stateSelectValue: state.survey.get('selectValue'),
   };
 }

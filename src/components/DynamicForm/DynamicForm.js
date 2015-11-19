@@ -1,22 +1,25 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
-import { InputText, InputCheckbox, Select } from '../../atoms/index';
+import { InputText, InputMultiple, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 
 class DynamicForm extends Component {
   renderInput(question, fields) {
     if (question.type === 'checkbox' || question.type === 'radio') {
-      return question.answers.map((answer, index) => {
-        const field = fields[answer.name];
-        return <InputCheckbox
-                key={question.name + '-answer-' + index}
-                additionalClass={question.class ? question.class : ''}
-                index={index}
-                htmlName={question.htmlName}
-                label={answer.label}
-                field={field}
-              />
+      const inputs = question.answers.map((answer, index) => {
+        return {
+          label: answer.label,
+          field: fields[answer.name],
+          value: answer.value ? answer.value : answer.name,
+        }
       });
+      return <InputMultiple
+              key={question.name}
+              type={question.type}
+              inputs={inputs}
+              additionalClass={question.class ? question.class : ''}
+              htmlName={question.htmlName}
+            />
     } else if (question.type === 'dropdown') {
       let result = [];
 
@@ -72,12 +75,15 @@ class DynamicForm extends Component {
                     type={this.props.showSsn ? 'text' : 'password'}
                     placeholder={question.placeholder}
                   />);
-          result.push(<InputCheckbox
+          result.push(<InputMultiple
                         key={'show'}
+                        type="checkbox"
+                        inputs={[{
+                          field: {},
+                          label: 'Show'
+                        }]}
                         additionalClass='input-wrap__descr w-136 input-wrap__addit-checkbox'
                         handleClick={this.props.handleShowSsnClick}
-                        label='Show'
-                        field={{}}
                       />);
       } else {
           result.push(::this.renderInput(question, fields));
@@ -86,7 +92,7 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint, handleNextClick, handlePrevClick, currentStep } = this.props;
+    const { title, fields, questions, description, hint, handleNextClick, handlePrevClick, categoryIndex, step } = this.props;
     return (
       <form className="common-form personal-info-form">
         <h2>{title}</h2>
@@ -95,7 +101,7 @@ class DynamicForm extends Component {
           {::this.renderQuestions(questions, fields)}
 
         <div className="clearfix pad-05">
-          {currentStep > 0 ?  <a href="#" className="pull-left pad-05__link" onClick={handlePrevClick}> Go Back</a> : null}
+          {categoryIndex > 0 || step > 0 ?  <a href="#" className="pull-left pad-05__link" onClick={handlePrevClick}> Go Back</a> : null}
             <button className="btn btn_blue w-308 pull-right" onClick={handleNextClick}>Next ></button>
         </div>
     </form>
@@ -109,7 +115,8 @@ DynamicForm.propTypes = {
     questions: PropTypes.array.isRequired,
     hint: PropTypes.string,
     showSsn: PropTypes.bool,
-    currentStep: PropTypes.number.isRequired,
+    categoryIndex: PropTypes.number.isRequired,
+    step: PropTypes.number.isRequired,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
     stateSelectValue: PropTypes.string,

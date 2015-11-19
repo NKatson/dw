@@ -194,11 +194,65 @@ app.get('/api/forms', (req, res) => {
     ],
     "Invest" : [
       {
-        "formKey": "Invest-step-1",
-        "title": "Finding the Right Investment for you",
-        "description": "The next steps will help us recommend",
-        "questions" : []
-    }
+        "type": "recommend",
+        "title" : "Finding the Right Investment for You",
+        "description" : "The next few steps will help uos to recommend the best savings & investment strategy for you",
+        "questions" : [
+          {
+            "label" : "When will you need access the money you invest?",
+            "type" : "radio",
+            "htmlName": "finding",
+            "name" : "invest-question-1",
+            "answers" : [
+              {
+                "label" : "I might need to withdraw this money within a few years" ,
+                "name" : "invest-q1-a1",
+                "value": "Savings account",
+              },
+              {
+                "label" : "Not soon, but I plan to withdraw some of this money before I retire" ,
+                "name" : "invest-q1-a2",
+                "value": "Investment account",
+              },
+              {
+                "label" : "I won't need it until I retire" ,
+                "name" : "invest-q1-a3",
+                "value": "Retirement account",
+              },
+              {
+                "label" : "I don't know" ,
+                "name" : "invest-q1-a4",
+                "value": "General investment account",
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title" : "Markets move up and down. How comfortable are you with changes?",
+        "description" : "In 2008 the worst happened!! The markets lost more than 50% of their value within f few short years (2007-2009). If this happened again, would you:",
+        "questions" : [
+          {
+            "type" : "radio",
+            "htmlName": "comf",
+            "name" : "invest-question-2",
+            "answers" : [
+              {
+                "label" : "Scream! And then sell all your investments. Too risky!" ,
+                "name" : "invest-q2-a1",
+              },
+              {
+                "label" : "Hold your breath. But also hold your investments." ,
+                "name" : "invest-q2-a2",
+              },
+              {
+                "label" : "Nod knowingly. This is how it works. You have to weather the 'downs' to get the 'ups'." ,
+                "name" : "invest-q2-a3",
+              }
+            ]
+          }
+        ]
+      }
     ],
   }
   return res.status(200).json(data);

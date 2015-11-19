@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 
 class Category extends React.Component {
   render() {
-    const { isLast, isActive, title } = this.props;
+    const { isLast, isCompleted, title } = this.props;
     return (
-      <div className={'wfm-step' + (isActive ? ' active' : '')}>
+      <div className={'wfm-step' + (isCompleted ? ' active' : '')}>
         <div className="wfm-step__text">{title}</div>
       </div>
     );
@@ -12,7 +12,7 @@ class Category extends React.Component {
 }
 
 Category.propTypes = {
-  isActive: PropTypes.bool,
+  isCompleted: PropTypes.bool,
   title: PropTypes.string.isRequired,
   isLast: PropTypes.bool,
 };
