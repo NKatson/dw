@@ -6,17 +6,15 @@ import * as surveyActions from '../../redux/actions/survey';
 
 class FormContainer extends React.Component {
   componentDidMount() {
-    console.log(this.props.params.category);
   }
-  handleNextClick() {
-    this.props.dispatch(surveyActions.submitNext());
+  componentWillReceiveProps(nextProps) {
+    const { category: nextCategory, number: nextNumber } = nextProps.params;
+    const { category, step } = this.props;
+    
+    if (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step) {
+      this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
+    }
   }
-  // handleSubmit(data) {
-  //   if (this.props.formType === 'recommend') {
-  //     this.props.dispatch(surveyActions.showRecommend());
-  //   }
-  //   this.props.dispatch(surveyActions.submitNext(data));
-  // }
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
   }
@@ -73,7 +71,6 @@ class FormContainer extends React.Component {
                     step={this.props.step}
                     handleSelectChange={::this.handleSelectChange}
                     stateSelectValue={this.props.stateSelectValue}
-                    handlePrevClick={::this.handlePrevClick}
                    />);
         }
       });
@@ -86,8 +83,8 @@ class FormContainer extends React.Component {
       <div>
         {::this.renderForms(this.props.data.toJS())}
           <div className="clearfix pad-05">
-              {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link" onClick={::this.handlePrevClick}> Go Back </Link> : null}
-              <Link to={nextLink} onClick={::this.handleNextClick} className="btn btn_blue w-308 pull-right">Next ></Link>
+              {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
+              <Link to={nextLink} className="btn btn_blue w-308 pull-right">{nextLink === '/submit' ? 'Submit' : 'Next >'}</Link>
           </div>
       </div>
     );

@@ -5,6 +5,19 @@ const initialState = Map({
   requesting: false,
 });
 
+function getPrevLink({ category, step, data }) {
+  const categoryNames = Object.keys(data);
+  const categoryIndex = categoryNames.indexOf(category);
+  
+  if (categoryIndex === -1) return '-1';
+  if (step === 0) {
+    if (categoryIndex === 0) return '/welcome';
+    return `/survey/${categoryNames[categoryIndex - 1].toLowerCase()}/q/${categoryNames.length - 1}`;
+  }
+  
+  return `/survey/${category.toLowerCase()}/q/${step - 1}`;
+}
+
 function getNextLink({ category, step, data }) {
   const categoryNames = Object.keys(data);
   const categoryIndex = categoryNames.indexOf(category);
@@ -18,7 +31,9 @@ function getNextLink({ category, step, data }) {
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
   // step++ in current category
-  return `/survey/${category.toLowerCase()}/q/${step+1}`
+  console.log('step:');
+  console.log(step);
+  return `/survey/${category.toLowerCase()}/q/${step + 1}`;
 }
 
 export default function survey(state = initialState, action = {}) {
@@ -40,6 +55,7 @@ export default function survey(state = initialState, action = {}) {
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
       nextLink: getNextLink({ category: categories[0], step: 0, data: action.data }),
+      prevLink: getPrevLink({ category: categories[0], step: 0, data: action.data }),
       data: action.data,
     });
   case actions.TOGGLE_SSN:
@@ -54,56 +70,20 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       showRecommend: true,
     });
-  case actions.SUBMIT_NEXT:
-    const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
+  case actions.CHANGE_QUESTION: 
+    if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
     
-    // if last step switch current category
-    if (state.get('step') === state.getIn(['data', state.get('category')]).size - 1) {
-      let nextCategory = null;
-      
-      if (currentIndex !== categoriesNames.length - 1) {
-        nextCategory = categoriesNames[currentIndex + 1];
-      }
-
-      const nextFormType = nextCategory ? data[nextCategory][0].type : null;
-      return state.merge({
-        step: 0,
-        categoryIndex: currentIndex + 1,
-        category: nextCategory,
-        formType: nextFormType,
-        prevLink: currentLink,
-        nextLink: getNextLink({ category: nextCategory, step: 0, data }),
-      });
-    }
-
-    const nextStep = state.get('step') + 1;
+    const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
+    const categoryNames = Object.keys(data).map(key => key.toLowerCase());
+    const catIndex = categoryNames.indexOf(action.category);
+    const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
+    
     return state.merge({
-      step: nextStep,
-      formType: data[state.get('category')][nextStep].type,
-      prevLink: currentLink,
-      nextLink: getNextLink({ category: state.get('category'), step: nextStep, data }),
-    });
-  case actions.PREV_CLICKED:
-    // if first step switch current category
-    if (state.get('step') === 0) {
-      let prevCategory = null;
-      if (currentIndex > 0) {
-        prevCategory = categoriesNames[currentIndex - 1];
-      }
-
-      return state.merge({
-        step: data[prevCategory].length - 1,
-        categoryIndex: currentIndex - 1,
-        category: prevCategory,
-        showRecommend: false,
-      });
-    }
-
-    const prevStep = state.get('step') - 1;
-    return state.merge({
-      showRecommend: false,
-      step: prevStep,
-      formType: data[state.get('category')][prevStep].type,
+      category: nextCategory,
+      categoryIndex: 0,
+      step: action.number,
+      nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
+      prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
     });
   default:
     return state;

@@ -9,6 +9,7 @@ export const SHOW_RECOMMEND = 'SHOW_RECOMMEND';
 export const NEXT_SELECTED_CLICKED = 'NEXT_SELECTED_CLICKED';
 export const PREV_CLICKED = 'PREV_CLICKED';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
+export const CHANGE_QUESTION = 'CHANGE_QUESTION';
 
 function initialRequest() {
   return {
@@ -34,6 +35,14 @@ export function accountTypeChanged(type) {
   return {
     type: ACCOUNT_TYPE_CHANGED,
     accountType: type,
+  }
+}
+
+export function changeQuestion(category, number) {
+  return {
+    type: CHANGE_QUESTION,
+    category,
+    number,
   }
 }
 
