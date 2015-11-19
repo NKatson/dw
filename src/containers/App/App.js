@@ -1,20 +1,26 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { History } from 'react-router';
+
 import { Footer } from '../../components';
 import * as auth from '../../redux/actions/auth';
 
 require('./App.css');
 
-class App extends React.Component {
-  static propTypes = {
+let App = React.createClass({
+  propTypes : {
     children: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
-  };
+  },
+  mixins: [ History ],
   handleLogout(event) {
     event.preventDefault();
-    this.props.dispatch(auth.logout());
-  }
+    this.props.dispatch(auth.logout( () => {
+        console.log('In app!');
+        this.history.replaceState(null, '/signin');
+    }));
+  },
   render() {
     const { userEmail, loggedIn } = this.props;
     return (
@@ -27,7 +33,7 @@ class App extends React.Component {
                 {loggedIn ? `Hi, ${localStorage.uid}` : null}
                 <Link to="/survey">Survey</Link>
                 <div className="cabinet">
-                {loggedIn ? <a href="#" onClick={::this.handleLogout}>Logout</a> : null }
+                {loggedIn ? <a href="#" onClick={this.handleLogout}>Logout</a> : null }
                     {!loggedIn ? <Link to="/signin"><span>Sign In</span></Link> : null }
                     {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }
                 </div>
@@ -38,7 +44,7 @@ class App extends React.Component {
       </div>
     );
   }
-}
+});
 
 function mapStateToProps(state) {
   return {

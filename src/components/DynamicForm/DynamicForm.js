@@ -112,7 +112,7 @@ DynamicForm.propTypes = {
     currentStep: PropTypes.number.isRequired,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
-    stateSelectValue: PropTypes.string.isRequired,
+    stateSelectValue: PropTypes.string,
     handlePrevClick: PropTypes.func.isRequired,
     handleNextClick: PropTypes.func.isRequired,
 };

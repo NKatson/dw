@@ -25,8 +25,9 @@ export default (store) => {
 
   return (
     <Route path="/" component={App}>
+      <Route path="welcome" component={Welcome} />
       <Route onEnter={requireLogin} >
-          <Route path="welcome" component={Welcome} />
+
           <Route path="reset" component={ResetPassword} />
       </Route>
       <Route path="survey" component={Survey} />

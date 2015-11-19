@@ -84,7 +84,7 @@ function logoutFailure(error) {
   };
 }
 
-export function logout() {
+export function logout(cb) {
   return dispatch => {
     dispatch(logoutRequest());
     api.logout({
@@ -94,7 +94,9 @@ export function logout() {
         delete localStorage.uid;
         delete localStorage.client;
 
-        return  dispatch(logoutSuccess());
+        dispatch(logoutSuccess()).then(() => {
+          cb();
+        });
       },
     });
   };
