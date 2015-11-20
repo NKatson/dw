@@ -22,18 +22,41 @@ class Account extends React.Component {
     const { category, step, prevLink } = this.props;
 
     return (
-      <div className="input-wrap">
-        {accounts.map(account => (
-          <p className="radio-chbx-wrap" key={account}>
-            <input type="radio" value={account} name="account-type" onClick={::this.handleCheckboxClick}/>
-            <label>{account}</label>
-          </p>
-        ))}
+      <div>
+        <h2>Account Options</h2>
+        <p className="text-center pad-08">We offer three different types of accounts. Pick the one you would like to open today. (You can always create an additional account type later.)</p>
+        <form className="common-form w-616">
+          <div className="grey-block">
+            <ul className="input-wrap">
+                <li className="radio-chbx-wrap">
+                  <input type="radio" name="accountOptions" value="General Investment Account"  onClick={::this.handleCheckboxClick} />
+                    <label><b>A General Investment Portfolio</b><br />Best if you already have a retirement account or want access to your money anywhere between 5 and 20
+                    years from now — say for a big purchase like a house.
+                  </label>
+                </li>
+                <li className="radio-chbx-wrap">
+                  <input type="radio" name="accountOptions" />
+                    <label><b>A Individual Retirement Account (IRA)</b><br />Best if you want to save for retirement. Choose Roth or Traditional.<br /></label>
+                      <ul className="input-wrap">
+                          <li className="radio-chbx-wrap"><input type="radio" name="IRA" value="Investment Account" onClick={::this.handleCheckboxClick} /> <label>Roth IRA</label></li>
+                          <li className="radio-chbx-wrap"><input type="radio" name="IRA" value="Retirement Account" onClick={::this.handleCheckboxClick} /> <label>Traditional IRA
+                               &nbsp;<a href="#">Guide Me</a></label></li>
+                      </ul>
+                </li>
+                <li className="radio-chbx-wrap">
+                  <input type="radio" name="accountOptions" value="Savings Account"  onClick={::this.handleCheckboxClick} />
+                    <label><b>Savings Account</b><br />Best if you want to save money for the short term. You will most likely need access to this money in 5 years or less.
+                  </label>
+                </li>
+            </ul>
+          </div>
+        </form>
         <div className="clearfix pad-05">
             {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
             <Link  to={`/survey/${category.toLowerCase()}/q/${step}`} className="btn btn_blue w-308 pull-right">Next ></Link>
         </div>
       </div>
+
     );
   }
 }

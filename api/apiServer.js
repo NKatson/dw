@@ -99,7 +99,7 @@ app.get('/api/forms', (req, res) => {
                   {
                     "label": "Employer Name",
                     "type": "text",
-                    "value" : "I Own My Business",
+                    "default" : "I Own My Business",
                     "name": "employ-employed-who"
                   },
                   {
