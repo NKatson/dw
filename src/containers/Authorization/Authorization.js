@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { History } from 'react-router'
-import { connectReduxForm } from 'redux-form';
-import { Link } from 'react-router';
+import { reduxForm } from 'redux-form';
+import { Link, History } from 'react-router';
 import { login } from '../../redux/actions/auth';
 
-import { Input, SubmitButton, FormHeader } from '../../components';
-import {authorization as validation} from '../../utils/validation';
+import { InputText } from '../../atoms';
+import { SubmitButton, FormHeader } from '../../components';
+import { authorization as validation } from '../../utils/validation';
 
 let Authorization = React.createClass({
   propTypes: {
@@ -21,7 +21,9 @@ let Authorization = React.createClass({
   handleSubmit(event) {
     const { dispatch, fields: { email, password } } = this.props;
     event.preventDefault();
-    dispatch(login(email.value, password.value));
+    dispatch(login(email.value, password.value, () => {
+        this.history.replaceState(null, '/welcome');
+    }));
   },
   render() {
     const {
@@ -31,9 +33,6 @@ let Authorization = React.createClass({
       loggedIn,
       userEmail,
     } = this.props;
-    if (loggedIn) {
-      this.history.replaceState(null, '/welcome');
-    }
     return (
       <div className="wide-block">
         <div className="container container-1">
@@ -46,18 +45,18 @@ let Authorization = React.createClass({
                     <div className="message message_error">{loginError}</div> :
                     null
                   }
-                  <Input
-                    field={email}
-                    icon="glyphicon-user"
-                    placeholder="Email"
-                    type="email"
-                  />
-                  <Input
-                    field={password}
-                    icon="glyphicon-lock"
-                    placeholder="Password"
-                    type="password"
-                  />
+                  <InputText
+                      field={email}
+                      icon="glyphicon-user"
+                      placeholder="Email"
+                      type="email"
+                    />
+                  <InputText
+                      field={password}
+                      icon="glyphicon-lock"
+                      placeholder="Password"
+                      type="password"
+                    />
                   <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
                   <div className="input-wrap">
                     <SubmitButton
@@ -77,11 +76,6 @@ let Authorization = React.createClass({
   }
 });
 
-Authorization = connectReduxForm({
-  form: 'authorization',
-  fields: ['email', 'password'],
-  validate: validation,
-})(Authorization);
 
 function mapStateToProps(state) {
   return {
@@ -89,8 +83,13 @@ function mapStateToProps(state) {
     loggingIn: state.auth.get('loggingIn'),
     loggedIn: state.auth.get('loggedIn'),
     userEmail: state.auth.getIn(['user', 'email']),
-    form: state.auth,
   };
 }
+
+Authorization = reduxForm({
+  form: 'authorization',
+  fields: ['email', 'password'],
+  validate: validation,
+}, mapStateToProps)(Authorization);
 
 export default connect(mapStateToProps)(Authorization);

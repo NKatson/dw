@@ -25,7 +25,7 @@ function registrationFailure({ errors: { full_messages }}) {
   };
 }
 
-export function registration(data) {
+export function registration(data, cb) {
   return dispatch => {
     dispatch(registrationRequest());
     api.registration({
@@ -34,7 +34,9 @@ export function registration(data) {
         if (err) return dispatch(registrationFailure(err));
 
         dispatch(registrationSuccess());
-        return dispatch(loginSuccess(body));
+        dispatch(loginSuccess({confirmed: false, ...body})).then(() => {
+          cb();
+        });
       },
     });
   };

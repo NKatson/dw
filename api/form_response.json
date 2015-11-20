@@ -1,0 +1,13 @@
+{
+  "categories": [{
+      "name": "Personal",
+      "steps": [{
+          "formKey": "Personal-step-1",
+          "title": "The Basics",
+          "description": "This is the easy stuff.",
+          "questions": []
+        },
+      ]
+    }
+  ]
+}

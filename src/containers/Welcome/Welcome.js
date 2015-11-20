@@ -1,14 +1,13 @@
 import React, { PropTypes } from 'react';
-import { SubmitButton, Radio, Step } from '../../components';
+import { SubmitButton, Step } from '../../components';
+import { Radio } from '../../atoms';
+import { Link } from 'react-router';
 
 class Welcome extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
   }
   handleRadioClick() {
-    console.log('Radio click!');
-    console.log(this);
-
   }
   renderRadios() {
     const radios = [
@@ -93,7 +92,7 @@ class Welcome extends React.Component {
               <div className="steps-block__items">
                 {::this.renderSteps()}
               </div>
-              <div><a href="#" className="btn btn_blue pad-03">Next</a></div>
+              <div><Link to="survey" className="btn btn_blue pad-03">Next</Link></div>
             </div>
           </div>
         </div>

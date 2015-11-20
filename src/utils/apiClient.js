@@ -3,7 +3,25 @@ import config from '../config';
 
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
-const host = `http://worthfm.4xxi.com`;
+let host = `http://worthfm.4xxi.com` ;
+
+// if (apiPort === 8080 && apiHost === 'localhost') {
+//   host += `:${apiPort}`;
+// }
+
+export function getForm(cb) {
+  request
+    .get('http://localhost:8080/api/forms')
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      return cb(null, {
+        ...res.body,
+      });
+    });
+}
 
 export function login({ email, password, cb }) {
   request
