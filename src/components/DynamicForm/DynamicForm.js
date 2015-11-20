@@ -10,15 +10,20 @@ class DynamicForm extends Component {
     const { handleNextClick, type } = this.props;
     handleNextClick(type);
   }
+  getInputs(question, fields) {
+    return question.answers.map((answer, index) => {
+      return {
+        label: answer.label,
+        field: fields[answer.name],
+        value: answer.value ? answer.value : answer.name,
+      }
+    });
+  }
   renderInput(question, fields) {
-    if (question.type === 'checkbox' || question.type === 'radio') {
-      const inputs = question.answers.map((answer, index) => {
-        return {
-          label: answer.label,
-          field: fields[answer.name],
-          value: answer.value ? answer.value : answer.name,
-        }
-      });
+    const multipleTypes = ['checkbox', 'radio'];
+    if (multipleTypes.indexOf(question.type) !== - 1) {
+      const inputs = ::this.getInputs(question, fields);
+
       return <InputMultiple
               key={question.name}
               type={question.type}
@@ -29,27 +34,29 @@ class DynamicForm extends Component {
             />
     } else if (question.type === 'dropdown') {
       let result = [];
+      const options = ::this.getInputs(question, fields);
+      console.log(fields[question.name]);
 
-      // render parent select field
       result.push(<Select
+            field={fields[question.name]}
             key={question.name}
             label={question.label}
             additionalClass={question.class ? question.class : ''}
-            options={question.answers}
+            options={options}
             handleChange={::this.props.handleSelectChange}
             />);
 
-      // render child dynamic fields
-      question.answers.map((answer, index) => {
-        if (answer.dynamicFields && answer.dynamicFields.length > 0) {
-          answer.dynamicFields.map((field, index) => {
-            // is parent selected ?
-            if (answer.label === this.props.stateSelectValue) {
-               result.push(::this.renderInput(field, fields));
-            }
-          });
-        }
-      });
+      // // render child dynamic fields
+      // question.answers.map((answer, index) => {
+      //   if (answer.dynamicFields && answer.dynamicFields.length > 0) {
+      //     answer.dynamicFields.map((field, index) => {
+      //       // is parent selected ?
+      //       if (answer.label === this.props.stateSelectValue) {
+      //          result.push(::this.renderInput(field, fields));
+      //       }
+      //     });
+      //   }
+      // });
 
       return result;
     } else {
@@ -95,15 +102,16 @@ class DynamicForm extends Component {
   }
   render() {
     const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
+    //             <Link to={nextLink} className="btn btn_blue w-308 pull-right">{nextLink === '/submit' ? 'Submit' : 'Next >'}</Link>
     return (
-      <form className="common-form personal-info-form">
+      <form className="common-form personal-info-form" onSubmit={this.props.handleSubmit}>
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
           {::this.renderQuestions(questions, fields)}
           <div className="clearfix pad-05">
               {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
-              <Link to={nextLink} className="btn btn_blue w-308 pull-right">{nextLink === '/submit' ? 'Submit' : 'Next >'}</Link>
+              <button onClick={this.props.handleSubmit}>Submit</button>
           </div>
     </form>
     );
@@ -124,6 +132,7 @@ DynamicForm.propTypes = {
     handleSelectChange: PropTypes.func.isRequired,
     prevLink: PropTypes.string.isRequired,
     nextLink: PropTypes.string.isRequired,
+    handleSubmit: PropTypes.func
 };
 
 export default reduxForm({form: 'dynamic', validate, destroyOnUnmount: false})(DynamicForm);

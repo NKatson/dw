@@ -37,7 +37,7 @@ export function registration(data) {
 }
 
 function checkRequired(data, fieldName, errors) {
-  if (!data[fieldName]) {
+  if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
     errors[fieldName] = 'Required';
   }
   return errors;
@@ -79,13 +79,13 @@ export function validateSurvey(data) {
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
   const ssnRegex = /(^\d{3}-\d{2}-\d{3}$)/i;
   const dateRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
-  const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipcode', 'phone', 'ssn', 'dateOfBirth', 'yearly-income'];
+  const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipCode', 'state', 'phone', 'ssn', 'dateOfBirth', 'yearly-income'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
-    if (fieldName === 'yearly-income') {
-      errors = checkIncome(data, fieldName, errors);
-    }
+    // if (fieldName === 'yearly-income') {
+    //   errors = checkIncome(data, fieldName, errors);
+    // }
   });
 
   errors = checkLength({ data, fieldName: 'firstName', errors, min: 2 });
@@ -97,5 +97,6 @@ export function validateSurvey(data) {
   errors = checkRegex({ data, fieldName: 'dateOfBirth', regex: dateRegex, errors, message: 'Please type valid date format' });
   errors = checkRegex({ data, fieldName: 'zipCode', regex: zipCodeRegex, errors, message: '5 numbers' });
 
+  console.log(errors);
   return errors;
 }

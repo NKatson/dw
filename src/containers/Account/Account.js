@@ -11,7 +11,6 @@ class Account extends React.Component {
     this.props.dispatch(surveyActions.hideRecommend());
   }
   componentWillReceiveProps() {
-    console.log('props');
     this.props.dispatch(surveyActions.hideRecommend());
   }
   componentWillUnmount() {

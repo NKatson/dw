@@ -29,6 +29,9 @@ class FormContainer extends React.Component {
   chooseAccount(e) {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
+  handleSubmit(data) {
+    console.log(data);
+  }
   parseMultipleNames(question) {
     let names = [];
     question.answers.map(answer => {
@@ -42,7 +45,7 @@ class FormContainer extends React.Component {
     return names;
   }
   generateFields(form) {
-    const multiple = ['checkbox', 'radio', 'dropdown'];
+    const multiple = ['checkbox', 'radio'];
     return form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
         const names = ::this.parseMultipleNames(question);
@@ -79,6 +82,7 @@ class FormContainer extends React.Component {
                     chooseAccount={::this.chooseAccount}
                     nextLink={this.props.nextLink}
                     prevLink={this.props.prevLink}
+                    onSubmit={::this.handleSubmit}
                    />);
         }
       });

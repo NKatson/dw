@@ -31,8 +31,6 @@ function getNextLink({ category, step, data }) {
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
   // step++ in current category
-  console.log('step:');
-  console.log(step);
   return `/survey/${category.toLowerCase()}/q/${step + 1}`;
 }
 
