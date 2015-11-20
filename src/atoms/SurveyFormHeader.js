@@ -8,7 +8,7 @@ class SurveyFormHeader extends React.Component {
       <div className="wide-block bg-grey common-block">
         <div className="container container-1">
             <div className="container-small selected-retirement-account">
-                <h2>We Recommend...</h2>
+                <h2>{title}</h2>
                <p>Since it looks like you'll need access to your money before your retirement,
                   we recommend opening a <span className="color-black">a {accountType ? accountType.toLowerCase() : null}</span>.
                   If you want to explore the other account types, <Link to="/account" onClick={handleClick}>click here</Link></p>

@@ -32,7 +32,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType, showRecommend } = this.props;
+    const { data, stepType, showRecommend, recommendMessageType } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
@@ -48,7 +48,7 @@ class Survey extends React.Component {
           </div>
         </div>
         {showRecommend ? <SurveyFormHeader 
-          title={"We recommend..."} 
+          title={recommendMessageType === 'selected' ? ("You selected " + this.props.accountType) : "We recommend..."} 
           accountType={this.props.accountType}
           handleClick={() => {
             this.props.dispatch(surveyActions.hideRecommend())
@@ -77,6 +77,7 @@ function mapStateToProps(state) {
     categoryIndex: state.survey.get('categoryIndex'),
     showRecommend: state.survey.get('showRecommend'),
     accountType: state.survey.get('accountType'),
+    recommendMessageType: state.survey.get('recommendMessageType'),
   };
 }
 export default connect(mapStateToProps)(Survey);

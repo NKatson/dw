@@ -73,6 +73,7 @@ export default function survey(state = initialState, action = {}) {
   case actions.SHOW_RECOMMEND:
     return state.merge({
       showRecommend: true,
+      recommendMessageType: action.messageType
     });
   case actions.HIDE_RECOMMEND:
     return state.merge({

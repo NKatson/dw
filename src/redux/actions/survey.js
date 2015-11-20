@@ -45,9 +45,10 @@ export function changeQuestion(category, number) {
   }
 }
 
-export function showRecommend() {
+export function showRecommend(messageType = 'recommend') {
   return {
     type: SHOW_RECOMMEND,
+    messageType
   }
 }
 
