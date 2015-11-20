@@ -22,7 +22,6 @@ app.get('/api/forms', (req, res) => {
         "hint": "(Hint: You definitely know all the answers to these questions!)",
         "questions": [
           {
-            "label" : "First Name",
             "name": "firstName",
             "type": "text",
             "placeholder": "First Name"
@@ -44,16 +43,55 @@ app.get('/api/forms', (req, res) => {
             "class": "inline-block pad-04",
             "placeholder": "State",
             "answers": [
-              {
-                "label": "Alabama",
-                "value": "al",
-              }, {
-                "label": "Alaska",
-                "value": "ak",
-              }, {
-                "label": " Arizona",
-                "value": "az",
-              }
+              {"label" : "Alabama",	"value" : "AL"},
+              {"label" : "Alaska",	"value" : "AK"},
+              {"label" : "Arizona",	"value" : "AZ"},
+              {"label" : "Arkansas",	"value" : "AR"},
+              {"label" : "California",	"value" : "CA"},
+              {"label" : "Colorado",	"value" : "CO"},
+              {"label" : "Connecticut",	"value" : "CT"},
+              {"label" : "Delaware",	"value" : "DE"},
+              {"label" : "Florida",	"value" : "FL"},
+              {"label" : "Georgia",	"value" : "GA"},
+              {"label" : "Hawaii",	"value" : "HI"},
+              {"label" : "Idaho",	"value" : "ID"},
+              {"label" : "Illinois",	"value" : "IL"},
+              {"label" : "Indiana",	"value" : "IN"},
+              {"label" : "Iowa",	"value" : "IA	"},
+              {"label" : "Kansas",	"value" : "KS	"},
+              {"label" : "Kentucky",	"value" : "KY	"},
+              {"label" : "Louisiana",	"value" : "LA	"},
+              {"label" : "Maine",	"value" : "ME"},
+              {"label" : "Maryland",	"value" : "MD"},
+              {"label" : "Michigan",	"value" : "MI"},
+              {"label" : "Minnesota",	"value" : "MN"},
+              {"label" : "Mississippi",	"value" : "MS"},
+              {"label" : "Missouri",	"value" : "MO"},
+              {"label" : "Montana",	"value" : "MT"},
+              {"label" : "Nebraska",	"value" : "NE"},
+              {"label" : "Nevada",	"value" : "NV"},
+              {"label" : "New Hampshire",	"value" : "NH"},
+              {"label" : "New Jersey",	"value" : "NJ"},
+              {"label" : "New Mexico",	"value" : "NM"},
+              {"label" : "New York",	"value" : "NY"},
+              {"label" : "North Carolina",	"value" : "NC"},
+              {"label" : "North Dakota",	"value" : "ND"},
+              {"label" : "Ohio",	"value" : "OH"},
+              {"label" : "Oklahoma",	"value" : "OK"},
+              {"label" : "Oregon",	"value" : "OR"},
+              {"label" : "Pennsylvania",	"value" : "PA	"},
+              {"label" : "Rhode Island", "value" : "RI	"},
+              {"label" : "South Carolina",	"value" : "SC	"},
+              {"label" : "South Dakota",	"value" : "SD	"},
+              {"label" : "Tennessee",	"value" : "TN	"},
+              {"label" : "Texas",	"value" : "TX	"},
+              {"label" : "Utah",	"value" : "UT"},
+              {"label" : "Vermont",	"value" : "VT"},
+              {"label" : "Virginia",	"value" : "VA"},
+              {"label" : "Washington",	"value" : "WA"},
+              {"label" : "West Virginia",	"value" : "WV"},
+              {"label" : "Wisconsin",	"value" : "WI"},
+              {"label" : "Wyoming",	"value" : "WY"}
             ]
           }, {
             "name": "zipCode",
@@ -83,7 +121,7 @@ app.get('/api/forms', (req, res) => {
       {
         "formKey": "Personal-step-2",
         "title": "Employment status",
-        "description" : "Where do you currently work? Do you like it and if so, are they hiring? ",
+        "description" : "Where do you currently work? Do you like it, and if so, are they hiring?",
         "questions": [
           {
             "name": "employ",
@@ -97,25 +135,24 @@ app.get('/api/forms', (req, res) => {
                 "name": "employ-employed",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "Employer Name",
+                    "label": "Who do you work for?",
                     "type": "text",
-                    "default" : "I Own My Business",
-                    "name": "employ-employed-who"
+                    "name": "employ-who-do-you-work"
                   },
                   {
-                    "label": "Occupation",
+                    "label": "What's your tytle?",
                     "type": "text",
-                    "name": "employ-employed-title"
+                    "name": "employ-tytle"
                   },
                   {
-                    "label": "Type of Business",
+                    "label": "What's your industry?",
                     "type": "text",
-                    "name": "employ-employed-industry"
+                    "name": "employ-industry"
                   },
                   {
-                    "label": "Yearly income",
+                    "label": "How much do you make",
                     "type": "text",
-                    "name": "employ-employed-yearly-income",
+                    "name": "yearly-income",
                     "needNormalize" : true,
                   },
                 ]
@@ -125,20 +162,26 @@ app.get('/api/forms', (req, res) => {
                 "name": "employ-self-employed",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "Occupation",
+                    "label": "Who do you work for?",
                     "type": "text",
-                    "name": "employ-self-employed-occ"
+                    "default": "I Own My Business",
+                    "name": "employ-who-do-you-work"
                   },
                   {
-                    "label": "Type of Business",
+                    "label": "What's your tytle?",
                     "type": "text",
-                    "name": "employ-employed-industry"
+                    "name": "employ-tytle"
                   },
                   {
-                    "label": "Yearly income",
+                    "label": "What's your industry?",
                     "type": "text",
-                    "name": "employ-self-employed-yearly-income",
-                      "needNormalize" : true,
+                    "name": "employ-industry"
+                  },
+                  {
+                    "label": "How much do you make?",
+                    "type": "text",
+                    "name": "yearly-income",
+                    "needNormalize" : true,
                   },
                 ]
               }, {
@@ -147,14 +190,14 @@ app.get('/api/forms', (req, res) => {
                 "name": "employ-not-working",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "Source of Income",
+                    "label": "What is your main source of income?",
                     "type": "text",
-                    "name": "employ-not-working-source"
+                    "name": "employe-source"
                   },
                   {
-                    "label": "Yearly income",
+                    "label": "How much do you make?",
                     "type": "text",
-                    "name": "employ-not-working-yearly-income",
+                    "name": "yearly-income",
                     "needNormalize" : true,
                   },
                 ]
@@ -164,9 +207,14 @@ app.get('/api/forms', (req, res) => {
                 "name": "employ-student",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "Yearly income",
+                    "label": "What is your main source of income?",
                     "type": "text",
-                    "name": "employ-student-yearly-income",
+                    "name": "employe-source"
+                  },
+                  {
+                    "label": "How much do you make?",
+                    "type": "text",
+                    "name": "yearly-income",
                     "needNormalize" : true,
                   },
                 ]
@@ -177,9 +225,14 @@ app.get('/api/forms', (req, res) => {
                 "name": "employ-redired",
                 "dynamicFields" : [ // dynamic fields
                   {
-                    "label": "Yearly income",
+                    "label": "What is your main source of income?",
                     "type": "text",
-                    "name": "employ-retired-yearly-income",
+                    "name": "employe-source"
+                  },
+                  {
+                    "label": "How much do you make?",
+                    "type": "text",
+                    "name": "yearly-income",
                     "needNormalize" : true,
                   },
                 ]
@@ -209,7 +262,7 @@ app.get('/api/forms', (req, res) => {
               {
                 "label" : "Not soon, but I plan to withdraw some of this money before I retire" ,
                 "name" : "invest-q1",
-                "value": "Investment account",
+                "value": "General investment account",
               },
               {
                 "label" : "I won't need it until I retire" ,

@@ -9,6 +9,7 @@ export const SHOW_RECOMMEND = 'SHOW_RECOMMEND';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 export const CHANGE_QUESTION = 'CHANGE_QUESTION';
 export const HIDE_RECOMMEND = 'HIDE_RECOMMEND';
+export const SEND_DATA = 'SEND_DATA';
 
 function initialRequest() {
   return {
@@ -19,6 +20,13 @@ function initialRequest() {
 function fillState(data) {
   return {
     type: FILL_STATE,
+    data,
+  };
+}
+
+function sendData(data) {
+  return {
+    type: SEND_DATA,
     data,
   };
 }
