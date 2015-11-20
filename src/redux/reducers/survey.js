@@ -36,6 +36,16 @@ function getNextLink({ category, step, data }) {
   return `/survey/${category.toLowerCase()}/q/${step + 1}`;
 }
 
+function showRecommend({ category, step, data }) {
+  if (step > 0) {
+    if (data[category][step - 1].type === 'recommend') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export default function survey(state = initialState, action = {}) {
   const data = state.get('data') ? state.get('data').toJS() : {};
   const categoriesNames = Object.keys(data);
@@ -69,6 +79,7 @@ export default function survey(state = initialState, action = {}) {
   case actions.ACCOUNT_TYPE_CHANGED:
     return state.merge({
       accountType: action.accountType,
+      recommendMessageType: 'recommend',
     });
   case actions.SHOW_RECOMMEND:
     return state.merge({
@@ -95,7 +106,7 @@ export default function survey(state = initialState, action = {}) {
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
       prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
       formType: data[nextCategory][action.number].type,
-      showRecommend: state.get('formType') === 'recommend' ? true : false,
+      showRecommend: showRecommend({ category: nextCategory, step: action.number, data}),
     });
   default:
     return state;

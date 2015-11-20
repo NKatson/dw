@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
+import { Link } from 'react-router';
 import { InputText, InputMultiple, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 
@@ -93,13 +94,17 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint, categoryIndex, step } = this.props;
+    const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
     return (
       <form className="common-form personal-info-form">
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
           {::this.renderQuestions(questions, fields)}
+          <div className="clearfix pad-05">
+              {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
+              <Link to={nextLink} className="btn btn_blue w-308 pull-right">{nextLink === '/submit' ? 'Submit' : 'Next >'}</Link>
+          </div>
     </form>
     );
   }
@@ -117,6 +122,8 @@ DynamicForm.propTypes = {
     stateSelectValue: PropTypes.string,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
+    prevLink: PropTypes.string.isRequired,
+    nextLink: PropTypes.string.isRequired,
 };
 
 export default reduxForm({form: 'dynamic', validate, destroyOnUnmount: false})(DynamicForm);

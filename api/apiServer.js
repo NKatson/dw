@@ -191,7 +191,7 @@ app.get('/api/forms', (req, res) => {
     ],
     "Invest" : [
       {
-        "type": "recommend",
+        "type": "recommend", // new
         "title" : "Finding the Right Investment for You",
         "description" : "The next few steps will help us to recommend the best savings & investment strategy for you",
         "questions" : [

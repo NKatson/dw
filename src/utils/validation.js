@@ -76,7 +76,6 @@ export function validateSurvey(data) {
   const addressRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-
   const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipcode', 'phone', 'ssn', 'dateOfBirth'];
 
   requiredFields.forEach(fieldName => {
@@ -85,6 +84,8 @@ export function validateSurvey(data) {
       errors = checkIncome(data, fieldName, errors);
     }
   });
+
+
 
   errors = checkLength({ data, fieldName: 'firstName', errors, min: 2 });
   errors = checkLength({ data, fieldName: 'lastName', errors, min: 2 });

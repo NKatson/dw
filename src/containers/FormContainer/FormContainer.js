@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
 
@@ -78,6 +77,8 @@ class FormContainer extends React.Component {
                     handleSelectChange={::this.handleSelectChange}
                     stateSelectValue={this.props.stateSelectValue}
                     chooseAccount={::this.chooseAccount}
+                    nextLink={this.props.nextLink}
+                    prevLink={this.props.prevLink}
                    />);
         }
       });
@@ -85,14 +86,10 @@ class FormContainer extends React.Component {
     return result;
   }
   render () {
-    const { category, currentIndex, step, nextLink, prevLink } = this.props;
+    const { category, currentIndex, step, nextLink, prevLink, showRecommend } = this.props;
     return (
-      <div>
+      <div style={{paddingTop: showRecommend ? '60px' : 0 }}>
         {::this.renderForms(this.props.data.toJS())}
-          <div className="clearfix pad-05">
-              {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
-              <Link to={nextLink} className="btn btn_blue w-308 pull-right">{nextLink === '/submit' ? 'Submit' : 'Next >'}</Link>
-          </div>
       </div>
     );
   }

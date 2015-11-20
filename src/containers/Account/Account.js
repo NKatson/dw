@@ -7,8 +7,14 @@ class Account extends React.Component {
   handleCheckboxClick(e) {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
+  comopnentDidMount() {
+    this.props.dispatch(surveyActions.hideRecommend());
+  }
+  componentWillReceiveProps() {
+    console.log('props');
+    this.props.dispatch(surveyActions.hideRecommend());
+  }
   componentWillUnmount() {
-    console.log('unmount account');
     this.props.dispatch(surveyActions.showRecommend('selected'));
   }
   render() {

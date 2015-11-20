@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router';
+import { Link, History } from 'react-router';
 import { login } from '../../redux/actions/auth';
 
 import { InputText } from '../../atoms';
@@ -17,10 +17,13 @@ let Authorization = React.createClass({
     fields: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
   },
+  mixins: [ History ],
   handleSubmit(event) {
     const { dispatch, fields: { email, password } } = this.props;
     event.preventDefault();
-    dispatch(login(email.value, password.value));
+    dispatch(login(email.value, password.value, () => {
+        this.history.replaceState(null, '/welcome');
+    }));
   },
   render() {
     const {
