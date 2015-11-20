@@ -8,17 +8,18 @@ class Account extends React.Component {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
   componentWillUnmount() {
+    console.log('unmount account');
     this.props.dispatch(surveyActions.showRecommend('selected'));
   }
   render() {
-    const accounts = ["Savings account", "Investment account", "Retirement account", "General Investment account"];
+    const accounts = ["Savings Account", "Investment Account", "Retirement Account", "General Investment Account"];
     const { category, step, prevLink } = this.props;
-    
+
     return (
       <div className="input-wrap">
         {accounts.map(account => (
           <p className="radio-chbx-wrap" key={account}>
-            <input type="radio" value={account} name="account-type" onClick={::this.handleCheckboxClick}/> 
+            <input type="radio" value={account} name="account-type" onClick={::this.handleCheckboxClick}/>
             <label>{account}</label>
           </p>
         ))}

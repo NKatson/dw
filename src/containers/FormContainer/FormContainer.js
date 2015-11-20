@@ -5,13 +5,15 @@ import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
 
 class FormContainer extends React.Component {
-  componentDidMount() {
+  componentDidMount(props) {
+    let { category = 'personal', number = 0 } = this.props.params;
+    this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
   }
   componentWillReceiveProps(nextProps) {
-    const { category: nextCategory, number: nextNumber } = nextProps.params;
+    const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
     const { category, step } = this.props;
-    
-    if (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step) {
+
+    if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
       this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
     }
   }
@@ -69,7 +71,7 @@ class FormContainer extends React.Component {
                     formType={this.props.formType}
                     fields={::this.generateFields(form)}
                     questions={form.questions}
-                    handleShowSsnClick={() => {}}
+                    handleShowSsnClick={::this.handleShowSsnClick}
                     showSsn={this.props.showSsn ? true : false}
                     categoryIndex={this.props.categoryIndex}
                     step={this.props.step}

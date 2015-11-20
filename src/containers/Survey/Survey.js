@@ -15,7 +15,7 @@ class Survey extends React.Component {
     let result = [];
     let index = 0;
     const count = Object.keys(data).length;
-    
+
     for (let category in data) {
       result.push(<Category
                   isCompleted={index <= this.props.categoryIndex ? true : false}
@@ -47,8 +47,8 @@ class Survey extends React.Component {
             </div>
           </div>
         </div>
-        {showRecommend ? <SurveyFormHeader 
-          title={recommendMessageType === 'selected' ? ("You selected " + this.props.accountType) : "We recommend..."} 
+        {showRecommend ? <SurveyFormHeader
+          recommendMessageType={recommendMessageType}
           accountType={this.props.accountType}
           handleClick={() => {
             this.props.dispatch(surveyActions.hideRecommend())

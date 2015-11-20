@@ -24,7 +24,6 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({
      value: PropTypes.string.isRequired,
      label: PropTypes.string.isRequired,
-     name: PropTypes.string.isRequired,
  })).isRequired,
 }
 

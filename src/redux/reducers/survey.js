@@ -8,20 +8,20 @@ const initialState = Map({
 function getPrevLink({ category, step, data }) {
   const categoryNames = Object.keys(data);
   const categoryIndex = categoryNames.indexOf(category);
-  
+
   if (categoryIndex === -1) return '-1';
   if (step === 0) {
     if (categoryIndex === 0) return '/welcome';
     return `/survey/${categoryNames[categoryIndex - 1].toLowerCase()}/q/${categoryNames.length - 1}`;
   }
-  
+
   return `/survey/${category.toLowerCase()}/q/${step - 1}`;
 }
 
 function getNextLink({ category, step, data }) {
   const categoryNames = Object.keys(data);
   const categoryIndex = categoryNames.indexOf(category);
-  
+
   if (categoryIndex === -1) return '-1';
   // if last step in category
   if (data[category].length - 1 === step) {
@@ -79,17 +79,18 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       showRecommend: false,
     });
-  case actions.CHANGE_QUESTION: 
+  case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
-    
+
     const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
     const categoryNames = Object.keys(data).map(key => key.toLowerCase());
     const catIndex = categoryNames.indexOf(action.category);
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
-    
+
     return state.merge({
       category: nextCategory,
       categoryIndex: 0,
+      categoryIndex: catIndex,
       step: action.number,
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
       prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),

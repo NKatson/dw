@@ -31,7 +31,6 @@ let App = React.createClass({
                 {loggedIn ? <Link to="/reset">Reset</Link> : null }
                 {loggedIn ? <Link to="/welcome">Welcome</Link> : null }&nbsp;
                 {loggedIn ? `Hi, ${localStorage.uid}` : null}
-                <Link to="/survey">Survey</Link>
                 <div className="cabinet">
                 {loggedIn ? <a href="#" onClick={this.handleLogout}>Logout</a> : null }
                     {!loggedIn ? <Link to="/signin"><span>Sign In</span></Link> : null }

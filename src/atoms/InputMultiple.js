@@ -36,7 +36,7 @@ InputMultiple.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.shape({
      label: PropTypes.string.isRequired,
      field: PropTypes.object.isRequired,
-     value: PropTypes.string.isRequired,
+     value: PropTypes.string,
  })).isRequired,
 }
 

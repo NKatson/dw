@@ -81,16 +81,11 @@ class DynamicForm extends Component {
                     type={this.props.showSsn ? 'text' : 'password'}
                     placeholder={question.placeholder}
                   />);
-          result.push(<InputMultiple
-                        key={'show'}
-                        type="checkbox"
-                        inputs={[{
-                          field: {},
-                          label: 'Show'
-                        }]}
-                        additionalClass='input-wrap__descr w-136 input-wrap__addit-checkbox'
-                        handleClick={this.props.handleShowSsnClick}
-                      />);
+          result.push(<div className="input-wrap input-wrap__descr w-136 input-wrap__addit-checkbox">
+                        <p className="radio-chbx-wrap">
+                          <input type="checkbox" onClick={this.props.handleShowSsnClick}><label>Show</label></input>
+                        </p>
+                      </div>);
       } else {
           result.push(::this.renderInput(question, fields));
       }
@@ -98,9 +93,9 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint, handlePrevClick, categoryIndex, step, handleSubmit } = this.props;
+    const { title, fields, questions, description, hint, categoryIndex, step } = this.props;
     return (
-      <form className="common-form personal-info-form" onSubmit={handleSubmit}>
+      <form className="common-form personal-info-form">
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
@@ -122,8 +117,6 @@ DynamicForm.propTypes = {
     stateSelectValue: PropTypes.string,
     handleShowSsnClick: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
-    handlePrevClick: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func,
 };
 
 export default reduxForm({form: 'dynamic', validate, destroyOnUnmount: false})(DynamicForm);
