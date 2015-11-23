@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
+import * as api from '../../utils/apiClient';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
@@ -54,6 +55,7 @@ class FormContainer extends React.Component {
       return fields;
     }, []);
   }
+  
   renderForms(data) {
     let result = [];
     let index = 0;
@@ -79,6 +81,7 @@ class FormContainer extends React.Component {
                     chooseAccount={::this.chooseAccount}
                     nextLink={this.props.nextLink}
                     prevLink={this.props.prevLink}
+                    formData={this.props.formData}
                    />);
         }
       });
@@ -107,6 +110,7 @@ function mapStateToProps(state) {
     showRecommend: state.survey.get('showRecommend'),
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
+    formData: state.form
   };
 }
 

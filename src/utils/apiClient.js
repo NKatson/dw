@@ -8,11 +8,42 @@ let host = `http://worthfm.4xxi.com` ;
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
+//host = 'http://localhost:8000';
 
 export function getForm(cb) {
   request
-    .get('http://localhost:8080/api/forms')
-    .set('Accept', 'application/json')
+    .get(host + '/api/questions')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      return cb(null, {
+        ...res.body,
+      });
+    });
+}
+
+export function sendPersonal(data, cb = () => {}) {
+  request
+    .post(host + '/api/accounts')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      return cb(null, {
+        ...res.body,
+      });
+    });
+}
+
+export function sendQuestions(data, cb = () => {}) {
+  request
+    .post(host + '/api/quesion_answers')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);

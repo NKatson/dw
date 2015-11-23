@@ -9,7 +9,7 @@ class Select extends React.Component {
         <select className="full-width dropdown" onChange={handleChange}>
           <option key='default'>Choose One</option>
           {options.map((option, index) => {
-            return <option  key={option.value}>{option.label}</option>;
+            return <option  key={option.value+""}>{option.label}</option>;
           })}
         </select>
       </div>
