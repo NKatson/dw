@@ -98,6 +98,8 @@ export default function survey(state = initialState, action = {}) {
     const catIndex = categoryNames.indexOf(action.category);
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
 
+    console.log(nextCategory);
+    console.log(data[nextCategory]);
     return state.merge({
       category: nextCategory,
       categoryIndex: 0,

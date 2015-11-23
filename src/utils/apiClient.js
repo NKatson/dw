@@ -10,6 +10,12 @@ let host = `http://worthfm.4xxi.com` ;
 // }
 //host = 'http://localhost:8000';
 
+function saveLocal(res) {
+  localStorage.accessToken = res.headers['access-token'];
+  localStorage.uid = res.headers.uid;
+  localStorage.client = res.headers.client;
+}
+
 export function getForm(cb) {
   request
     .get(host + '/api/questions')
@@ -18,6 +24,8 @@ export function getForm(cb) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
+      console.log(res.body);
       return cb(null, {
         ...res.body,
       });
@@ -27,12 +35,13 @@ export function getForm(cb) {
 export function sendPersonal(data, cb = () => {}) {
   request
     .post(host + '/api/accounts')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-    .send(data)
+    //.set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client, ...data})
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
       return cb(null, {
         ...res.body,
       });
@@ -48,6 +57,7 @@ export function sendQuestions(data, cb = () => {}) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
       return cb(null, {
         ...res.body,
       });

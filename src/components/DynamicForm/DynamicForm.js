@@ -39,7 +39,6 @@ class DynamicForm extends Component {
             options={question.answers}
             handleChange={::this.props.handleSelectChange}
             />);
-
       // render child dynamic fields
       question.answers.map((answer, index) => {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
