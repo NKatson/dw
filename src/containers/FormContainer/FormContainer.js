@@ -8,6 +8,12 @@ class FormContainer extends React.Component {
   componentDidMount(props) {
     let { category = 'personal', number = 0 } = this.props.params;
     this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
+    if (this.props.categoryIndex === 0 && this.props.step == 0) {
+      this.props.dispatch(surveyActions.disableNext());
+      setTimeout(() => {
+        this.props.dispatch(surveyActions.enableNext());
+      }, 15000);
+    }
   }
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
@@ -82,6 +88,7 @@ class FormContainer extends React.Component {
                     nextLink={this.props.nextLink}
                     prevLink={this.props.prevLink}
                     formData={this.props.formData}
+                    disabledNext={this.props.disabledNext}
                    />);
         }
       });
@@ -110,7 +117,8 @@ function mapStateToProps(state) {
     showRecommend: state.survey.get('showRecommend'),
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
-    formData: state.form
+    formData: state.form,
+    disabledNext: state.survey.get('disabledNext')
   };
 }
 

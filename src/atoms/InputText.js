@@ -9,7 +9,7 @@ class InputText extends React.Component {
     const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
     let component = null;
 
-    if (field.name === 'dateOfBirth') {
+    if (field.name === 'date_of_birth') {
       mask = '11/11/1111';
     } else if (field.name === 'ssn') {
       mask = '111-11-111';

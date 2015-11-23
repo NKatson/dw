@@ -108,7 +108,6 @@ class DynamicForm extends Component {
       }
       api.sendPersonal(result);
     }
-    
   }
   render() {
     const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
@@ -120,7 +119,9 @@ class DynamicForm extends Component {
           {::this.renderQuestions(questions, fields)}
           <div className="clearfix pad-05">
               {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
-              <Link to={nextLink} onClick={::this.nextClicked} className="btn btn_blue w-308 pull-right">{nextLink === '/submit' ? 'Submit' : 'Next >'}</Link>
+              <Link to={nextLink} onClick={::this.nextClicked} className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>
+                {nextLink === '/submit' ? 'Submit' : 'Next >'}
+              </Link>
           </div>
     </form>
     );

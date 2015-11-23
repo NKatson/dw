@@ -31,8 +31,6 @@ function getNextLink({ category, step, data }) {
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
   // step++ in current category
-  console.log('step:');
-  console.log(step);
   return `/survey/${category.toLowerCase()}/q/${step + 1}`;
 }
 
@@ -90,6 +88,14 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       showRecommend: false,
     });
+  case actions.DISABLE_NEXT: 
+    return state.merge({
+      disabledNext: true
+    });
+  case actions.ENABLE_NEXT: 
+    return state.merge({
+      disabledNext: false
+    });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
 
@@ -98,8 +104,6 @@ export default function survey(state = initialState, action = {}) {
     const catIndex = categoryNames.indexOf(action.category);
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
 
-    console.log(nextCategory);
-    console.log(data[nextCategory]);
     return state.merge({
       category: nextCategory,
       categoryIndex: 0,

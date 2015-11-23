@@ -25,7 +25,7 @@ class Submit extends React.Component {
       }
     }
     result.accountType = this.props.accountType;
-    console.log(JSON.stringify(result));
+    // console.log(JSON.stringify(result));
     api.sendQuestions(result);
   }
   render () {

@@ -11,11 +11,12 @@ let host = `http://worthfm.4xxi.com` ;
 //host = 'http://localhost:8000';
 
 function saveLocal(res) {
+  console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
+  console.log('token  -> ' + localStorage.accessToken + ' to ' + res.headers['access-token']);
+  console.log('client -> ' + localStorage.client);
+  console.log('-------------------------------');
   localStorage.accessToken = res.headers['access-token'];
-  console.log('Update tokens');
-  console.log(localStorage.uid + ' to ' + res.headers.uid);
   localStorage.uid = res.headers.uid;
-  localStorage.client = res.headers.client;
 }
 
 export function getForm(cb) {
@@ -26,6 +27,7 @@ export function getForm(cb) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+      
       saveLocal(res);
       console.log(res.body);
       return cb(null, {
@@ -37,7 +39,6 @@ export function getForm(cb) {
 export function sendPersonal(data, cb = () => {}) {
   request
     .post(host + '/api/accounts')
-    //.set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
@@ -76,11 +77,15 @@ export function login({ email, password, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      const { headers } = res;
+      console.log('Login, save client: ');
+      console.log(localStorage.client + ' --> ' + res.headers.client);
+      console.log('-----------------------------------');
+      localStorage.client = res.headers.client;
+      saveLocal(res);
       return cb(null, {
-        accessToken: headers['access-token'],
-        uid: headers.uid,
-        client: headers.client,
+        accessToken: res.headers['access-token'],
+        uid: res.headers.uid,
+        client: res.headers.client,
         ...res.body,
       });
     });
@@ -130,6 +135,8 @@ export function registration({ data, cb }) {
       if (err) return cb(res.body);
       if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
       const { headers } = res;
+      localStorage.client = res.haeders.client;
+      saveLocal(res);
       return cb(null, {
         ...res.body,
         accessToken: headers['access-token'],
