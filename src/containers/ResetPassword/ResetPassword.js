@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { connectReduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { authorization as validation } from '../../utils/validation';
 import { Input, SubmitButton, ResetPasswordSent } from '../../components';
@@ -67,11 +67,6 @@ ResetPassword.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-ResetPassword = connectReduxForm({
-  form: 'resetPassword',
-  fields: ['email'],
-  validate: validation,
-})(ResetPassword);
 
 function mapStateToProps(state) {
   return {
@@ -81,5 +76,11 @@ function mapStateToProps(state) {
     form: state.auth,
   };
 }
+
+ResetPassword = reduxForm({
+  form: 'resetPassword',
+  fields: ['email'],
+  validate: validation,
+}, mapStateToProps)(ResetPassword);
 
 export default connect(mapStateToProps)(ResetPassword);

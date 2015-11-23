@@ -19,6 +19,7 @@ export default function auth(state = initialState, action = {}) {
     }));
   case actions.LOGIN_SUCCESS:
     return fromJS({
+      confirmed: action.confirmed,
       loggedIn: true,
       user: action.user,
     });

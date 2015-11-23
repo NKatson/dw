@@ -50,6 +50,9 @@ h2 {
 .bg-white {
   background-color: #fff;
 }
+.bg-grey {
+  background-color: #edecec;
+}
 .main-wrap {
   min-height: 100%;
   position: relative;
@@ -85,14 +88,12 @@ h2 {
   top: 0;
 }
 .cabinet span {
-  /*display: inline-block;*/
+  display: inline-block;
   vertical-align: middle;
   width: 58px;
   height: 22px;
   background-color: #8da836;
   border-radius: 3px;
-  padding: 5px;
-  color: white;
 }
 .main-footer {
   position: absolute;
@@ -187,6 +188,9 @@ h2 {
   text-align: center;
   font-weight: 300;
 }
+.login-block h2 {
+  font-size: 24px;
+}
 .login-block__site-title {
   font-family: "Roboto", arial, sans-serif;
   font-weight: 500;
@@ -246,6 +250,8 @@ select {
 }
 .input-wrap {
   margin-bottom: 42px;
+  list-style: none;
+  padding: 0;
 }
 .input-wrap p {
   font-size: 16px;
@@ -356,6 +362,10 @@ select {
   background-color: #ffefef;
   color: #b13544;
 }
+.message_info {
+  background-color: #fff5dd;
+  color: #dc9634;
+}
 .promise-block {
   background-repeat: no-repeat;
   background-position: center center;
@@ -464,7 +474,7 @@ select {
   width: 308px;
 }
 .wfm-steps {
-  padding: 20px 0 40px;
+  padding: 20px 0 30px;
   text-align: center;
 }
 .wfm-step {
@@ -510,7 +520,6 @@ select {
   line-height: 14px;
 }
 .personal-info-form {
-  margin-top: 60px;
   width: 500px;
   margin-left: auto;
   margin-right: auto;
@@ -596,6 +605,13 @@ select {
 .common-modal .input-wrap {
   margin-bottom: 18px;
 }
+.common-modal .close {
+  position: absolute;
+  float: none;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+}
 .pad-06 {
   font-weight: 300;
   margin-top: 30px;
@@ -625,4 +641,53 @@ select {
   position: absolute;
   top: 4px;
   left: 0;
+}
+.help-link_small {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background-color: #656565;
+  font-weight: bold;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 50%;
+}
+.container-small {
+  width: 576px;
+  margin: 0 auto;
+}
+.selected-retirement-account {
+  color: #979ea4;
+}
+.color-black {
+  color: #4a4a4a;
+}
+.grey-block {
+  background-color: #f1f1f2;
+  border-radius: 10px;
+  padding: 36px 64px;
+}
+.grey-block .input-wrap {
+  margin-bottom: 0;
+}
+.w-616 {
+  width: 616px;
+}
+.common-form {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+}
+ul.input-wrap label {
+  font-weight: 300;
+}
+ul.input-wrap label b {
+  font-weight: 600;
+}
+ul.input-wrap .input-wrap {
+  margin-bottom: 10px;
+  margin-left: 20px;
 }

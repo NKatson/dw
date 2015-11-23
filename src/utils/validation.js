@@ -35,3 +35,63 @@ export function registration(data) {
   }
   return errors;
 }
+
+function checkRequired(data, fieldName, errors) {
+  if (!data[fieldName]) {
+    errors[fieldName] = 'Required';
+  }
+  return errors;
+}
+
+function checkLength({ data, fieldName, errors, min }) {
+  if (errors[fieldName]) return errors;
+
+  if (data[fieldName] && data[fieldName].length < min) {
+    errors[fieldName] = `Field must be minimum ${min} characters long`;
+  }
+  return errors;
+}
+
+function checkRegex({ data, fieldName, regex, errors, message }) {
+  if (errors[fieldName]) return errors;
+
+  if (data[fieldName] && !regex.test(data[fieldName])) {
+    errors[fieldName] = message;
+  }
+  return errors;
+}
+
+function checkIncome(data, fieldName, errors) {
+  if (errors[fieldName]) return errors;
+
+  if (data[fieldName] && data[fieldName] < 8000) {
+    errors[fieldName] = 'Please confirm your annual income.';
+  }
+
+  return errors;
+}
+
+export function validateSurvey(data) {
+  let errors = {};
+  const addressRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/i;
+  const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
+  const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
+  const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipcode', 'phone', 'ssn', 'dateOfBirth'];
+
+  requiredFields.forEach(fieldName => {
+    errors = checkRequired(data, fieldName, errors);
+    if (fieldName.substr(fieldName.length - 6, fieldName.length - 1) === 'income') {
+      errors = checkIncome(data, fieldName, errors);
+    }
+  });
+
+
+
+  errors = checkLength({ data, fieldName: 'firstName', errors, min: 2 });
+  errors = checkLength({ data, fieldName: 'lastName', errors, min: 2 });
+  errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
+  errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
+  errors = checkRegex({ data, fieldName: 'zipCode', regex: zipCodeRegex, errors, message: '5 numbers' });
+
+  return errors;
+}

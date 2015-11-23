@@ -50,6 +50,11 @@ module.exports = {
   },
   plugins: [
     new CleanPlugin([relativeAssetsPath]),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery"
+    }),
 
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
