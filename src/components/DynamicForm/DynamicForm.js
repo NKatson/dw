@@ -37,6 +37,7 @@ class DynamicForm extends Component {
             label={question.label}
             additionalClass={question.class ? question.class : ''}
             options={question.answers}
+            placeholder={question.placeholder}
             handleChange={::this.props.handleSelectChange}
             />);
       // render child dynamic fields

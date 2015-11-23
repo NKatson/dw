@@ -26,7 +26,7 @@ function getNextLink({ category, step, data }) {
   // if last step in category
   if (data[category].length - 1 === step) {
     // if last category
-    if (categoryIndex === categoryNames.length - 1) return '/submit';
+    if (categoryIndex === 1) return '/submit';
     // change category and step to 0
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }

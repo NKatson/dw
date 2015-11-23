@@ -24,9 +24,22 @@ class InputText extends React.Component {
     if (isIncome) {
       component = <CurrencyMaskedInput placeholder="0" required {...field}  className="text full-width" />;
     }
-
+    // Additional class hardcode
+    let addClass = '';
+    if (placeholder === 'Zip Code') {
+      addClass = 'inline-block w-210';
+    } 
+    if (placeholder === 'Phone') {
+      addClass = 'w-342 inline-block valign-mid';
+    }
+    if (placeholder === 'SSN') {
+      addClass = 'w-342 inline-block valign-mid';
+    }
+    if (placeholder === 'Date of Birth (MM/DD/YYYY)') {
+      addClass = 'w-342';
+    }
     return (
-        <div className={'input-wrap ' + additionalClass + (icon ? ' input-wrap_with-icon ' : '') + (field.error && field.touched ? ' input-wrap_error' : '')}>
+        <div className={'input-wrap ' + addClass + (icon ? ' input-wrap_with-icon ' : '') + (field.error && field.touched ? ' input-wrap_error' : '')}>
           {icon ? <div className="input-wrap__icon"><span aria-hidden="true" className={'glyphicon ' + icon }></span></div> : null}
           {label ? <p><b>{label}</b><br /></p> : null}
           {component}

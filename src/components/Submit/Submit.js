@@ -29,7 +29,9 @@ class Submit extends React.Component {
     api.sendQuestions(result);
   }
   render () {
-    return <div>Submit</div>;
+    return (
+      <div className="common-form personal-info-form">Your data has been saved!</div>
+    );
   }
 }
 

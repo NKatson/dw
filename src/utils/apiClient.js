@@ -12,6 +12,8 @@ let host = `http://worthfm.4xxi.com` ;
 
 function saveLocal(res) {
   localStorage.accessToken = res.headers['access-token'];
+  console.log('Update tokens');
+  console.log(localStorage.uid + ' to ' + res.headers.uid);
   localStorage.uid = res.headers.uid;
   localStorage.client = res.headers.client;
 }
@@ -36,7 +38,8 @@ export function sendPersonal(data, cb = () => {}) {
   request
     .post(host + '/api/accounts')
     //.set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-    .send({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client, ...data})
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
@@ -50,7 +53,7 @@ export function sendPersonal(data, cb = () => {}) {
 
 export function sendQuestions(data, cb = () => {}) {
   request
-    .post(host + '/api/quesion_answers')
+    .post(host + '/api/question_answers')
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
