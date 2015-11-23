@@ -10,6 +10,9 @@ export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 export const CHANGE_QUESTION = 'CHANGE_QUESTION';
 export const HIDE_RECOMMEND = 'HIDE_RECOMMEND';
 
+export const DISABLE_NEXT = 'DISABLE_NEXT';
+export const ENABLE_NEXT = 'ENABLE_NEXT';
+
 function initialRequest() {
   return {
     type: INITIAL_REQUEST,
@@ -62,6 +65,27 @@ export function toggleSsn() {
   return {
     type: TOGGLE_SSN
   }
+}
+
+export function disableNext() {
+  return {
+    type: DISABLE_NEXT
+  }
+}
+
+export function enableNext() {
+  return {
+    type: ENABLE_NEXT
+  }
+}
+
+export function checkNext() {
+  return dispatch => {
+    dispatch(disableNext());
+    setTimeout(function() {
+      this.props.dispatch(surveyActions.enableNext());
+    }, 3000)
+  };
 }
 
 export function getData() {

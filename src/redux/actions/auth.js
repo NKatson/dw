@@ -46,10 +46,6 @@ export function login(email, password, cb) {
       password,
       cb: (err, body) => {
         if (err) return dispatch(loginFailure(err));
-        localStorage.accessToken = body.accessToken;
-        localStorage.uid = body.uid;
-        localStorage.client = body.client;
-
         dispatch(loginSuccess({confirmed: true, ...body})).then(() => {
           cb();
         });

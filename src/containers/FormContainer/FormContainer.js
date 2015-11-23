@@ -2,11 +2,18 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
+import * as api from '../../utils/apiClient';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
     let { category = 'personal', number = 0 } = this.props.params;
     this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
+    if (this.props.categoryIndex === 0 && this.props.step == 0) {
+      this.props.dispatch(surveyActions.disableNext());
+      setTimeout(() => {
+        this.props.dispatch(surveyActions.enableNext());
+      }, 15000);
+    }
   }
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
@@ -54,6 +61,7 @@ class FormContainer extends React.Component {
       return fields;
     }, []);
   }
+  
   renderForms(data) {
     let result = [];
     let index = 0;
@@ -79,6 +87,8 @@ class FormContainer extends React.Component {
                     chooseAccount={::this.chooseAccount}
                     nextLink={this.props.nextLink}
                     prevLink={this.props.prevLink}
+                    formData={this.props.formData}
+                    disabledNext={this.props.disabledNext}
                    />);
         }
       });
@@ -107,6 +117,8 @@ function mapStateToProps(state) {
     showRecommend: state.survey.get('showRecommend'),
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
+    formData: state.form,
+    disabledNext: state.survey.get('disabledNext')
   };
 }
 

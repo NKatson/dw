@@ -8,15 +8,60 @@ let host = `http://worthfm.4xxi.com` ;
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
+//host = 'http://localhost:8000';
+
+function saveLocal(res) {
+  console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
+  console.log('token  -> ' + localStorage.accessToken + ' to ' + res.headers['access-token']);
+  console.log('client -> ' + localStorage.client);
+  console.log('-------------------------------');
+  localStorage.accessToken = res.headers['access-token'];
+  localStorage.uid = res.headers.uid;
+}
 
 export function getForm(cb) {
   request
-    .get('http://localhost:8080/api/forms')
-    .set('Accept', 'application/json')
+    .get(host + '/api/questions')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+      
+      saveLocal(res);
+      console.log(res.body);
+      return cb(null, {
+        ...res.body,
+      });
+    });
+}
+
+export function sendPersonal(data, cb = () => {}) {
+  request
+    .post(host + '/api/accounts')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
+      return cb(null, {
+        ...res.body,
+      });
+    });
+}
+
+export function sendQuestions(data, cb = () => {}) {
+  request
+    .post(host + '/api/question_answers')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
       return cb(null, {
         ...res.body,
       });
@@ -32,11 +77,15 @@ export function login({ email, password, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      const { headers } = res;
+      console.log('Login, save client: ');
+      console.log(localStorage.client + ' --> ' + res.headers.client);
+      console.log('-----------------------------------');
+      localStorage.client = res.headers.client;
+      saveLocal(res);
       return cb(null, {
-        accessToken: headers['access-token'],
-        uid: headers.uid,
-        client: headers.client,
+        accessToken: res.headers['access-token'],
+        uid: res.headers.uid,
+        client: res.headers.client,
         ...res.body,
       });
     });
@@ -86,6 +135,8 @@ export function registration({ data, cb }) {
       if (err) return cb(res.body);
       if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
       const { headers } = res;
+      localStorage.client = res.haeders.client;
+      saveLocal(res);
       return cb(null, {
         ...res.body,
         accessToken: headers['access-token'],

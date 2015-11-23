@@ -26,13 +26,11 @@ function getNextLink({ category, step, data }) {
   // if last step in category
   if (data[category].length - 1 === step) {
     // if last category
-    if (categoryIndex === categoryNames.length - 1) return '/submit';
+    if (categoryIndex === 1) return '/submit';
     // change category and step to 0
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
   // step++ in current category
-  console.log('step:');
-  console.log(step);
   return `/survey/${category.toLowerCase()}/q/${step + 1}`;
 }
 
@@ -89,6 +87,14 @@ export default function survey(state = initialState, action = {}) {
   case actions.HIDE_RECOMMEND:
     return state.merge({
       showRecommend: false,
+    });
+  case actions.DISABLE_NEXT: 
+    return state.merge({
+      disabledNext: true
+    });
+  case actions.ENABLE_NEXT: 
+    return state.merge({
+      disabledNext: false
     });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
