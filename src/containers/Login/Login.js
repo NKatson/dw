@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 
 class Login extends React.Component {
   handleSubmit(data) {
-    console.log('Submit! ' + JSON.stringify(data));
   }
   render() {
     <div>

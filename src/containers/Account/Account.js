@@ -24,7 +24,7 @@ class Account extends React.Component {
       <div>
         <h2>Account Options</h2>
         <p className="text-center pad-08">We offer three different types of accounts. Pick the one you would like to open today. (You can always create an additional account type later.)</p>
-        <form className="common-form w-616">
+        <form className="common-form w-616" style={{marginTop: '60px'}}>
           <div className="grey-block">
             <ul className="input-wrap">
                 <li className="radio-chbx-wrap">
@@ -34,13 +34,8 @@ class Account extends React.Component {
                   </label>
                 </li>
                 <li className="radio-chbx-wrap">
-                  <input type="radio" name="accountOptions" />
+                  <input type="radio" name="accountOptions" value="Retirement Account" onClick={::this.handleCheckboxClick} />
                     <label><b>A Individual Retirement Account (IRA)</b><br />Best if you want to save for retirement. Choose Roth or Traditional.<br /></label>
-                      <ul className="input-wrap">
-                          <li className="radio-chbx-wrap"><input type="radio" name="IRA" value="Investment Account" onClick={::this.handleCheckboxClick} /> <label>Roth IRA</label></li>
-                          <li className="radio-chbx-wrap"><input type="radio" name="IRA" value="Retirement Account" onClick={::this.handleCheckboxClick} /> <label>Traditional IRA
-                               &nbsp;<a href="#">Guide Me</a></label></li>
-                      </ul>
                 </li>
                 <li className="radio-chbx-wrap">
                   <input type="radio" name="accountOptions" value="Savings Account"  onClick={::this.handleCheckboxClick} />

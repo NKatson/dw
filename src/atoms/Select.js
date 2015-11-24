@@ -8,7 +8,7 @@ class Select extends React.Component {
     if (placeholder === 'State') {
       addClass = 'inline-block pad-04';
     }
-    
+
     return (
       <div className={'input-wrap ' + addClass}>
         {label ? <p><b>{label}</b><br /></p> : null}

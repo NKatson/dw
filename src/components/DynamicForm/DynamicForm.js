@@ -4,22 +4,23 @@ import { Link } from 'react-router';
 import { InputText, InputMultiple, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 import * as api from '../../utils/apiClient';
+import { touch } from 'redux-form/lib/actions';
 
 class DynamicForm extends Component {
-  chooseNextClickType(e) {
-    e.preventDefault();
-    const { handleNextClick, type } = this.props;
-    handleNextClick(type);
+  getInputs(question, fields) {
+    return question.answers.map((answer, index) => {
+      return {
+        label: answer.label,
+        field: fields[answer.name],
+        value: answer.value ? answer.value : answer.name,
+      }
+    });
   }
   renderInput(question, fields) {
-    if (question.type === 'checkbox' || question.type === 'radio') {
-      const inputs = question.answers.map((answer, index) => {
-        return {
-          label: answer.label,
-          field: fields[answer.name],
-          value: answer.value ? answer.value : answer.name,
-        }
-      });
+    const multipleTypes = ['checkbox', 'radio'];
+    if (multipleTypes.indexOf(question.type) !== - 1) {
+      const inputs = ::this.getInputs(question, fields);
+
       return <InputMultiple
               key={question.name}
               type={question.type}
@@ -30,9 +31,9 @@ class DynamicForm extends Component {
             />
     } else if (question.type === 'dropdown') {
       let result = [];
-
-      // render parent select field
+      const options = ::this.getInputs(question, fields);
       result.push(<Select
+            field={fields[question.name]}
             key={question.name}
             label={question.label}
             additionalClass={question.class ? question.class : ''}
@@ -94,34 +95,21 @@ class DynamicForm extends Component {
     });
     return result;
   }
-  nextClicked(e) {
-    if (this.props.step === 0 && this.props.categoryIndex === 0) {
-      // The Basics case
-      let result = {};
-      if (this.props.formData && this.props.formData.dynamic && this.props.formData.dynamic['personal-step-1']) {
-        const data = this.props.formData.dynamic['personal-step-1'];
-        for (let key in data) {
-          if (key.charAt(0) !== '_') {
-            result[key] = data[key].value;
-          }
-        }
-      }
-      api.sendPersonal(result);
-    }
-  }
   render() {
-    const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
+    const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, type } = this.props;
     return (
-      <form className="common-form personal-info-form">
+      <form className="common-form personal-info-form" onSubmit={this.props.handleSubmit}>
         <h2>{title}</h2>
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
           {::this.renderQuestions(questions, fields)}
           <div className="clearfix pad-05">
-              {prevLink ?  <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
-              <Link to={nextLink} onClick={::this.nextClicked} className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>
-                {nextLink === '/submit' ? 'Submit' : 'Next >'}
-              </Link>
+              {this.props.children}
+              {title == 'Markets move up and down. How comfortable are you with changes?' || type == 'recommend' ?
+                <Link className="btn btn_blue w-308 pull-right" to={nextLink}>Next</Link>
+               :
+               <button className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>Submit </button>
+             }
           </div>
     </form>
     );

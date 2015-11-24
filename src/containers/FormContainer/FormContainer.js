@@ -3,22 +3,17 @@ import { connect } from 'react-redux';
 import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
 import * as api from '../../utils/apiClient';
+import { Link } from 'react-router';
+import { PropTypes as RouterPropTypes } from 'react-router';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
     let { category = 'personal', number = 0 } = this.props.params;
     this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
-    if (this.props.categoryIndex === 0 && this.props.step == 0) {
-      this.props.dispatch(surveyActions.disableNext());
-      setTimeout(() => {
-        this.props.dispatch(surveyActions.enableNext());
-      }, 15000);
-    }
   }
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
     const { category, step } = this.props;
-
     if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
       this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
     }
@@ -36,9 +31,14 @@ class FormContainer extends React.Component {
   chooseAccount(e) {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
+  handleSubmit(data) {
+    // console.log(data);
+  }
   parseMultipleNames(question) {
     let names = [];
+    console.log(question);
     question.answers.map(answer => {
+      if (answer.label !== this.props.stateSelectValue) return;
       names.push(answer.name);
       if (answer.dynamicFields && answer.dynamicFields.length > 0) {
         answer.dynamicFields.map(field => {
@@ -50,7 +50,7 @@ class FormContainer extends React.Component {
   }
   generateFields(form) {
     const multiple = ['checkbox', 'radio', 'dropdown'];
-    return form.questions.reduce((fields, question) => {
+    const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
         const names = ::this.parseMultipleNames(question);
         fields.push(...names);
@@ -60,11 +60,37 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
+    return fields
   }
-  
+
+  handleFormSubmit(data) {
+    if (this.props.step === 0 && this.props.categoryIndex === 0) {
+      console.log('Personal case');
+      // The Basics case
+      let result = {};
+      if (this.props.formData && this.props.formData.dynamic && this.props.formData.dynamic['personal-step-1']) {
+        const data = this.props.formData.dynamic['personal-step-1'];
+        for (let key in data) {
+          if (key.charAt(0) !== '_') {
+            result[key] = data[key].value;
+          }
+        }
+      }
+      api.sendPersonal(result);
+    }
+
+    if (this.props.categoryIndex === 0) {
+      window.location.href = 'http://localhost:3000' + this.props.nextLink;
+    } else {
+      this.context.history.pushState(null, this.props.nextLink);
+    }
+  }
+
   renderForms(data) {
     let result = [];
     let index = 0;
+    const { prevLink, nextLink } = this.props;
+
     for (let category in data) {
       data[category].map((form, index) => {
        if (index === this.props.step && category == this.props.category) {
@@ -89,7 +115,10 @@ class FormContainer extends React.Component {
                     prevLink={this.props.prevLink}
                     formData={this.props.formData}
                     disabledNext={this.props.disabledNext}
-                   />);
+                    onSubmit={::this.handleFormSubmit}
+                   >
+                    {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
+          </DynamicForm>);
         }
       });
     }
@@ -104,6 +133,11 @@ class FormContainer extends React.Component {
     );
   }
 }
+
+FormContainer.contextTypes = {
+  history: RouterPropTypes.history,
+};
+
 
 function mapStateToProps(state) {
   return {

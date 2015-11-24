@@ -21,11 +21,10 @@ class Submit extends React.Component {
           result[step] = formData[step].value
         } else {
           result = Object.assign({}, result, ::this.processInner(formData, step));
-        }  
+        }
       }
     }
     result.accountType = this.props.accountType;
-    // console.log(JSON.stringify(result));
     api.sendQuestions(result);
   }
   render () {

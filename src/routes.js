@@ -12,6 +12,7 @@ import {
     Survey,
     FormContainer,
     Account,
+    Submit as SubmitData,
   } from './containers';
 
 
@@ -32,12 +33,13 @@ export default (store) => {
       <Route onEnter={requireLogin} >
           <Route path="reset" component={ResetPassword} />
       </Route>
+      <Route path="submit" component={Submit} />
       <Route path="survey" component={Survey}>
           <IndexRoute component={FormContainer} />
           <Route path="/account" component={Account} />
           <Route path=":category/q/:number" component={FormContainer} />
       </Route>
-      <Route path="/submit" component={Submit} />
+      <Route path="/submit" component={SubmitData} />
       <Route path="signin" component={Authorization} />
       <Route path="signup" component={Registration} />
     </Route>

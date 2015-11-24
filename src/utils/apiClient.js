@@ -8,7 +8,7 @@ let host = `http://worthfm.4xxi.com` ;
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
-//host = 'http://localhost:8000';
+//host = 'http://localhost:8080';
 
 function saveLocal(res) {
   console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
@@ -19,9 +19,19 @@ function saveLocal(res) {
   localStorage.uid = res.headers.uid;
 }
 
+function beforeLog(url) {
+  console.log('Requesting...' + host + url);
+  console.log('TOKEN : ' + localStorage.accessToken);
+  console.log('UID : ' + localStorage.uid);
+  console.log('CLIENT: ' + localStorage.client);
+}
+
 export function getForm(cb) {
+  const url = '/api/questions';
+  beforeLog(url);
+
   request
-    .get(host + '/api/questions')
+    .get(host + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
@@ -37,8 +47,11 @@ export function getForm(cb) {
 }
 
 export function sendPersonal(data, cb = () => {}) {
+  const url = '/api/accounts';
+  beforeLog(url);
+
   request
-    .post(host + '/api/accounts')
+    .post(host + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
@@ -53,8 +66,11 @@ export function sendPersonal(data, cb = () => {}) {
 }
 
 export function sendQuestions(data, cb = () => {}) {
+  const url = '/api/question_answers';
+  beforeLog(url);
+
   request
-    .post(host + '/api/question_answers')
+    .post(host + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
@@ -69,8 +85,11 @@ export function sendQuestions(data, cb = () => {}) {
 }
 
 export function login({ email, password, cb }) {
+  const url = '/api/auth/sign_in';
+  beforeLog(url);
+
   request
-    .post(host + '/api/auth/sign_in')
+    .post(host + url)
     .send({email, password, 'access-token': localStorage.accessToken})
     .set('Accept', 'application/json')
     .end((err, res) => {
