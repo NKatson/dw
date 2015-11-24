@@ -73,7 +73,7 @@ function checkIncome(data, fieldName, errors) {
 
 export function validateSurvey(data) {
   let errors = {};
-  const addressRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/i;
+  const addressRegex = /^[a-zA-Z\- ,0-9\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
