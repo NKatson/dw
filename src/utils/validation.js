@@ -37,7 +37,7 @@ export function registration(data) {
 }
 
 function checkRequired(data, fieldName, errors) {
-  if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
+  if (!data[fieldName]) {
     errors[fieldName] = 'Required';
   }
   return errors;
@@ -96,6 +96,5 @@ export function validateSurvey(data) {
   errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
 
-  console.log(errors);
   return errors;
 }

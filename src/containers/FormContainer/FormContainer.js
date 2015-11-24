@@ -3,17 +3,18 @@ import { connect } from 'react-redux';
 import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
 import * as api from '../../utils/apiClient';
+import { Link } from 'react-router';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
     let { category = 'personal', number = 0 } = this.props.params;
     this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
-    if (this.props.categoryIndex === 0 && this.props.step == 0) {
-      this.props.dispatch(surveyActions.disableNext());
-      setTimeout(() => {
-        this.props.dispatch(surveyActions.enableNext());
-      }, 15000);
-    }
+    // if (this.props.categoryIndex === 0 && this.props.step == 0) {
+    //   this.props.dispatch(surveyActions.disableNext());
+    //   setTimeout(() => {
+    //     this.props.dispatch(surveyActions.enableNext());
+    //   }, 15000);
+    //}
   }
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
@@ -37,7 +38,7 @@ class FormContainer extends React.Component {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
   handleSubmit(data) {
-    console.log(data);
+    // console.log(data);
   }
   parseMultipleNames(question) {
     let names = [];
@@ -65,9 +66,16 @@ class FormContainer extends React.Component {
     }, []);
   }
 
+  nextClicked(e) {
+  //  e.preventDefault();
+    console.log('Next!');
+  }
+
   renderForms(data) {
     let result = [];
     let index = 0;
+    const { prevLink, nextLink } = this.props;
+
     for (let category in data) {
       data[category].map((form, index) => {
        if (index === this.props.step && category == this.props.category) {
@@ -92,7 +100,15 @@ class FormContainer extends React.Component {
                     prevLink={this.props.prevLink}
                     formData={this.props.formData}
                     disabledNext={this.props.disabledNext}
-                   />);
+                    nextClicked={::this.nextClicked}
+                   >
+                   <div className="clearfix pad-05">
+                       {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
+                       <Link to={nextLink} onClick={::this.nextClicked} className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>
+                         {nextLink === '/submit' ? 'Submit' : 'Next >'}
+                       </Link>
+                   </div>
+          </DynamicForm>);
         }
       });
     }

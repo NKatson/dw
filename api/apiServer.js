@@ -27,11 +27,11 @@ app.get('/api/questions', (req, res) => {
         "hint": "(Hint: You definitely know all the answers to these questions!)",
         "questions": [
           {
-            "name": "firstName",
+            "name": "first_name",
             "type": "text",
             "placeholder": "First Name"
           }, {
-            "name": "lastName",
+            "name": "last_name",
             "type": "text",
             "placeholder": "Last Name"
           }, {
@@ -99,7 +99,7 @@ app.get('/api/questions', (req, res) => {
               {"label" : "Wyoming",	"value" : "WY"}
             ]
           }, {
-            "name": "zipCode",
+            "name": "zip_code",
             "type": "text",
             "class": "inline-block w-210",
             "placeholder": "Zip Code"
@@ -115,7 +115,7 @@ app.get('/api/questions', (req, res) => {
             "class": "w-342 inline-block valign-mid",
             "placeholder": "SSN"
           }, {
-            "name": "dateOfBirth",
+            "name": "date_of_birth",
             "type": "text",
             "class": "w-342",
             "placeholder": "Date of Birth (MM/DD/YYYY)",

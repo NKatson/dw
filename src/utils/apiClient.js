@@ -8,7 +8,7 @@ let host = `http://worthfm.4xxi.com` ;
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
-//host = 'http://localhost:8000';
+host = 'http://localhost:8080';
 
 function saveLocal(res) {
   console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
@@ -27,7 +27,7 @@ export function getForm(cb) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      
+
       saveLocal(res);
       console.log(res.body);
       return cb(null, {
