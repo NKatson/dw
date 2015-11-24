@@ -39,7 +39,7 @@ let Authorization = React.createClass({
             {loggedIn ? `Hello, ${userEmail}!` :
             <div className="login-block">
                 <FormHeader />
-                <form className="common-form login-form" onSubmit={this.handleSubmit}>
+                <form className="common-form login-form-auth" onSubmit={this.handleSubmit}>
                   {
                     loginError ?
                     <div className="message message_error">{loginError}</div> :

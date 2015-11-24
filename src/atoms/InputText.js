@@ -60,7 +60,7 @@ class InputText extends React.Component {
 InputText.propTypes = {
   field: PropTypes.object,
   placeholder: PropTypes.string,
-  additionalClass: PropTypes.string.isRequired,
+  additionalClass: PropTypes.string,
   icon: PropTypes.string,
   label: PropTypes.string,
   type: PropTypes.string,

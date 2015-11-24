@@ -29,7 +29,7 @@ class Submit extends React.Component {
   }
   render () {
     return (
-      <div className="common-form personal-info-form">Your data has been saved!</div>
+      <div className="common-form personal-info-form" style={{marginTop: '30px'}}>Your data has been saved!</div>
     );
   }
 }

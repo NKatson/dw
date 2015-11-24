@@ -49,7 +49,7 @@ let Registration = React.createClass({
         <div className="container container-1">
             <div className="login-block">
                 <FormHeader />
-                <form onSubmit={this.handleSubmit} className="common-form login-form">
+                <form onSubmit={this.handleSubmit} className="common-form login-form-auth">
                     {
                       registrationError && registrationError.length > 0 ?
                       <div className="message message_error">{registrationError}</div> :

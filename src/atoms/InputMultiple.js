@@ -18,7 +18,7 @@ class InputMultiple extends React.Component {
           }
           return (
               <p className="radio-chbx-wrap">
-                <input  {...input.field} {...iProps}  />  <label>{input.label}</label>
+              <label><input  {...input.field} {...iProps}  /> {input.label}</label>
               </p>
           );
         })}
