@@ -88,6 +88,8 @@ h2 {
   top: 0;
 }
 .cabinet span {
+  padding: 5px;
+  color: #fff;
   vertical-align: middle;
   width: 58px;
   padding: 5px;

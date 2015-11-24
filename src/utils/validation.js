@@ -77,25 +77,24 @@ export function validateSurvey(data) {
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-  const ssnRegex = /(^\d{3}-\d{2}-\d{3}$)/i;
-  const dateRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
-  const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipCode', 'state', 'phone', 'ssn', 'dateOfBirth', 'yearly-income'];
+//  const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipcode', 'phone', 'ssn', 'dateOfBirth'];
+  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code',
+ 'phone', 'ssn', 'date_of_birth'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
-    // if (fieldName === 'yearly-income') {
-    //   errors = checkIncome(data, fieldName, errors);
-    // }
+    if (fieldName === 'personal-text-45') {
+      errors = checkIncome(data, fieldName, errors);
+    }
   });
 
-  errors = checkLength({ data, fieldName: 'firstName', errors, min: 2 });
-  errors = checkLength({ data, fieldName: 'lastName', errors, min: 2 });
+
+  errors = checkLength({ data, fieldName: 'first_name', errors, min: 2 });
+  errors = checkLength({ data, fieldName: 'last_name', errors, min: 2 });
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
   errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
-  errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valid ssn format' });
-  errors = checkRegex({ data, fieldName: 'dateOfBirth', regex: dateRegex, errors, message: 'Please type valid date format' });
-  errors = checkRegex({ data, fieldName: 'zipCode', regex: zipCodeRegex, errors, message: '5 numbers' });
+  errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
 
   console.log(errors);
   return errors;

@@ -17,7 +17,6 @@ let App = React.createClass({
   handleLogout(event) {
     event.preventDefault();
     this.props.dispatch(auth.logout( () => {
-        console.log('In app!');
         this.history.replaceState(null, '/signin');
     }));
   },

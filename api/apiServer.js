@@ -11,12 +11,17 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.post('/api/accounts', (req, res) => {
+  console.log('Request to accounts:');
+  console.log(req.body);
+});
+
 // Forms
-app.get('/api/forms', (req, res) => {
+app.get('/api/questions', (req, res) => {
   const data = {
     "Personal": [
       {
-        "formKey": "Personal-step-1",
+        "formKey": "personal-step-1",
         "title": "The Basics",
         "description": "This is the easy stuff.",
         "hint": "(Hint: You definitely know all the answers to these questions!)",

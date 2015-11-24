@@ -5,3 +5,4 @@ export Step from './Step/Step';
 export Footer from './Footer/Footer';
 export DynamicForm from './DynamicForm/DynamicForm';
 export Category from './Category/Category';
+export Submit from './Submit/Submit';
