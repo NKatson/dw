@@ -5,11 +5,12 @@ class InputMultiple extends React.Component {
     const {htmlName, additionalClass, handleClick, type, inputs } = this.props;
     return (
       <div className={'input-wrap ' + additionalClass}>
-        {inputs.map(input => {
+        {inputs.map((input, index) => {
           let iProps = {
             type: type ? type : 'radio',
             name: htmlName,
             value: input.value,
+            defaultChecked: index === 0 ? true : false
           };
 
           if (handleClick) {
@@ -17,7 +18,7 @@ class InputMultiple extends React.Component {
           }
           return (
               <p className="radio-chbx-wrap">
-                <input  {...input.field} {...iProps} />  <label>{input.label}</label>
+                <input  {...input.field} {...iProps}  />  <label>{input.label}</label>
               </p>
           );
         })}

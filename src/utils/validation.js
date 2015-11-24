@@ -80,18 +80,20 @@ export function validateSurvey(data) {
   const ssnRegex = /(^\d{3}-\d{2}-\d{3}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'ssn', 'date_of_birth'];
+  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'ssn', 'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
-    if (fieldName === 'personal-text-45') {
+    if (fieldName === 'annual_income') {
       errors = checkIncome(data, fieldName, errors);
     }
   });
+  const minTwo = ['first_name', 'last_name', 'address', 'employer', 'title', 'industry_kind'];
 
+  minTwo.forEach(elem => {
+      errors = checkLength({ data, fieldName: elem, errors, min: 2 });
+  });
 
-  errors = checkLength({ data, fieldName: 'first_name', errors, min: 2 });
-  errors = checkLength({ data, fieldName: 'last_name', errors, min: 2 });
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
   errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valid SSN format' });

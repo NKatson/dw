@@ -22,13 +22,14 @@ class InputText extends React.Component {
     }
 
     if (isIncome) {
-      component = <CurrencyMaskedInput placeholder="0" required {...field}  className="text full-width" />;
+      component = <CurrencyMaskedInput placeholder="0" required {...field}  className="text full-width" type="text" pattern="\d.*" />;
     }
+
     // Additional class hardcode
     let addClass = '';
     if (placeholder === 'Zip Code') {
       addClass = 'inline-block w-210';
-    } 
+    }
     if (placeholder === 'Phone') {
       addClass = 'w-342 inline-block valign-mid';
     }
