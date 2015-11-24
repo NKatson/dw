@@ -80,7 +80,8 @@ class FormContainer extends React.Component {
     }
 
     if (this.props.categoryIndex === 0) {
-      window.location.href = 'http://localhost:3000' + this.props.nextLink;
+      let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+      window.location.href = `http://${window.location.hostname}${port}${this.props.nextLink}`
     } else {
       this.context.history.pushState(null, this.props.nextLink);
     }
