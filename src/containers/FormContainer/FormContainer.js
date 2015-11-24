@@ -4,6 +4,7 @@ import { DynamicForm } from '../../components';
 import * as surveyActions from '../../redux/actions/survey';
 import * as api from '../../utils/apiClient';
 import { Link } from 'react-router';
+import { PropTypes as RouterPropTypes } from 'react-router';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
@@ -13,7 +14,6 @@ class FormContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
     const { category, step } = this.props;
-
     if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
       this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
     }
@@ -36,7 +36,9 @@ class FormContainer extends React.Component {
   }
   parseMultipleNames(question) {
     let names = [];
+    console.log(question);
     question.answers.map(answer => {
+      if (answer.label !== this.props.stateSelectValue) return;
       names.push(answer.name);
       if (answer.dynamicFields && answer.dynamicFields.length > 0) {
         answer.dynamicFields.map(field => {
@@ -47,8 +49,8 @@ class FormContainer extends React.Component {
     return names;
   }
   generateFields(form) {
-    const multiple = ['checkbox', 'radio'];
-    return form.questions.reduce((fields, question) => {
+    const multiple = ['checkbox', 'radio', 'dropdown'];
+    const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
         const names = ::this.parseMultipleNames(question);
         fields.push(...names);
@@ -58,11 +60,12 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
+    return fields
   }
 
   handleFormSubmit(data) {
-    console.log(data);
     if (this.props.step === 0 && this.props.categoryIndex === 0) {
+      console.log('Personal case');
       // The Basics case
       let result = {};
       if (this.props.formData && this.props.formData.dynamic && this.props.formData.dynamic['personal-step-1']) {
@@ -75,7 +78,12 @@ class FormContainer extends React.Component {
       }
       api.sendPersonal(result);
     }
-    window.location.href = 'http://localhost:3000' + this.props.nextLink;
+
+    if (this.props.categoryIndex === 0) {
+      window.location.href = 'http://localhost:3000' + this.props.nextLink;
+    } else {
+      this.context.history.pushState(null, this.props.nextLink);
+    }
   }
 
   renderForms(data) {
@@ -125,6 +133,11 @@ class FormContainer extends React.Component {
     );
   }
 }
+
+FormContainer.contextTypes = {
+  history: RouterPropTypes.history,
+};
+
 
 function mapStateToProps(state) {
   return {

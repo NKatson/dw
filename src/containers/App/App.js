@@ -21,7 +21,8 @@ let App = React.createClass({
     }));
   },
   render() {
-    const { userEmail, loggedIn } = this.props;
+    let { userEmail, loggedIn } = this.props;
+    loggedIn = localStorage.uid && localStorage.accessToken ? true : false;
     return (
       <div className="main-wrap">
         <div className="wide-block main-header">

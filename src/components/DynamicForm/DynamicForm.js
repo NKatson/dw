@@ -46,8 +46,6 @@ class DynamicForm extends Component {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
-            console.log(answer.label);
-            console.log(this.props.stateSelectValue);
             if (answer.label === this.props.stateSelectValue) {
               result.push(::this.renderInput(field, fields));
             }
@@ -98,7 +96,7 @@ class DynamicForm extends Component {
     return result;
   }
   render() {
-    const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
+    const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, type } = this.props;
     return (
       <form className="common-form personal-info-form" onSubmit={this.props.handleSubmit}>
         <h2>{title}</h2>
@@ -107,7 +105,11 @@ class DynamicForm extends Component {
           {::this.renderQuestions(questions, fields)}
           <div className="clearfix pad-05">
               {this.props.children}
-              <button className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>Submit </button>
+              {title == 'Markets move up and down. How comfortable are you with changes?' || type == 'recommend' ?
+                <Link className="btn btn_blue w-308 pull-right" to={nextLink}>Next</Link>
+               :
+               <button className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>Submit </button>
+             }
           </div>
     </form>
     );

@@ -37,7 +37,7 @@ export function registration(data) {
 }
 
 function checkRequired(data, fieldName, errors) {
-  if (!data[fieldName]) {
+  if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
     errors[fieldName] = 'Required';
   }
   return errors;
@@ -77,10 +77,10 @@ export function validateSurvey(data) {
   const addressRegex = /^[a-zA-Z\- ,0-9\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
+  const ssnRegex = /(^\d{3}-\d{2}-\d{3}$)/i;
+  const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-//  const requiredFields = ['firstName', 'lastName', 'address', 'city', 'zipcode', 'phone', 'ssn', 'dateOfBirth'];
-  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code',
- 'phone', 'ssn', 'date_of_birth'];
+  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'ssn', 'date_of_birth'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
@@ -94,8 +94,12 @@ export function validateSurvey(data) {
   errors = checkLength({ data, fieldName: 'last_name', errors, min: 2 });
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
+  errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valid SSN format' });
   errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
+  errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });
 
+  console.log('Validation errors: ');
+  console.log(errors);
   return errors;
 }

@@ -10,14 +10,14 @@ class InputMultiple extends React.Component {
             type: type ? type : 'radio',
             name: htmlName,
             value: input.value,
-          }
+          };
+
           if (handleClick) {
             iProps.onClick = handleClick;
           }
           return (
               <p className="radio-chbx-wrap">
-                <input  {...input.field} {...iProps} /> 
-              <label>{input.label}</label>
+                <input  {...input.field} {...iProps} />  <label>{input.label}</label>
               </p>
           );
         })}

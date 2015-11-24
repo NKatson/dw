@@ -136,7 +136,7 @@ app.get('/api/questions', (req, res) => {
             "answers": [
               {
                 "label": "Employed",
-                "value": 1,
+                "value": "1",
                 "name": "employ-employed",
                 "dynamicFields" : [ // dynamic fields
                   {
@@ -163,7 +163,7 @@ app.get('/api/questions', (req, res) => {
                 ]
               }, {
                 "label": "Self-Employed",
-                "value": 2,
+                "value": "2",
                 "name": "employ-self-employed",
                 "dynamicFields" : [ // dynamic fields
                   {
@@ -191,7 +191,7 @@ app.get('/api/questions', (req, res) => {
                 ]
               }, {
                 "label": "Not Currently Working",
-                "value": 3,
+                "value": "3",
                 "name": "employ-not-working",
                 "dynamicFields" : [ // dynamic fields
                   {
@@ -208,7 +208,7 @@ app.get('/api/questions', (req, res) => {
                 ]
               }, {
                 "label": "Student",
-                "value": 4,
+                "value": "4",
                 "name": "employ-student",
                 "dynamicFields" : [ // dynamic fields
                   {
@@ -226,7 +226,7 @@ app.get('/api/questions', (req, res) => {
               },
               {
                 "label": "Retired",
-                "value": 5,
+                "value": "5",
                 "name": "employ-redired",
                 "dynamicFields" : [ // dynamic fields
                   {
