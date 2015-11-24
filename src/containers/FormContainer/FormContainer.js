@@ -9,12 +9,6 @@ class FormContainer extends React.Component {
   componentDidMount(props) {
     let { category = 'personal', number = 0 } = this.props.params;
     this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
-    // if (this.props.categoryIndex === 0 && this.props.step == 0) {
-    //   this.props.dispatch(surveyActions.disableNext());
-    //   setTimeout(() => {
-    //     this.props.dispatch(surveyActions.enableNext());
-    //   }, 15000);
-    //}
   }
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
@@ -66,9 +60,22 @@ class FormContainer extends React.Component {
     }, []);
   }
 
-  nextClicked(e) {
-  //  e.preventDefault();
-    console.log('Next!');
+  handleFormSubmit(data) {
+    console.log(data);
+    if (this.props.step === 0 && this.props.categoryIndex === 0) {
+      // The Basics case
+      let result = {};
+      if (this.props.formData && this.props.formData.dynamic && this.props.formData.dynamic['personal-step-1']) {
+        const data = this.props.formData.dynamic['personal-step-1'];
+        for (let key in data) {
+          if (key.charAt(0) !== '_') {
+            result[key] = data[key].value;
+          }
+        }
+      }
+      api.sendPersonal(result);
+    }
+    window.location.href = 'http://localhost:3000' + this.props.nextLink;
   }
 
   renderForms(data) {
@@ -100,14 +107,9 @@ class FormContainer extends React.Component {
                     prevLink={this.props.prevLink}
                     formData={this.props.formData}
                     disabledNext={this.props.disabledNext}
-                    nextClicked={::this.nextClicked}
+                    onSubmit={::this.handleFormSubmit}
                    >
-                   <div className="clearfix pad-05">
-                       {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
-                       <Link to={nextLink} onClick={::this.nextClicked} className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>
-                         {nextLink === '/submit' ? 'Submit' : 'Next >'}
-                       </Link>
-                   </div>
+                    {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
           </DynamicForm>);
         }
       });

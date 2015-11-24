@@ -7,11 +7,6 @@ import * as api from '../../utils/apiClient';
 import { touch } from 'redux-form/lib/actions';
 
 class DynamicForm extends Component {
-  chooseNextClickType(e) {
-    e.preventDefault();
-    const { handleNextClick, type } = this.props;
-    handleNextClick(type);
-  }
   getInputs(question, fields) {
     return question.answers.map((answer, index) => {
       return {
@@ -51,6 +46,8 @@ class DynamicForm extends Component {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
+            console.log(answer.label);
+            console.log(this.props.stateSelectValue);
             if (answer.label === this.props.stateSelectValue) {
               result.push(::this.renderInput(field, fields));
             }
@@ -108,7 +105,10 @@ class DynamicForm extends Component {
           {description ? <p>{description}</p> : null}
           {hint ? <p className="wfm-hint">{hint}</p> : null}
           {::this.renderQuestions(questions, fields)}
-          {this.props.children}
+          <div className="clearfix pad-05">
+              {this.props.children}
+              <button className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>Submit </button>
+          </div>
     </form>
     );
   }
