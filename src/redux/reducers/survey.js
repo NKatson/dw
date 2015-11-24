@@ -88,11 +88,11 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       showRecommend: false,
     });
-  case actions.DISABLE_NEXT: 
+  case actions.DISABLE_NEXT:
     return state.merge({
       disabledNext: true
     });
-  case actions.ENABLE_NEXT: 
+  case actions.ENABLE_NEXT:
     return state.merge({
       disabledNext: false
     });
@@ -106,7 +106,6 @@ export default function survey(state = initialState, action = {}) {
 
     return state.merge({
       category: nextCategory,
-      categoryIndex: 0,
       categoryIndex: catIndex,
       step: action.number,
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),

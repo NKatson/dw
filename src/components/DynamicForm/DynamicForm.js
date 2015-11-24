@@ -77,7 +77,6 @@ class DynamicForm extends Component {
           result.push(<InputText
                     key={question.name}
                     additionalClass={question.class ? question.class : ''}
-                    key={question.name}
                     isNormalized={true}
                     label={question.label}
                     field={fields[question.name]}
