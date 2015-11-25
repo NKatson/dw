@@ -36,6 +36,17 @@ export function registration(data) {
   return errors;
 }
 
+function checkIfAdult(data, fieldName, errors) {
+  if (errors[fieldName]) return errors;
+  let len = data[fieldName].length;
+  let year = parseInt(data[fieldName].substr(len - 4, len - 1));
+
+  if (data[fieldName] && ((new Date()).getFullYear() - year) < 13 ) {
+    errors[fieldName] = `I'm sorry, you must be 18 or over to create an account with WorthFM`;
+  }
+  return errors;
+}
+
 function checkRequired(data, fieldName, errors) {
   if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
     errors[fieldName] = 'Required';
@@ -77,7 +88,7 @@ export function validateSurvey(data) {
   const addressRegex = /^[a-zA-Z\- ,0-9\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
-  const ssnRegex = /(^\d{3}-\d{2}-\d{3}$)/i;
+  const ssnRegex = /(^\d{8}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
   const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'ssn', 'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income'];
@@ -101,5 +112,6 @@ export function validateSurvey(data) {
   errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
   errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });
 
+  errors = checkIfAdult(data, 'date_of_birth', errors);
   return errors;
 }
