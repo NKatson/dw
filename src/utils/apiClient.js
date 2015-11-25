@@ -3,7 +3,7 @@ import config from '../config';
 
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
-let host = `http://worthfm.4xxi.com` ;
+let host = `http://dev.worthfm.com` ;
 
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
