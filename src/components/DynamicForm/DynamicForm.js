@@ -71,9 +71,7 @@ class DynamicForm extends Component {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
             if (answer.label === this.props.stateSelectValue) {
-              console.log(answer.label);
-              console.log(fields);
-            //  result.push(::this.renderInput(field, fields));
+              result.push(::this.renderInput(field, fields));
             }
           });
         }

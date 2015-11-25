@@ -47,17 +47,26 @@ class FormContainer extends React.Component {
     return names;
   }
   generateFields(form) {
-    const multiple = ['checkbox', 'radio'];
+    const multiple = ['checkbox', 'radio', 'dropdown'];
+    
+    // dropdown here fo dynamicFields
     const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
         const names = ::this.parseMultipleNames(question);
         fields.push(...names);
+
+        if (question.type === 'dropdown') { // save dropdown select name
+          fields.push(question.name);
+        }
+
         return fields;
       }
+
       fields.push(question.name);
       return fields;
     }, []);
     fields.push('_ssn');
+
     return fields
   }
 
