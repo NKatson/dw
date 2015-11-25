@@ -3,9 +3,10 @@ import multi from 'redux-multi';
 import { fromJS } from 'immutable';
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 import promise from './middleware/promise';
+import logger from './middleware/logger';
 
 export default function createStore(initialState) {
-  const middleware = [thunk, multi, promise];
+  const middleware = [thunk, multi, promise, logger];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {

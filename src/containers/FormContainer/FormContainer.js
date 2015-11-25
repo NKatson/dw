@@ -5,6 +5,7 @@ import * as surveyActions from '../../redux/actions/survey';
 import * as api from '../../utils/apiClient';
 import { Link } from 'react-router';
 import { PropTypes as RouterPropTypes } from 'react-router';
+import { blur } from 'redux-form/lib/actions';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
@@ -31,12 +32,8 @@ class FormContainer extends React.Component {
   chooseAccount(e) {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
-  handleSubmit(data) {
-    // console.log(data);
-  }
   parseMultipleNames(question) {
     let names = [];
-    console.log(question);
     question.answers.map(answer => {
       if (answer.label !== this.props.stateSelectValue) return;
       names.push(answer.name);
@@ -56,7 +53,6 @@ class FormContainer extends React.Component {
         fields.push(...names);
         return fields;
       }
-
       fields.push(question.name);
       return fields;
     }, []);
@@ -65,7 +61,6 @@ class FormContainer extends React.Component {
 
   handleFormSubmit(data) {
     if (this.props.step === 0 && this.props.categoryIndex === 0) {
-      console.log('Personal case');
       // The Basics case
       let result = {};
       if (this.props.formData && this.props.formData.dynamic && this.props.formData.dynamic['personal-step-1']) {
@@ -76,6 +71,10 @@ class FormContainer extends React.Component {
           }
         }
       }
+      // send welcome page question
+      result = Object.assign({}, result, {
+        describe_self: this.props.welcome,
+      });
       api.sendPersonal(result);
     }
 
@@ -117,6 +116,7 @@ class FormContainer extends React.Component {
                     formData={this.props.formData}
                     disabledNext={this.props.disabledNext}
                     onSubmit={::this.handleFormSubmit}
+                    dispatch={this.props.dispatch}
                    >
                     {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
           </DynamicForm>);
@@ -142,6 +142,7 @@ FormContainer.contextTypes = {
 
 function mapStateToProps(state) {
   return {
+    welcome: state.survey.get('welcome'),
     data: state.survey.get('data'),
     showSsn: state.survey.get('showSsn'),
     category: state.survey.get('category'),

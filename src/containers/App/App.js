@@ -27,15 +27,7 @@ let App = React.createClass({
       <div className="main-wrap">
         <div className="wide-block main-header">
             <div className="container container-1">
-                <Link to="/" className="main-logo" />Worth.fm &nbsp;
-                {loggedIn ? <Link to="/reset">Reset</Link> : null }
-                {loggedIn ? <Link to="/welcome">Welcome</Link> : null }&nbsp;
-                {loggedIn ? `Hi, ${localStorage.uid}` : null}
-                <div className="cabinet">
-                {loggedIn ? <a href="#" onClick={this.handleLogout}>Logout</a> : null }
-                    {!loggedIn ? <Link to="/signin"><span>Sign In</span></Link> : null }
-                    {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }
-                </div>
+                <Link to="/" className="main-logo" />Worth.fm &nbsp;              
             </div>
         </div>
           {this.props.children}

@@ -101,7 +101,5 @@ export function validateSurvey(data) {
   errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
   errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });
 
-  console.log('Validation errors: ');
-  console.log(errors);
   return errors;
 }

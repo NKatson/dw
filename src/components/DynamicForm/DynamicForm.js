@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { InputText, InputMultiple, Select } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 import * as api from '../../utils/apiClient';
-import { touch } from 'redux-form/lib/actions';
+import { blur, focus } from 'redux-form/lib/actions';
 
 class DynamicForm extends Component {
   getInputs(question, fields) {
@@ -15,6 +15,21 @@ class DynamicForm extends Component {
         value: answer.value ? answer.value : answer.name,
       }
     });
+  }
+  componentDidMount() {
+    let { questions, fields, dispatch } = this.props;
+    questions.map((question, index) => {
+      if (question.type === 'text' && question.defaultValue && question.name === 'first_name') {
+        setTimeout(function() {
+          console.log('DISP__________________');
+          dispatch(focus(question.name));
+        }, 5000);
+
+      }
+    });
+  }
+  componentWillReceiveProps(nextProps) {
+
   }
   renderInput(question, fields) {
     const multipleTypes = ['checkbox', 'radio'];
@@ -56,12 +71,15 @@ class DynamicForm extends Component {
       return result;
     } else {
       const field = fields[question.name];
+      if (question.defaultValue) {
+      }
       return <InputText
                 key={question.name}
                 additionalClass={question.class ? question.class : ''}
                 label={question.label}
                 isNormalized={question.needNormalize ? true : false}
                 field={field}
+                defaultValue={question.defaultValue}
                 type={question.type}
                 placeholder={question.placeholder}
               />;
@@ -129,7 +147,16 @@ DynamicForm.propTypes = {
     handleSelectChange: PropTypes.func.isRequired,
     prevLink: PropTypes.string.isRequired,
     nextLink: PropTypes.string.isRequired,
-    formData: PropTypes.object
+    formData: PropTypes.object,
+    dispatch: PropTypes.func.isRequired
 };
 
-export default reduxForm({form: 'dynamic', validate, destroyOnUnmount: false})(DynamicForm);
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch: dispatch,
+  }
+}
+export default reduxForm({
+  form: 'dynamic',
+  validate, destroyOnUnmount: false,
+}, null, mapDispatchToProps)(DynamicForm);

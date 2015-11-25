@@ -3,6 +3,7 @@ import { Map, fromJS } from 'immutable';
 
 const initialState = Map({
   requesting: false,
+  welcome: "Fresh",
 });
 
 function getPrevLink({ category, step, data }) {
@@ -88,13 +89,9 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       showRecommend: false,
     });
-  case actions.DISABLE_NEXT:
+  case actions.SAVE_WELCOME:
     return state.merge({
-      disabledNext: true
-    });
-  case actions.ENABLE_NEXT:
-    return state.merge({
-      disabledNext: false
+      welcome: action.welcome,
     });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;

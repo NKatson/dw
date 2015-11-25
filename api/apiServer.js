@@ -29,18 +29,22 @@ app.get('/api/questions', (req, res) => {
           {
             "name": "first_name",
             "type": "text",
-            "placeholder": "First Name"
+            "placeholder": "First Name",
+            "defaultValue" : "Vasya",
           }, {
             "name": "last_name",
+            "defaultValue": "Pupkin",
             "type": "text",
             "placeholder": "Last Name"
           }, {
             "name": "address",
             "type": "text",
+            "defaultValue": "Pupkin",
             "placeholder": "Address"
           }, {
             "name": "city",
             "type": "text",
+            "defaultValue": "Pupkin",
             "placeholder": "City"
           }, {
             "name": "state",
@@ -101,23 +105,27 @@ app.get('/api/questions', (req, res) => {
           }, {
             "name": "zip_code",
             "type": "text",
+            "defaultValue": "11111",
             "class": "inline-block w-210",
             "placeholder": "Zip Code"
           }, {
             "name": "phone",
             "type": "text",
+            "defaultValue": "111-111-1111",
             "class": "w-342 inline-block valign-mid",
             "placeholder": "Phone",
             "needNormalize" : true,
           }, {
             "name": "ssn",
             "type": "password",
+            "defaultValue": "111-11-111",
             "class": "w-342 inline-block valign-mid",
             "placeholder": "SSN"
           }, {
             "name": "date_of_birth",
             "type": "text",
             "class": "w-342",
+            "defaultValue": "11/11/1111",
             "placeholder": "Date of Birth (MM/DD/YYYY)",
             "needNormalize" : true,
           }

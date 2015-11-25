@@ -10,9 +10,9 @@ export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 export const CHANGE_QUESTION = 'CHANGE_QUESTION';
 export const HIDE_RECOMMEND = 'HIDE_RECOMMEND';
 export const SEND_DATA = 'SEND_DATA';
-
 export const DISABLE_NEXT = 'DISABLE_NEXT';
 export const ENABLE_NEXT = 'ENABLE_NEXT';
+export const SAVE_WELCOME = 'SAVE_WELCOME';
 
 function initialRequest() {
   return {
@@ -75,25 +75,11 @@ export function toggleSsn() {
   }
 }
 
-export function disableNext() {
+export function saveWelcome(welcome) {
   return {
-    type: DISABLE_NEXT
+    type: SAVE_WELCOME,
+    welcome,
   }
-}
-
-export function enableNext() {
-  return {
-    type: ENABLE_NEXT
-  }
-}
-
-export function checkNext() {
-  return dispatch => {
-    dispatch(disableNext());
-    setTimeout(function() {
-      this.props.dispatch(surveyActions.enableNext());
-    }, 3000)
-  };
 }
 
 export function getData() {
