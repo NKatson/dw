@@ -3,6 +3,9 @@ import MaskedInput from 'react-maskedinput';
 import CurrencyMaskedInput from 'react-currency-masked-input';
 
 class InputText extends React.Component {
+  maskedChange(e) {
+    console.log('masked!');
+  }
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized , label, defaultValue } = this.props;
     let mask = '111-111-1111';
@@ -11,15 +14,20 @@ class InputText extends React.Component {
 
     if (field.name === 'date_of_birth') {
       mask = '11/11/1111';
-    } else if (field.name === 'ssn') {
-      mask = '111-11-111';
+    } else if (field.name === '_ssn') {
+      mask = '111-11-1111';
+      field.value = '123-__-____';
     }
 
     if (!field.value && defaultValue) {
       field.value = defaultValue;
     }
     if (isNormalized && !isIncome && type !== 'password') {
-      component = <MaskedInput mask={mask} type={type ? type : 'text'} placeholder={placeholder} className="text full-width" {...field} />;
+      component = <MaskedInput
+        mask={mask}
+        type={type ? type : 'text'}
+        placeholder={placeholder}
+        className="text full-width" {...field} />;
     } else {
       component =  <input
         type={type ? type : 'text'}

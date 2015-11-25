@@ -1,23 +1,23 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import { InputText, InputMultiple, Select } from '../../atoms/index';
+import { InputText, InputMultiple, Select, SsnInput } from '../../atoms/index';
 import { validateSurvey as validate } from '../../utils/validation';
 import * as api from '../../utils/apiClient';
 import { blur, focus } from 'redux-form/lib/actions';
 
-const asyncValidate = (values) => {
-  console.log(values);
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (['11/11/1111'].includes(values.date_of_birth)) {
-        reject({date_of_birth: 'That username is taken'});
-      } else {
-        resolve();
-      }
-    }, 1000); // simulate server latency
-  });
-};
+// const asyncValidate = (values) => {
+//   console.log(values);
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       if (['11/11/1111'].includes(values.date_of_birth)) {
+//         reject({date_of_birth: 'That username is taken'});
+//       } else {
+//         resolve();
+//       }
+//     }, 1000); // simulate server latency
+//   });
+// };
 
 class DynamicForm extends Component {
   getInputs(question, fields) {
@@ -39,9 +39,6 @@ class DynamicForm extends Component {
 
       }
     });
-  }
-  componentWillReceiveProps(nextProps) {
-
   }
   renderInput(question, fields) {
     const multipleTypes = ['checkbox', 'radio'];
@@ -66,7 +63,7 @@ class DynamicForm extends Component {
             additionalClass={question.class ? question.class : ''}
             options={question.answers}
             placeholder={question.placeholder}
-            handleChange={::this.props.handleSelectChange}
+            handleChange={this.props.handleSelectChange}
             />);
       // render child dynamic fields
       question.answers.map((answer, index) => {
@@ -74,7 +71,9 @@ class DynamicForm extends Component {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
             if (answer.label === this.props.stateSelectValue) {
-              result.push(::this.renderInput(field, fields));
+              console.log(answer.label);
+              console.log(fields);
+            //  result.push(::this.renderInput(field, fields));
             }
           });
         }
@@ -102,17 +101,23 @@ class DynamicForm extends Component {
     questions.map((question, index) => {
 
       // Ssn case
-      if (question.placeholder === 'SSN') {
+      if (question.name === 'ssn') {
           result.push(<div className="input-wrap__descr w-136" key="ssn-show-div">We will send your phone a text confirmation</div>);
-          result.push(<InputText
-                    key={question.name}
-                    additionalClass={question.class ? question.class : ''}
-                    isNormalized={true}
-                    label={question.label}
-                    field={fields[question.name]}
-                    type={this.props.showSsn ? 'text' : 'password'}
-                    placeholder={question.placeholder}
-                  />);
+          const ssnInputProps = {
+            type: 'password',
+            placeholder: question.placeholder,
+            field: fields['ssn']
+          }
+          if (this.props.showSsn) {
+            ssnInputProps.type = 'text';
+
+            ssnInputProps.field = fields['_ssn'];
+          }
+          const { showSsn, ssnValue } = this.props;
+          result.push(<SsnInput
+                    key="ssn"
+                    showSsn={this.props.showSsn}
+                    {...ssnInputProps} />);
           result.push(<div className="input-wrap input-wrap__descr w-136 input-wrap__addit-checkbox" key={question.name + "checkb"}>
                         <p className="radio-chbx-wrap">
                           <input type="checkbox" onClick={this.props.handleShowSsnClick} /> <label>Show</label>
@@ -152,6 +157,7 @@ DynamicForm.propTypes = {
     questions: PropTypes.array.isRequired,
     hint: PropTypes.string,
     showSsn: PropTypes.bool,
+    ssnValue: PropTypes.string,
     categoryIndex: PropTypes.number.isRequired,
     step: PropTypes.number.isRequired,
     stateSelectValue: PropTypes.string,
@@ -171,7 +177,7 @@ function mapDispatchToProps(dispatch) {
 export default reduxForm({
   form: 'dynamic',
   validate,
-  asyncValidate,
-  asyncBlurFields: ['date_of_birth'],
+  // asyncValidate,
+  // asyncBlurFields: ['date_of_birth'],
   destroyOnUnmount: false,
 }, null, mapDispatchToProps)(DynamicForm);

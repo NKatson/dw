@@ -23,6 +23,7 @@ class FormContainer extends React.Component {
     this.props.dispatch(surveyActions.toggleSsn());
   }
   handleSelectChange(e) {
+    console.log('Select change!');
     this.props.dispatch(surveyActions.selectChange(e.target.value));
   }
   handlePrevClick(e) {
@@ -56,6 +57,7 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
+    fields.push('_ssn');
     return fields
   }
 
