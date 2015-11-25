@@ -48,7 +48,7 @@ class FormContainer extends React.Component {
   }
   generateFields(form) {
     const multiple = ['checkbox', 'radio', 'dropdown'];
-    
+
     // dropdown here fo dynamicFields
     const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {

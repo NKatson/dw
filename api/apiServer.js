@@ -165,7 +165,7 @@ app.get('/api/questions', (req, res) => {
                   {
                     "label": "How much do you make",
                     "type": "text",
-                    "name": "yearly-income",
+                    "name": "annual_income",
                     "needNormalize" : true,
                   },
                 ]
@@ -193,7 +193,7 @@ app.get('/api/questions', (req, res) => {
                   {
                     "label": "How much do you make?",
                     "type": "text",
-                    "name": "yearly-income",
+                    "name": "annual_income",
                     "needNormalize" : true,
                   },
                 ]
@@ -210,7 +210,7 @@ app.get('/api/questions', (req, res) => {
                   {
                     "label": "How much do you make?",
                     "type": "text",
-                    "name": "yearly-income",
+                    "name": "annual_income",
                     "needNormalize" : true,
                   },
                 ]
@@ -227,7 +227,7 @@ app.get('/api/questions', (req, res) => {
                   {
                     "label": "How much do you make?",
                     "type": "text",
-                    "name": "yearly-income",
+                    "name": "annual_income",
                     "needNormalize" : true,
                   },
                 ]
@@ -245,7 +245,7 @@ app.get('/api/questions', (req, res) => {
                   {
                     "label": "How much do you make?",
                     "type": "text",
-                    "name": "yearly-income",
+                    "name": "annual_income",
                     "needNormalize" : true,
                   },
                 ]

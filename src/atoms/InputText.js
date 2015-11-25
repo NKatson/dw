@@ -16,14 +16,16 @@ class InputText extends React.Component {
       mask = '11/11/1111';
     } else if (field.name === '_ssn') {
       mask = '111-11-1111';
-      field.value = '123-__-____';
+      //field.value = '123-__-____';
     }
 
     if (!field.value && defaultValue) {
       field.value = defaultValue;
     }
+
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
+        size={3}
         mask={mask}
         type={type ? type : 'text'}
         placeholder={placeholder}
@@ -39,7 +41,15 @@ class InputText extends React.Component {
     }
 
     if (isIncome) {
-      component = <CurrencyMaskedInput placeholder="0" required {...field}  className="text full-width" type="text" pattern="\d.*" defaultValue={defaultValue ? defaultValue : ""} />;
+      component = <CurrencyMaskedInput
+                    placeholder="0"
+                    required
+                    {...field}
+                    className="text full-width"
+                    type="text"
+                    pattern="\d.*"
+                    defaultValue={defaultValue ? defaultValue : ""}
+                  />;
     }
 
     // Additional class hardcode
