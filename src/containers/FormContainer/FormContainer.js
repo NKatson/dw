@@ -46,7 +46,7 @@ class FormContainer extends React.Component {
     return names;
   }
   generateFields(form) {
-    const multiple = ['checkbox', 'radio', 'dropdown'];
+    const multiple = ['checkbox', 'radio'];
     const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
         const names = ::this.parseMultipleNames(question);
