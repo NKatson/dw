@@ -133,7 +133,6 @@ class FormContainer extends React.Component {
                     chooseAccount={::this.chooseAccount}
                     nextLink={this.props.nextLink}
                     prevLink={this.props.prevLink}
-                    formData={this.props.formData}
                     disabledNext={this.props.disabledNext}
                     onSubmit={::this.handleFormSubmit}
                     dispatch={this.props.dispatch}
