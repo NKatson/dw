@@ -82,6 +82,7 @@ class DynamicForm extends Component {
       const field = fields[question.name];
       if (question.defaultValue) {
       }
+
       return <InputText
                 key={question.name}
                 additionalClass={question.class ? question.class : ''}

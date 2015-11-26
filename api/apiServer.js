@@ -125,7 +125,7 @@ app.get('/api/questions', (req, res) => {
             "name": "date_of_birth",
             "type": "text",
             "class": "w-342",
-            "defaultValue": "11/11/1111",
+            "defaultValue": "11/11/1991",
             "placeholder": "Date of Birth (MM/DD/YYYY)",
             "needNormalize" : true,
           }
@@ -322,7 +322,7 @@ app.get('/api/questions', (req, res) => {
 });
 
 // Authorization
-app.post('/api/sign_in', (req, res) => {
+app.post('/api/auth/sign_in', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
