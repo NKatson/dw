@@ -14,25 +14,20 @@ class InputText extends React.Component {
 
     if (field.name === 'date_of_birth') {
       mask = '11/11/1111';
-    } else if (field.name === '_ssn') {
-      mask = '111-11-1111';  
-      //field.value = '123-__-____';
-    }
-
-    if (!field.value && defaultValue) {
-      field.value = defaultValue;
     }
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
+        autoFocus={defaultValue ? true : false}
         size={3}
         mask={mask}
         type={type ? type : 'text'}
         placeholder={placeholder}
+        value={defaultValue ? defaultValue : ""}
         className="text full-width" {...field} />;
     } else {
-      console.log(field.name);
       component =  <input
+        autoFocus={defaultValue ? true : false}
         type={type ? type : 'text'}
         className="text full-width"
         placeholder={placeholder}
@@ -44,6 +39,7 @@ class InputText extends React.Component {
     if (isIncome) {
       component = <CurrencyMaskedInput
                     placeholder="0"
+                    autoFocus={defaultValue ? true : false}
                     required
                     {...field}
                     className="text full-width"
@@ -59,9 +55,6 @@ class InputText extends React.Component {
       addClass = 'inline-block w-210';
     }
     if (placeholder === 'Phone') {
-      addClass = 'w-342 inline-block valign-mid';
-    }
-    if (placeholder === 'SSN') {
       addClass = 'w-342 inline-block valign-mid';
     }
     if (placeholder === 'Date of Birth (MM/DD/YYYY)') {

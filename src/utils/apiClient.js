@@ -9,13 +9,9 @@ let host = `http://dev.worthfm.com` ;
 //   host += `:${apiPort}`;
 // }
 //
-//host = 'http://localhost:8080';
+host = 'http://localhost:8080';
 
 function saveLocal(res) {
-  // console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
-  // console.log('token  -> ' + localStorage.accessToken + ' to ' + res.headers['access-token']);
-  // console.log('client -> ' + localStorage.client);
-  // console.log('-------------------------------');
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = res.headers.uid;
 }

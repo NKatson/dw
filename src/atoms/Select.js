@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 class Select extends React.Component {
   render() {
-    const { options, additionalClass, label, handleChange, placeholder, field } = this.props;
+    const { options, additionalClass, label, handleChange, placeholder, field, defaultValue } = this.props;
     // additionalClass hardcode
     let addClass = '';
     if (placeholder === 'State') {
@@ -12,10 +12,10 @@ class Select extends React.Component {
     return (
       <div className={'input-wrap ' + addClass}>
         {label ? <p><b>{label}</b><br /></p> : null}
-        <select className="full-width dropdown" {...field} onChange={handleChange} >
-          <option key='default'>Choose One</option>
+        <select className="full-width dropdown" {...field} onChange={handleChange} defaultValue="Kansas" autoFocus={true} >
+          <option key='default' value='default'>Choose One</option>
           {options.map((option, index) => {
-            return <option key={option.value+""} value={option.label+""} selected={option.selected ? true : false}>{option.label}</option>;
+            return <option key={option.value+""} value={option.label+""}>{option.label}</option>;
           })}
         </select>
       </div>

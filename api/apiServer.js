@@ -51,10 +51,11 @@ app.get('/api/questions', (req, res) => {
             "type": "dropdown",
             "class": "inline-block pad-04",
             "placeholder": "State",
+            "defaultValue" : "AZ",
             "answers": [
               {"label" : "Alabama",	"value" : "AL"},
               {"label" : "Alaska",	"value" : "AK"},
-              {"label" : "Arizona",	"value" : "AZ", "selected" : true},
+              {"label" : "Arizona",	"value" : "AZ"},
               {"label" : "Arkansas",	"value" : "AR"},
               {"label" : "California",	"value" : "CA"},
               {"label" : "Colorado",	"value" : "CO"},
@@ -124,8 +125,8 @@ app.get('/api/questions', (req, res) => {
           }, {
             "name": "date_of_birth",
             "type": "text",
+            "defaultValue" : "11/11/1991",
             "class": "w-342",
-            "defaultValue": "11/11/1991",
             "placeholder": "Date of Birth (MM/DD/YYYY)",
             "needNormalize" : true,
           }

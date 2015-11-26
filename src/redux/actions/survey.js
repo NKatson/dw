@@ -15,6 +15,7 @@ export const ENABLE_NEXT = 'ENABLE_NEXT';
 export const SAVE_WELCOME = 'SAVE_WELCOME';
 export const SSN_CHANGE = 'SSN_CHANGE';
 export const SSN_ERROR_CHANGE = 'SSN_ERROR_CHANGE';
+export const UNFOCUS  = 'UNFOCUS';
 
 function initialRequest() {
   return {
@@ -95,6 +96,13 @@ export function ssnErrorChange(error) {
   return {
     type: SSN_ERROR_CHANGE,
     error,
+  }
+}
+
+export function unfocus(fieldName) {
+  return {
+    type: UNFOCUS,
+    fieldName,
   }
 }
 

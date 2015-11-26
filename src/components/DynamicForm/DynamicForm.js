@@ -18,12 +18,10 @@ class DynamicForm extends Component {
   }
   componentDidMount() {
     let { questions, fields, dispatch } = this.props;
+    let last;
     questions.map((question, index) => {
-      if (question.type === 'text' && question.defaultValue && question.name === 'first_name') {
-        setTimeout(function() {
+      if (question.defaultValue) {
           dispatch(blur('date_of_birth'));
-        }, 5000);
-
       }
     });
   }
@@ -44,6 +42,7 @@ class DynamicForm extends Component {
       let result = [];
       const options = ::this.getInputs(question, fields);
       result.push(<Select
+            defaultValue={question.defaultValue}
             field={fields[question.name]}
             key={question.name}
             label={question.label}
@@ -57,6 +56,7 @@ class DynamicForm extends Component {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
+            console.log(answer);
             if (answer.label === this.props.stateSelectValue) {
               result.push(::this.renderInput(field, fields));
             }
@@ -67,12 +67,10 @@ class DynamicForm extends Component {
       return result;
     } else {
       const field = fields[question.name];
-      if (question.defaultValue) {
-      }
-
       return <InputText
                 key={question.name}
                 additionalClass={question.class ? question.class : ''}
+                defaultValue={question.defaultValue}
                 label={question.label}
                 isNormalized={question.needNormalize ? true : false}
                 field={field}
@@ -91,12 +89,12 @@ class DynamicForm extends Component {
           const { showSsn, storedSsn, formData, ssnError } = this.props;
           result.push(<div className="input-wrap__descr w-136" key="ssn-show-div">We will send your phone a text confirmation</div>);
           result.push(<SsnInput
-                    key="ssn"
-                    showSsn={showSsn}
-                    onSsnChange={this.props.onSsnChange}
-                    storedSsn={storedSsn}
-                    ssnError={ssnError}
-                    />);
+                        key="ssn"
+                        showSsn={showSsn}
+                        onSsnChange={this.props.onSsnChange}
+                        storedSsn={storedSsn}
+                        ssnError={ssnError}
+                        />);
           result.push(<div className="input-wrap input-wrap__descr w-136 input-wrap__addit-checkbox" key={question.name + "checkb"}>
                         <p className="radio-chbx-wrap">
                           <input type="checkbox" onClick={this.props.handleShowSsnClick} /> <label>Show</label>

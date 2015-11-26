@@ -97,6 +97,10 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       ssnError: action.error,
     });
+  case actions.UNFOCUS:
+    return state.merge({
+      unfocusFieldName: action.fieldName,
+    });
   case actions.SSN_CHANGE:
     let isValid = true;
     if (action.ssn.length > 0) {
