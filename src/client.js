@@ -25,7 +25,7 @@ render(
 );
 
 if (__DEVTOOLS__) {
-  const DevTools = require('./containers/DevTools/DevTools');
+  const DevTools = require('./containers/DevTools');
   render(
     <Provider store={store} key="provider">
       <div>

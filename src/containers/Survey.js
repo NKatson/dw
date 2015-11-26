@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { DynamicForm, Category } from '../../components';
-import { SurveyFormHeader } from '../../atoms';
-import * as surveyActions from '../../redux/actions/survey';
+import { DynamicForm, Category } from '../components';
+import { SurveyFormHeader } from '../atoms';
+import * as surveyActions from '../redux/actions/survey';
 
 class Survey extends React.Component {
   componentDidMount() {

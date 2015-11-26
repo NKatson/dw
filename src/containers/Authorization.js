@@ -2,11 +2,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { Link, History } from 'react-router';
-import { login } from '../../redux/actions/auth';
+import { login } from '../redux/actions/auth';
 
-import { InputText } from '../../atoms';
-import { SubmitButton, FormHeader } from '../../components';
-import { authorization as validate } from '../../utils/validation';
+import { InputText } from '../atoms';
+import { SubmitButton, FormHeader } from '../components';
+import { authorization as validate } from '../utils/validation';
 
 let Authorization = React.createClass({
   propTypes: {

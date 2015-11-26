@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import { InputText, InputMultiple, Select, SsnInput } from '../../atoms/index';
-import { validateSurvey as validate } from '../../utils/validation';
-import * as api from '../../utils/apiClient';
+import { InputText, InputMultiple, Select, SsnInput } from '../atoms/index';
+import { validateSurvey as validate } from '../utils/validation';
+import * as api from '../utils/apiClient';
 import { blur, focus } from 'redux-form/lib/actions';
 
 class DynamicForm extends Component {

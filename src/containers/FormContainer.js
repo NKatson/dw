@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { DynamicForm } from '../../components';
-import * as surveyActions from '../../redux/actions/survey';
-import * as api from '../../utils/apiClient';
+import { DynamicForm } from '../components';
+import * as surveyActions from '../redux/actions/survey';
+import * as api from '../utils/apiClient';
 import { Link } from 'react-router';
 import { PropTypes as RouterPropTypes } from 'react-router';
 import { blur } from 'redux-form/lib/actions';

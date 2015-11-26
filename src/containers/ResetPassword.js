@@ -2,10 +2,10 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import { authorization as validate } from '../../utils/validation';
-import { InputText } from '../../atoms';
-import { SubmitButton, ResetPasswordSent } from '../../components';
-import { reset } from '../../redux/actions/resetPassword';
+import { authorization as validate } from '../utils/validation';
+import { InputText } from '../atoms';
+import { SubmitButton, ResetPasswordSent } from '../components';
+import { reset } from '../redux/actions/resetPassword';
 
 class ResetPassword extends React.Component {
   handleSubmit(event) {

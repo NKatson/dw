@@ -4,10 +4,10 @@ import { History } from 'react-router';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
-import {registration} from '../../redux/actions/registration';
-import {registration as validate} from '../../utils/validation';
-import { SubmitButton, FormHeader } from '../../components';
-import { InputText } from '../../atoms';
+import {registration} from '../redux/actions/registration';
+import {registration as validate} from '../utils/validation';
+import { SubmitButton, FormHeader } from '../components';
+import { InputText } from '../atoms';
 
 let Registration = React.createClass({
   propTypes: {

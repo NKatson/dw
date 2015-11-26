@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { SubmitButton, Step } from '../../components';
-import { Radio } from '../../atoms';
+import { SubmitButton, Step } from '../components';
+import { Radio } from '../atoms';
 import { Link } from 'react-router';
-import { saveWelcome } from '../../redux/actions/survey';
+import { saveWelcome } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
   handleSubmit(event) {
@@ -56,8 +56,8 @@ class Welcome extends React.Component {
     return steps.map((item, index) => <Step key={index} {...item} />);
   }
   render() {
-    const imgUrl = require('../../../static/spoiler/wide-bg.jpg');
-    const spoilerPicture = require('../../../static/spoiler/picture.jpg');
+    const imgUrl = require('../../static/spoiler/wide-bg.jpg');
+    const spoilerPicture = require('../../static/spoiler/picture.jpg');
     return (
       <div>
         <div className="wide-block common-block promise-block" style={{ backgroundImage: 'url(' + imgUrl + ')'}}>

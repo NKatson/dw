@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as api from '../../utils/apiClient';
+import * as api from '../utils/apiClient';
 
 class Submit extends React.Component {
   processInner(formData, step, result) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { History } from 'react-router';
 
-import { Footer } from '../../components';
+import { Footer } from '../../components/Footer';
 import * as auth from '../../redux/actions/auth';
 
 require('./App.css');
