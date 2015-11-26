@@ -15,7 +15,7 @@ class Select extends React.Component {
         <select className="full-width dropdown" {...field} onChange={handleChange} >
           <option key='default'>Choose One</option>
           {options.map((option, index) => {
-            return <option key={option.value+""} value={option.label+""}>{option.label}</option>;
+            return <option key={option.value+""} value={option.label+""} selected={option.selected ? true : false}>{option.label}</option>;
           })}
         </select>
       </div>
@@ -30,6 +30,7 @@ Select.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({
      value: PropTypes.string.isRequired,
      label: PropTypes.string.isRequired,
+     selected: PropTypes.string
  })).isRequired,
 }
 

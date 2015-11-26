@@ -31,8 +31,9 @@ export default (store) => {
     <Route path="/" component={App}>
       <Route path="welcome" component={Welcome} />
       <Route onEnter={requireLogin} >
-          <Route path="reset" component={ResetPassword} />
+
       </Route>
+      <Route path="reset" component={ResetPassword} />
       <Route path="submit" component={Submit} />
       <Route path="survey" component={Survey}>
           <IndexRoute component={FormContainer} />

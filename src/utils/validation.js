@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function authorization(data) {
   const errors = {};
   if (!data.email) {
@@ -31,7 +33,7 @@ export function registration(data) {
     }
   }
   if (data.password && data.confirmPassword && data.confirmPassword !== data.password) {
-    errors.confirmPassword = 'Passwords must be equal';
+    errors.confirmPassword = 'Passwords do not match';
   }
   return errors;
 }
@@ -41,20 +43,23 @@ function checkDateOfBirth(data, fieldName, errors, state) {
 
   const inputYearLength = data[fieldName].length;
   const currentYear = (new Date()).getFullYear();
-  const inputYear = parseInt(data[fieldName].substr(inputYearLength - 4, inputYearLength - 1));
+  const [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
   const min18States = [ 'CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
 
-  if (inputYear < 1930 || (currentYear - inputYear) < 3) {
+  console.log(day, month, year);
+  if (year < (currentYear - 100)
+      || (currentYear - year) < 3
+      || !(moment([year, day, month]).isValid())) {
     errors[fieldName] = 'Please type valid date format';
     return errors;
   }
 
-  if ((currentYear - inputYear) < 13 ) {
+  if ((currentYear - year) < 13 ) {
     errors[fieldName] = `I'm sorry, you must be 18 or over to create an account with WorthFM`;
     return errors;
   }
 
-  if ((currentYear - inputYear) < 18 ) {
+  if ((currentYear - year) < 18 ) {
     errors[fieldName] = `Most state laws require that you are 18 or older to setup investment accounts. Please double-check your birthdate - and if you're under 18, we'd love to see you again in a few years.`;
     return errors;
   }
@@ -64,7 +69,7 @@ function checkDateOfBirth(data, fieldName, errors, state) {
     return errors;
   }
 
-  if (state && min18States.indexOf(state) === -1 && (currentYear - inputYear) < 21) {
+  if (state && min18States.indexOf(state) === -1 && (currentYear - year) < 21) {
     errors[fieldName] = `Most state laws require that you are 21 or older to setup investment accounts. Please double-check your birthdate - and if you're under 21, we'd love to see you again in a few years.`;
     return errors;
   }

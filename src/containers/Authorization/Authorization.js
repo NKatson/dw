@@ -6,7 +6,7 @@ import { login } from '../../redux/actions/auth';
 
 import { InputText } from '../../atoms';
 import { SubmitButton, FormHeader } from '../../components';
-import { authorization as validation } from '../../utils/validation';
+import { authorization as validate } from '../../utils/validation';
 
 let Authorization = React.createClass({
   propTypes: {
@@ -39,7 +39,7 @@ let Authorization = React.createClass({
             {loggedIn ? `Hello, ${userEmail}!` :
             <div className="login-block">
                 <FormHeader />
-                <form className="common-form login-form-auth" onSubmit={this.handleSubmit}>
+                <form className="common-form login-form" onSubmit={this.handleSubmit}>
                   {
                     loginError ?
                     <div className="message message_error">{loginError}</div> :
@@ -86,10 +86,9 @@ function mapStateToProps(state) {
   };
 }
 
-Authorization = reduxForm({
+
+export default reduxForm({
   form: 'authorization',
   fields: ['email', 'password'],
-  validate: validation,
+  validate,
 }, mapStateToProps)(Authorization);
-
-export default connect(mapStateToProps)(Authorization);

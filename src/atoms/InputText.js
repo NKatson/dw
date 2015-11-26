@@ -31,6 +31,7 @@ class InputText extends React.Component {
         placeholder={placeholder}
         className="text full-width" {...field} />;
     } else {
+      console.log(field.name);
       component =  <input
         type={type ? type : 'text'}
         className="text full-width"

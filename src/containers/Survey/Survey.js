@@ -55,7 +55,7 @@ class Survey extends React.Component {
           }} /> : null}
         <div className="wide-block bg-white">
           <div className="container container-1">
-              <div className="container-small">
+              <div className="container-small" style={{ marginTop: '-60px' }}>
                   {data ? this.props.children : null}
               </div>
           </div>

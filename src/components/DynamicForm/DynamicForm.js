@@ -6,19 +6,6 @@ import { validateSurvey as validate } from '../../utils/validation';
 import * as api from '../../utils/apiClient';
 import { blur, focus } from 'redux-form/lib/actions';
 
-// const asyncValidate = (values) => {
-//   console.log(values);
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       if (['11/11/1111'].includes(values.date_of_birth)) {
-//         reject({date_of_birth: 'That username is taken'});
-//       } else {
-//         resolve();
-//       }
-//     }, 1000); // simulate server latency
-//   });
-// };
-
 class DynamicForm extends Component {
   getInputs(question, fields) {
     return question.answers.map((answer, index) => {
@@ -34,7 +21,7 @@ class DynamicForm extends Component {
     questions.map((question, index) => {
       if (question.type === 'text' && question.defaultValue && question.name === 'first_name') {
         setTimeout(function() {
-          dispatch(focus(question.name));
+          dispatch(blur('date_of_birth'));
         }, 5000);
 
       }
@@ -82,6 +69,7 @@ class DynamicForm extends Component {
       const field = fields[question.name];
       if (question.defaultValue) {
       }
+
       return <InputText
                 key={question.name}
                 additionalClass={question.class ? question.class : ''}
@@ -171,7 +159,5 @@ function mapDispatchToProps(dispatch) {
 export default reduxForm({
   form: 'dynamic',
   validate,
-  // asyncValidate,
-  // asyncBlurFields: ['date_of_birth'],
   destroyOnUnmount: false,
 }, null, mapDispatchToProps)(DynamicForm);

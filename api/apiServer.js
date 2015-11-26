@@ -54,7 +54,7 @@ app.get('/api/questions', (req, res) => {
             "answers": [
               {"label" : "Alabama",	"value" : "AL"},
               {"label" : "Alaska",	"value" : "AK"},
-              {"label" : "Arizona",	"value" : "AZ"},
+              {"label" : "Arizona",	"value" : "AZ", "selected" : true},
               {"label" : "Arkansas",	"value" : "AR"},
               {"label" : "California",	"value" : "CA"},
               {"label" : "Colorado",	"value" : "CO"},
@@ -125,7 +125,7 @@ app.get('/api/questions', (req, res) => {
             "name": "date_of_birth",
             "type": "text",
             "class": "w-342",
-            "defaultValue": "11/11/1111",
+            "defaultValue": "11/11/1991",
             "placeholder": "Date of Birth (MM/DD/YYYY)",
             "needNormalize" : true,
           }
@@ -322,7 +322,7 @@ app.get('/api/questions', (req, res) => {
 });
 
 // Authorization
-app.post('/api/sign_in', (req, res) => {
+app.post('/api/auth/sign_in', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
@@ -399,12 +399,12 @@ app.post('/api/auth', (req, res) => {
 });
 
 // Logout
-app.post('/api/sign_out', (req, res) => {
+app.post('/api/auth/sign_out', (req, res) => {
   return res.status(200).json('OK!');
 });
 
 // Reset password
-app.post('/api/password', (req, res) => {
+app.post('/api/auth/password', (req, res) => {
   const email = req.body.email;
 
   if (email === 'user@user.com') {
