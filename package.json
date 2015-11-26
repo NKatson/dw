@@ -25,6 +25,7 @@
     "immutable": "^3.7.5",
     "jquery": "^2.1.4",
     "jquery-maskmoney": "^3.0.2",
+    "moment": "^2.10.6",
     "query-string": "^3.0.0",
     "react": "^0.14.0",
     "react-currency-masked-input": "^1.0.0",
@@ -39,8 +40,8 @@
     "serialize-javascript": "^1.1.2",
     "serve-favicon": "^2.3.0",
     "superagent": "^1.4.0",
-    "webpack-isomorphic-tools": "^2.2.4",
-    "webpack": "^1.12.2"
+    "webpack": "^1.12.2",
+    "webpack-isomorphic-tools": "^2.2.4"
   },
   "devDependencies": {
     "babel-loader": "^5.3.2",
@@ -83,7 +84,6 @@
     "strip-loader": "^0.1.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
-
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.4.1"
   }

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
 import {registration} from '../../redux/actions/registration';
-import {registration as validation} from '../../utils/validation';
+import {registration as validate} from '../../utils/validation';
 import { SubmitButton, FormHeader } from '../../components';
 import { InputText } from '../../atoms';
 
@@ -41,15 +41,12 @@ let Registration = React.createClass({
       registeringIn,
       userEmail,
     } = this.props;
-    // if (loggedIn) {
-    //   this.history.replaceState(null, '/welcome');
-    // }
     return (
       <div className="wide-block">
         <div className="container container-1">
             <div className="login-block">
                 <FormHeader />
-                <form onSubmit={this.handleSubmit} className="common-form login-form-auth">
+                <form onSubmit={this.handleSubmit} className="common-form login-form">
                     {
                       registrationError && registrationError.length > 0 ?
                       <div className="message message_error">{registrationError}</div> :
@@ -101,11 +98,8 @@ function mapStateToProps(state) {
   };
 }
 
-Registration = reduxForm({
+export default reduxForm({
   form: 'registration',
   fields: ['email', 'password', 'confirmPassword'],
-  validate: validation,
+  validate,
 }, mapStateToProps)(Registration);
-
-
-export default connect(mapStateToProps)(Registration);

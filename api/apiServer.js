@@ -54,7 +54,7 @@ app.get('/api/questions', (req, res) => {
             "answers": [
               {"label" : "Alabama",	"value" : "AL"},
               {"label" : "Alaska",	"value" : "AK"},
-              {"label" : "Arizona",	"value" : "AZ"},
+              {"label" : "Arizona",	"value" : "AZ", "selected" : true},
               {"label" : "Arkansas",	"value" : "AR"},
               {"label" : "California",	"value" : "CA"},
               {"label" : "Colorado",	"value" : "CO"},
@@ -399,12 +399,12 @@ app.post('/api/auth', (req, res) => {
 });
 
 // Logout
-app.post('/api/sign_out', (req, res) => {
+app.post('/api/auth/sign_out', (req, res) => {
   return res.status(200).json('OK!');
 });
 
 // Reset password
-app.post('/api/password', (req, res) => {
+app.post('/api/auth/password', (req, res) => {
   const email = req.body.email;
 
   if (email === 'user@user.com') {

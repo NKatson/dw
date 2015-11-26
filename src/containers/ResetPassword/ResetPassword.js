@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import { authorization as validation } from '../../utils/validation';
-import { Input, SubmitButton, ResetPasswordSent } from '../../components';
+import { authorization as validate } from '../../utils/validation';
+import { InputText } from '../../atoms';
+import { SubmitButton, ResetPasswordSent } from '../../components';
 import { reset } from '../../redux/actions/resetPassword';
 
 class ResetPassword extends React.Component {
@@ -34,7 +35,7 @@ class ResetPassword extends React.Component {
                  <div className="message message_error">{resetError}</div> :
                  null
                }
-                 <Input
+                 <InputText
                    field={email}
                    icon="glyphicon-user"
                    placeholder="example@website.com"
@@ -77,10 +78,8 @@ function mapStateToProps(state) {
   };
 }
 
-ResetPassword = reduxForm({
+export default reduxForm({
   form: 'resetPassword',
   fields: ['email'],
-  validate: validation,
+  validate,
 }, mapStateToProps)(ResetPassword);
-
-export default connect(mapStateToProps)(ResetPassword);

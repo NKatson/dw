@@ -25,7 +25,6 @@ class InputText extends React.Component {
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
-        autoFocus={true}
         size={3}
         mask={mask}
         type={type ? type : 'text'}
@@ -34,7 +33,6 @@ class InputText extends React.Component {
     } else {
       console.log(field.name);
       component =  <input
-        autoFocus={true}
         type={type ? type : 'text'}
         className="text full-width"
         placeholder={placeholder}
