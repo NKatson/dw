@@ -15,7 +15,7 @@ class InputText extends React.Component {
     if (field.name === 'date_of_birth') {
       mask = '11/11/1111';
     } else if (field.name === '_ssn') {
-      mask = '111-11-1111';
+      mask = '111-11-1111';  
       //field.value = '123-__-____';
     }
 

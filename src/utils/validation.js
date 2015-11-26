@@ -132,8 +132,6 @@ export function validateSurvey(data) {
 
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
-  errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valid SSN format' });
-  errors = checkRegex({ data, fieldName: '_ssn', regex: _ssnRegex, errors, message: 'Please type valid SSN format' });
   errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
   errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });

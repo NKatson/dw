@@ -93,6 +93,20 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       welcome: action.welcome,
     });
+  case actions.SSN_ERROR_CHANGE:
+    return state.merge({
+      ssnError: action.error,
+    });
+  case actions.SSN_CHANGE:
+    let isValid = true;
+    if (action.ssn.length > 0) {
+        console.log(action.ssn);
+        isValid = /(^\d{9}$)/.exec(action.ssn) ? true : false;
+    }
+    return state.merge({
+      storedSsn: action.ssn,
+      ssnError: isValid ? null : 'Please type valid SSN',
+    });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
 

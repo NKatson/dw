@@ -3,37 +3,48 @@ import MaskedInput from 'react-maskedinput';
 import CurrencyMaskedInput from 'react-currency-masked-input';
 
 class SsnInput extends React.Component {
-  maskedChange(e) {
-    console.log('masked!');
-  }
   render () {
-    const { field, type } = this.props;
+    const { onSsnChange, storedSsn, showSsn, ssnError } = this.props;
     let mask = '111-11-1111';
-    // field.value = '123-__-____';
     let component;
-    if (type !== 'password') {
+
+    const commonProps = {
+      placeholder: "SSN",
+      className: "text full-width",
+      value: storedSsn
+    };
+
+    if (showSsn) {
       component = <MaskedInput
         mask={mask}
-        type={type ? type : 'text'}
-        placeholder="SSN"
-        className="text full-width" {...field} />;
+        type="text"
+        {...commonProps}
+        onChange={(e) => {
+              const _ssnRegex = /(^[\d_]{3})-([\d_]{2})-([\d_]{4}$)/i;
+              const [, s1, s2, s3] = (_ssnRegex.exec(e.target.value) || []).map((elem) => {
+                 return /\d+/.exec(elem) ? /\d+/.exec(elem)[0] : "";
+              }) || [];
+              onSsnChange(s1 ? `${s1}${s2}${s3}` : "");
+        }}
+         />;
     } else {
       component = <input
-        type={type ? type : 'text'}
-        className="text full-width"
-        placeholder="SSN"
-        {...field}
+        maxLength="9"
+        type="password"
+        {...commonProps}
+        onChange={(e) => {
+          onSsnChange(e.target.value ? e.target.value : "");
+        }}
         />
     }
 
     return (
-        <div className={'input-wrap w-342 inline-block valign-mid ' + (field.error && field.touched ? ' input-wrap_error' : '')}>
+        <div className={'input-wrap w-342 inline-block valign-mid ' + (ssnError ? ' input-wrap_error' : '')}>
           {component}
-          {
-            field.error && field.touched ?
+          { ssnError ?
               <div className="input-wrap__error-msg">
                 <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                 {field.error}
+                 {ssnError}
               </div>
               : null
           }

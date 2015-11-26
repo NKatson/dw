@@ -13,6 +13,8 @@ export const SEND_DATA = 'SEND_DATA';
 export const DISABLE_NEXT = 'DISABLE_NEXT';
 export const ENABLE_NEXT = 'ENABLE_NEXT';
 export const SAVE_WELCOME = 'SAVE_WELCOME';
+export const SSN_CHANGE = 'SSN_CHANGE';
+export const SSN_ERROR_CHANGE = 'SSN_ERROR_CHANGE';
 
 function initialRequest() {
   return {
@@ -79,6 +81,20 @@ export function saveWelcome(welcome) {
   return {
     type: SAVE_WELCOME,
     welcome,
+  }
+}
+
+export function ssnChange(ssn) {
+  return {
+    type: SSN_CHANGE,
+    ssn,
+  }
+}
+
+export function ssnErrorChange(error) {
+  return {
+    type: SSN_ERROR_CHANGE,
+    error,
   }
 }
 

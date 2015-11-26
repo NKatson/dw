@@ -100,22 +100,15 @@ class DynamicForm extends Component {
 
       // Ssn case
       if (question.name === 'ssn') {
+          const { showSsn, storedSsn, formData, ssnError } = this.props;
           result.push(<div className="input-wrap__descr w-136" key="ssn-show-div">We will send your phone a text confirmation</div>);
-          const ssnInputProps = {
-            type: 'password',
-            placeholder: question.placeholder,
-            field: fields['ssn']
-          }
-          if (this.props.showSsn) {
-            ssnInputProps.type = 'text';
-
-            ssnInputProps.field = fields['_ssn'];
-          }
-          const { showSsn, ssnValue } = this.props;
           result.push(<SsnInput
                     key="ssn"
-                    showSsn={this.props.showSsn}
-                    {...ssnInputProps} />);
+                    showSsn={showSsn}
+                    onSsnChange={this.props.onSsnChange}
+                    storedSsn={storedSsn}
+                    ssnError={ssnError}
+                    />);
           result.push(<div className="input-wrap input-wrap__descr w-136 input-wrap__addit-checkbox" key={question.name + "checkb"}>
                         <p className="radio-chbx-wrap">
                           <input type="checkbox" onClick={this.props.handleShowSsnClick} /> <label>Show</label>
@@ -164,7 +157,10 @@ DynamicForm.propTypes = {
     prevLink: PropTypes.string.isRequired,
     nextLink: PropTypes.string.isRequired,
     formData: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    onSsnChange: PropTypes.func.isRequired,
+    storedSsn : PropTypes.string,
+    ssnError: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {
