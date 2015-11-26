@@ -10,9 +10,11 @@ export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 export const CHANGE_QUESTION = 'CHANGE_QUESTION';
 export const HIDE_RECOMMEND = 'HIDE_RECOMMEND';
 export const SEND_DATA = 'SEND_DATA';
-
 export const DISABLE_NEXT = 'DISABLE_NEXT';
 export const ENABLE_NEXT = 'ENABLE_NEXT';
+export const SAVE_WELCOME = 'SAVE_WELCOME';
+export const SSN_CHANGE = 'SSN_CHANGE';
+export const SSN_ERROR_CHANGE = 'SSN_ERROR_CHANGE';
 
 function initialRequest() {
   return {
@@ -75,25 +77,25 @@ export function toggleSsn() {
   }
 }
 
-export function disableNext() {
+export function saveWelcome(welcome) {
   return {
-    type: DISABLE_NEXT
+    type: SAVE_WELCOME,
+    welcome,
   }
 }
 
-export function enableNext() {
+export function ssnChange(ssn) {
   return {
-    type: ENABLE_NEXT
+    type: SSN_CHANGE,
+    ssn,
   }
 }
 
-export function checkNext() {
-  return dispatch => {
-    dispatch(disableNext());
-    setTimeout(function() {
-      this.props.dispatch(surveyActions.enableNext());
-    }, 3000)
-  };
+export function ssnErrorChange(error) {
+  return {
+    type: SSN_ERROR_CHANGE,
+    error,
+  }
 }
 
 export function getData() {

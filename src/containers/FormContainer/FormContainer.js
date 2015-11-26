@@ -5,6 +5,7 @@ import * as surveyActions from '../../redux/actions/survey';
 import * as api from '../../utils/apiClient';
 import { Link } from 'react-router';
 import { PropTypes as RouterPropTypes } from 'react-router';
+import { blur } from 'redux-form/lib/actions';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
@@ -21,7 +22,11 @@ class FormContainer extends React.Component {
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
   }
+  onSsnChange(ssn) {
+    this.props.dispatch(surveyActions.ssnChange(ssn));
+  }
   handleSelectChange(e) {
+    console.log('Select change!');
     this.props.dispatch(surveyActions.selectChange(e.target.value));
   }
   handlePrevClick(e) {
@@ -31,12 +36,8 @@ class FormContainer extends React.Component {
   chooseAccount(e) {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
-  handleSubmit(data) {
-    // console.log(data);
-  }
   parseMultipleNames(question) {
     let names = [];
-    console.log(question);
     question.answers.map(answer => {
       if (answer.label !== this.props.stateSelectValue) return;
       names.push(answer.name);
@@ -50,25 +51,39 @@ class FormContainer extends React.Component {
   }
   generateFields(form) {
     const multiple = ['checkbox', 'radio', 'dropdown'];
+
+    // dropdown here fo dynamicFields
     const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
         const names = ::this.parseMultipleNames(question);
         fields.push(...names);
+
+        if (question.type === 'dropdown') { // save dropdown select name
+          fields.push(question.name);
+        }
+
         return fields;
       }
 
       fields.push(question.name);
       return fields;
     }, []);
+    fields.push('_ssn');
+
     return fields
   }
 
   handleFormSubmit(data) {
-    if (this.props.step === 0 && this.props.categoryIndex === 0) {
-      console.log('Personal case');
+    const { storedSsn, step, categoryIndex, formData, nextLink } = this.props;
+    if (step === 0 && categoryIndex === 0) {
+      // check SSN presents
+      if (!storedSsn || storedSsn.length === 0) {
+        this.props.dispatch(surveyActions.ssnErrorChange('Required'));
+        return;
+      }
       // The Basics case
       let result = {};
-      if (this.props.formData && this.props.formData.dynamic && this.props.formData.dynamic['personal-step-1']) {
+      if (formData && formData.dynamic && formData.dynamic['personal-step-1']) {
         const data = this.props.formData.dynamic['personal-step-1'];
         for (let key in data) {
           if (key.charAt(0) !== '_') {
@@ -76,14 +91,18 @@ class FormContainer extends React.Component {
           }
         }
       }
+      // send welcome page question
+      result = Object.assign({}, result, {
+        describe_self: this.props.welcome,
+      });
       api.sendPersonal(result);
     }
 
-    if (this.props.categoryIndex === 0) {
+    if (categoryIndex === 0) {
       let port = window.location.port.length > 0 ? ':' + window.location.port : '';
-      window.location.href = `http://${window.location.hostname}${port}${this.props.nextLink}`
+      window.location.href = `http://${window.location.hostname}${port}${nextLink}`
     } else {
-      this.context.history.pushState(null, this.props.nextLink);
+      this.context.history.pushState(null, nextLink);
     }
   }
 
@@ -117,6 +136,11 @@ class FormContainer extends React.Component {
                     formData={this.props.formData}
                     disabledNext={this.props.disabledNext}
                     onSubmit={::this.handleFormSubmit}
+                    dispatch={this.props.dispatch}
+                    formData={this.props.formData}
+                    onSsnChange={::this.onSsnChange}
+                    storedSsn={this.props.storedSsn}
+                    ssnError={this.props.ssnError}
                    >
                     {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
           </DynamicForm>);
@@ -142,8 +166,12 @@ FormContainer.contextTypes = {
 
 function mapStateToProps(state) {
   return {
+    formData: state.form.dynamic,
+    welcome: state.survey.get('welcome'),
     data: state.survey.get('data'),
     showSsn: state.survey.get('showSsn'),
+    storedSsn : state.survey.get('storedSsn'),
+    ssnError: state.survey.get('ssnError'),
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     step: state.survey.get('step'),
@@ -152,7 +180,6 @@ function mapStateToProps(state) {
     showRecommend: state.survey.get('showRecommend'),
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
-    formData: state.form,
     disabledNext: state.survey.get('disabledNext')
   };
 }

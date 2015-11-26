@@ -8,22 +8,23 @@ let host = `http://dev.worthfm.com` ;
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
-//host = 'http://localhost:8080';
+//
+host = 'http://localhost:8080';
 
 function saveLocal(res) {
-  console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
-  console.log('token  -> ' + localStorage.accessToken + ' to ' + res.headers['access-token']);
-  console.log('client -> ' + localStorage.client);
-  console.log('-------------------------------');
+  // console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
+  // console.log('token  -> ' + localStorage.accessToken + ' to ' + res.headers['access-token']);
+  // console.log('client -> ' + localStorage.client);
+  // console.log('-------------------------------');
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = res.headers.uid;
 }
 
 function beforeLog(url) {
-  console.log('Requesting...' + host + url);
-  console.log('TOKEN : ' + localStorage.accessToken);
-  console.log('UID : ' + localStorage.uid);
-  console.log('CLIENT: ' + localStorage.client);
+  // console.log('Requesting...' + host + url);
+  // console.log('TOKEN : ' + localStorage.accessToken);
+  // console.log('UID : ' + localStorage.uid);
+  // console.log('CLIENT: ' + localStorage.client);
 }
 
 export function getForm(cb) {
@@ -39,7 +40,6 @@ export function getForm(cb) {
       if (res.errors && res.errors.length > 0) return cb(res.body);
 
       saveLocal(res);
-      console.log(res.body);
       return cb(null, {
         ...res.body,
       });
@@ -96,9 +96,7 @@ export function login({ email, password, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      console.log('Login, save client: ');
-      console.log(localStorage.client + ' --> ' + res.headers.client);
-      console.log('-----------------------------------');
+
       localStorage.client = res.headers.client;
       saveLocal(res);
       return cb(null, {

@@ -1,13 +1,16 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { SubmitButton, Step } from '../../components';
 import { Radio } from '../../atoms';
 import { Link } from 'react-router';
+import { saveWelcome } from '../../redux/actions/survey';
 
 class Welcome extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
   }
-  handleRadioClick() {
+  handleRadioClick(e) {
+    this.props.dispatch(saveWelcome(e.target.value));
   }
   renderRadios() {
     const radios = [
@@ -27,10 +30,10 @@ class Welcome extends React.Component {
     return radios.map((item, index) => {
       return (
         <Radio
-          handleClick={() => {}}
+          handleClick={::this.handleRadioClick}
           key={index}
           {...item}
-          isChecked={index === 1 ? true : false}
+          isChecked={this.props.welcome == item.text ? true : false}
         />
       );
     });
@@ -100,5 +103,9 @@ class Welcome extends React.Component {
     );
   }
 }
-
-export default Welcome;
+function mapStateToProps(state) {
+  return {
+    welcome: state.survey.get('welcome')
+  }
+}
+export default connect(mapStateToProps)(Welcome);
