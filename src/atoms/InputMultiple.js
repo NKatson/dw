@@ -2,23 +2,23 @@ import React, { PropTypes } from 'react'
 
 class InputMultiple extends React.Component {
   render () {
-    const {htmlName, additionalClass, handleClick, type, inputs } = this.props;
+    const { question : { htmlName, class: additionalClass, type, label }, handleClick, inputs } = this.props;
     return (
       <div className={'input-wrap ' + additionalClass}>
+        <p><b>{label}</b></p>
         {inputs.map((input, index) => {
           let iProps = {
             type: type ? type : 'radio',
             name: htmlName,
             value: input.value,
-            defaultChecked: index === 0 ? true : false
           };
 
           if (handleClick) {
             iProps.onClick = handleClick;
           }
           return (
-              <p className="radio-chbx-wrap">
-              <label><input  {...input.field} {...iProps}  /> {input.label}</label>
+              <p className="radio-chbx-wrap" key={input.label}>
+              <label><input  {...input.field} {...iProps}  defaultChecked={input.defaultChecked ? true : false} /> {input.label}</label>
               </p>
           );
         })}
@@ -28,14 +28,18 @@ class InputMultiple extends React.Component {
 }
 
 InputMultiple.propTypes = {
-  type: PropTypes.string.isRequired,
-  htmlName: PropTypes.string,
-  additionalClass: PropTypes.string.isRequired,
+  question: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    htmlName: PropTypes.string,
+    class: PropTypes.string,
+    label: PropTypes.string,
+  }),
   handleClick: PropTypes.func,
   inputs: PropTypes.arrayOf(PropTypes.shape({
      label: PropTypes.string.isRequired,
      field: PropTypes.object.isRequired,
      value: PropTypes.string,
+     defaultChecked: PropTypes.bool,
  })).isRequired,
 }
 

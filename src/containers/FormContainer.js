@@ -39,12 +39,16 @@ class FormContainer extends React.Component {
   parseMultipleNames(question) {
     let names = [];
     question.answers.map(answer => {
-      if (answer.label !== this.props.stateSelectValue) return;
-      names.push(answer.name);
-      if (answer.dynamicFields && answer.dynamicFields.length > 0) {
-        answer.dynamicFields.map(field => {
-          names.push(field.name);
-        });
+      if (answer.dynamicFields) {
+          if (answer.label !== this.props.stateSelectValue) return;
+          if (answer.dynamicFields.length > 0) {
+            answer.dynamicFields.map(field => {
+              names.push(field.name);
+            });
+          }
+      }
+      if (answer.name) {
+        names.push(answer.name);
       }
     });
     return names;
@@ -68,8 +72,6 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
-    fields.push('_ssn');
-
     return fields
   }
 

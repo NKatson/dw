@@ -9,10 +9,12 @@ import { blur, focus } from 'redux-form/lib/actions';
 class DynamicForm extends Component {
   getInputs(question, fields) {
     return question.answers.map((answer, index) => {
+      console.log(answer.name);
       return {
         label: answer.label,
         field: fields[answer.name],
         value: answer.value ? answer.value : answer.name,
+        defaultChecked: answer.defaultChecked,
       }
     });
   }
@@ -32,10 +34,8 @@ class DynamicForm extends Component {
 
       return <InputMultiple
               key={question.name}
-              type={question.type}
+              question={question}
               inputs={inputs}
-              additionalClass={question.class ? question.class : ''}
-              htmlName={question.htmlName}
               handleClick={this.props.formType === 'recommend' ? this.props.chooseAccount : null}
             />
     } else if (question.type === 'dropdown') {

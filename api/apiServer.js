@@ -266,7 +266,6 @@ app.get('/api/questions', (req, res) => {
             "label" : "When will you need access the money you invest?",
             "type" : "radio",
             "htmlName": "finding",
-            "name" : "invest-question-1",
             "answers" : [
               {
                 "label" : "I might need to withdraw this money within a few years" ,
@@ -299,19 +298,21 @@ app.get('/api/questions', (req, res) => {
           {
             "type" : "radio",
             "htmlName": "comf",
-            "name" : "invest-question-2",
             "answers" : [
               {
                 "label" : "Scream! And then sell all your investments. Too risky!" ,
+                "value" : "1",
                 "name" : "invest-q2-a1",
               },
               {
                 "label" : "Hold your breath. But also hold your investments." ,
-                "name" : "invest-q2-a2",
+                "value" : "2",
+                "name" : "invest-q2-a1",
               },
               {
                 "label" : "Nod knowingly. This is how it works. You have to weather the 'downs' to get the 'ups'." ,
-                "name" : "invest-q2-a3",
+                "value" : "3",
+                "name" : "invest-q2-a1",
               }
             ]
           }
