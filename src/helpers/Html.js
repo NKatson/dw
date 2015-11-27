@@ -27,7 +27,7 @@ class Html extends Component {
                   rel="stylesheet" type="text/css" charSet="UTF-8"/>
           )}
 
-          { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../containers/App/App.css')}}/> : null }
+          { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../containers/App.css')}}/> : null }
         </head>
         <body>
           <div id="root" dangerouslySetInnerHTML={{__html: content}}></div>

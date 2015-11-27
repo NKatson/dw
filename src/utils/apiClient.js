@@ -23,6 +23,9 @@ function beforeLog(url) {
   // console.log('CLIENT: ' + localStorage.client);
 }
 
+/**
+ * GET /api/questions
+ */
 export function getForm(cb) {
   const url = '/api/questions';
   beforeLog(url);
@@ -42,6 +45,9 @@ export function getForm(cb) {
     });
 }
 
+/**
+ * POST /api/accounts
+ */
 export function sendPersonal(data, cb = () => {}) {
   const url = '/api/accounts';
   beforeLog(url);
@@ -61,6 +67,9 @@ export function sendPersonal(data, cb = () => {}) {
     });
 }
 
+/**
+ * POST /api/question_answers
+ */
 export function sendQuestions(data, cb = () => {}) {
   const url = '/api/question_answers';
   beforeLog(url);
@@ -80,6 +89,9 @@ export function sendQuestions(data, cb = () => {}) {
     });
 }
 
+/**
+ * POST /api/auth/sign_in
+ */
 export function login({ email, password, cb }) {
   const url = '/api/auth/sign_in';
   beforeLog(url);
@@ -104,6 +116,9 @@ export function login({ email, password, cb }) {
     });
 }
 
+/**
+ * POST /api/auth/password
+ */
 export function reset({ email, cb }) {
   request
     .post(host + '/api/auth/password')
@@ -113,14 +128,37 @@ export function reset({ email, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      const { headers } = res;
+      saveLocal(res);
       return cb(null, {
         ...res.body,
-        accessToken: headers['access-token'],
+        accessToken: res.headers['access-token'],
       });
     });
 }
 
+/**
+ * PUT /api/auth/password
+ */
+export function confirmPassword({ password, confirmPassword, cb }) {
+  request
+    .put(host + '/api/auth/password')
+    .send({password, password_confirmation: confirmPassword, 'access-token': localStorage.accessToken})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
+      return cb(null, {
+        ...res.body,
+        accessToken: res.headers['access-token'],
+      });
+    });
+}
+
+/**
+ * DELETE /api/auth/sign_out
+ */
 export function logout({ user = null, cb }) {
   request
     .del(host + '/api/auth/sign_out')
@@ -135,6 +173,9 @@ export function logout({ user = null, cb }) {
 }
 
 
+/**
+ * POST /api/auth
+ */
 export function registration({ data, cb }) {
   request
     .post(host + '/api/auth')

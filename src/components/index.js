@@ -6,3 +6,4 @@ export Footer from './Footer';
 export DynamicForm from './DynamicForm';
 export Category from './Category';
 export Submit from './Submit';
+export LogoForm from './LogoForm';

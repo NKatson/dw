@@ -4,7 +4,6 @@ import { isLoggedIn } from './redux/actions/auth';
 import { Category, Submit } from './components';
 
 import {
-    App,
     Registration,
     Authorization,
     ResetPassword,
@@ -13,8 +12,10 @@ import {
     FormContainer,
     Account,
     Submit as SubmitData,
+    ConfirmPasswordForm,
   } from './containers';
 
+import { App } from './containers';
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
@@ -30,10 +31,8 @@ export default (store) => {
   return (
     <Route path="/" component={App}>
       <Route path="welcome" component={Welcome} />
-      <Route onEnter={requireLogin} >
-
-      </Route>
       <Route path="reset" component={ResetPassword} />
+      <Route path="confirm-password" component={ConfirmPasswordForm} />
       <Route path="submit" component={Submit} />
       <Route path="survey" component={Survey}>
           <IndexRoute component={FormContainer} />
@@ -43,6 +42,8 @@ export default (store) => {
       <Route path="/submit" component={SubmitData} />
       <Route path="signin" component={Authorization} />
       <Route path="signup" component={Registration} />
+      <Route onEnter={requireLogin} >
+      </Route>
     </Route>
   );
 };

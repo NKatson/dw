@@ -18,7 +18,16 @@ export default function reset(state = initialState, action = {}) {
     }));
   case actions.RESET_SUCCESS:
     return fromJS({
-      sent: true,
+      sent: true, // get rid of this
+      message: action.message,
+    });
+  case actions.CONFIRM_PASSWORD_FAILURE:
+    return state.merge(Map({
+      resetting: false,
+      confirmError: action.error,
+    }));
+  case actions.CONFIRM_PASSWORD_SUCCESS:
+    return fromJS({
       message: action.message,
     });
   default:

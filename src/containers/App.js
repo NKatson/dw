@@ -3,23 +3,18 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { History } from 'react-router';
 
-import { Footer } from '../../components/Footer';
-import * as auth from '../../redux/actions/auth';
+import { Footer } from '../components/Footer';
+import * as auth from '../redux/actions/auth';
 
 require('./App.css');
 
-let App = React.createClass({
-  propTypes : {
-    children: PropTypes.object,
-    dispatch: PropTypes.func.isRequired,
-  },
-  mixins: [ History ],
+class App extends React.Component {
   handleLogout(event) {
     event.preventDefault();
     this.props.dispatch(auth.logout( () => {
-        this.history.replaceState(null, '/signin');
+        this.context.history.replaceState(null, '/signin');
     }));
-  },
+  }
   render() {
     let { userEmail, loggedIn } = this.props;
     loggedIn = localStorage.uid && localStorage.uid !== 'undefined' && localStorage.accessToken ? true : false;
@@ -39,11 +34,15 @@ let App = React.createClass({
             </div>
         </div>
           {this.props.children}
-        <Footer />
       </div>
     );
   }
-});
+};
+
+App.propTypes = {
+  children: PropTypes.object,
+  dispatch: PropTypes.func.isRequired,
+};
 
 function mapStateToProps(state) {
   return {

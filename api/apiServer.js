@@ -425,6 +425,12 @@ app.post('/api/auth/password', (req, res) => {
   );
 });
 
+app.put('/api/auth/password', (req, res) => {
+  return res.status(200).json({
+    message: 'Success! Your password is updated and you will be logged into your account.'
+  });
+});
+
 app.get('*', (req, res) => {
   res.json({});
 });
