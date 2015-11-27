@@ -25,7 +25,6 @@ export class Authorization extends React.Component {
     return (
       <div className="wide-block">
         <div className="container container-1">
-            {loggedIn ? `Hello, ${userEmail}!` :
             <LogoForm error={loginError} handleSubmit={::this.handleSubmit}>
               <InputText
                   field={email}
@@ -50,7 +49,6 @@ export class Authorization extends React.Component {
               </div>
               <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
             </LogoForm>
-            }
           </div>
       </div>
       );

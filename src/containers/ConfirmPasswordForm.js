@@ -1,28 +1,59 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { InputText } from '../atoms';
 import { SubmitButton, LogoForm } from '../components';
 import { confirmPassword as validate } from '../utils/validation';
-import { confirm } from '../redux/actions/resetPassword';
+import { confirm, setTimer } from '../redux/actions/resetPassword';
+import { login } from '../redux/actions/auth';
 
 class ConfirmPasswordForm extends React.Component {
+  componentDidMount() {
+    const { query: { uid } } = this.props.location;
+    if (uid) {
+      localStorage.uid = uid;
+    }
+  }
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch, fields: { password, confirmPassword } } = this.props;
-    dispatch(confirm(password, confirmPassword));
+    const { query: {client_id: client, token: accessToken, uid } } = this.props.location;
+    if (client && uid && accessToken) {
+      dispatch(confirm({
+        password: password.value,
+        confirmPassword: confirmPassword.value,
+        client,
+        accessToken,
+        uid
+      }, () => {
+        let timer = 5;
+        setInterval(() => {
+          if (timer === -1) return this.context.history.pushState(null, '/welcome');
+          this.props.dispatch(setTimer(timer));
+          timer--;
+        }, 1000);
+      }));
+    }
   }
   render() {
     const { fields: { password, confirmPassword },
             successMessage,
             confirmError,
-            resetting
+            resetting,
+            timer
           } = this.props;
+    let message = successMessage;
+
+    if (timer) {
+       message += `\n You will be redirected in ${timer} seconds`;
+    }
+
     return (
       <div className="wide-block">
         <div className="container container-1">
             <LogoForm handleSubmit={::this.handleSubmit}
                       error={confirmError}
-                      headerText={successMessage ? successMessage : "Reset your password"}>
+                      headerText={message ? message : "Reset your password"}>
               {
                 successMessage ? null :
                 <div>
@@ -55,6 +86,10 @@ class ConfirmPasswordForm extends React.Component {
   }
 }
 
+ConfirmPasswordForm.contextTypes = {
+  history: RouterPropTypes.history,
+};
+
 ConfirmPasswordForm.propTypes = {
   confirmError: PropTypes.string,
   successMessage: PropTypes.string,
@@ -69,6 +104,7 @@ function mapStateToProps(state) {
     resetting: resetPassword.get('resetting'),
     confirmError: resetPassword.get('confirmError'),
     successMessage: resetPassword.get('message'),
+    timer: resetPassword.get('timer'),
     form: state.auth,
   };
 }
@@ -77,4 +113,4 @@ export default reduxForm({
   form: 'confirmPassword',
   fields: ['password', 'confirmPassword'],
   validate,
-}, mapStateToProps)(ConfirmPasswordForm);
+}, mapStateToProps, (dispatch) => dispatch)(ConfirmPasswordForm);

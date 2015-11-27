@@ -5,6 +5,7 @@ export const RESET_SUCCESS            = 'RESET_SUCCESS';
 export const RESET_FAILURE            = 'RESET_FAILURE';
 export const CONFIRM_PASSWORD_SUCCESS = 'CONFIRM_PASSWORD_SUCCESS';
 export const CONFIRM_PASSWORD_FAILURE = 'CONFIRM_PASSWORD_FAILURE';
+export const TIMER          = 'TIMER';
 
 function resetRequest() {
   return {
@@ -40,27 +41,36 @@ function confirmFailure({ errors }) {
   };
 }
 
+export function setTimer(timer) {
+  return {
+    type: TIMER,
+    timer
+  }
+}
+
 export function reset(email) {
   return dispatch => {
     dispatch(resetRequest());
     api.reset({
       email,
       cb: (err, body) => {
-        return err ? dispatch(confirmFailure(err)) : dispatch(confirmSuccess(body));
+        return err ? dispatch(resetFailure(err)) : dispatch(resetSuccess(body));
       },
     });
   };
 }
 
-export function confirm(password, confirmPassword) {
+export function confirm(data, cb) {
   return dispatch => {
     dispatch(resetRequest());
     api.confirmPassword({
-      password,
-      confirmPassword,
+      ...data,
       cb: (err, body) => {
-        return err ? dispatch(confirmFailure(err)) : dispatch(confirmSuccess(body));
-      },
+        if (err) return dispatch(confirmFailure(err));
+        dispatch(confirmSuccess(body)).then(() => {
+          cb();
+        });
+      }
     });
   };
 }

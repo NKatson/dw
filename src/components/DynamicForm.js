@@ -122,7 +122,7 @@ class DynamicForm extends Component {
                <button className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>Submit </button>
              }
           </div>
-    </form>
+      </form>
     );
   }
 }

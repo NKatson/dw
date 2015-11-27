@@ -4,23 +4,18 @@ import config from '../config';
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
 let host = `http://dev.worthfm.com` ;
+let redirectUrl = host + '/confirm-password';
 
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
 //
-host = 'http://localhost:8080';
+//host = 'http://localhost:8080';
+redirectUrl = 'http://localhost:3000/confirm-password';
 
 function saveLocal(res) {
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = res.headers.uid;
-}
-
-function beforeLog(url) {
-  // console.log('Requesting...' + host + url);
-  // console.log('TOKEN : ' + localStorage.accessToken);
-  // console.log('UID : ' + localStorage.uid);
-  // console.log('CLIENT: ' + localStorage.client);
 }
 
 /**
@@ -28,7 +23,6 @@ function beforeLog(url) {
  */
 export function getForm(cb) {
   const url = '/api/questions';
-  beforeLog(url);
 
   request
     .get(host + url)
@@ -50,7 +44,6 @@ export function getForm(cb) {
  */
 export function sendPersonal(data, cb = () => {}) {
   const url = '/api/accounts';
-  beforeLog(url);
 
   request
     .post(host + url)
@@ -72,7 +65,6 @@ export function sendPersonal(data, cb = () => {}) {
  */
 export function sendQuestions(data, cb = () => {}) {
   const url = '/api/question_answers';
-  beforeLog(url);
 
   request
     .post(host + url)
@@ -94,7 +86,6 @@ export function sendQuestions(data, cb = () => {}) {
  */
 export function login({ email, password, cb }) {
   const url = '/api/auth/sign_in';
-  beforeLog(url);
 
   request
     .post(host + url)
@@ -120,39 +111,42 @@ export function login({ email, password, cb }) {
  * POST /api/auth/password
  */
 export function reset({ email, cb }) {
+  console.log(redirectUrl);
   request
     .post(host + '/api/auth/password')
-    .send({email: email, redirect_url: 'http://worthfm.4xxi.com/', 'access-token': localStorage.accessToken})
+    .send({email: email, redirect_url: redirectUrl})
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
-        accessToken: res.headers['access-token'],
-      });
+
+      return cb(null, res.body);
     });
 }
 
 /**
  * PUT /api/auth/password
  */
-export function confirmPassword({ password, confirmPassword, cb }) {
+export function confirmPassword({ password, confirmPassword, client, accessToken, uid, cb }) {
+  localStorage.accessToken = accessToken;
+  localStorage.client = client;
+  localStorage.uid = uid;
+
+  console.log(password);
+  console.log(confirmPassword);
+
   request
     .put(host + '/api/auth/password')
-    .send({password, password_confirmation: confirmPassword, 'access-token': localStorage.accessToken})
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send({password, password_confirmation: confirmPassword})
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
       saveLocal(res);
-      return cb(null, {
-        ...res.body,
-        accessToken: res.headers['access-token'],
-      });
+      return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
     });
 }
 

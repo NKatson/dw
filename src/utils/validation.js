@@ -31,7 +31,7 @@ export function authorization(data) {
 
   errors = checkRequired(data, 'email', errors);
   errors = checkRequired(data, 'password', errors);
-  errors = checkRegex({ data, fieldName: 'email', regex: emailReg, message: 'Please use valid email address'});
+  errors = checkRegex({ data, fieldName: 'email', regex: emailReg, errors, message: 'Please use valid email address'});
 
   return errors;
 }

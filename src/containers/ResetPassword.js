@@ -46,7 +46,7 @@ class ResetPassword extends React.Component {
                      fields={this.props.fields}
                      handleSubmit={::this.handleSubmit}
                      pending={resetting ? true : false}
-                     text="Sign In"
+                     text="Reset"
                    />
                  </div>
                  <div>Already have an account? <Link to="signin">Sign In.</Link></div>
@@ -59,7 +59,6 @@ class ResetPassword extends React.Component {
   }
 }
 
-
 ResetPassword.propTypes = {
   resetError: PropTypes.string,
   sent: PropTypes.bool.isRequired,
@@ -67,7 +66,6 @@ ResetPassword.propTypes = {
   fields: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
-
 
 function mapStateToProps(state) {
   return {

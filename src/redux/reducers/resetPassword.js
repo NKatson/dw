@@ -9,6 +9,7 @@ export default function reset(state = initialState, action = {}) {
   switch (action.type) {
   case actions.RESET_REQUEST:
     return state.merge(Map({
+      timer: null,
       resetting: true,
     }));
   case actions.RESET_FAILURE:
@@ -27,9 +28,14 @@ export default function reset(state = initialState, action = {}) {
       confirmError: action.error,
     }));
   case actions.CONFIRM_PASSWORD_SUCCESS:
-    return fromJS({
+    return state.merge(Map({
       message: action.message,
-    });
+      resetting: false,
+    }));
+  case actions.TIMER:
+    return state.merge(Map({
+      timer: action.timer,
+    }));
   default:
     return state;
   }
