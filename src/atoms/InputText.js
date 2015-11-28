@@ -7,7 +7,8 @@ class InputText extends React.Component {
     console.log('masked!');
   }
   render () {
-    const { field, placeholder, additionalClass, icon, type, isNormalized , label, defaultValue, maskPattern } = this.props;
+    const { field, placeholder, additionalClass, icon, type, isNormalized , 
+      label, defaultValue, maskPattern, errorMessageClass, inputClass } = this.props;
     const mask = maskPattern || '111-111-1111';
     const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
     let component = null;
@@ -17,14 +18,16 @@ class InputText extends React.Component {
         className="input-text" 
         mask={mask}
         placeholder={placeholder}
+        type={type ? type : 'text'}
         value={defaultValue ? defaultValue : ""}
         {...field} 
         />;
     } else {
       component =  <input
-        className="input-text"
+        className={'input-text ' + (inputClass ? inputClass : '')}
         defaultValue={defaultValue ? defaultValue : ""}
         placeholder={placeholder}
+        type={type ? type : 'text'}
         {...field}
         />
     }
@@ -44,11 +47,11 @@ class InputText extends React.Component {
 
     return (
         <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (field.error && field.touched ? ' error' : '')}>
-          {label ? <p><b>{label}</b><br /></p> : null}
+          {label ? <div className="input-wrap__text">{label}</div> : null}
           {component}
           {
             field.error && field.touched ?
-              <div className="login-form__error-msg">{field.error}</div>
+              <div className={errorMessageClass ? errorMessageClass : 'input-wrap__error-msg' }>{field.error}</div>
               : null
           }
         </div>

@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 
 import {registration} from '../redux/actions/registration';
 import {registration as validate} from '../utils/validation';
-import { SubmitButton, FormHeader } from '../components';
+import { SubmitButton } from '../components';
 import { InputText } from '../atoms';
 
 let Registration = React.createClass({
@@ -45,7 +45,6 @@ let Registration = React.createClass({
       <div className="wide-block">
         <div className="container container-1">
             <div className="login-block">
-                <FormHeader />
                 <form onSubmit={this.handleSubmit} className="common-form login-form">
                     {
                       registrationError && registrationError.length > 0 ?

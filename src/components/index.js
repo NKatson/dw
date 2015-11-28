@@ -1,5 +1,4 @@
 export SubmitButton from './SubmitButton';
-export FormHeader from './FormHeader';
 export ResetPasswordSent from './ResetPasswordSent';
 export Step from './Step';
 export Footer from './Footer';

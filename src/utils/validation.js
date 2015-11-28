@@ -136,7 +136,10 @@ export function validateSurvey(data) {
   const _ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 'state'];
+  const requiredFields = [
+    'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
+   'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 
+   'state', 'employment_status'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
@@ -157,5 +160,6 @@ export function validateSurvey(data) {
   errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });
 
   errors = checkDateOfBirth(data, 'date_of_birth', errors, data.state);
+  console.log(errors);
   return errors;
 }

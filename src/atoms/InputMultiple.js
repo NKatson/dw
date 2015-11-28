@@ -2,24 +2,28 @@ import React, { PropTypes } from 'react'
 
 class InputMultiple extends React.Component {
   render () {
-    const { question : { htmlName, class: additionalClass, type, label }, handleClick, inputs } = this.props;
+    const { question : { htmlName, label }, handleClick, inputs } = this.props;
     return (
-      <div className={'input-wrap ' + additionalClass}>
-        <p><b>{label}</b></p>
+      <div className="anketa-form__fieldset anketa-form__main-fieldset">
+        <p className="text-center">{label}</p>
         {inputs.map((input, index) => {
           let iProps = {
-            type: type ? type : 'radio',
+            id: input.label,
+            className: 'chbx-styled',
+            type: 'radio',
             name: htmlName,
             value: input.value,
+            defaultChecked: input.defaultChecked ? true : false
           };
 
           if (handleClick) {
             iProps.onClick = handleClick;
           }
           return (
-              <p className="radio-chbx-wrap" key={input.label}>
-              <label><input  {...input.field} {...iProps}  defaultChecked={input.defaultChecked ? true : false} /> {input.label}</label>
-              </p>
+            <div className="input-wrap input-wrap_with-radio" key={input.label}>
+              <input  {...input.field} {...iProps} />
+              <label htmlFor={input.label}><span className="common-form__label-title">{input.label}</span></label>
+            </div>
           );
         })}
       </div>
@@ -29,7 +33,6 @@ class InputMultiple extends React.Component {
 
 InputMultiple.propTypes = {
   question: PropTypes.shape({
-    type: PropTypes.string.isRequired,
     htmlName: PropTypes.string,
     class: PropTypes.string,
     label: PropTypes.string,

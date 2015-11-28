@@ -77,7 +77,7 @@ class PersonalForm extends React.Component {
               <InputText
                 maskPattern="11/11/1111"
                 additionalClass="w-230 pad-03"
-                field={fields[questions[7].name]}
+                field={fields[questions[8].name]}
                 isNormalized={true}
                 placeholder="Date of birth  MM/DD/YYYY"
               />

@@ -3,11 +3,19 @@ import React, { PropTypes } from 'react'
 class Select extends React.Component {
   render() {
     const { options, additionalClass, label, handleChange, placeholder, field, defaultValue } = this.props;
-
+    let additionalProps = {};
+    if (handleChange) {
+      additionalProps.onChange = handleChange;
+    }
     return (
-      <div className={'input-wrap ' + additionalClass}>
-        {label ? <p><b>{label}</b><br /></p> : null}
-        <select className="input-text" {...field} onChange={handleChange}>
+      <div className={'input-wrap ' + additionalClass + (field.error && field.touched ? ' error' : '')}>
+        {label ? <div className="input-wrap__text">{label}</div> : null}
+        {
+          field.error && field.touched ?
+            <div className="input-wrap__error-msg">{field.error}</div>
+            : null
+        }
+        <select className="input-text" {...field} {...additionalProps}>
           <option key='default' value='default'>Choose One</option>
           {options.map((option, index) => {
             return <option key={option.value+""} value={option.label+""}>{option.label}</option>;
@@ -20,7 +28,6 @@ class Select extends React.Component {
 
 Select.propTypes = {
   additionalClass: PropTypes.string,
-  handleChange: PropTypes.func.isRequired,
   label: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({
      value: PropTypes.string.isRequired,

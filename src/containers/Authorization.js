@@ -25,17 +25,21 @@ export class Authorization extends React.Component {
     return (
         <LogoForm error={loginError} handleSubmit={::this.handleSubmit}>
           <InputText
+              inputClass="full-width"
+              errorMessageClass="login-form__error-msg"
               field={email}
               placeholder="Email address"
               type="email"
             />
           <InputText
+              inputClass="full-width"
+              errorMessageClass="login-form__error-msg"
               field={password}
               placeholder="Password"
               type="password"
             />
           <div className="login-form__forgot">
-             <a href="#">Forgot password?</a>
+             <Link to="reset">Forgot password?</Link>
           </div>
           <div className="input-wrap">
             <SubmitButton
