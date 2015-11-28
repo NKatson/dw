@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
+import  PersonalForm from './PersonalForm';
 import { InputText, InputMultiple, Select, SsnInput } from '../atoms/index';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
@@ -9,7 +10,6 @@ import { blur, focus } from 'redux-form/lib/actions';
 class DynamicForm extends Component {
   getInputs(question, fields) {
     return question.answers.map((answer, index) => {
-      console.log(answer.name);
       return {
         label: answer.label,
         field: fields[answer.name],
@@ -56,7 +56,6 @@ class DynamicForm extends Component {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
-            console.log(answer);
             if (answer.label === this.props.stateSelectValue) {
               result.push(::this.renderInput(field, fields));
             }
@@ -78,51 +77,45 @@ class DynamicForm extends Component {
                 type={question.type}
                 placeholder={question.placeholder}
               />;
-   }
+          }
   }
   renderQuestions(questions, fields) {
-    let result = [];
-    questions.map((question, index) => {
-
-      // Ssn case
-      if (question.name === 'ssn') {
-          const { showSsn, storedSsn, formData, ssnError } = this.props;
-          result.push(<div className="input-wrap__descr w-136" key="ssn-show-div">We will send your phone a text confirmation</div>);
-          result.push(<SsnInput
-                        key="ssn"
-                        showSsn={showSsn}
-                        onSsnChange={this.props.onSsnChange}
-                        storedSsn={storedSsn}
-                        ssnError={ssnError}
-                        />);
-          result.push(<div className="input-wrap input-wrap__descr w-136 input-wrap__addit-checkbox" key={question.name + "checkb"}>
-                        <p className="radio-chbx-wrap">
-                          <input type="checkbox" onClick={this.props.handleShowSsnClick} /> <label>Show</label>
-                        </p>
-                      </div>);
-      } else {
-          result.push(::this.renderInput(question, fields));
-      }
-    });
-    return result;
+    const { categoryIndex, step } = this.props;
+    if (categoryIndex === 0 && step === 0) {
+      const { showSsn, storedSsn, formData, ssnError, handleShowSsnClick } = this.props;
+      return (
+        <PersonalForm 
+          questions={questions}
+          fields={fields}
+          handleShowSsnClick={handleShowSsnClick}
+          showSsn={showSsn}
+          onSsnChange={this.props.onSsnChange}
+          storedSsn={storedSsn}
+          ssnError={ssnError}
+          />
+      );
+    } else {
+      return questions.map((question, index) => {
+          return ::this.renderInput(question, fields);
+      });
+    }
   }
   render() {
     const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, type } = this.props;
     return (
-      <form className="common-form personal-info-form" onSubmit={this.props.handleSubmit}>
+      <div>
         <h2>{title}</h2>
-          {description ? <p>{description}</p> : null}
-          {hint ? <p className="wfm-hint">{hint}</p> : null}
-          {::this.renderQuestions(questions, fields)}
-          <div className="clearfix pad-05">
-              {this.props.children}
-              {title == 'Markets move up and down. How comfortable are you with changes?' || type == 'recommend' ?
-                <Link className="btn btn_blue w-308 pull-right" to={nextLink}>Next</Link>
-               :
-               <button className="btn btn_blue w-308 pull-right" disabled={this.props.disabledNext}>Submit </button>
-             }
-          </div>
-      </form>
+        <p>{description}</p>
+        <form className="common-form anketa-form" onSubmit={this.props.handleSubmit}>
+            {::this.renderQuestions(questions, fields)}
+            <div className="text-center">
+                <div className="common-form__buttons">
+                    {this.props.children}
+                    <button className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
+                </div>
+            </div>
+        </form>
+      </div>
     );
   }
 }

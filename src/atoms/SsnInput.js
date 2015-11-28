@@ -9,8 +9,8 @@ class SsnInput extends React.Component {
     let component;
 
     const commonProps = {
-      placeholder: "SSN",
-      className: "text full-width",
+      placeholder: "Social security number",
+      className: "input-text",
       value: storedSsn
     };
 
@@ -39,7 +39,7 @@ class SsnInput extends React.Component {
     }
 
     return (
-        <div className={'input-wrap w-342 inline-block valign-mid ' + (ssnError ? ' input-wrap_error' : '')}>
+        <div className={'input-wrap w-230 pad-03' + (ssnError ? ' input-wrap_error' : '')}>
           {component}
           { ssnError ?
               <div className="input-wrap__error-msg">

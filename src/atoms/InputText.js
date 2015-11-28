@@ -7,32 +7,25 @@ class InputText extends React.Component {
     console.log('masked!');
   }
   render () {
-    const { field, placeholder, additionalClass, icon, type, isNormalized , label, defaultValue } = this.props;
-    let mask = '111-111-1111';
+    const { field, placeholder, additionalClass, icon, type, isNormalized , label, defaultValue, maskPattern } = this.props;
+    const mask = maskPattern || '111-111-1111';
     const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
     let component = null;
 
-    if (field.name === 'date_of_birth') {
-      mask = '11/11/1111';
-    }
-
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
-        autoFocus={defaultValue ? true : false}
-        size={3}
+        className="input-text" 
         mask={mask}
-        type={type ? type : 'text'}
         placeholder={placeholder}
         value={defaultValue ? defaultValue : ""}
-        className="text full-width" {...field} />;
+        {...field} 
+        />;
     } else {
       component =  <input
-        autoFocus={defaultValue ? true : false}
-        type={type ? type : 'text'}
-        className="text full-width"
+        className="input-text"
+        defaultValue={defaultValue ? defaultValue : ""}
         placeholder={placeholder}
         {...field}
-        defaultValue={defaultValue ? defaultValue : ""}
         />
     }
 
@@ -49,28 +42,13 @@ class InputText extends React.Component {
                   />;
     }
 
-    // Additional class hardcode
-    let addClass = '';
-    if (placeholder === 'Zip Code') {
-      addClass = 'inline-block w-210';
-    }
-    if (placeholder === 'Phone') {
-      addClass = 'w-342 inline-block valign-mid';
-    }
-    if (placeholder === 'Date of Birth (MM/DD/YYYY)') {
-      addClass = 'w-342';
-    }
     return (
-        <div className={'input-wrap ' + addClass + (icon ? ' input-wrap_with-icon ' : '') + (field.error && field.touched ? ' input-wrap_error' : '')}>
-          {icon ? <div className="input-wrap__icon"><span aria-hidden="true" className={'glyphicon ' + icon }></span></div> : null}
+        <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (field.error && field.touched ? ' error' : '')}>
           {label ? <p><b>{label}</b><br /></p> : null}
           {component}
           {
             field.error && field.touched ?
-              <div className="input-wrap__error-msg">
-                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                 {field.error}
-              </div>
+              <div className="login-form__error-msg">{field.error}</div>
               : null
           }
         </div>

@@ -14,7 +14,7 @@ class SubmitButton extends React.Component {
   }
   render() {
     const {
-      className = 'btn btn_blue w-308',
+      className = 'btn btn_yellow btn_blue-text',
       handleSubmit,
       pending,
       text,
@@ -35,6 +35,7 @@ class SubmitButton extends React.Component {
            <div></div>
            <div></div>
         </div> : text}
+        <span className="wfm-i wfm-i-arr-right-blue"></span>
        </button>
     );
   }

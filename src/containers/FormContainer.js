@@ -142,7 +142,11 @@ class FormContainer extends React.Component {
                     storedSsn={this.props.storedSsn}
                     ssnError={this.props.ssnError}
                    >
-                    {prevLink ? <Link to={prevLink} className="pull-left pad-05__link"> Go Back </Link> : null}
+                    {prevLink ? 
+                        <Link to={prevLink} className="common-form__back-link">
+                          <span className="wfm-i wfm-i-arr-left-grey"></span> Go Back 
+                        </Link>
+                       : null}
           </DynamicForm>);
         }
       });

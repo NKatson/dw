@@ -23,34 +23,30 @@ export class Authorization extends React.Component {
       userEmail,
     } = this.props;
     return (
-      <div className="wide-block">
-        <div className="container container-1">
-            <LogoForm error={loginError} handleSubmit={::this.handleSubmit}>
-              <InputText
-                  field={email}
-                  icon="glyphicon-user"
-                  placeholder="Email"
-                  type="email"
-                />
-              <InputText
-                  field={password}
-                  icon="glyphicon-lock"
-                  placeholder="Password"
-                  type="password"
-                />
-              <div className="pad-01 text-right"><a href="#">Forgot password?</a></div>
-              <div className="input-wrap">
-                <SubmitButton
-                  fields={this.props.fields}
-                  handleSubmit={::this.handleSubmit}
-                  pending={loggingIn ? true : false}
-                  text="Sign In"
-                />
-              </div>
-              <div>Don’t have an account? <Link to="/signup">Get One.</Link></div>
-            </LogoForm>
+        <LogoForm error={loginError} handleSubmit={::this.handleSubmit}>
+          <InputText
+              field={email}
+              placeholder="Email address"
+              type="email"
+            />
+          <InputText
+              field={password}
+              placeholder="Password"
+              type="password"
+            />
+          <div className="login-form__forgot">
+             <a href="#">Forgot password?</a>
           </div>
-      </div>
+          <div className="input-wrap">
+            <SubmitButton
+              fields={this.props.fields}
+              handleSubmit={::this.handleSubmit}
+              pending={loggingIn ? true : false}
+              text="Sign In"
+            />
+          </div>
+          <div className="login-form__get-an-account">Don’t have an account? <Link to="signup">Get one</Link>.</div>
+        </LogoForm>
       );
   }
 };

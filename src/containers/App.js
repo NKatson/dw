@@ -18,24 +18,13 @@ class App extends React.Component {
   render() {
     let { userEmail, loggedIn } = this.props;
     loggedIn = localStorage.uid && localStorage.uid !== 'undefined' && localStorage.accessToken ? true : false;
-    return (
-      <div className="main-wrap">
-        <div className="wide-block main-header">
-            <div className="container container-1">
-              <Link to="/" className="main-logo" />Worth.fm &nbsp;
-              {loggedIn ? <Link to="/reset">Reset</Link> : null }
-              {loggedIn ? <Link to="/welcome">Welcome</Link> : null }&nbsp;
-              {loggedIn ? `Hi, ${localStorage.uid}` : null}
-              <div className="cabinet">
-                {loggedIn ? <a href="#" onClick={this.handleLogout}>Logout</a> : null }
-                {!loggedIn ? <Link to="/signin"><span>Sign In</span></Link> : null }
-                {!loggedIn ? <Link to="/signup">Sign Up</Link> : null }
-              </div>
-            </div>
-        </div>
-          {this.props.children}
+      return (
+        <div className="common-wrap common-wrap_white-shadowed">
+          <div className="container container-2">
+            {this.props.children}
+          </div>
       </div>
-    );
+      );
   }
 };
 

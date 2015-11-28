@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { DynamicForm, Category } from '../components';
 import { SurveyFormHeader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
@@ -19,12 +20,22 @@ class Survey extends React.Component {
     for (let category in data) {
       result.push(<Category
                   isCompleted={index <= this.props.categoryIndex ? true : false}
+                  index={index + 1}
                   title={category}
                   isLast={index === data.length - 1 ? true : false }
                   key={'category-' + category}
                   />);
       if (index !== count - 1) {
-        result.push(<div key={'dvdr-' + index} className="wfm-steps__dvdr"></div>);
+        result.push(
+              <div key={'dvdr-' + index} className="wfm-steps__dvdr">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>);
       }
       index++;
     }
@@ -40,24 +51,18 @@ class Survey extends React.Component {
     }
     return (
       <div>
-        <div className="wide-block bg-white common-block">
-          <div className="container container-1">
+        <header className="main-header">
+          <div className="container container-2">
+              <Link to="/" ><img src={require('../../static/images/logo-140.png')} /></Link>
+              <div className="wfm-cabinet"><a href="#">Log out</a></div>
+          </div>
+        </header>
+        <div className="common-wrap common-wrap_rose">
+          <div className="container container-2 bg-white">
             <div className="wfm-steps">
                {categories}
             </div>
-          </div>
-        </div>
-        {showRecommend ? <SurveyFormHeader
-          recommendMessageType={recommendMessageType}
-          accountType={this.props.accountType}
-          handleClick={() => {
-            this.props.dispatch(surveyActions.hideRecommend())
-          }} /> : null}
-        <div className="wide-block bg-white">
-          <div className="container container-1">
-              <div className="container-small" style={{ marginTop: '-60px' }}>
-                  {data ? this.props.children : null}
-              </div>
+            {data ? this.props.children : null}
           </div>
         </div>
       </div>
