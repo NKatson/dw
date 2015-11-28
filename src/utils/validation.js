@@ -160,6 +160,5 @@ export function validateSurvey(data) {
   errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });
 
   errors = checkDateOfBirth(data, 'date_of_birth', errors, data.state);
-  console.log(errors);
   return errors;
 }

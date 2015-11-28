@@ -1,6 +1,15 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
+import $ from 'jquery';
 
 class InputMultiple extends React.Component {
+  componentDidMount() {
+    require('icheck');
+    $('input.chbx-styled').iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal',
+        increaseArea: '20%' // optional
+    });
+  }
   render () {
     const { question : { htmlName, label }, handleClick, inputs } = this.props;
     return (
@@ -8,7 +17,7 @@ class InputMultiple extends React.Component {
         <p className="text-center">{label}</p>
         {inputs.map((input, index) => {
           let iProps = {
-            id: input.label,
+            id: 'option-'  + index,
             className: 'chbx-styled',
             type: 'radio',
             name: htmlName,
@@ -22,7 +31,7 @@ class InputMultiple extends React.Component {
           return (
             <div className="input-wrap input-wrap_with-radio" key={input.label}>
               <input  {...input.field} {...iProps} />
-              <label htmlFor={input.label}><span className="common-form__label-title">{input.label}</span></label>
+              <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span></label>
             </div>
           );
         })}

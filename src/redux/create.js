@@ -24,12 +24,15 @@ export default function createStore(initialState) {
   const reducer = require('./reducer');
 
   if (typeof initialState === 'object') {
-    initialState.auth = fromJS(initialState.auth);
-    initialState.resetPassword = fromJS(initialState.resetPassword);
-    initialState.registration = fromJS(initialState.registration);
+    // initialState.auth = fromJS(initialState.auth);
+    // initialState.resetPassword = fromJS(initialState.resetPassword);
+    // initialState.registration = fromJS(initialState.registration);
+    // initialState.survey = fromJS(initialState.survey);
   }
 
   const store = finalCreateStore(reducer, initialState);
+  console.log('Created store with initial state:');
+  console.log(store.getState());
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./reducer', () => {

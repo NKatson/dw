@@ -73,7 +73,6 @@ class FormContainer extends React.Component {
     }, []);
     return fields
   }
-
   handleFormSubmit(data) {
     const { storedSsn, step, categoryIndex, formData, nextLink } = this.props;
     if (step === 0 && categoryIndex === 0) {
@@ -82,31 +81,25 @@ class FormContainer extends React.Component {
         this.props.dispatch(surveyActions.ssnErrorChange('Required'));
         return;
       }
-      // The Basics case
-      let result = {};
-      if (formData && formData.dynamic && formData.dynamic['personal-step-1']) {
-        const data = this.props.formData.dynamic['personal-step-1'];
-        for (let key in data) {
-          if (key.charAt(0) !== '_') {
-            result[key] = data[key].value;
-          }
-        }
-      }
-      // send welcome page question
-      result = Object.assign({}, result, {
-        describe_self: this.props.welcome,
-      });
-      api.sendPersonal(result);
+      data.ssn = storedSsn;
+      data.describe_self = this.props.welcome;
+      // api.sendPersonal(data);
     }
 
-    if (categoryIndex === 0) {
       let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+      const {state} = this.props;
+      console.log(state);
+      // save state to local storage
+      localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
+      localStorage.setItem('state_form', JSON.stringify(state.form));
       window.location.href = `http://${window.location.hostname}${port}${nextLink}`
-    } else {
-      this.context.history.pushState(null, nextLink);
-    }
   }
-
+  backClicked(e) {
+    console.log('Back!');
+    const {state} = this.props;
+    localStorage.setItem('state_form', JSON.stringify(state.form));
+    localStorage.setItem('state_form', JSON.stringify(state.form));
+  }
   renderForms(data) {
     let result = [];
     let index = 0;
@@ -143,7 +136,7 @@ class FormContainer extends React.Component {
                     ssnError={this.props.ssnError}
                    >
                     {prevLink ? 
-                        <Link to={prevLink} className="common-form__back-link">
+                        <Link onClick={::this.backClicked} to={prevLink} className="common-form__back-link">
                           <span className="wfm-i wfm-i-arr-left-grey"></span> Go Back 
                         </Link>
                        : null}
@@ -170,6 +163,7 @@ FormContainer.contextTypes = {
 
 function mapStateToProps(state) {
   return {
+    state: state,
     formData: state.form.dynamic,
     welcome: state.survey.get('welcome'),
     data: state.survey.get('data'),

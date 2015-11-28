@@ -3,14 +3,24 @@ import React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import { fromJS } from 'immutable';
 import createHistory from 'history/lib/createBrowserHistory';
 
 import createStore from './redux/create';
 import getRoutes from './routes';
 
-// const initialState = window.__INITIAL_STATE__;
+let initialState = {};
+
+if (localStorage.state_survey && localStorage.state_form) {
+  console.log(initialState);
+  initialState.form = JSON.parse(localStorage.state_form);
+  initialState.survey = fromJS(JSON.parse(localStorage.state_survey));
+  delete localStorage.state_survey;
+  delete localStorage.state_form;
+}
+
 const history = createHistory();
-const store = createStore();
+const store = createStore(initialState);
 const root = document.getElementById('root');
 
 const component = (

@@ -8,7 +8,8 @@ import * as surveyActions from '../redux/actions/survey';
 
 class Survey extends React.Component {
   componentDidMount() {
-    if (!this.props.requesting) {
+    const { requesting, data } = this.props 
+    if (!requesting && !data) {
       this.props.dispatch(surveyActions.getData());
     }
   }
@@ -75,6 +76,8 @@ Survey.propTypes = {
 };
 
 function mapStateToProps(state) {
+  console.log('Suvey:');
+  console.log(state.survey);
   return {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
