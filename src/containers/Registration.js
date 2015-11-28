@@ -1,25 +1,12 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
-import { History } from 'react-router';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
-
-import {registration} from '../redux/actions/registration';
-import {registration as validate} from '../utils/validation';
-import { SubmitButton } from '../components';
+import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
+import { registration } from '../redux/actions/registration';
+import { registration as validate } from '../utils/validation';
+import { SubmitButton, LogoForm } from '../components';
 import { InputText } from '../atoms';
 
-let Registration = React.createClass({
-  propTypes: {
-    registrationError: PropTypes.string,
-    registeredIn: PropTypes.bool,
-    registeringIn: PropTypes.bool,
-    fields: PropTypes.object.isRequired,
-    userEmail: PropTypes.string,
-    dispatch: PropTypes.func.isRequired,
-    loggedIn: PropTypes.bool.isRequired,
-  },
-  mixins: [ History ],
+class Registration extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const {email, password, confirmPassword} = this.props.fields;
@@ -30,9 +17,9 @@ let Registration = React.createClass({
     };
 
     this.props.dispatch(registration(data, () => {
-      this.history.replaceState(null, '/welcome');
+      this.context.history.replaceState(null, '/welcome');
     }));
-  },
+  }
   render() {
     const {
       fields: { email, password, confirmPassword },
@@ -42,50 +29,55 @@ let Registration = React.createClass({
       userEmail,
     } = this.props;
     return (
-      <div className="wide-block">
-        <div className="container container-1">
-            <div className="login-block">
-                <form onSubmit={this.handleSubmit} className="common-form login-form">
-                    {
-                      registrationError && registrationError.length > 0 ?
-                      <div className="message message_error">{registrationError}</div> :
-                      null
-                    }
-                    <InputText
-                      field={email}
-                      icon="glyphicon-user"
-                      placeholder="Email"
-                      type="email"
-                    />
-                    <InputText
-                      field={password}
-                      icon="glyphicon-lock"
-                      placeholder="Password"
-                      type="password"
-                    />
-                    <InputText
-                      field={confirmPassword}
-                      icon="glyphicon-lock"
-                      placeholder="Confirm password"
-                      type="password"
-                    />
-                    <div className="input-wrap">
-                      <SubmitButton
-                        fields={this.props.fields}
-                        handleSubmit={this.handleSubmit}
-                        pending={registeringIn ? true : false}
-                        text="Sign Up"
-                      />
-                    </div>
-                    <div>Already have an account? <Link to="/signin">Sign In.</Link></div>
-                </form>
-            </div>
-        </div>
-      </div>
+      <LogoForm error={registrationError} handleSubmit={::this.handleSubmit}>
+          <InputText
+              inputClass="full-width"
+              errorMessageClass="login-form__error-msg"
+              field={email}
+              placeholder="Email address"
+              type="email"
+            />
+          <InputText
+              inputClass="full-width"
+              errorMessageClass="login-form__error-msg"
+              field={password}
+              placeholder="Password"
+              type="password"
+            />
+          <InputText
+              inputClass="full-width"
+              errorMessageClass="login-form__error-msg"
+              field={confirmPassword}
+              placeholder="Confirm password"
+              type="password"
+            />
+          <div className="input-wrap">
+            <SubmitButton
+              fields={this.props.fields}
+              handleSubmit={::this.handleSubmit}
+              pending={registeringIn ? true : false}
+              text="Sign Up"
+            />
+          </div>
+          <div className="login-form__get-an-account">Already have an account? <Link to="signin">Sign In</Link>.</div>
+        </LogoForm>
     );
-  },
-});
+  }
+};
 
+Registration.propTypes = {
+    registrationError: PropTypes.string,
+    registeredIn: PropTypes.bool,
+    registeringIn: PropTypes.bool,
+    fields: PropTypes.object.isRequired,
+    userEmail: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+};
+
+Registration.contextTypes = {
+  history: RouterPropTypes.history,
+};
 
 function mapStateToProps(state) {
   return {

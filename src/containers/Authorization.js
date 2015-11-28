@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
 import { login } from '../redux/actions/auth';
 import { InputText } from '../atoms';
-import { SubmitButton, FormHeader, LogoForm } from '../components';
+import { SubmitButton, LogoForm } from '../components';
 import { authorization as validate } from '../utils/validation';
 
 export class Authorization extends React.Component {
