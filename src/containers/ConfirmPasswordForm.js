@@ -9,9 +9,11 @@ import { login } from '../redux/actions/auth';
 
 class ConfirmPasswordForm extends React.Component {
   componentDidMount() {
-    const { query: { uid } } = this.props.location;
-    if (uid) {
-      localStorage.uid = uid;
+    const { query: { password_token } } = this.props.location;
+    if (password_token) {
+      //localStorage.uid = uid;
+    } else {
+      this.context.history.pushState(null, '/signin');
     }
   }
   handleSubmit(e) {

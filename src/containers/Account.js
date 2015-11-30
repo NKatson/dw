@@ -7,15 +7,6 @@ class Account extends React.Component {
   handleCheckboxClick(e) {
     this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
   }
-  comopnentDidMount() {
-    this.props.dispatch(surveyActions.hideRecommend());
-  }
-  componentWillReceiveProps() {
-    this.props.dispatch(surveyActions.hideRecommend());
-  }
-  componentWillUnmount() {
-    this.props.dispatch(surveyActions.showRecommend('selected'));
-  }
   render() {
     const accounts = ["Savings Account", "Investment Account", "Retirement Account", "General Investment Account"];
     const { category, step, prevLink } = this.props;

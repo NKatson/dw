@@ -31,8 +31,6 @@ export default function createStore(initialState) {
   }
 
   const store = finalCreateStore(reducer, initialState);
-  console.log('Created store with initial state:');
-  console.log(store.getState());
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./reducer', () => {

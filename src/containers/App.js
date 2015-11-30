@@ -2,28 +2,23 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { History } from 'react-router';
-
-import { Footer } from '../components/Footer';
-import * as auth from '../redux/actions/auth';
+import { Footer } from '../components';
 
 require('./App.css');
 
 class App extends React.Component {
-  handleLogout(event) {
-    event.preventDefault();
-    this.props.dispatch(auth.logout( () => {
-        this.context.history.replaceState(null, '/signin');
-    }));
-  }
   render() {
     let { userEmail, loggedIn } = this.props;
     loggedIn = localStorage.uid && localStorage.uid !== 'undefined' && localStorage.accessToken ? true : false;
       return (
-        <div className="common-wrap common-wrap_white-shadowed">
-          <div className="container container-2">
-            {this.props.children}
-          </div>
-      </div>
+        <div>
+          <div className="common-wrap common-wrap_white-shadowed">
+            <div className="container container-2">
+              {this.props.children}
+            </div>
+        </div>
+        <Footer />
+        </div>
       );
   }
 };

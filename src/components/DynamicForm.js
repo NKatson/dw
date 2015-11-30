@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
+
 import  PersonalForm from './PersonalForm';
-import { InputText, InputMultiple, Select, SsnInput, RecommendBlock } from '../atoms/index';
+import { InputText, Select, SsnInput, RecommendBlock } from '../atoms/index';
+import { InputMultiple } from '../components'; 
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
-import { blur, focus } from 'redux-form/lib/actions';
+import { radioClick, enableButton } from '../redux/actions/survey';
 
 class DynamicForm extends Component {
   getInputs(question, fields) {
@@ -18,25 +20,22 @@ class DynamicForm extends Component {
       }
     });
   }
-  componentDidMount() {
-    let { questions, fields, dispatch } = this.props;
-    let last;
-    questions.map((question, index) => {
-      if (question.defaultValue) {
-          dispatch(blur('date_of_birth'));
-      }
-    });
+  handleRadioClick(name, value) {
+    this.props.dispatch(radioClick(name, value));
   }
   renderInput(question, fields) {
     const multipleTypes = ['checkbox', 'radio'];
     if (multipleTypes.indexOf(question.type) !== - 1) {
       const inputs = ::this.getInputs(question, fields);
-
+      const { formKey, chooseAccount, radio } = this.props;
+      console.log(radio);
+      console.log(question);
       return <InputMultiple
               key={question.name}
               question={question}
               inputs={inputs}
-              handleClick={this.props.formType === 'recommend' ? this.props.chooseAccount : null}
+              selectedValue={radio[question.htmlName] ? radio[question.htmlName] : null }
+              handleClick={::this.handleRadioClick}
             />
     } else if (question.type === 'dropdown') {
       let result = [];
@@ -101,7 +100,7 @@ class DynamicForm extends Component {
     }
   }
   render() {
-    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, type } = this.props;
+    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
     return (
       <div>
         <h2>{title}</h2>
@@ -125,7 +124,6 @@ class DynamicForm extends Component {
 }
 
 DynamicForm.propTypes = {
-    type: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     questions: PropTypes.array.isRequired,
@@ -143,7 +141,8 @@ DynamicForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
     onSsnChange: PropTypes.func.isRequired,
     storedSsn : PropTypes.string,
-    ssnError: PropTypes.string
+    ssnError: PropTypes.string,
+    radio: PropTypes.object.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {

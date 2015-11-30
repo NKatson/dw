@@ -4,7 +4,6 @@ import CurrencyMaskedInput from 'react-currency-masked-input';
 
 class InputText extends React.Component {
   maskedChange(e) {
-    console.log('masked!');
   }
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized , 
@@ -44,7 +43,6 @@ class InputText extends React.Component {
                     defaultValue={defaultValue ? defaultValue : ""}
                   />;
     }
-
     return (
         <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (field.error && field.touched ? ' error' : '')}>
           {label ? <div className="input-wrap__text">{label}</div> : null}

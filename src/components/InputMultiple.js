@@ -7,11 +7,15 @@ class InputMultiple extends React.Component {
     $('input.chbx-styled').iCheck({
         checkboxClass: 'icheckbox_minimal',
         radioClass: 'iradio_minimal',
-        increaseArea: '20%' // optional
+        increaseArea: '20%'
+    });
+    const that = this;
+    $('input').on('ifChecked', function(e) {
+      that.props.handleClick(e.target.name, e.target.value);
     });
   }
   render () {
-    const { question : { htmlName, label }, handleClick, inputs } = this.props;
+    const { question : { htmlName, label }, handleClick, inputs, selectedValue } = this.props;
     return (
       <div className="anketa-form__fieldset anketa-form__main-fieldset">
         <p className="text-center">{label}</p>
@@ -20,17 +24,15 @@ class InputMultiple extends React.Component {
             id: 'option-'  + index,
             className: 'chbx-styled',
             type: 'radio',
-            name: htmlName,
             value: input.value,
-            defaultChecked: input.defaultChecked ? true : false
+            htmlName: htmlName,
           };
-
           if (handleClick) {
             iProps.onClick = handleClick;
           }
           return (
             <div className="input-wrap input-wrap_with-radio" key={input.label}>
-              <input  {...input.field} {...iProps} />
+              <input {...input.field} {...iProps} checked={input.value == selectedValue ? true : false} />
               <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span></label>
             </div>
           );

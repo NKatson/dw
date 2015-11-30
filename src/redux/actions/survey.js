@@ -5,17 +5,15 @@ export const FILL_STATE = 'FILL_STATE';
 export const TOGGLE_SSN = 'TOGGLE_SSN';
 export const SELECT_CHANGE = 'SELECT_CHANGE';
 export const SUBMIT_NEXT = 'SUBMIT_NEXT';
-export const SHOW_RECOMMEND = 'SHOW_RECOMMEND';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 export const CHANGE_QUESTION = 'CHANGE_QUESTION';
-export const HIDE_RECOMMEND = 'HIDE_RECOMMEND';
 export const SEND_DATA = 'SEND_DATA';
 export const DISABLE_NEXT = 'DISABLE_NEXT';
 export const ENABLE_NEXT = 'ENABLE_NEXT';
 export const SAVE_WELCOME = 'SAVE_WELCOME';
 export const SSN_CHANGE = 'SSN_CHANGE';
 export const SSN_ERROR_CHANGE = 'SSN_ERROR_CHANGE';
-export const UNFOCUS  = 'UNFOCUS';
+export const RADIO_CLICKED = 'RADIO_CLICKED';
 
 function initialRequest() {
   return {
@@ -59,19 +57,6 @@ export function changeQuestion(category, number) {
   }
 }
 
-export function showRecommend(messageType = 'recommend') {
-  return {
-    type: SHOW_RECOMMEND,
-    messageType
-  }
-}
-
-export function hideRecommend() {
-  return {
-    type: HIDE_RECOMMEND,
-  }
-}
-
 export function toggleSsn() {
   return {
     type: TOGGLE_SSN
@@ -99,10 +84,11 @@ export function ssnErrorChange(error) {
   }
 }
 
-export function unfocus(fieldName) {
+export function radioClick(name, value) {
   return {
-    type: UNFOCUS,
-    fieldName,
+    type: RADIO_CLICKED,
+    name,
+    value,
   }
 }
 

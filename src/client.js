@@ -12,11 +12,10 @@ import getRoutes from './routes';
 let initialState = {};
 
 if (localStorage.state_survey && localStorage.state_form) {
-  console.log(initialState);
   initialState.form = JSON.parse(localStorage.state_form);
   initialState.survey = fromJS(JSON.parse(localStorage.state_survey));
-  delete localStorage.state_survey;
-  delete localStorage.state_form;
+  // delete localStorage.state_survey;
+  // delete localStorage.state_form;
 }
 
 const history = createHistory();

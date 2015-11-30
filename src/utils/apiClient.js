@@ -10,12 +10,12 @@ let redirectUrl = host + '/confirm-password';
 //   host += `:${apiPort}`;
 // }
 //
-//host = 'http://localhost:8080';
-redirectUrl = 'http://localhost:3000/confirm-password';
+host = 'http://localhost:8080';
+redirectUrl = 'http://localhost:3000/welcome';
 
 function saveLocal(res) {
-  localStorage.accessToken = res.headers['access-token'];
-  localStorage.uid = res.headers.uid;
+  // localStorage.accessToken = res.headers['access-token'];
+  // localStorage.uid = res.headers.uid;
 }
 
 /**
@@ -111,7 +111,6 @@ export function login({ email, password, cb }) {
  * POST /api/auth/password
  */
 export function reset({ email, cb }) {
-  console.log(redirectUrl);
   request
     .post(host + '/api/auth/password')
     .send({email: email, redirect_url: redirectUrl})
@@ -125,6 +124,20 @@ export function reset({ email, cb }) {
     });
 }
 
+
+export function checkResetPasswordToken(token, cb) {
+  request
+    .post(host + '/api/auth/password/edit')
+    .send({reset_password_token: token, redirect_url: redirectUrl})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+
+      return cb(null, res.body);
+    });
+}
 /**
  * PUT /api/auth/password
  */
@@ -132,9 +145,6 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
   localStorage.accessToken = accessToken;
   localStorage.client = client;
   localStorage.uid = uid;
-
-  console.log(password);
-  console.log(confirmPassword);
 
   request
     .put(host + '/api/auth/password')

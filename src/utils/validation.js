@@ -86,7 +86,6 @@ function checkDateOfBirth(data, fieldName, errors, state) {
   const [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
   const min18States = [ 'CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
 
-  console.log(day, month, year);
   if (year < (currentYear - 100)
       || (currentYear - year) < 3
       || !(moment([year, day, month]).isValid())) {

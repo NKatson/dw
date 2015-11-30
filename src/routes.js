@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Redirect } from 'react-router';
 import { isLoggedIn } from './redux/actions/auth';
 import { Category, Submit } from './components';
 
@@ -29,8 +29,8 @@ export default (store) => {
   };
 
   return (
-    <Route path="">
-      <Route path="/" component={App} >
+    <Route>
+      <Route component={App} >
         <Route path="welcome" component={Welcome} />
         <Route path="reset" component={ResetPassword} />
         <Route path="confirm-password" component={ConfirmPasswordForm} />
@@ -46,6 +46,7 @@ export default (store) => {
           <Route path="/account" component={Account} />
           <Route path=":category/q/:number" component={FormContainer} />
       </Route>
+      <Redirect from="/" to="signin" />
     </Route>
   );
 };

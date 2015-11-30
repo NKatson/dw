@@ -11,6 +11,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.all('/*', (req,res,next) => {
+    res.header('access-token' , 'dqleub-mNG3aScinWC8J_g');
+    res.header('client', 'dqleub-mNG3aScinWC8J_g');
+    res.header('uid', 'user@user.com');
+    next();
+});
+
 app.post('/api/accounts', (req, res) => {
   console.log('Request to accounts:');
   console.log(req.body);
@@ -258,7 +265,6 @@ app.get('/api/questions', (req, res) => {
     ],
     "Invest" : [
       {
-        "type": "recommend", // new
         "title" : "Finding the Right Investment for You",
         "description" : "The next few steps will help us to recommend the best savings & investment strategy for you",
         "questions" : [
@@ -269,22 +275,22 @@ app.get('/api/questions', (req, res) => {
             "answers" : [
               {
                 "label" : "I might need to withdraw this money within a few years" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "Savings account",
               },
               {
                 "label" : "Not soon, but I plan to withdraw some of this money before I retire" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "General investment account",
               },
               {
                 "label" : "I won't need it until I retire" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "Retirement account",
               },
               {
                 "label" : "I don't know" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "General investment account",
               }
             ]
@@ -292,12 +298,13 @@ app.get('/api/questions', (req, res) => {
         ]
       },
       {
+        "type": "recommend",
         "title" : "Markets move up and down. How comfortable are you with changes?",
         "description" : "In 2008 the worst happened!! The markets lost more than 50% of their value within f few short years (2007-2009). If this happened again, would you:",
         "questions" : [
           {
             "type" : "radio",
-            "htmlName": "comf",
+            "htmlName": "invest-q2-a1",
             "answers" : [
               {
                 "label" : "Scream! And then sell all your investments. Too risky!" ,

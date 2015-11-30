@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
-import { DynamicForm, Category } from '../components';
+import { DynamicForm, Category, Footer } from '../components';
 import { SurveyFormHeader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
+import * as auth from '../redux/actions/auth';
 
 class Survey extends React.Component {
   componentDidMount() {
@@ -15,6 +16,12 @@ class Survey extends React.Component {
         this.context.history.pushState(null, '/signin');
       }));
     }
+  }
+  handleLogout(e) {
+    e.preventDefault();
+    this.props.dispatch(auth.logout( () => {
+        this.context.history.pushState(null, '/signin');
+    }));
   }
   renderCategories(data) {
     let result = [];
@@ -50,7 +57,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType, showRecommend, recommendMessageType } = this.props;
+    const { data, stepType, recommendMessageType } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
@@ -61,7 +68,7 @@ class Survey extends React.Component {
         <header className="main-header">
           <div className="container container-2">
               <Link to="/" ><img src={require('../../static/images/logo-140.png')} /></Link>
-              <div className="wfm-cabinet"><a href="#">Log out</a></div>
+              <div className="wfm-cabinet"><a href="#" onClick={::this.handleLogout}>Logout</a></div>
           </div>
         </header>
         <div className="common-wrap common-wrap_rose">
@@ -72,6 +79,7 @@ class Survey extends React.Component {
             {data ? this.props.children : null}
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -87,14 +95,11 @@ Survey.contextTypes = {
 
 
 function mapStateToProps(state) {
-  console.log('Suvey:');
-  console.log(state.survey);
   return {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
-    showRecommend: state.survey.get('showRecommend'),
     accountType: state.survey.get('accountType'),
     recommendMessageType: state.survey.get('recommendMessageType'),
   };

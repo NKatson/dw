@@ -4,7 +4,6 @@ import { DynamicForm } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
-import { blur } from 'redux-form/lib/actions';
 
 class FormContainer extends React.Component {
   componentDidMount(props) {
@@ -25,7 +24,6 @@ class FormContainer extends React.Component {
     this.props.dispatch(surveyActions.ssnChange(ssn));
   }
   handleSelectChange(e) {
-    console.log('Select change!');
     this.props.dispatch(surveyActions.selectChange(e.target.value));
   }
   handlePrevClick(e) {
@@ -88,7 +86,6 @@ class FormContainer extends React.Component {
 
       let port = window.location.port.length > 0 ? ':' + window.location.port : '';
       const {state} = this.props;
-      console.log(state);
       // save state to local storage
       localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
       localStorage.setItem('state_form', JSON.stringify(state.form));
@@ -109,7 +106,6 @@ class FormContainer extends React.Component {
        if (index === this.props.step && category == this.props.category) {
           result.push(<DynamicForm
                     key={`${category}-step-${index}`}
-                    type={form.type ? form.type : 'default'}
                     title={form.title}
                     description={form.description}
                     hint={form.hint}
@@ -133,6 +129,7 @@ class FormContainer extends React.Component {
                     onSsnChange={::this.onSsnChange}
                     storedSsn={this.props.storedSsn}
                     ssnError={this.props.ssnError}
+                    radio={this.props.radio}
                    >
                     {prevLink ? 
                         <Link onClick={::this.backClicked} to={prevLink} className="common-form__back-link">
@@ -146,7 +143,7 @@ class FormContainer extends React.Component {
     return result;
   }
   render () {
-    const { category, currentIndex, step, nextLink, prevLink, showRecommend } = this.props;
+    const { category, currentIndex, step, nextLink, prevLink } = this.props;
     return (
       <div>
         {::this.renderForms(this.props.data.toJS())}
@@ -174,10 +171,9 @@ function mapStateToProps(state) {
     step: state.survey.get('step'),
     formType: state.survey.get('formType'),
     stateSelectValue: state.survey.get('selectValue'),
-    showRecommend: state.survey.get('showRecommend'),
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
-    disabledNext: state.survey.get('disabledNext')
+    radio: state.survey.get('radio').toJS(),
   };
 }
 
