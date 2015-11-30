@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { authorization as validate } from '../utils/validation';
 import { InputText } from '../atoms';
-import { SubmitButton, ResetPasswordSent } from '../components';
+import { SubmitButton, ResetPasswordSent, LogoForm } from '../components';
 import { reset } from '../redux/actions/resetPassword';
 
 class ResetPassword extends React.Component {
@@ -20,39 +20,33 @@ class ResetPassword extends React.Component {
       resetError,
       resetting,
     } = this.props;
+    const sentMessage = "We have sent an reset email to your email address: " + email.value;
+    const small = 'Please check out your inbox to continue.';
     return (
       <div>
-        { sent ? <ResetPasswordSent /> :
-        <div className="container container-1">
-          <div className="login-block">
-             <div className="text-left">
-                 <h1>Reset Your Password</h1>
-                 <p>No problem! To reset your password, please enter the email address associated with your account.</p>
-             </div>
-             <form onSubmit={::this.handleSubmit} className="common-form login-form">
-               {
-                 resetError ?
-                 <div className="message message_error">{resetError}</div> :
-                 null
-               }
-                 <InputText
-                   field={email}
-                   icon="glyphicon-user"
-                   placeholder="example@website.com"
-                   type="email"
-                 />
-                 <div className="input-wrap">
-                   <SubmitButton
-                     fields={this.props.fields}
-                     handleSubmit={::this.handleSubmit}
-                     pending={resetting ? true : false}
-                     text="Reset"
-                   />
-                 </div>
-                 <div>Already have an account? <Link to="signin">Sign In.</Link></div>
-             </form>
-           </div>
-         </div>
+        { sent ?
+          <LogoForm 
+            error={sentMessage}
+            small={small}
+            handleSubmit={::this.handleSubmit} />
+           :
+          <LogoForm error={resetError} handleSubmit={::this.handleSubmit}>
+            <InputText
+                inputClass="full-width"
+                errorMessageClass="login-form__error-msg"
+                field={email}
+                placeholder="Email address"
+                type="email"
+              />
+            <div className="input-wrap">
+              <SubmitButton
+                fields={this.props.fields}
+                handleSubmit={::this.handleSubmit}
+                pending={resetting ? true : false}
+                text="Send"
+              />
+            </div>
+          </LogoForm>
        }
       </div>
   );

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 class LogoForm extends React.Component {
   render() {
-    const { error, handleSubmit } = this.props;
+    const { error, handleSubmit, small } = this.props;
     return (
       <form className="common-form login-form" onSubmit={handleSubmit}>
           <div className="wfm-logo">
@@ -14,6 +14,11 @@ class LogoForm extends React.Component {
             <p className="login-form__message">{error}</p> :
             null
           }
+          {
+            error ?
+            <p className="pad-08">{small}</p> :
+            null
+          }
           <div className="login-form__fieldset">
             {this.props.children}
           </div>
@@ -22,4 +27,9 @@ class LogoForm extends React.Component {
   }
 }
 
+LogoForm.propTypes = {
+  error: PropTypes.string,
+  handleSubmit: PropTypes.func.isRequired,
+  small: PropTypes.string,
+}
 export default LogoForm;
