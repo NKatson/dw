@@ -95,7 +95,6 @@ class FormContainer extends React.Component {
       window.location.href = `http://${window.location.hostname}${port}${nextLink}`
   }
   backClicked(e) {
-    console.log('Back!');
     const {state} = this.props;
     localStorage.setItem('state_form', JSON.stringify(state.form));
     localStorage.setItem('state_form', JSON.stringify(state.form));
@@ -149,7 +148,7 @@ class FormContainer extends React.Component {
   render () {
     const { category, currentIndex, step, nextLink, prevLink, showRecommend } = this.props;
     return (
-      <div style={{paddingTop: showRecommend ? '60px' : 0 }}>
+      <div>
         {::this.renderForms(this.props.data.toJS())}
       </div>
     );

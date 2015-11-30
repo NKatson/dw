@@ -139,7 +139,7 @@ export function validateSurvey(data) {
   const requiredFields = [
     'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
    'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 
-   'state', 'employment_status'];
+   'state', 'employment_status']; // add ssn
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);

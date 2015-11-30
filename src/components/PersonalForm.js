@@ -5,6 +5,7 @@ class PersonalForm extends React.Component {
   render () {
     const { questions, fields, handleStateChange, showSsn, onSsnChange, storedSsn,
        ssnError, handleShowSsnClick } = this.props;
+       console.log(fields['ssn']);
     return (
       <div>
         {/* first name, last name */}
@@ -63,6 +64,7 @@ class PersonalForm extends React.Component {
             <div>
               <SsnInput
                   key="ssn"
+                  field={fields['ssn']}
                   showSsn={showSsn}
                   onSsnChange={onSsnChange}
                   storedSsn={storedSsn}

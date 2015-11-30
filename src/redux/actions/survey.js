@@ -106,10 +106,11 @@ export function unfocus(fieldName) {
   }
 }
 
-export function getData() {
+export function getData(cb) {
   return dispatch => {
     dispatch(initialRequest());
     api.getForm((err, body) => {
+      if (err) return cb();
       dispatch(fillState(body));
     });
   };

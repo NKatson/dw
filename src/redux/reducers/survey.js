@@ -13,7 +13,11 @@ function getPrevLink({ category, step, data }) {
   if (categoryIndex === -1) return '-1';
   if (step === 0) {
     if (categoryIndex === 0) return '/welcome';
-    return `/survey/${categoryNames[categoryIndex - 1].toLowerCase()}/q/${categoryNames.length - 1}`;
+    console.log(prevCat);
+    console.log(lastQuestionIndex);
+    const prevCat = categoryNames[categoryIndex - 1];
+    const lastQuestionIndex = Object.keys(data[prevCat]).length - 1;
+    return `/survey/${prevCat.toLowerCase()}/q/${lastQuestionIndex}`;
   }
 
   return `/survey/${category.toLowerCase()}/q/${step - 1}`;

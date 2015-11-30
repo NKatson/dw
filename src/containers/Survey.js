@@ -1,26 +1,30 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { DynamicForm, Category } from '../components';
 import { SurveyFormHeader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 
 class Survey extends React.Component {
   componentDidMount() {
-    const { requesting, data } = this.props 
+    const { requesting, data } = this.props;
     if (!requesting && !data) {
-      this.props.dispatch(surveyActions.getData());
+      this.props.dispatch(surveyActions.getData(() => {
+        // redirect if Unauthorized 
+        this.context.history.pushState(null, '/signin');
+      }));
     }
   }
   renderCategories(data) {
     let result = [];
     let index = 0;
     const count = Object.keys(data).length;
+    const { categoryIndex } = this.props;
 
     for (let category in data) {
       result.push(<Category
-                  isCompleted={index <= this.props.categoryIndex ? true : false}
+                  isCompleted={index <= categoryIndex ? true : false}
                   index={index + 1}
                   title={category}
                   isLast={index === data.length - 1 ? true : false }
@@ -28,7 +32,9 @@ class Survey extends React.Component {
                   />);
       if (index !== count - 1) {
         result.push(
-              <div key={'dvdr-' + index} className="wfm-steps__dvdr">
+              <div 
+                key={'dvdr-' + index} 
+                className={'wfm-steps__dvdr ' + (index === categoryIndex - 1 ? 'passed' : null )}>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -74,6 +80,11 @@ class Survey extends React.Component {
 Survey.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
+
+Survey.contextTypes = {
+  history: RouterPropTypes.history,
+};
+
 
 function mapStateToProps(state) {
   console.log('Suvey:');

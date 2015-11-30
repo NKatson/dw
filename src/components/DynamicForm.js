@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import  PersonalForm from './PersonalForm';
-import { InputText, InputMultiple, Select, SsnInput } from '../atoms/index';
+import { InputText, InputMultiple, Select, SsnInput, RecommendBlock } from '../atoms/index';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
 import { blur, focus } from 'redux-form/lib/actions';
@@ -101,13 +101,17 @@ class DynamicForm extends Component {
     }
   }
   render() {
-    const { title, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, type } = this.props;
+    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, type } = this.props;
     return (
       <div>
         <h2>{title}</h2>
+        {formKey === "invest-step-2" ? <RecommendBlock /> : null}
         <p>{description}</p>
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit}>
             {::this.renderQuestions(questions, fields)}
+            {formKey === "invest-step-2" ?
+              <p className="text-center">Tell me more about <a href="#" className="grey-color">how the markets fluctuate</a></p>
+               : null}
             <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
