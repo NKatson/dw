@@ -76,9 +76,13 @@ class FormContainer extends React.Component {
     if (step === 0 && categoryIndex === 0) {
       // api.sendPersonal(data);
     }
-
+    
     let port = window.location.port.length > 0 ? ':' + window.location.port : '';
     const { state } = this.props;
+    if (step === 1 && categoryIndex === 0) {
+        state.form.dynamic['personal-step-2'].annual_income.value = '12345';
+    }
+
     // save state to local storage
     localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
     localStorage.setItem('state_form', JSON.stringify(state.form));

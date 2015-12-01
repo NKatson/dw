@@ -139,7 +139,7 @@ export function validateSurvey(data) {
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
   const requiredFields = [
     'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
-   'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income',
+   'date_of_birth', 'employer', 'title', 'industry_kind',
    'state', 'employment_status', 'ssn'];
 
   requiredFields.forEach(fieldName => {
@@ -153,7 +153,8 @@ export function validateSurvey(data) {
   minTwo.forEach(elem => {
       errors = checkLength({ data, fieldName: elem, errors, min: 2 });
   });
-
+  
+  // check annual_income
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valide SSN' });
   errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
