@@ -173,7 +173,7 @@ export function checkPasswordToken(token, cb) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);
-      
+
       saveLocal(res);
       return cb(null);
     });

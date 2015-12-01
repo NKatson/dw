@@ -32,7 +32,6 @@ export default (store) => {
   return (
     <Route>
       <Route component={App} >
-        <Route path="welcome" component={Welcome} />
         <Route path="reset" component={ResetPassword} />
         <Route path="/confirm-password" component={ConfirmPasswordForm} />
         <Route path="confirm-email" component={ConfirmRegistration} />
@@ -49,6 +48,7 @@ export default (store) => {
           <Route path=":category/q/:number" component={FormContainer} />
       </Route>
       <Redirect from="/" to="signin" />
+      <Route path="/welcome" component={Welcome} />
     </Route>
   );
 };

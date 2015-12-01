@@ -4,7 +4,7 @@
     A set of useful LESS mixins
     More info at: http://lesselements.com
   ---------------------------------------------------*/
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
 body {
   font-family: 'Lato', sans-serif;
   font-size: 16px;
@@ -291,6 +291,9 @@ input.input-text {
   padding-left: 55px;
   padding-right: 55px;
   border-bottom: 1px #fdf5d9 solid;
+}
+.wfm-steps_no-border {
+  border: 0;
 }
 .wfm-step {
   display: inline-block;
@@ -688,4 +691,33 @@ select.input-text {
 }
 .grey-color {
   color: #4a4a4a;
+}
+.wfm-slogan {
+  font-size: 58px;
+  font-weight: 300;
+  text-transform: uppercase;
+  margin-top: 50px;
+  margin-bottom: 55px;
+  border-bottom: 3px #ffc705 solid;
+  text-align: center;
+  position: relative;
+}
+.wfm-slogan:after {
+  content: "";
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  margin-left: -16px;
+  top: 100%;
+  background-color: #ffc705;
+}
+.pad-09 {
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+.pad-10 {
+  margin-bottom: 90px;
+  margin-top: 20px;
 }

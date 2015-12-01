@@ -12,7 +12,7 @@ class Survey extends React.Component {
     const { requesting, data } = this.props;
     if (!requesting && !data) {
       this.props.dispatch(surveyActions.getData(() => {
-        // redirect if Unauthorized 
+        // redirect if Unauthorized
         this.context.history.pushState(null, '/signin');
       }));
     }
@@ -39,8 +39,8 @@ class Survey extends React.Component {
                   />);
       if (index !== count - 1) {
         result.push(
-              <div 
-                key={'dvdr-' + index} 
+              <div
+                key={'dvdr-' + index}
                 className={'wfm-steps__dvdr ' + (index === categoryIndex - 1 ? 'passed' : null )}>
                 <span></span>
                 <span></span>
