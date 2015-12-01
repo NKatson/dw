@@ -8,3 +8,4 @@ export FormContainer from './FormContainer';
 export Account from './Account';
 export Submit from './Submit';
 export ConfirmPasswordForm from './ConfirmPasswordForm';
+export ConfirmRegistration from './ConfirmRegistration';

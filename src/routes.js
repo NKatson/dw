@@ -13,6 +13,7 @@ import {
     Account,
     Submit as SubmitData,
     ConfirmPasswordForm,
+    ConfirmRegistration,
   } from './containers';
 
 import { App } from './containers';
@@ -33,8 +34,9 @@ export default (store) => {
       <Route component={App} >
         <Route path="welcome" component={Welcome} />
         <Route path="reset" component={ResetPassword} />
-        <Route path="confirm-password" component={ConfirmPasswordForm} />
-        <Route path="submit" component={Submit} />  
+        <Route path="/confirm-password" component={ConfirmPasswordForm} />
+        <Route path="confirm-email" component={ConfirmRegistration} />
+        <Route path="submit" component={Submit} />
         <Route path="/submit" component={SubmitData} />
         <Route path="signin" component={Authorization} />
         <Route path="signup" component={Registration} />

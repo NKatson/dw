@@ -6,12 +6,16 @@ import { SubmitButton, LogoForm } from '../components';
 import { confirmPassword as validate } from '../utils/validation';
 import { confirm, setTimer } from '../redux/actions/resetPassword';
 import { login } from '../redux/actions/auth';
+import { checkPasswordToken } from '../utils/apiClient';
 
 class ConfirmPasswordForm extends React.Component {
   componentDidMount() {
     const { query: { password_token } } = this.props.location;
     if (password_token) {
-      //localStorage.uid = uid;
+      checkPasswordToken(password_token, (error) => {
+        console.log(error);
+        if (error) return this.context.history.pushState(null, '/signin');
+      });
     } else {
       this.context.history.pushState(null, '/signin');
     }

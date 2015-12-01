@@ -10,12 +10,15 @@ let redirectUrl = host + '/confirm-password';
 //   host += `:${apiPort}`;
 // }
 //
-host = 'http://localhost:8080';
+//host = 'http://localhost:8080';
 redirectUrl = 'http://localhost:3000/welcome';
 
 function saveLocal(res) {
-  // localStorage.accessToken = res.headers['access-token'];
-  // localStorage.uid = res.headers.uid;
+  console.log('Save token...');
+
+  localStorage.accessToken = res.headers['access-token'];
+  localStorage.uid = res.headers.uid;
+  localStorage.client  = res.headers.client;
 }
 
 /**
@@ -138,6 +141,43 @@ export function checkResetPasswordToken(token, cb) {
       return cb(null, res.body);
     });
 }
+
+/**
+ * GET /api/auth/confirmation
+ */
+export function checkToken(token, cb) {
+  request
+    .get(host + '/api/auth/confirmation')
+    .query({confirmation_token: token})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if ((res.errors && res.errors.length > 0) || res.body.error) return cb(res.body);
+      saveLocal(res);
+      return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
+    });
+
+}
+
+/**
+ * GET /api/auth/password/edit
+ */
+export function checkPasswordToken(token, cb) {
+  request
+    .get(host + '/api/auth/password/edit')
+    .query({config: 'default'})
+    .query({reset_password_token: token})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);
+      
+      saveLocal(res);
+      return cb(null);
+    });
+}
 /**
  * PUT /api/auth/password
  */
@@ -186,6 +226,7 @@ export function registration({ data, cb }) {
     .send({
       ...data,
       'access-token': localStorage.accessToken,
+      confirm_success_url: 'http://localhost:3000/confirm-email'
     })
     .set('Accept', 'application/json')
     .end((err, res) => {
@@ -199,6 +240,7 @@ export function registration({ data, cb }) {
       localStorage.client = res.headers.client;
       localStorage.uid = data.email;
       localStorage.accessToken = res.headers['access-token'];
+
       return cb(null, {
         ...res.body,
         accessToken: res.headers['access-token'],
