@@ -131,9 +131,9 @@ class FormContainer extends React.Component {
                     ssnError={this.props.ssnError}
                     radio={this.props.radio}
                    >
-                    {prevLink ? 
+                    {prevLink ?
                         <Link onClick={::this.backClicked} to={prevLink} className="common-form__back-link">
-                          <span className="wfm-i wfm-i-arr-left-grey"></span> Go Back 
+                          <span className="wfm-i wfm-i-arr-left-grey"></span> Go Back
                         </Link>
                        : null}
           </DynamicForm>);

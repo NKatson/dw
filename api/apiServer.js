@@ -29,9 +29,8 @@ app.get('/api/questions', (req, res) => {
     "Personal": [
       {
         "formKey": "personal-step-1",
-        "title": "The Basics",
-        "description": "This is the easy stuff.",
-        "hint": "(Hint: You definitely know all the answers to these questions!)",
+        "title": "1. TELL US ABOUT YOU",
+        "description": "This is the easy stuff. Hint: you definitely know the answers to these questions!",
         "questions": [
           {
             "name": "first_name",
@@ -141,7 +140,7 @@ app.get('/api/questions', (req, res) => {
       },
       {
         "formKey": "Personal-step-2",
-        "title": "Employment status",
+        "title": "1. EMPLOYMENT STATUS",
         "description" : "Where do you currently work? Do you like it, and if so, are they hiring?",
         "questions": [
           {
@@ -265,7 +264,7 @@ app.get('/api/questions', (req, res) => {
     ],
     "Invest" : [
       {
-        "title" : "Finding the Right Investment for You",
+        "title" : "2. SET UP YOUR ACCOUNT",
         "description" : "The next few steps will help us to recommend the best savings & investment strategy for you",
         "questions" : [
           {
@@ -299,11 +298,12 @@ app.get('/api/questions', (req, res) => {
       },
       {
         "type": "recommend",
-        "title" : "Markets move up and down. How comfortable are you with changes?",
-        "description" : "In 2008 the worst happened!! The markets lost more than 50% of their value within f few short years (2007-2009). If this happened again, would you:",
+        "title" : "2. SET UP YOUR ACCOUNT",
         "questions" : [
           {
             "type" : "radio",
+            "upperLabel" : "Markets move up and down. How comfortable are you with changes?",
+            "label" : "In 2008 the worst happened!! The markets lost more than 50% of their value within a few short years (2007-2009). If this happened again, would you:",
             "htmlName": "invest-q2-a1",
             "answers" : [
               {

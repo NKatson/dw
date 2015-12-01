@@ -2,10 +2,11 @@ import React, { PropTypes } from 'react'
 
 class Select extends React.Component {
   render() {
-    const { options, additionalClass, label, handleChange, placeholder, field, defaultValue } = this.props;
+    const { options, additionalClass, label, handleChange, placeholder, field, stateSelectValue } = this.props;
     let additionalProps = {};
     if (handleChange) {
       additionalProps.onChange = handleChange;
+      additionalProps.value = stateSelectValue ? stateSelectValue : field.value;
     }
     return (
       <div className={'input-wrap ' + additionalClass + (field.error && field.touched ? ' error' : '')}>
@@ -29,6 +30,7 @@ class Select extends React.Component {
 Select.propTypes = {
   additionalClass: PropTypes.string,
   label: PropTypes.string,
+  stateSelectValue: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.shape({
      value: PropTypes.string.isRequired,
      label: PropTypes.string.isRequired,

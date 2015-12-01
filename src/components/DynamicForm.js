@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 import  PersonalForm from './PersonalForm';
 import { InputText, Select, SsnInput, RecommendBlock } from '../atoms/index';
-import { InputMultiple } from '../components'; 
+import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
 import { radioClick, enableButton } from '../redux/actions/survey';
@@ -40,8 +40,9 @@ class DynamicForm extends Component {
     } else if (question.type === 'dropdown') {
       let result = [];
       const options = ::this.getInputs(question, fields);
+      const { stateSelectValue } = this.props;
       result.push(<Select
-            defaultValue={question.defaultValue}
+            stateSelectValue={stateSelectValue ? stateSelectValue : null }
             field={fields[question.name]}
             key={question.name}
             label={question.label}
@@ -83,7 +84,7 @@ class DynamicForm extends Component {
     if (categoryIndex === 0 && step === 0) {
       const { showSsn, storedSsn, formData, ssnError, handleShowSsnClick } = this.props;
       return (
-        <PersonalForm 
+        <PersonalForm
           questions={questions}
           fields={fields}
           handleShowSsnClick={handleShowSsnClick}
