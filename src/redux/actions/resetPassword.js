@@ -63,10 +63,10 @@ export function reset(email) {
 export function confirm(data, cb) {
   return dispatch => {
     dispatch(resetRequest());
-    
+
     api.checkResetPasswordToken(token, (err, body) => {
       if (err) return cb('1');
-      
+
       // api.confirmPassword({
       //   ...data,
       //   cb: (err, body) => {

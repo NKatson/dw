@@ -101,11 +101,17 @@ class DynamicForm extends Component {
     }
   }
   render() {
-    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink } = this.props;
+    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, accountType, radio } = this.props;
+    const account = radio.finding ? radio.finding : accountType;
     return (
       <div>
         <h2>{title}</h2>
-        {formKey === "invest-step-2" ? <RecommendBlock /> : null}
+        {formKey === "invest-step-2" ?
+          <RecommendBlock
+            selectedAccountType={accountType}
+            defaultAccountType={account}
+          />
+           : null}
         <p>{description}</p>
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit}>
             {::this.renderQuestions(questions, fields)}

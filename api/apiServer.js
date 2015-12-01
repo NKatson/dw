@@ -264,6 +264,7 @@ app.get('/api/questions', (req, res) => {
     ],
     "Invest" : [
       {
+        "formKey": "invest-step-1",
         "title" : "2. SET UP YOUR ACCOUNT",
         "description" : "The next few steps will help us to recommend the best savings & investment strategy for you",
         "questions" : [
@@ -297,7 +298,7 @@ app.get('/api/questions', (req, res) => {
         ]
       },
       {
-        "type": "recommend",
+        "formKey": "invest-step-2",
         "title" : "2. SET UP YOUR ACCOUNT",
         "questions" : [
           {

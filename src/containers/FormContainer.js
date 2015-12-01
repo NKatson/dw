@@ -106,6 +106,7 @@ class FormContainer extends React.Component {
        if (index === this.props.step && category == this.props.category) {
           result.push(<DynamicForm
                     key={`${category}-step-${index}`}
+                    accountType={this.props.accountType}
                     title={form.title}
                     description={form.description}
                     hint={form.hint}
@@ -174,6 +175,7 @@ function mapStateToProps(state) {
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
     radio: state.survey.get('radio').toJS(),
+    accountType: state.survey.get('accountType'),
   };
 }
 

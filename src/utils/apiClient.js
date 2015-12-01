@@ -192,6 +192,10 @@ export function registration({ data, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
+
+      delete localStorage.state_form;
+      delete localStorage.state_survey;
+
       localStorage.client = res.headers.client;
       localStorage.uid = data.email;
       localStorage.accessToken = res.headers['access-token'];
