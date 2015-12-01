@@ -4,13 +4,12 @@ import CurrencyMaskedInput from 'react-currency-masked-input';
 
 class SsnInput extends React.Component {
   render () {
-    const { onSsnChange, storedSsn, showSsn, ssnError } = this.props;
+    const { onSsnChange, storedSsn, showSsn, ssnError, field } = this.props;
     let mask = '111-11-1111';
     let component;
-
     const commonProps = {
-      placeholder: "SSN",
-      className: "text full-width",
+      placeholder: "Social security number",
+      className: "input-text",
       value: storedSsn
     };
 
@@ -32,22 +31,27 @@ class SsnInput extends React.Component {
         maxLength="9"
         type="password"
         {...commonProps}
+        onKeyDown={(e) => {
+          const allowed = [37, 38, 39, 40, 8];
+          if ((e.keyCode < 48 || e.keyCode > 57) && allowed.indexOf(e.keyCode) === -1) {
+            e.preventDefault();
+          }
+        }}
         onChange={(e) => {
           onSsnChange(e.target.value ? e.target.value : "");
         }}
         />
     }
+    
+    let resSsnError = ssnError;
+    if (field.error && field.touched && storedSsn === '')  {
+      resSsnError = field.error;
+    }
 
     return (
-        <div className={'input-wrap w-342 inline-block valign-mid ' + (ssnError ? ' input-wrap_error' : '')}>
+        <div className={'input-wrap w-230 pad-03' + (resSsnError ? ' error' : '')}>
           {component}
-          { ssnError ?
-              <div className="input-wrap__error-msg">
-                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                 {ssnError}
-              </div>
-              : null
-          }
+          { resSsnError ? <div className="input-wrap__error-msg">{resSsnError}</div>  : null }
         </div>
     );
   }

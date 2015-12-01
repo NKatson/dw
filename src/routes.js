@@ -1,10 +1,9 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Redirect } from 'react-router';
 import { isLoggedIn } from './redux/actions/auth';
 import { Category, Submit } from './components';
 
 import {
-    App,
     Registration,
     Authorization,
     ResetPassword,
@@ -13,8 +12,11 @@ import {
     FormContainer,
     Account,
     Submit as SubmitData,
+    ConfirmPasswordForm,
+    ConfirmRegistration,
   } from './containers';
 
+import { App } from './containers';
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
@@ -28,21 +30,25 @@ export default (store) => {
   };
 
   return (
-    <Route path="/" component={App}>
-      <Route path="welcome" component={Welcome} />
-      <Route onEnter={requireLogin} >
-
+    <Route>
+      <Route component={App} >
+        <Route path="reset" component={ResetPassword} />
+        <Route path="/confirm-password" component={ConfirmPasswordForm} />
+        <Route path="confirm-email" component={ConfirmRegistration} />
+        <Route path="submit" component={Submit} />
+        <Route path="/submit" component={SubmitData} />
+        <Route path="signin" component={Authorization} />
+        <Route path="signup" component={Registration} />
+        <Route onEnter={requireLogin} >
+        </Route>
       </Route>
-      <Route path="reset" component={ResetPassword} />
-      <Route path="submit" component={Submit} />
-      <Route path="survey" component={Survey}>
+      <Route path="/survey" component={Survey}>
           <IndexRoute component={FormContainer} />
           <Route path="/account" component={Account} />
           <Route path=":category/q/:number" component={FormContainer} />
       </Route>
-      <Route path="/submit" component={SubmitData} />
-      <Route path="signin" component={Authorization} />
-      <Route path="signup" component={Registration} />
+      <Redirect from="/" to="signin" />
+      <Route path="/welcome" component={Welcome} />
     </Route>
   );
 };

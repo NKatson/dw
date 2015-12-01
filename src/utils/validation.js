@@ -1,18 +1,58 @@
 import moment from 'moment';
 
+function checkRequired(data, fieldName, errors) {
+  if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
+    errors[fieldName] = 'Required';
+  }
+  return errors;
+}
+
+function checkLength({ data, fieldName, errors, min }) {
+  if (errors[fieldName]) return errors;
+
+  if (data[fieldName] && data[fieldName].length < min) {
+    errors[fieldName] = `Field must be minimum ${min} characters long`;
+  }
+  return errors;
+}
+
+function checkRegex({ data, fieldName, regex, errors, message }) {
+  if (errors[fieldName]) return errors;
+
+  if (data[fieldName] && !regex.test(data[fieldName])) {
+    errors[fieldName] = message;
+  }
+  return errors;
+}
+
 export function authorization(data) {
-  const errors = {};
-  if (!data.email) {
-    errors.email = 'Required';
-  }
-  if (!data.password) {
-    errors.password = 'Required';
-  }
+  let errors = {};
   const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
-  if (data.email && !emailReg.test(data.email)) {
-    errors.email = 'Please use valid email address';
+  errors = checkRequired(data, 'email', errors);
+  errors = checkRequired(data, 'password', errors);
+  errors = checkRegex({ data, fieldName: 'email', regex: emailReg, errors, message: 'Please use valid email address'});
+
+  return errors;
+}
+
+export function confirmPassword(data) {
+  let errors = {};
+
+  errors = checkRequired(data, 'password', errors);
+  errors = checkRequired(data, 'confirmPassword', errors);
+
+  if (data.password && !errors.password) {
+    if (!/^(?=.*[A-Z]).*$/.test(data.password)) {
+      errors.password = 'Password must contain at least one uppercase letter (A-Z)';
+    } else if (!/^(?=.*[0-9]).*$/.test(data.password)) {
+      errors.password = 'Password must contain at least one number (0-9)';
+    }
   }
+  if (data.password && data.confirmPassword && data.confirmPassword !== data.password) {
+    errors.confirmPassword = 'Passwords do not match';
+  }
+
   return errors;
 }
 
@@ -46,7 +86,6 @@ function checkDateOfBirth(data, fieldName, errors, state) {
   const [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
   const min18States = [ 'CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
 
-  console.log(day, month, year);
   if (year < (currentYear - 100)
       || (currentYear - year) < 3
       || !(moment([year, day, month]).isValid())) {
@@ -77,31 +116,6 @@ function checkDateOfBirth(data, fieldName, errors, state) {
   return errors;
 }
 
-function checkRequired(data, fieldName, errors) {
-  if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
-    errors[fieldName] = 'Required';
-  }
-  return errors;
-}
-
-function checkLength({ data, fieldName, errors, min }) {
-  if (errors[fieldName]) return errors;
-
-  if (data[fieldName] && data[fieldName].length < min) {
-    errors[fieldName] = `Field must be minimum ${min} characters long`;
-  }
-  return errors;
-}
-
-function checkRegex({ data, fieldName, regex, errors, message }) {
-  if (errors[fieldName]) return errors;
-
-  if (data[fieldName] && !regex.test(data[fieldName])) {
-    errors[fieldName] = message;
-  }
-  return errors;
-}
-
 function checkIncome(data, fieldName, errors) {
   if (errors[fieldName]) return errors;
 
@@ -121,7 +135,10 @@ export function validateSurvey(data) {
   const _ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 'state'];
+  const requiredFields = [
+    'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
+   'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 
+   'state', 'employment_status']; // add ssn
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);

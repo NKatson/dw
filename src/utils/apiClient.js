@@ -4,32 +4,28 @@ import config from '../config';
 const apiPort = config.apiPort || 8080;
 const apiHost = config.apiHost || 'localhost';
 let host = `http://dev.worthfm.com` ;
+let redirectUrl = host + '/confirm-password';
 
 // if (apiPort === 8080 && apiHost === 'localhost') {
 //   host += `:${apiPort}`;
 // }
 //
 //host = 'http://localhost:8080';
+redirectUrl = 'http://localhost:3000/welcome';
 
 function saveLocal(res) {
-  // console.log('uid    -> ' + localStorage.uid + ' to ' + res.headers.uid);
-  // console.log('token  -> ' + localStorage.accessToken + ' to ' + res.headers['access-token']);
-  // console.log('client -> ' + localStorage.client);
-  // console.log('-------------------------------');
+  console.log('Save token...');
+
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = res.headers.uid;
+  localStorage.client  = res.headers.client;
 }
 
-function beforeLog(url) {
-  // console.log('Requesting...' + host + url);
-  // console.log('TOKEN : ' + localStorage.accessToken);
-  // console.log('UID : ' + localStorage.uid);
-  // console.log('CLIENT: ' + localStorage.client);
-}
-
+/**
+ * GET /api/questions
+ */
 export function getForm(cb) {
   const url = '/api/questions';
-  beforeLog(url);
 
   request
     .get(host + url)
@@ -46,9 +42,11 @@ export function getForm(cb) {
     });
 }
 
+/**
+ * POST /api/accounts
+ */
 export function sendPersonal(data, cb = () => {}) {
   const url = '/api/accounts';
-  beforeLog(url);
 
   request
     .post(host + url)
@@ -65,9 +63,11 @@ export function sendPersonal(data, cb = () => {}) {
     });
 }
 
+/**
+ * POST /api/question_answers
+ */
 export function sendQuestions(data, cb = () => {}) {
   const url = '/api/question_answers';
-  beforeLog(url);
 
   request
     .post(host + url)
@@ -84,9 +84,11 @@ export function sendQuestions(data, cb = () => {}) {
     });
 }
 
+/**
+ * POST /api/auth/sign_in
+ */
 export function login({ email, password, cb }) {
   const url = '/api/auth/sign_in';
-  beforeLog(url);
 
   request
     .post(host + url)
@@ -108,23 +110,99 @@ export function login({ email, password, cb }) {
     });
 }
 
+/**
+ * POST /api/auth/password
+ */
 export function reset({ email, cb }) {
   request
     .post(host + '/api/auth/password')
-    .send({email: email, redirect_url: 'http://worthfm.4xxi.com/', 'access-token': localStorage.accessToken})
+    .send({email: email, redirect_url: redirectUrl})
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
-      const { headers } = res;
-      return cb(null, {
-        ...res.body,
-        accessToken: headers['access-token'],
-      });
+
+      return cb(null, res.body);
     });
 }
 
+
+export function checkResetPasswordToken(token, cb) {
+  request
+    .post(host + '/api/auth/password/edit')
+    .send({reset_password_token: token, redirect_url: redirectUrl})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+
+      return cb(null, res.body);
+    });
+}
+
+/**
+ * GET /api/auth/confirmation
+ */
+export function checkToken(token, cb) {
+  request
+    .get(host + '/api/auth/confirmation')
+    .query({confirmation_token: token})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if ((res.errors && res.errors.length > 0) || res.body.error) return cb(res.body);
+      saveLocal(res);
+      return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
+    });
+
+}
+
+/**
+ * GET /api/auth/password/edit
+ */
+export function checkPasswordToken(token, cb) {
+  request
+    .get(host + '/api/auth/password/edit')
+    .query({config: 'default'})
+    .query({reset_password_token: token})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);
+
+      saveLocal(res);
+      return cb(null);
+    });
+}
+/**
+ * PUT /api/auth/password
+ */
+export function confirmPassword({ password, confirmPassword, client, accessToken, uid, cb }) {
+  localStorage.accessToken = accessToken;
+  localStorage.client = client;
+  localStorage.uid = uid;
+
+  request
+    .put(host + '/api/auth/password')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send({password, password_confirmation: confirmPassword})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      if (res.errors && res.errors.length > 0) return cb(res.body);
+      saveLocal(res);
+      return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
+    });
+}
+
+/**
+ * DELETE /api/auth/sign_out
+ */
 export function logout({ user = null, cb }) {
   request
     .del(host + '/api/auth/sign_out')
@@ -139,21 +217,30 @@ export function logout({ user = null, cb }) {
 }
 
 
+/**
+ * POST /api/auth
+ */
 export function registration({ data, cb }) {
   request
     .post(host + '/api/auth')
     .send({
       ...data,
       'access-token': localStorage.accessToken,
+      confirm_success_url: 'http://localhost:3000/confirm-email'
     })
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
+
+      delete localStorage.state_form;
+      delete localStorage.state_survey;
+
       localStorage.client = res.headers.client;
       localStorage.uid = data.email;
       localStorage.accessToken = res.headers['access-token'];
+
       return cb(null, {
         ...res.body,
         accessToken: res.headers['access-token'],
