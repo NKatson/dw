@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { InputText, Select, SsnInput } from '../atoms';
 
-class PersonalForm extends React.Component { 
+class PersonalForm extends React.Component {
   render () {
     const { questions, fields, handleStateChange, showSsn, onSsnChange, storedSsn,
        ssnError, handleShowSsnClick } = this.props;
@@ -35,7 +35,6 @@ class PersonalForm extends React.Component {
             <div className="input-wrap w-160 pad-03">
               <Select
                   additionalClass="w-160 pad-03"
-                  defaultValue={questions[4].defaultValue}
                   field={fields[questions[4].name]}
                   key={questions[4].name}
                   options={questions[4].answers}
@@ -49,7 +48,7 @@ class PersonalForm extends React.Component {
             />
           </div>
           <div className="anketa-form__fieldset">
-            {/* phone */}  
+            {/* phone */}
             <div>
               <InputText
                 additionalClass="w-230 pad-03"
@@ -60,7 +59,7 @@ class PersonalForm extends React.Component {
               />
               <div className="input-descr"> We will send your phone a text confirmation.</div>
             </div>
-            {/* ssn */} 
+            {/* ssn */}
             <div>
               <SsnInput
                   key="ssn"
@@ -74,7 +73,7 @@ class PersonalForm extends React.Component {
                     <input type="checkbox" className="chbx-styled" onClick={handleShowSsnClick} /> <label>Show</label>
                   </p>
             </div>
-            {/* date of birth */} 
+            {/* date of birth */}
             <div>
               <InputText
                 maskPattern="11/11/1111"

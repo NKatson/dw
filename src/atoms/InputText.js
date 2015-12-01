@@ -6,7 +6,7 @@ class InputText extends React.Component {
   maskedChange(e) {
   }
   render () {
-    const { field, placeholder, additionalClass, icon, type, isNormalized , 
+    const { field, placeholder, additionalClass, icon, type, isNormalized ,
       label, defaultValue, maskPattern, errorMessageClass, inputClass } = this.props;
     const mask = maskPattern || '111-111-1111';
     const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
@@ -14,17 +14,16 @@ class InputText extends React.Component {
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
-        className="input-text" 
+        className="input-text"
         mask={mask}
         placeholder={placeholder}
         type={type ? type : 'text'}
         value={defaultValue ? defaultValue : ""}
-        {...field} 
+        {...field}
         />;
     } else {
       component =  <input
         className={'input-text ' + (inputClass ? inputClass : '')}
-        defaultValue={defaultValue ? defaultValue : ""}
         placeholder={placeholder}
         type={type ? type : 'text'}
         {...field}
@@ -34,13 +33,11 @@ class InputText extends React.Component {
     if (isIncome) {
       component = <CurrencyMaskedInput
                     placeholder="0"
-                    autoFocus={defaultValue ? true : false}
                     required
                     {...field}
                     className="text full-width"
                     type="text"
                     pattern="\d.*"
-                    defaultValue={defaultValue ? defaultValue : ""}
                   />;
     }
     return (
