@@ -14,8 +14,6 @@ let redirectUrl = host + '/confirm-password';
 redirectUrl = 'http://localhost:3000/welcome';
 
 function saveLocal(res) {
-  console.log('Save token...');
-
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = res.headers.uid;
   localStorage.client  = res.headers.client;
@@ -127,7 +125,9 @@ export function reset({ email, cb }) {
     });
 }
 
-
+/**
+ * POST /api/auth/password/edit
+ */
 export function checkResetPasswordToken(token, cb) {
   request
     .post(host + '/api/auth/password/edit')
@@ -170,12 +170,14 @@ export function checkPasswordToken(token, cb) {
     .query({reset_password_token: token})
     .set('Accept', 'application/json')
     .end((err, res) => {
+      console.log('Reset pass:');
+      console.log(err);
+      console.log(res.body);
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);
 
-      saveLocal(res);
-      return cb(null);
+      return cb(null, res.body);
     });
 }
 /**

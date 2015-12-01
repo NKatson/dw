@@ -4,33 +4,36 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { InputText } from '../atoms';
 import { SubmitButton, LogoForm } from '../components';
 import { confirmPassword as validate } from '../utils/validation';
-import { confirm, setTimer } from '../redux/actions/resetPassword';
-import { login } from '../redux/actions/auth';
-import { checkPasswordToken } from '../utils/apiClient';
+import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPassword';
 
 class ConfirmPasswordForm extends React.Component {
   componentDidMount() {
-    const { query: { password_token } } = this.props.location;
+    const { location: { query: { password_token } }, dispatch, confirmingToken } = this.props;
+
     if (password_token) {
-      checkPasswordToken(password_token, (error) => {
-        console.log(error);
-        if (error) return this.context.history.pushState(null, '/signin');
-      });
+      if (confirmingToken) return;
+      dispatch(checkPasswordToken(password_token, (err) => {
+        if (err) {
+          console.log('Error! Redirect...');
+          //this.context.history.pushState(null, '/signin');
+        }
+      }));
     } else {
       this.context.history.pushState(null, '/signin');
     }
   }
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch, fields: { password, confirmPassword } } = this.props;
+    const { dispatch, fields: { password, confirmPassword }, token, client_id, email } = this.props;
     const { query: {client_id: client, token: accessToken, uid } } = this.props.location;
-    if (client && uid && accessToken) {
+
+    if (client_id && email && token) {
       dispatch(confirm({
         password: password.value,
         confirmPassword: confirmPassword.value,
-        client,
-        accessToken,
-        uid
+        client: client_id,
+        accessToken: token,
+        uid: email,
       }, () => {
         let timer = 5;
         setInterval(() => {
@@ -64,17 +67,19 @@ class ConfirmPasswordForm extends React.Component {
                 successMessage ? null :
                 <div>
                   <InputText
+                      inputClass="full-width"
+                      errorMessageClass="login-form__error-msg"
                       field={password}
-                      icon="glyphicon-lock"
                       placeholder="Password"
                       type="password"
                     />
-                  <InputText
-                      field={confirmPassword}
-                      icon="glyphicon-lock"
-                      placeholder="Confirm Password"
-                      type="password"
-                    />
+                    <InputText
+                        inputClass="full-width"
+                        errorMessageClass="login-form__error-msg"
+                        field={confirmPassword}
+                        placeholder="Confirm password"
+                        type="password"
+                      />
                   <div className="input-wrap">
                     <SubmitButton
                       fields={this.props.fields}
@@ -107,7 +112,16 @@ ConfirmPasswordForm.propTypes = {
 function mapStateToProps(state) {
   const { resetPassword } = state;
   return {
+    confirmingToken: resetPassword.get('confirmingToken'),
+    confirmTokenError: resetPassword.get('confirmTokenError'),
+    tokenConfirmed : resetPassword.get('tokenConfirmed'),
+
+    token: resetPassword.get('token'),
+    client_id: resetPassword.get('client_id'),
+    email: resetPassword.get('email'),
+
     resetting: resetPassword.get('resetting'),
+
     confirmError: resetPassword.get('confirmError'),
     successMessage: resetPassword.get('message'),
     timer: resetPassword.get('timer'),

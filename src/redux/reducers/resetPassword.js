@@ -22,6 +22,24 @@ export default function reset(state = initialState, action = {}) {
       sent: true, // get rid of this
       message: action.message,
     });
+  case actions.CONFIRM_TOKEN_REQUEST:
+    return state.merge(Map({
+      confirmingToken: true,
+    }));
+  case actions.CONFIRM_TOKEN_ERROR:
+    return state.merge(Map({
+      confirmingToken: false,
+      confirmTokenError: 'Error',
+    }));
+  case actions.CONFIRM_TOKEN_SUCCESS:
+    return state.merge(Map({
+      token: action.token,
+      client_id: action.client_id,
+      email: action.email,
+      confirmingToken: false,
+      confirmTokenError: null,
+      tokenConfirmed: true,
+    }));
   case actions.CONFIRM_PASSWORD_FAILURE:
     return state.merge(Map({
       resetting: false,

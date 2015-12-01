@@ -6,10 +6,34 @@ export const RESET_FAILURE            = 'RESET_FAILURE';
 export const CONFIRM_PASSWORD_SUCCESS = 'CONFIRM_PASSWORD_SUCCESS';
 export const CONFIRM_PASSWORD_FAILURE = 'CONFIRM_PASSWORD_FAILURE';
 export const TIMER                    = 'TIMER';
+export const CONFIRM_TOKEN_REQUEST    = 'CONFIRM_TOKEN_REQUEST';
+export const CONFIRM_TOKEN_SUCCESS    = 'CONFIRM_TOKEN_SUCCESS';
+export const CONFIRM_TOKEN_ERROR      = 'CONFIRM_TOKEN_ERROR';
 
 function resetRequest() {
   return {
     type: RESET_REQUEST,
+  };
+}
+
+function confirmTokenRequest() {
+  return {
+    type: CONFIRM_TOKEN_REQUEST,
+  };
+}
+
+function confirmTokenError() {
+  return {
+    type: CONFIRM_TOKEN_ERROR,
+  };
+}
+
+function confirmTokenSuccess(body) {
+  return {
+    type: CONFIRM_TOKEN_SUCCESS,
+    client_id: body.client_id,
+    email: body.email,
+    token: body.token
   };
 }
 
@@ -37,7 +61,7 @@ function confirmSuccess({ message }) {
 function confirmFailure({ errors }) {
   return {
     type: CONFIRM_PASSWORD_FAILURE,
-    error: errors.length > 0 ? errors[0] : 'Unexpected error.',
+    error: errors && errors.length > 0 ? errors[0] : 'Unexpected error.',
   };
 }
 
@@ -60,22 +84,28 @@ export function reset(email) {
   };
 }
 
+export function checkPasswordToken(token, cb) {
+  return dispatch => {
+    dispatch(confirmTokenRequest());
+
+    api.checkPasswordToken(token, (err, body) => {
+      if (err) return dispatch(confirmTokenError()).then(() => cb('error'));
+      dispatch(confirmTokenSuccess(body)).then(() => cb(null));
+    });
+  };
+}
+
 export function confirm(data, cb) {
   return dispatch => {
     dispatch(resetRequest());
-
-    api.checkResetPasswordToken(token, (err, body) => {
-      if (err) return cb('1');
-
-      // api.confirmPassword({
-      //   ...data,
-      //   cb: (err, body) => {
-      //     if (err) return dispatch(confirmFailure(err));
-      //     dispatch(confirmSuccess(body)).then(() => {
-      //       cb();
-      //     });
-      //   }
-      // });
+    api.confirmPassword({
+      ...data,
+      cb: (err, body) => {
+        if (err) return dispatch(confirmFailure(err));
+        dispatch(confirmSuccess(body)).then(() => {
+          cb();
+        });
+      }
     });
-  };
+  }
 }

@@ -86,9 +86,12 @@ function checkDateOfBirth(data, fieldName, errors, state) {
   const [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
   const min18States = [ 'CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
 
+  console.log(month, day, year);
+  console.log(moment([year, month, day]).isValid());
+
   if (year < (currentYear - 100)
       || (currentYear - year) < 3
-      || !(moment([year, day, month]).isValid())) {
+      || !(moment([year, month, day]).isValid())) {
     errors[fieldName] = 'Please type valid date format';
     return errors;
   }
@@ -131,14 +134,13 @@ export function validateSurvey(data) {
   const addressRegex = /^[a-zA-Z\- ,0-9\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
-  const ssnRegex = /(^\d{9}$)/i;
-  const _ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
+  const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
   const requiredFields = [
     'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
-   'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 
-   'state', 'employment_status']; // add ssn
+   'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income',
+   'state', 'employment_status', 'ssn'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
@@ -153,6 +155,7 @@ export function validateSurvey(data) {
   });
 
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
+  errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valide SSN' });
   errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
   errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
