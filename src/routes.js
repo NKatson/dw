@@ -39,8 +39,6 @@ export default (store) => {
         <Route path="/submit" component={SubmitData} />
         <Route path="signin" component={Authorization} />
         <Route path="signup" component={Registration} />
-        <Route onEnter={requireLogin} >
-        </Route>
       </Route>
       <Route path="/survey" component={Survey}>
           <IndexRoute component={FormContainer} />

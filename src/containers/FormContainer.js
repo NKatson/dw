@@ -36,7 +36,7 @@ class FormContainer extends React.Component {
   parseMultipleNames(question) {
     let names = [];
     question.answers.map(answer => {
-      if (answer.dynamicFields) {
+      if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           if (answer.label !== this.props.stateSelectValue) return;
           if (answer.dynamicFields.length > 0) {
             answer.dynamicFields.map(field => {
@@ -52,7 +52,6 @@ class FormContainer extends React.Component {
   }
   generateFields(form) {
     const multiple = ['checkbox', 'radio', 'dropdown'];
-
     // dropdown here fo dynamicFields
     const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
@@ -74,18 +73,16 @@ class FormContainer extends React.Component {
   handleFormSubmit(data) {
     const { step, categoryIndex, formData, nextLink } = this.props;
     if (step === 0 && categoryIndex === 0) {
-      // api.sendPersonal(data);
+       api.sendPersonal(data);
     }
-    
+
     let port = window.location.port.length > 0 ? ':' + window.location.port : '';
     const { state } = this.props;
-    if (step === 1 && categoryIndex === 0) {
-        state.form.dynamic['personal-step-2'].annual_income.value = '12345';
-    }
 
     // save state to local storage
     localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
     localStorage.setItem('state_form', JSON.stringify(state.form));
+    api.sendQuestions(data);
     window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
   }
   backClicked(e) {

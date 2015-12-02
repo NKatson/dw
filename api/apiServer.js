@@ -271,6 +271,7 @@ app.get('/api/questions', (req, res) => {
           {
             "label" : "When will you need access the money you invest?",
             "type" : "radio",
+            "name": "finding",
             "htmlName": "finding",
             "answers" : [
               {

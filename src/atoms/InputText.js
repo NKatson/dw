@@ -1,16 +1,9 @@
 import React, { PropTypes } from 'react';
 import MaskedInput from 'react-maskedinput';
-import CurrencyMaskedInput from 'react-currency-masked-input';
+import { CurrencyInput } from '../components';
 import $ from 'jquery';
 
 class InputText extends React.Component {
-  componentDidMount() {
-    require('autonumeric');
-    $('input[name="annual_income"]').autoNumeric('init', {
-       aSign: '$ ',
-       aPad: false
-    });
-  }
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
       label, defaultValue, maskPattern, errorMessageClass, inputClass } = this.props;
@@ -35,9 +28,9 @@ class InputText extends React.Component {
         {...field}
         />
       }
-    
+
     if (isIncome) {
-      component =  <input
+      component =  <CurrencyInput
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder="$"
         type="text"

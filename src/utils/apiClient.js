@@ -170,9 +170,6 @@ export function checkPasswordToken(token, cb) {
     .query({reset_password_token: token})
     .set('Accept', 'application/json')
     .end((err, res) => {
-      console.log('Reset pass:');
-      console.log(err);
-      console.log(res.body);
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);

@@ -122,7 +122,17 @@ function checkDateOfBirth(data, fieldName, errors, state) {
 function checkIncome(data, fieldName, errors) {
   if (errors[fieldName]) return errors;
 
-  if (data[fieldName] && data[fieldName] < 8000) {
+  if (!data[fieldName]) return errors;
+
+  if (data[fieldName] === '$ ') {
+    errors[fieldName] = 'Required';
+    return errors;
+  }
+
+  let val = data[fieldName].replace(/[,\$\s]/g, '');
+  val = parseInt(val);
+
+  if (val < 8000) {
     errors[fieldName] = 'Please confirm your annual income.';
   }
 
@@ -140,12 +150,12 @@ export function validateSurvey(data) {
   const requiredFields = [
     'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
    'date_of_birth', 'employer', 'title', 'industry_kind',
-   'state', 'employment_status', 'ssn'];
+   'state', 'employment_status', 'ssn', 'annual_income'];
 
   requiredFields.forEach(fieldName => {
     errors = checkRequired(data, fieldName, errors);
     if (fieldName === 'annual_income') {
-      errors = checkIncome(data, fieldName, errors);
+      errors = checkIncome(data, 'annual_income', errors);
     }
   });
   const minTwo = ['first_name', 'last_name', 'address', 'employer', 'title', 'industry_kind'];
@@ -153,7 +163,7 @@ export function validateSurvey(data) {
   minTwo.forEach(elem => {
       errors = checkLength({ data, fieldName: elem, errors, min: 2 });
   });
-  
+
   // check annual_income
   errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
   errors = checkRegex({ data, fieldName: 'ssn', regex: ssnRegex, errors, message: 'Please type valide SSN' });

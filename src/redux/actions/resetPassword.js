@@ -51,10 +51,10 @@ function resetFailure({ errors }) {
   };
 }
 
-function confirmSuccess({ message }) {
+function confirmSuccess() {
   return {
     type: CONFIRM_PASSWORD_SUCCESS,
-    message,
+    message: 'Your account has been saved!',
   }
 }
 

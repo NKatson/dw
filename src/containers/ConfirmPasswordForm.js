@@ -15,11 +15,11 @@ class ConfirmPasswordForm extends React.Component {
       dispatch(checkPasswordToken(password_token, (err) => {
         if (err) {
           console.log('Error! Redirect...');
-          //this.context.history.pushState(null, '/signin');
+          this.context.history.replaceState(null, '/signin');
         }
       }));
     } else {
-      this.context.history.pushState(null, '/signin');
+        this.context.history.replaceState(null, '/welcome');
     }
   }
   handleSubmit(e) {
@@ -36,12 +36,15 @@ class ConfirmPasswordForm extends React.Component {
         uid: email,
       }, () => {
         let timer = 5;
-        setInterval(() => {
-          if (timer === -1) return this.context.history.pushState(null, '/welcome');
+        let intervalCount = setInterval(() => {
+          if (timer === 0) {
+            clearInterval(intervalCount);
+            return this.context.history.replaceState(null, '/welcome');
+          }
           this.props.dispatch(setTimer(timer));
           timer--;
         }, 1000);
-      }));
+     }));
     }
   }
   render() {
@@ -62,7 +65,8 @@ class ConfirmPasswordForm extends React.Component {
         <div className="container container-1">
             <LogoForm handleSubmit={::this.handleSubmit}
                       error={confirmError}
-                      headerText={message ? message : "Reset your password"}>
+                      small={message ? message : null}
+                      headerText={message ? null : "Reset your password"}>
               {
                 successMessage ? null :
                 <div>

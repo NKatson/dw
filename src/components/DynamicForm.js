@@ -28,8 +28,6 @@ class DynamicForm extends Component {
     if (multipleTypes.indexOf(question.type) !== - 1) {
       const inputs = ::this.getInputs(question, fields);
       const { formKey, chooseAccount, radio } = this.props;
-      console.log(radio);
-      console.log(question);
       return <InputMultiple
               key={question.name}
               question={question}
