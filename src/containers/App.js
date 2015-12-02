@@ -8,8 +8,7 @@ require('./App.css');
 
 class App extends React.Component {
   render() {
-    let { userEmail, loggedIn } = this.props;
-    loggedIn = localStorage.uid && localStorage.uid !== 'undefined' && localStorage.accessToken ? true : false;
+    const { userEmail, loggedIn } = this.props;
       return (
         <div>
           <div className="common-wrap common-wrap_white-shadowed">
