@@ -49,7 +49,7 @@ export default (store) => {
       <Route path="submit" component={Submit} />
       <Route path="/submit" component={SubmitData} />
 
-      <Redirect from="/" to="welcome" />
+      <Redirect from="/" to="/signin" />
     </Route>
   );
 };

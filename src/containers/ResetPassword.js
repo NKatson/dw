@@ -20,12 +20,12 @@ class ResetPassword extends React.Component {
       resetError,
       resetting,
     } = this.props;
-    const sentMessage = "We have sent an reset email to your email address: " + email.value;
-    const small = 'Please check out your inbox to continue.';
+    const sentMessage = "We have sent an email to reset your password to: " + email.value;
+    const small = 'Please check your inbox to continue.';
     return (
       <div>
         { sent ?
-          <LogoForm 
+          <LogoForm
             error={sentMessage}
             small={small}
             handleSubmit={::this.handleSubmit} />
