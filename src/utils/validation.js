@@ -83,8 +83,14 @@ function checkDateOfBirth(data, fieldName, errors, state) {
 
   const inputYearLength = data[fieldName].length;
   const currentYear = (new Date()).getFullYear();
-  const [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
-  const min18States = [ 'CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
+  let [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
+  const min18States = [ 'California', 'District of Columbia', 'Kentucky', 'Louisiana', 'Maine', 'Michigan', 'Nevada', 'New Jersey', 'South Dakota', 'Oklahoma', 'Virginia'];
+
+  month = parseInt(month);
+  day = parseInt(day);
+  year = parseInt(year);
+
+  month = month - 1;
 
   console.log(month, day, year);
   console.log(moment([year, month, day]).isValid());
@@ -96,12 +102,14 @@ function checkDateOfBirth(data, fieldName, errors, state) {
     return errors;
   }
 
-  if ((currentYear - year) < 13 ) {
+  const diff = moment().diff([year, month, day], 'years');
+
+  if (diff < 13 ) {
     errors[fieldName] = `I'm sorry, you must be 18 or over to create an account with WorthFM`;
     return errors;
   }
 
-  if ((currentYear - year) < 18 ) {
+  if (diff < 18 ) {
     errors[fieldName] = `Most state laws require that you are 18 or older to setup investment accounts. Please double-check your birthdate - and if you're under 18, we'd love to see you again in a few years.`;
     return errors;
   }
@@ -111,7 +119,7 @@ function checkDateOfBirth(data, fieldName, errors, state) {
     return errors;
   }
 
-  if (state && min18States.indexOf(state) === -1 && (currentYear - year) < 21) {
+  if (state && min18States.indexOf(state) === -1 && diff < 21) {
     errors[fieldName] = `Most state laws require that you are 21 or older to setup investment accounts. Please double-check your birthdate - and if you're under 21, we'd love to see you again in a few years.`;
     return errors;
   }
