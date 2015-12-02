@@ -70,7 +70,7 @@ class DynamicForm extends Component {
                 label={question.label}
                 isNormalized={question.needNormalize ? true : false}
                 field={field}
-                defaultValue={question.defaultValue}
+                defaultValue={question.defaultValue && question.name==='employer' ? question.defaultValue : '' }
                 type={question.type}
                 placeholder={question.placeholder}
               />;
