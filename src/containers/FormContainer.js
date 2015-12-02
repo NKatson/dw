@@ -72,8 +72,21 @@ class FormContainer extends React.Component {
   }
   handleFormSubmit(data) {
     const { step, categoryIndex, formData, nextLink } = this.props;
+    console.log(data);
     if (step === 0 && categoryIndex === 0) {
        api.sendPersonal(data);
+    }
+
+    if (step === 1 && categoryIndex === 0) {
+      let val = data.annual_income.replace(/[,\$\s]/g, '');
+      val = parseInt(val);
+
+      api.sendPersonal({
+        annual_income: val,
+        employment_status: data.employment_status,
+      }, () => {
+        api.sendQuestions(data);
+      });
     }
 
     let port = window.location.port.length > 0 ? ':' + window.location.port : '';
@@ -82,7 +95,12 @@ class FormContainer extends React.Component {
     // save state to local storage
     localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
     localStorage.setItem('state_form', JSON.stringify(state.form));
-    api.sendQuestions(data);
+    localStorage.setItem('state_auth', JSON.stringify(state.auth.toJS()));
+
+    if (categoryIndex !== 0 && step !== 0) {
+        api.sendQuestions(data);
+    }
+
     window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
   }
   backClicked(e) {

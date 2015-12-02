@@ -3,8 +3,17 @@ import React, { PropTypes } from 'react'
 class CurrencyInput extends React.Component {
   constructor (props) {
    super(props);
-   this.state = {value : ''};
+
+   let initialValue = this.props.value || '';
+   if (initialValue.length > 0) {
+     initialValue =  initialValue.substr(1);
    }
+
+   this.state = {
+     value : initialValue
+    };
+   }
+
   _onChange(e) {
     let [ , val ] = /\$\s([\d\,]*)/.exec(e.target.value) || [];
 

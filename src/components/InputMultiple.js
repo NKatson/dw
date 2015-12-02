@@ -30,7 +30,6 @@ class InputMultiple extends React.Component {
           if (handleClick) {
             iProps.onClick = handleClick;
           }
-          console.log('Input:');
           
           return (
             <div className="input-wrap input-wrap_with-radio" key={input.label}>

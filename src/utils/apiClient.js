@@ -19,6 +19,12 @@ function saveLocal(res) {
   localStorage.client  = res.headers.client;
 }
 
+function clearLocal() {
+  delete localStorage.state_survey;
+  delete localStorage.state_form;
+  delete localStorage.state_auth;
+}
+
 /**
  * GET /api/questions
  */
@@ -96,6 +102,8 @@ export function login({ email, password, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if (res.errors && res.errors.length > 0) return cb(res.body);
+
+      clearLocal();
 
       localStorage.client = res.headers.client;
       saveLocal(res);
@@ -211,6 +219,8 @@ export function logout({ user = null, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
 
+      clearLocal();
+
       return cb(null, res.body);
     });
 }
@@ -233,8 +243,7 @@ export function registration({ data, cb }) {
       if (err) return cb(res.body);
       if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
 
-      delete localStorage.state_form;
-      delete localStorage.state_survey;
+      clearLocal();
 
       localStorage.client = res.headers.client;
       localStorage.uid = data.email;

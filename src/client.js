@@ -3,7 +3,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import createHistory from 'history/lib/createBrowserHistory';
 
 import createStore from './redux/create';
@@ -14,8 +14,7 @@ let initialState = {};
 if (localStorage.state_survey && localStorage.state_form) {
   initialState.form = JSON.parse(localStorage.state_form);
   initialState.survey = fromJS(JSON.parse(localStorage.state_survey));
-  // delete localStorage.state_survey;
-  // delete localStorage.state_form;
+  initialState.auth = localStorage.state_auth ? fromJS(JSON.parse(localStorage.state_auth)) : Map();
 }
 
 const history = createHistory();

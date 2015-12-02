@@ -7,11 +7,11 @@ import { SubmitButton, LogoForm } from '../components';
 import { authorization as validate } from '../utils/validation';
 
 export class Authorization extends React.Component {
-  handleSubmit(event) {
+  handleSubmit(e) {
     const { dispatch, fields: { email, password } } = this.props;
-    event.preventDefault();
+    e.preventDefault();
     dispatch(login(email.value, password.value, () => {
-        this.context.history.replaceState(null, '/welcome');
+      this.context.history.replaceState(null, '/welcome');
     }));
   }
   render() {

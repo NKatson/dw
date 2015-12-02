@@ -55,7 +55,7 @@ export function login(email, password, cb) {
 }
 
 export function isLoggedIn(state) {
-  return (state.auth.get('loggedIn') || localStorage.accessToken) ? true : false;
+  return state.auth.get('loggedIn');
 }
 
 // Logout actions
@@ -86,10 +86,6 @@ export function logout(cb) {
     api.logout({
       cb: (err, body) => {
         if (err) return dispatch(logoutFailure(err));
-        delete localStorage.accessToken;
-        delete localStorage.uid;
-        delete localStorage.client;
-
         dispatch(logoutSuccess()).then(() => {
           cb();
         });
