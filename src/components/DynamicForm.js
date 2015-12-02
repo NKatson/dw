@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import  PersonalForm from './PersonalForm';
-import { InputText, Select, SsnInput, RecommendBlock } from '../atoms/index';
+import { InputText, Select, RecommendBlock } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
@@ -28,8 +28,6 @@ class DynamicForm extends Component {
     if (multipleTypes.indexOf(question.type) !== - 1) {
       const inputs = ::this.getInputs(question, fields);
       const { formKey, chooseAccount, radio } = this.props;
-      console.log(radio);
-      console.log(question);
       return <InputMultiple
               key={question.name}
               question={question}
@@ -81,16 +79,13 @@ class DynamicForm extends Component {
   renderQuestions(questions, fields) {
     const { categoryIndex, step } = this.props;
     if (categoryIndex === 0 && step === 0) {
-      const { showSsn, storedSsn, formData, ssnError, handleShowSsnClick } = this.props;
+      const { showSsn, storedSsn, formData, handleShowSsnClick } = this.props;
       return (
         <PersonalForm
           questions={questions}
           fields={fields}
           handleShowSsnClick={handleShowSsnClick}
           showSsn={showSsn}
-          onSsnChange={this.props.onSsnChange}
-          storedSsn={storedSsn}
-          ssnError={ssnError}
           />
       );
     } else {
@@ -145,9 +140,6 @@ DynamicForm.propTypes = {
     nextLink: PropTypes.string.isRequired,
     formData: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
-    onSsnChange: PropTypes.func.isRequired,
-    storedSsn : PropTypes.string,
-    ssnError: PropTypes.string,
     radio: PropTypes.object.isRequired,
 };
 

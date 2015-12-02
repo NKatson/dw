@@ -36,7 +36,7 @@ class FormContainer extends React.Component {
   parseMultipleNames(question) {
     let names = [];
     question.answers.map(answer => {
-      if (answer.dynamicFields) {
+      if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           if (answer.label !== this.props.stateSelectValue) return;
           if (answer.dynamicFields.length > 0) {
             answer.dynamicFields.map(field => {
@@ -52,7 +52,6 @@ class FormContainer extends React.Component {
   }
   generateFields(form) {
     const multiple = ['checkbox', 'radio', 'dropdown'];
-
     // dropdown here fo dynamicFields
     const fields =  form.questions.reduce((fields, question) => {
       if (multiple.indexOf(question.type) !== -1) {
@@ -72,24 +71,19 @@ class FormContainer extends React.Component {
     return fields
   }
   handleFormSubmit(data) {
-    const { storedSsn, step, categoryIndex, formData, nextLink } = this.props;
+    const { step, categoryIndex, formData, nextLink } = this.props;
     if (step === 0 && categoryIndex === 0) {
-      // check SSN presents
-      if (!storedSsn || storedSsn.length === 0) {
-        this.props.dispatch(surveyActions.ssnErrorChange('Required'));
-        return;
-      }
-      data.ssn = storedSsn;
-      data.describe_self = this.props.welcome;
-      // api.sendPersonal(data);
+       api.sendPersonal(data);
     }
 
-      let port = window.location.port.length > 0 ? ':' + window.location.port : '';
-      const {state} = this.props;
-      // save state to local storage
-      localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
-      localStorage.setItem('state_form', JSON.stringify(state.form));
-      window.location.href = `http://${window.location.hostname}${port}${nextLink}`
+    let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+    const { state } = this.props;
+
+    // save state to local storage
+    localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
+    localStorage.setItem('state_form', JSON.stringify(state.form));
+    api.sendQuestions(data);
+    window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
   }
   backClicked(e) {
     const {state} = this.props;
@@ -127,9 +121,6 @@ class FormContainer extends React.Component {
                     onSubmit={::this.handleFormSubmit}
                     dispatch={this.props.dispatch}
                     formData={this.props.formData}
-                    onSsnChange={::this.onSsnChange}
-                    storedSsn={this.props.storedSsn}
-                    ssnError={this.props.ssnError}
                     radio={this.props.radio}
                    >
                     {prevLink ?
@@ -165,8 +156,6 @@ function mapStateToProps(state) {
     welcome: state.survey.get('welcome'),
     data: state.survey.get('data'),
     showSsn: state.survey.get('showSsn'),
-    storedSsn : state.survey.get('storedSsn'),
-    ssnError: state.survey.get('ssnError'),
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     step: state.survey.get('step'),

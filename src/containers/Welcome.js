@@ -23,7 +23,7 @@ class Welcome extends React.Component {
                     <div className="wfm-step__num">1</div>
                     <div className="wfm-step__text">Tell us<br /> about you</div>
                 </div>
-                <div className="wfm-steps__dvdr passed"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div className="wfm-steps__dvdr"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
                 <div className="wfm-step">
                     <div className="wfm-step__num">2</div>
                     <div className="wfm-step__text">Set up<br /> your account</div>

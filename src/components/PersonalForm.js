@@ -5,7 +5,6 @@ class PersonalForm extends React.Component {
   render () {
     const { questions, fields, handleStateChange, showSsn, onSsnChange, storedSsn,
        ssnError, handleShowSsnClick } = this.props;
-       console.log(fields['ssn']);
     return (
       <div>
         {/* first name, last name */}
@@ -65,12 +64,10 @@ class PersonalForm extends React.Component {
                   key="ssn"
                   field={fields['ssn']}
                   showSsn={showSsn}
-                  onSsnChange={onSsnChange}
-                  storedSsn={storedSsn}
-                  ssnError={ssnError}
                   />
                   <p className="input-descr">
-                    <input type="checkbox" className="chbx-styled" onClick={handleShowSsnClick} /> <label>Show</label>
+                    <input id="show_ssn" type="checkbox" className="chbx-styled" onClick={handleShowSsnClick}/>
+                    <label htmlFor="show_ssn">Show</label>
                   </p>
             </div>
             {/* date of birth */}
@@ -94,9 +91,6 @@ PersonalForm.propTypes = {
   questons: PropTypes.array,
   handleStateChange: PropTypes.func,
   showSsn: PropTypes.bool,
-  onSsnChange : PropTypes.func,
-  storedSsn: PropTypes.string,
-  ssnError: PropTypes.string,
 }
 
 export default PersonalForm;

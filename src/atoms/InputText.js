@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 import MaskedInput from 'react-maskedinput';
-import CurrencyMaskedInput from 'react-currency-masked-input';
+import { CurrencyInput } from '../components';
+import $ from 'jquery';
 
 class InputText extends React.Component {
-  maskedChange(e) {
-  }
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
       label, defaultValue, maskPattern, errorMessageClass, inputClass } = this.props;
@@ -28,17 +27,15 @@ class InputText extends React.Component {
         type={type ? type : 'text'}
         {...field}
         />
-    }
+      }
 
     if (isIncome) {
-      component = <CurrencyMaskedInput
-                    placeholder="0"
-                    required
-                    {...field}
-                    className="text full-width"
-                    type="text"
-                    pattern="\d.*"
-                  />;
+      component =  <CurrencyInput
+        className={'input-text ' + (inputClass ? inputClass : '')}
+        placeholder="$"
+        type="text"
+        {...field}
+        />
     }
     return (
         <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (field.error && field.touched ? ' error' : '')}>

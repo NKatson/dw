@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { checkToken } from '../utils/apiClient';
 
-
 class ConfirmRegistration extends React.Component {
   componentDidMount() {
     const { query: { confirmation_token } } = this.props.location;
