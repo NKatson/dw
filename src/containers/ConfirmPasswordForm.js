@@ -14,7 +14,6 @@ class ConfirmPasswordForm extends React.Component {
       if (confirmingToken) return;
       dispatch(checkPasswordToken(password_token, (err) => {
         if (err) {
-          console.log('Error! Redirect...');
           this.context.history.replaceState(null, '/signin');
         }
       }));

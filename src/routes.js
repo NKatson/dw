@@ -13,13 +13,12 @@ import {
     Account,
     Submit as SubmitData,
     ConfirmPasswordForm,
-    ConfirmRegistration,
+    ConfirmEmail,
   } from './containers';
 
 import { App } from './containers';
 
 export default (store) => {
-  console.log(store.getState());
   const requireLogin = (nextState, replaceState, cb) => {
     function checkAuth() {
       if (!store.getState().auth.get('loggedIn')) {
@@ -34,8 +33,8 @@ export default (store) => {
     <Route>
       <Route component={App} >
         <Route path="reset" component={ResetPassword} />
-        <Route path="/confirm-password" component={ConfirmPasswordForm} />
-        <Route path="confirm-email" component={ConfirmRegistration} />
+        <Route path="confirm-email" component={ConfirmEmail} />
+        <Route path="confirm-password" component={ConfirmPasswordForm} />
         <Route path="signin" component={Authorization} />
         <Route path="signup" component={Registration} />
       </Route>
