@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "uat-fontend-server",
+      "script": "./bin/server.js",
+      "watch": false,
+      "cwd": "/var/www/uat.worthfm.com/frontend/current",
+      "env": {
+        "NODE_ENV": "production",
+        "HOST": "uat.worthfm.com",
+        "PORT": 8080,
+        "API_HOST": "uat.worthfm.com"
+      }
+    }
+  ]
+}

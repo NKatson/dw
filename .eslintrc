@@ -1,0 +1,16 @@
+{
+  "extends" : "airbnb",
+  "globals" : {
+    "describe": false,
+    "it": false,
+    "__DEVELOPMENT__"      : false,
+    "__CLIENT__"    : false,
+    "__SERVER__" : false,
+    "__DEVTOOLS__" : false
+  },
+  "rules": {
+    "new-cap": [2, {
+      "capIsNewExceptions":  ["Map", "List"]
+    }]
+  }
+}
