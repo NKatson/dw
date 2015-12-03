@@ -4,6 +4,7 @@ import { Map, fromJS } from 'immutable';
 const initialState = Map({
   requesting: false,
   welcome: "Fresh",
+  radio : Map(),
 });
 
 function getPrevLink({ category, step, data }) {
@@ -13,7 +14,9 @@ function getPrevLink({ category, step, data }) {
   if (categoryIndex === -1) return '-1';
   if (step === 0) {
     if (categoryIndex === 0) return '/welcome';
-    return `/survey/${categoryNames[categoryIndex - 1].toLowerCase()}/q/${categoryNames.length - 1}`;
+    const prevCat = categoryNames[categoryIndex - 1];
+    const lastQuestionIndex = Object.keys(data[prevCat]).length - 1;
+    return `/survey/${prevCat.toLowerCase()}/q/${lastQuestionIndex}`;
   }
 
   return `/survey/${category.toLowerCase()}/q/${step - 1}`;
@@ -33,16 +36,6 @@ function getNextLink({ category, step, data }) {
   }
   // step++ in current category
   return `/survey/${category.toLowerCase()}/q/${step + 1}`;
-}
-
-function showRecommend({ category, step, data }) {
-  if (step > 0) {
-    if (data[category][step - 1].type === 'recommend') {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 export default function survey(state = initialState, action = {}) {
@@ -80,15 +73,6 @@ export default function survey(state = initialState, action = {}) {
       accountType: action.accountType,
       recommendMessageType: 'recommend',
     });
-  case actions.SHOW_RECOMMEND:
-    return state.merge({
-      showRecommend: true,
-      recommendMessageType: action.messageType
-    });
-  case actions.HIDE_RECOMMEND:
-    return state.merge({
-      showRecommend: false,
-    });
   case actions.SAVE_WELCOME:
     return state.merge({
       welcome: action.welcome,
@@ -97,10 +81,11 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       ssnError: action.error,
     });
+  case actions.RADIO_CLICKED:
+    return state.updateIn(['radio', action.name], action.name, value => action.value);
   case actions.SSN_CHANGE:
     let isValid = true;
     if (action.ssn.length > 0) {
-        console.log(action.ssn);
         isValid = /(^\d{9}$)/.exec(action.ssn) ? true : false;
     }
     return state.merge({
@@ -122,7 +107,6 @@ export default function survey(state = initialState, action = {}) {
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
       prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
       formType: data[nextCategory][action.number].type,
-      showRecommend: showRecommend({ category: nextCategory, step: action.number, data}),
     });
   default:
     return state;

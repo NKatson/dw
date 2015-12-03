@@ -11,6 +11,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.all('/*', (req,res,next) => {
+    res.header('access-token' , 'dqleub-mNG3aScinWC8J_g');
+    res.header('client', 'dqleub-mNG3aScinWC8J_g');
+    res.header('uid', 'user@user.com');
+    next();
+});
+
 app.post('/api/accounts', (req, res) => {
   console.log('Request to accounts:');
   console.log(req.body);
@@ -22,9 +29,8 @@ app.get('/api/questions', (req, res) => {
     "Personal": [
       {
         "formKey": "personal-step-1",
-        "title": "The Basics",
-        "description": "This is the easy stuff.",
-        "hint": "(Hint: You definitely know all the answers to these questions!)",
+        "title": "1. TELL US ABOUT YOU",
+        "description": "This is the easy stuff. Hint: you definitely know the answers to these questions!",
         "questions": [
           {
             "name": "first_name",
@@ -51,10 +57,11 @@ app.get('/api/questions', (req, res) => {
             "type": "dropdown",
             "class": "inline-block pad-04",
             "placeholder": "State",
+            "defaultValue" : "AZ",
             "answers": [
               {"label" : "Alabama",	"value" : "AL"},
               {"label" : "Alaska",	"value" : "AK"},
-              {"label" : "Arizona",	"value" : "AZ", "selected" : true},
+              {"label" : "Arizona",	"value" : "AZ"},
               {"label" : "Arkansas",	"value" : "AR"},
               {"label" : "California",	"value" : "CA"},
               {"label" : "Colorado",	"value" : "CO"},
@@ -124,8 +131,8 @@ app.get('/api/questions', (req, res) => {
           }, {
             "name": "date_of_birth",
             "type": "text",
+            "defaultValue" : "11/11/1991",
             "class": "w-342",
-            "defaultValue": "11/11/1991",
             "placeholder": "Date of Birth (MM/DD/YYYY)",
             "needNormalize" : true,
           }
@@ -133,7 +140,7 @@ app.get('/api/questions', (req, res) => {
       },
       {
         "formKey": "Personal-step-2",
-        "title": "Employment status",
+        "title": "1. EMPLOYMENT STATUS",
         "description" : "Where do you currently work? Do you like it, and if so, are they hiring?",
         "questions": [
           {
@@ -257,34 +264,34 @@ app.get('/api/questions', (req, res) => {
     ],
     "Invest" : [
       {
-        "type": "recommend", // new
-        "title" : "Finding the Right Investment for You",
+        "formKey": "invest-step-1",
+        "title" : "2. SET UP YOUR ACCOUNT",
         "description" : "The next few steps will help us to recommend the best savings & investment strategy for you",
         "questions" : [
           {
             "label" : "When will you need access the money you invest?",
             "type" : "radio",
+            "name": "finding",
             "htmlName": "finding",
-            "name" : "invest-question-1",
             "answers" : [
               {
                 "label" : "I might need to withdraw this money within a few years" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "Savings account",
               },
               {
                 "label" : "Not soon, but I plan to withdraw some of this money before I retire" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "General investment account",
               },
               {
                 "label" : "I won't need it until I retire" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "Retirement account",
               },
               {
                 "label" : "I don't know" ,
-                "name" : "invest-q1",
+                "name" : "finding",
                 "value": "General investment account",
               }
             ]
@@ -292,25 +299,29 @@ app.get('/api/questions', (req, res) => {
         ]
       },
       {
-        "title" : "Markets move up and down. How comfortable are you with changes?",
-        "description" : "In 2008 the worst happened!! The markets lost more than 50% of their value within f few short years (2007-2009). If this happened again, would you:",
+        "formKey": "invest-step-2",
+        "title" : "2. SET UP YOUR ACCOUNT",
         "questions" : [
           {
             "type" : "radio",
-            "htmlName": "comf",
-            "name" : "invest-question-2",
+            "upperLabel" : "Markets move up and down. How comfortable are you with changes?",
+            "label" : "In 2008 the worst happened!! The markets lost more than 50% of their value within a few short years (2007-2009). If this happened again, would you:",
+            "htmlName": "invest-q2-a1",
             "answers" : [
               {
                 "label" : "Scream! And then sell all your investments. Too risky!" ,
+                "value" : "1",
                 "name" : "invest-q2-a1",
               },
               {
                 "label" : "Hold your breath. But also hold your investments." ,
-                "name" : "invest-q2-a2",
+                "value" : "2",
+                "name" : "invest-q2-a1",
               },
               {
                 "label" : "Nod knowingly. This is how it works. You have to weather the 'downs' to get the 'ups'." ,
-                "name" : "invest-q2-a3",
+                "value" : "3",
+                "name" : "invest-q2-a1",
               }
             ]
           }
@@ -422,6 +433,12 @@ app.post('/api/auth/password', (req, res) => {
       "errors":["Unable to find user with email 'eas'."]
     }
   );
+});
+
+app.put('/api/auth/password', (req, res) => {
+  return res.status(200).json({
+    message: 'Success! Your password is updated and you will be logged into your account.'
+  });
 });
 
 app.get('*', (req, res) => {

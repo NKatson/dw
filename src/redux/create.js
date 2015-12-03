@@ -11,7 +11,7 @@ export default function createStore(initialState) {
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
     const { persistState } = require('redux-devtools');
-    const DevTools = require('../containers/DevTools/DevTools');
+    const DevTools = require('../containers/DevTools');
     finalCreateStore = compose(
       applyMiddleware(...middleware),
       DevTools.instrument(),
@@ -24,9 +24,10 @@ export default function createStore(initialState) {
   const reducer = require('./reducer');
 
   if (typeof initialState === 'object') {
-    initialState.auth = fromJS(initialState.auth);
-    initialState.resetPassword = fromJS(initialState.resetPassword);
-    initialState.registration = fromJS(initialState.registration);
+    // initialState.auth = fromJS(initialState.auth);
+    // initialState.resetPassword = fromJS(initialState.resetPassword);
+    // initialState.registration = fromJS(initialState.registration);
+    // initialState.survey = fromJS(initialState.survey);
   }
 
   const store = finalCreateStore(reducer, initialState);
