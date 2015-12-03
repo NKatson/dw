@@ -75,6 +75,9 @@ h4 {
 .login-form .input-wrap.error {
   border-color: #9e005d;
 }
+.login-form .input-wrap.error_two-lines {
+  margin-top: 28px;
+}
 .login-form a {
   color: #fff;
 }
@@ -144,13 +147,15 @@ input.input-text {
 }
 .login-form__error-msg {
   width: 100%;
-  top: -18px;
+  bottom: 100%;
+  margin-bottom: 3px;
   left: 0;
   position: absolute;
   text-align: left;
   color: #fff;
   font-size: 11px;
   padding: 0 3px;
+  line-height: 1.1;
 }
 .login-form__forgot {
   position: relative;

@@ -13,7 +13,7 @@ class Validation {
       if (!this.data[fieldName] || this.data[fieldName].trim() === '') {
         this.errors[fieldName] = message;
       }
-      if (fieldName === 'employment_status' && this.data[fieldName] === 'default') {
+      if (this.data[fieldName] === 'default') {
         this.errors[fieldName] = message;
       }
     }
@@ -64,11 +64,11 @@ class Validation {
 
     const diff = moment().diff([year, month, day], 'years');
 
-    if (diff > 100 || diff < 3 || !(moment([year, month, day]).isValid())) {
+    if (diff > 100 || diff < 1 || !(moment([year, month, day]).isValid())) {
       this.errors[fieldName] = 'Please type valid date format.';
     } else if (diff < 18 ) {
       this. errors[fieldName] = 'You must be 18 years or older to create a WorthFM account.';
-    } else if (!state) {
+    } else if (!state || state === 'default') {
       this.errors[fieldName] = 'Please select your state.';
     } else if (state && min18States.indexOf(state) === -1 && diff < 21) {
       this.errors[fieldName] = 'You must be 21 years or older to create a WorthFM account.';

@@ -38,8 +38,9 @@ class InputText extends React.Component {
         {...field}
         />
     }
+    const needError = field.error && field.touched ? true : false;
     return (
-        <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (field.error && field.touched ? ' error' : '')}>
+        <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (needError ? ' error' : '') + (needError && field.error.length > 34 ? ' error_two-lines' : '')}>
           {label ? <div className="input-wrap__text">{label}</div> : null}
           {component}
           {
