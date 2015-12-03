@@ -1,0 +1,16 @@
+{
+  "apps": [
+    {
+      "name": "dev-fontend-server",
+      "script": "./bin/server.js",
+      "watch": false,
+      "cwd": "/var/www/dev.worthfm.com/frontend/current",
+      "env": {
+        "NODE_ENV": "production",
+        "HOST": "dev.worthfm.com",
+        "PORT": 8080,
+        "API_HOST": "dev.worthfm.com"
+      }
+    }
+  ]
+}
