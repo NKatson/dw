@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 import { isLoggedIn } from './redux/actions/auth';
-import { Category, Submit } from './components';
+import { Category } from './components';
 
 import {
     Registration,
@@ -44,10 +44,8 @@ export default (store) => {
           <IndexRoute component={FormContainer} />
           <Route path="/account" component={Account} />
           <Route path=":category/q/:number" component={FormContainer} />
+          <Route path="/submit" component={SubmitData} />
       </Route>
-      <Route path="submit" component={Submit} />
-      <Route path="/submit" component={SubmitData} />
-
       <Redirect from="/" to="/signin" />
     </Route>
   );
