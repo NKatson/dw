@@ -72,7 +72,6 @@ class FormContainer extends React.Component {
   }
   handleFormSubmit(data) {
     const { step, categoryIndex, formData, nextLink } = this.props;
-    console.log(data);
     if (step === 0 && categoryIndex === 0) {
        api.sendPersonal(data);
     }

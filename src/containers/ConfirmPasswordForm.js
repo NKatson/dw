@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { InputText } from '../atoms';
 import { SubmitButton, LogoForm } from '../components';
-import { confirmPassword as validate } from '../utils/validation';
+import { registration as validate } from '../utils/validation';
 import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPassword';
 
 class ConfirmPasswordForm extends React.Component {
@@ -14,7 +14,6 @@ class ConfirmPasswordForm extends React.Component {
       if (confirmingToken) return;
       dispatch(checkPasswordToken(password_token, (err) => {
         if (err) {
-          console.log('Error! Redirect...');
           this.context.history.replaceState(null, '/signin');
         }
       }));

@@ -64,6 +64,7 @@ class PersonalForm extends React.Component {
                   key="ssn"
                   field={fields['ssn']}
                   showSsn={showSsn}
+                  handleShowSsnClick={handleShowSsnClick}
                   />
                   <p className="input-descr">
                     <input id="show_ssn" type="checkbox" className="chbx-styled" onClick={handleShowSsnClick}/>

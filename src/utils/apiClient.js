@@ -14,9 +14,10 @@ let redirectUrl = host + '/confirm-password';
 redirectUrl = 'http://localhost:3000/welcome';
 
 function saveLocal(res) {
+  const { uid, client, client_id} = res.headers;
   localStorage.accessToken = res.headers['access-token'];
-  localStorage.uid = res.headers.uid;
-  localStorage.client  = res.headers.client;
+  localStorage.uid = uid;
+  localStorage.client  = client ? client : client_id;
 }
 
 function clearLocal() {
@@ -153,17 +154,19 @@ export function checkResetPasswordToken(token, cb) {
 /**
  * GET /api/auth/confirmation
  */
-export function checkToken(token, cb) {
+export function confirmEmailToken(token, cb) {
   request
     .get(host + '/api/auth/confirmation')
+    .query({config: 'default'})
     .query({confirmation_token: token})
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
-      if ((res.errors && res.errors.length > 0) || res.body.error) return cb(res.body);
+      if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);
       saveLocal(res);
-      return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
+
+      return cb(null, res.body);
     });
 
 }
@@ -235,13 +238,19 @@ export function registration({ data, cb }) {
     .send({
       ...data,
       'access-token': localStorage.accessToken,
-      confirm_success_url: 'http://localhost:3000/confirm-email'
+      //confirm_success_url: 'http://localhost:3000/confirm-email'
     })
     .set('Accept', 'application/json')
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.full_messages && res.errors.full_messages.length > 0) return cb(res.body);
+      if (err && typeof res === 'undefined') return cb('Server does not respond.');
+      if (err) {
+        if (res.body.errors && res.body.errors.full_messages && res.body.errors.full_messages.length > 0) {
+          const error = res.body.errors.full_messages[0];
+          return cb(error);
+        }
+
+        return cb('Unexpected error.');
+      }
 
       clearLocal();
 
