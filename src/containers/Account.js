@@ -46,7 +46,7 @@ class Account extends React.Component {
         <div className="text-center">
             <div className="common-form__buttons">
                 {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
-                <Link  to={`/survey/${category.toLowerCase()}/q/${step}`} className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+                <Link  to={`/survey/invest/q/1`} className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
             </div>
         </div>
       </div>

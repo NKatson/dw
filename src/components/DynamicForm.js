@@ -105,7 +105,7 @@ class DynamicForm extends Component {
       disableNext = true;
     }
 
-    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-217']) {
+    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-210']) {
       disableNext = true;
     }
 

@@ -4,6 +4,15 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { confirmEmail } from '../redux/actions/auth';
 
 class ConfirmEmail extends React.Component {
+  redirect() {
+    const { category, step } = this.props;
+
+    let link = '/welcome';
+    if (category && typeof step !== 'undefined') {
+      link =  `/survey/${category.toLowerCase()}/q/${step}`;
+    }
+    this.context.history.pushState(null, link);
+  }
   componentDidMount() {
     const { location: { query: { confirmation_token } }, dispatch, confirmingToken, category, step } = this.props;
     if (confirmation_token) {
@@ -14,11 +23,7 @@ class ConfirmEmail extends React.Component {
           return this.context.history.pushState(null, '/signin');
         }
         // success
-        let link = '/welcome';
-        if (category && typeof step !== 'undefined') {
-          link =  `/survey/${category.toLowerCase()}/q/${step}`;
-        }
-        this.context.history.pushState(null, link);
+        ::this.redirect();
       }));
     } else {
       this.context.history.pushState(null, '/signin');

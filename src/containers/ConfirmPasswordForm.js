@@ -7,8 +7,17 @@ import { registration as validate } from '../utils/validation';
 import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPassword';
 
 class ConfirmPasswordForm extends React.Component {
+  redirect() {
+    const { category, step } = this.props;
+
+    let link = '/welcome';
+    if (category && typeof step !== 'undefined') {
+      link =  `/survey/${category.toLowerCase()}/q/${step}`;
+    }
+    this.context.history.pushState(null, link);
+  }
   componentDidMount() {
-    const { location: { query: { password_token } }, dispatch, confirmingToken, category, step } = this.props;
+    const { location: { query: { password_token } }, dispatch, confirmingToken } = this.props;
 
     if (password_token) {
       if (confirmingToken) return;
@@ -19,16 +28,12 @@ class ConfirmPasswordForm extends React.Component {
       }));
     } else {
       // success
-      let link = '/welcome';
-      if (category && typeof step !== 'undefined') {
-        link =  `/survey/${category.toLowerCase()}/q/${step}`;
-      }
-      this.context.history.pushState(null, link);
+      ::this.redirect();
     }
   }
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch, fields: { password, confirmPassword }, token, client_id, email } = this.props;
+    const { dispatch, fields: { password, confirmPassword }, token, client_id, email} = this.props;
     const { query: {client_id: client, token: accessToken, uid } } = this.props.location;
 
     if (client_id && email && token) {
@@ -43,7 +48,8 @@ class ConfirmPasswordForm extends React.Component {
         let intervalCount = setInterval(() => {
           if (timer === 0) {
             clearInterval(intervalCount);
-            return this.context.history.replaceState(null, '/welcome');
+            // redirect
+            return ::this.redirect();
           }
           this.props.dispatch(setTimer(timer));
           timer--;
