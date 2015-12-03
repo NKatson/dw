@@ -77,7 +77,7 @@ class FormContainer extends React.Component {
        api.sendPersonal(data);
     }
 
-    if (step === 1 && categoryIndex === 0) {
+    if (step === 1 && categoryIndex === 0 && data.annual_income && data.employment_status) {
       let val = data.annual_income.replace(/[,\$\s]/g, '');
       val = parseInt(val);
 
