@@ -8,6 +8,10 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
+export const CONFIRM_TOKEN_REQUEST    = 'CONFIRM_TOKEN_REQUEST';
+export const CONFIRM_TOKEN_SUCCESS    = 'CONFIRM_TOKEN_SUCCESS';
+export const CONFIRM_TOKEN_ERROR      = 'CONFIRM_TOKEN_ERROR';
+
 // Login actions
 
 function loginRequest() {
@@ -92,4 +96,36 @@ export function logout(cb) {
       },
     });
   };
+}
+
+// confirm email
+
+function confirmTokenRequest() {
+  return {
+    type: CONFIRM_TOKEN_REQUEST,
+  };
+}
+
+function confirmTokenError() {
+  return {
+    type: CONFIRM_TOKEN_ERROR,
+  };
+}
+
+function confirmTokenSuccess() {
+  return {
+    type: CONFIRM_TOKEN_SUCCESS,
+  };
+}
+
+export function confirmEmail(token, cb) {
+  return dispatch => {
+    dispatch(confirmTokenRequest());
+    api.confirmEmailToken(token, (err, body) => {
+      if (err) return dispatch(confirmTokenError(err));
+      dispatch(confirmTokenSuccess()).then(() => {
+        cb();
+      });
+    });
+  }
 }

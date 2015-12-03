@@ -18,10 +18,10 @@ function registrationSuccess() {
 }
 
 
-function registrationFailure({ errors: { full_messages }}) {
+function registrationFailure(error) {
   return {
     type: REGISTRATION_FAILURE,
-    error: full_messages.length > 0 ? full_messages[0] : 'Unexpected error.',
+    error,
   };
 }
 
