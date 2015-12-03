@@ -168,7 +168,24 @@ export function confirmEmailToken(token, cb) {
 
       return cb(null, res.body);
     });
+}
 
+
+/**
+ * GET /api/auth/confirmation
+ */
+export function unlockToken(token, cb) {
+  request
+    .get(host + '/api/auth/unlock')
+    .query({config: 'default'})
+    .query({unlock_token: token})
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body.error);
+
+      return cb(null, res.body.message);
+    });
 }
 
 /**

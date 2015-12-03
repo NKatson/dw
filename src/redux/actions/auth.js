@@ -112,18 +112,31 @@ function confirmTokenError() {
   };
 }
 
-function confirmTokenSuccess() {
+function confirmTokenSuccess(message = 'Success!') {
   return {
     type: CONFIRM_TOKEN_SUCCESS,
+    message,
   };
 }
 
-export function confirmEmail(token, cb) {
+export function checkEmailToken(token, cb) {
   return dispatch => {
     dispatch(confirmTokenRequest());
     api.confirmEmailToken(token, (err, body) => {
       if (err) return dispatch(confirmTokenError(err));
       dispatch(confirmTokenSuccess()).then(() => {
+        cb();
+      });
+    });
+  }
+}
+
+export function unlockToken(token, cb) {
+  return dispatch => {
+    dispatch(confirmTokenRequest());
+    api.unlockToken(token, (err, body) => {
+      if (err) return cb();
+      dispatch(confirmTokenSuccess(body)).then(() => {
         cb();
       });
     });

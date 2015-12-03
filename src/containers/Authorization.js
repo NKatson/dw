@@ -1,12 +1,21 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
-import { login } from '../redux/actions/auth';
+import { login, unlockToken } from '../redux/actions/auth';
 import { InputText } from '../atoms';
 import { SubmitButton, LogoForm } from '../components';
 import { registration as validate } from '../utils/validation';
 
 export class Authorization extends React.Component {
+  componentDidMount() {
+      const { location: { query: { unlock_token } }, dispatch, confirmingToken } = this.props;
+      if (unlock_token) {
+        if (confirmingToken) return;
+        dispatch(unlockToken(unlock_token, () => {
+          this.context.history.replaceState(null, '/signin');
+        }));
+      }
+  }
   handleSubmit(e) {
     const { dispatch, fields: { email, password } } = this.props;
     e.preventDefault();
@@ -21,9 +30,11 @@ export class Authorization extends React.Component {
       loggingIn,
       loggedIn,
       userEmail,
+      confirmTokenMessage,
     } = this.props;
+
     return (
-        <LogoForm error={loginError} handleSubmit={::this.handleSubmit}>
+        <LogoForm error={loginError ? loginError : confirmTokenMessage} handleSubmit={::this.handleSubmit}>
           <InputText
               inputClass="full-width"
               errorMessageClass="login-form__error-msg"
@@ -74,6 +85,8 @@ function mapStateToProps(state) {
     loggingIn: state.auth.get('loggingIn'),
     loggedIn: state.auth.get('loggedIn'),
     userEmail: state.auth.getIn(['user', 'email']),
+    confirmingToken: state.auth.get('confirmingToken'),
+    confirmTokenMessage: state.auth.get('confirmTokenMessage'),
   };
 }
 
