@@ -96,14 +96,27 @@ class DynamicForm extends Component {
   }
   render() {
     const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, accountType, radio } = this.props;
-    const account = radio.finding ? radio.finding : accountType;
+    const account = radio['invest-radio-217'] ? radio['invest-radio-217'] : accountType;
+    const selected = accountType ? true : false;
+
+    // hardcode this time
+    let disableNext = false;
+    if (categoryIndex === 1 && step === 0 && !radio['invest-radio-217']) {
+      disableNext = true;
+    }
+
+    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-217']) {
+      disableNext = true;
+    }
+
+
     return (
       <div>
         <h2>{title}</h2>
         {formKey === "invest-step-2" ?
           <RecommendBlock
-            selectedAccountType={accountType}
-            defaultAccountType={account}
+            isSelected={selected}
+            accountType={account}
           />
            : null}
         <p>{description}</p>
@@ -115,7 +128,10 @@ class DynamicForm extends Component {
             <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
-                    <button className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
+                    <button
+                      className="btn btn_yellow"
+                      disabled={disableNext}
+                      >Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
                 </div>
             </div>
         </form>

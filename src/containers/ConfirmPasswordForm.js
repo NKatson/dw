@@ -8,7 +8,7 @@ import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPas
 
 class ConfirmPasswordForm extends React.Component {
   componentDidMount() {
-    const { location: { query: { password_token } }, dispatch, confirmingToken } = this.props;
+    const { location: { query: { password_token } }, dispatch, confirmingToken, category, step } = this.props;
 
     if (password_token) {
       if (confirmingToken) return;
@@ -18,7 +18,12 @@ class ConfirmPasswordForm extends React.Component {
         }
       }));
     } else {
-        this.context.history.replaceState(null, '/welcome');
+      // success
+      let link = '/welcome';
+      if (category && typeof step !== 'undefined') {
+        link =  `/survey/${category.toLowerCase()}/q/${step}`;
+      }
+      this.context.history.pushState(null, link);
     }
   }
   handleSubmit(e) {
@@ -122,6 +127,9 @@ function mapStateToProps(state) {
     token: resetPassword.get('token'),
     client_id: resetPassword.get('client_id'),
     email: resetPassword.get('email'),
+
+    category: state.survey.get('category'),
+    step: state.survey.get('step'),
 
     resetting: resetPassword.get('resetting'),
 

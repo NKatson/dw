@@ -93,7 +93,6 @@ Survey.contextTypes = {
   history: RouterPropTypes.history,
 };
 
-
 function mapStateToProps(state) {
   return {
     data: state.survey.get('data'),

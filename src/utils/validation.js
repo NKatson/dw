@@ -13,9 +13,9 @@ class Validation {
       if (!this.data[fieldName] || this.data[fieldName].trim() === '') {
         this.errors[fieldName] = message;
       }
-    }
-    if (fieldName === 'employment_status' && this.data[fieldName] === 'default') {
-      this.errors[fieldName] = message;
+      if (fieldName === 'employment_status' && this.data[fieldName] === 'default') {
+        this.errors[fieldName] = message;
+      }
     }
   }
   checkRegex(fieldName, regex, message) {

@@ -5,6 +5,7 @@ import { registration } from '../redux/actions/registration';
 import { registration as validate } from '../utils/validation';
 import { SubmitButton, LogoForm } from '../components';
 import { InputText } from '../atoms';
+import { destroy } from 'redux-form/lib/actions';
 
 class Registration extends React.Component {
   handleSubmit(event) {
@@ -17,6 +18,7 @@ class Registration extends React.Component {
     };
 
     this.props.dispatch(registration(data, () => {
+      this.props.dispatch(destroy());
       this.context.history.replaceState(null, '/welcome');
     }));
   }

@@ -5,9 +5,7 @@ import { confirmEmail } from '../redux/actions/auth';
 
 class ConfirmEmail extends React.Component {
   componentDidMount() {
-    const { location: { query: { confirmation_token } }, dispatch, confirmingToken } = this.props;
-    console.log(confirmation_token);
-    console.log(confirmingToken);
+    const { location: { query: { confirmation_token } }, dispatch, confirmingToken, category, step } = this.props;
     if (confirmation_token) {
       if (confirmingToken) return;
       dispatch(confirmEmail(confirmation_token, (err) => {
@@ -16,7 +14,11 @@ class ConfirmEmail extends React.Component {
           return this.context.history.pushState(null, '/signin');
         }
         // success
-        this.context.history.pushState(null, '/welcome');
+        let link = '/welcome';
+        if (category && typeof step !== 'undefined') {
+          link =  `/survey/${category.toLowerCase()}/q/${step}`;
+        }
+        this.context.history.pushState(null, link);
       }));
     } else {
       this.context.history.pushState(null, '/signin');
@@ -42,6 +44,8 @@ function mapStateToProps(state) {
   return {
       confirmingToken: resetPassword.get('confirmingToken'),
       confirmTokenError: resetPassword.get('confirmTokenError'),
+      category: state.survey.get('category'),
+      step: state.survey.get('step'),
   };
 }
 
