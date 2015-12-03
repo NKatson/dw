@@ -9,12 +9,10 @@ class Validation {
     return this.errors;
   }
   checkRequired(fieldName, message = 'Required') {
-    if (this.data.hasOwnProperty(fieldName) && !this.data[fieldName]) {
-      this.errors[fieldName] = message;
-    }
-
-    if (fieldName === 'annual_income') {
-
+    if (this.data.hasOwnProperty(fieldName)) {
+      if (!this.data[fieldName] || this.data[fieldName].trim() === '') {
+        this.errors[fieldName] = message;
+      }
     }
   }
   checkRegex(fieldName, regex, message) {
