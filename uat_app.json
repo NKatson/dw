@@ -8,7 +8,7 @@
       "env": {
         "NODE_ENV": "production",
         "HOST": "uat.worthfm.com",
-        "PORT": 8080,
+        "PORT": 8090,
         "API_HOST": "uat.worthfm.com"
       }
     }
