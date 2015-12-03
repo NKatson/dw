@@ -1,19 +1,20 @@
 import * as api from '../../utils/apiClient';
 
-export const INITIAL_REQUEST = 'INITIAL_REQUEST';
-export const FILL_STATE = 'FILL_STATE';
-export const TOGGLE_SSN = 'TOGGLE_SSN';
-export const SELECT_CHANGE = 'SELECT_CHANGE';
-export const SUBMIT_NEXT = 'SUBMIT_NEXT';
+export const INITIAL_REQUEST      = 'INITIAL_REQUEST';
+export const FILL_STATE           = 'FILL_STATE';
+export const TOGGLE_SSN           = 'TOGGLE_SSN';
+export const SELECT_CHANGE        = 'SELECT_CHANGE';
+export const SUBMIT_NEXT          = 'SUBMIT_NEXT';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
-export const CHANGE_QUESTION = 'CHANGE_QUESTION';
-export const SEND_DATA = 'SEND_DATA';
-export const DISABLE_NEXT = 'DISABLE_NEXT';
-export const ENABLE_NEXT = 'ENABLE_NEXT';
-export const SAVE_WELCOME = 'SAVE_WELCOME';
-export const SSN_CHANGE = 'SSN_CHANGE';
-export const SSN_ERROR_CHANGE = 'SSN_ERROR_CHANGE';
-export const RADIO_CLICKED = 'RADIO_CLICKED';
+export const CHANGE_QUESTION      = 'CHANGE_QUESTION';
+export const SEND_DATA            = 'SEND_DATA';
+export const DISABLE_NEXT         = 'DISABLE_NEXT';
+export const ENABLE_NEXT          = 'ENABLE_NEXT';
+export const SAVE_WELCOME         = 'SAVE_WELCOME';
+export const SSN_CHANGE           = 'SSN_CHANGE';
+export const SSN_ERROR_CHANGE     = 'SSN_ERROR_CHANGE';
+export const RADIO_CLICKED        = 'RADIO_CLICKED';
+export const SHOW_WELCOME_BACK    = 'SHOW_WELCOME_BACK';
 
 function initialRequest() {
   return {
@@ -89,6 +90,12 @@ export function radioClick(name, value) {
     type: RADIO_CLICKED,
     name,
     value,
+  }
+}
+
+export function showWelcomeBack() {
+  return {
+    type: SHOW_WELCOME_BACK
   }
 }
 

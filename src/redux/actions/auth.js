@@ -119,7 +119,7 @@ function confirmTokenSuccess(message = 'Success!') {
   };
 }
 
-export function checkEmailToken(token, cb) {
+export function confirmEmail(token, cb) {
   return dispatch => {
     dispatch(confirmTokenRequest());
     api.confirmEmailToken(token, (err, body) => {

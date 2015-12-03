@@ -3,8 +3,8 @@ import { Map, fromJS } from 'immutable';
 
 const initialState = Map({
   requesting: false,
-  welcome: "Fresh",
   radio : Map(),
+  showWelcomeBack: false,
 });
 
 function getPrevLink({ category, step, data }) {
@@ -73,10 +73,6 @@ export default function survey(state = initialState, action = {}) {
       accountType: action.accountType,
       recommendMessageType: 'recommend',
     });
-  case actions.SAVE_WELCOME:
-    return state.merge({
-      welcome: action.welcome,
-    });
   case actions.SSN_ERROR_CHANGE:
     return state.merge({
       ssnError: action.error,
@@ -107,6 +103,10 @@ export default function survey(state = initialState, action = {}) {
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
       prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
       formType: data[nextCategory][action.number].type,
+    });
+  case actions.SHOW_WELCOME_BACK:
+    return state.merge({
+      showWelcomeBack: true,
     });
   default:
     return state;

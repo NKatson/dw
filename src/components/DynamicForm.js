@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import  PersonalForm from './PersonalForm';
-import { InputText, Select, RecommendBlock } from '../atoms/index';
+import { InputText, Select, RecommendBlock, WelcomeBack } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
@@ -109,7 +109,6 @@ class DynamicForm extends Component {
       disableNext = true;
     }
 
-
     return (
       <div>
         <h2>{title}</h2>
@@ -157,6 +156,7 @@ DynamicForm.propTypes = {
     formData: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     radio: PropTypes.object.isRequired,
+    showWelcomeBack: PropTypes.bool,
 };
 
 function mapDispatchToProps(dispatch) {

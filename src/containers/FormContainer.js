@@ -139,6 +139,7 @@ class FormContainer extends React.Component {
                     dispatch={this.props.dispatch}
                     formData={this.props.formData}
                     radio={this.props.radio}
+                    showWelcomeBack={this.props.showWelcomeBack}
                    >
                     {prevLink ?
                         <Link onClick={::this.backClicked} to={prevLink} className="common-form__back-link">
@@ -165,7 +166,6 @@ FormContainer.contextTypes = {
   history: RouterPropTypes.history,
 };
 
-
 function mapStateToProps(state) {
   return {
     state: state,
@@ -182,6 +182,7 @@ function mapStateToProps(state) {
     prevLink: state.survey.get('prevLink'),
     radio: state.survey.get('radio').toJS(),
     accountType: state.survey.get('accountType'),
+    showWelcomeBack: state.survey.get('showWelcomeBack'),
   };
 }
 
