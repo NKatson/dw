@@ -6,11 +6,12 @@ class Submit extends React.Component {
   render() {
     return (
       <div className="text-center">
-        <div className="common-form personal-info-form">Your data has been saved.<br />
+        <div className="common-form personal-info-form" style={{margin: '150px'}}>Your data has been saved.<br />
           <Link
-            to="/survey"
+            to="/welcome"
             className="btn btn_yellow"
-            >To Begin</Link>
+            style={{marginTop: '20px'}}
+            >welcome page</Link>
         </div>
       </div>
     );

@@ -70,17 +70,28 @@ class FormContainer extends React.Component {
     }, []);
     return fields
   }
+  grabPersonalData() {
+    const { formData } = this.props;
+    let result = {};
+    if (formData && formData && formData['personal-step-1']) {
+      const data = formData['personal-step-1'];
+      for (let key in data) {
+        console.log(key);
+        if (key.charAt(0) !== '_') {
+          result[key] = data[key].value;
+        }
+      }
+    }
+    return result;
+  }
   handleFormSubmit(data) {
     const { step, categoryIndex, formData, nextLink } = this.props;
-    if (step === 0 && categoryIndex === 0) {
-       api.sendPersonal(data);
-    }
-
     if (step === 1 && categoryIndex === 0 && data.annual_income && data.employment_status) {
       let val = data.annual_income.replace(/[,\$\s]/g, '');
       val = parseInt(val);
 
       api.sendPersonal({
+        ...::this.grabPersonalData(),
         annual_income: val,
         employment_status: data.employment_status,
       }, () => {
@@ -96,7 +107,7 @@ class FormContainer extends React.Component {
     localStorage.setItem('state_form', JSON.stringify(state.form));
     localStorage.setItem('state_auth', JSON.stringify(state.auth.toJS()));
 
-    if (categoryIndex !== 0 && step !== 0) {
+    if (categoryIndex !== 0) {
         api.sendQuestions(data);
     }
 
