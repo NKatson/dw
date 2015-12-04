@@ -11,8 +11,7 @@ class RecommendBlock extends React.Component {
         <h3>{title}</h3>
         <p className="text-center">Since it looks like you won’t need access to your money before your retirement
           {isSelected ? '' : ' we recommend opening a'} <strong>{accountType}</strong>
-          {isSelected ? ' is a great option' : ''}. If you want to explore the other account types
-            , <Link to="/account">click here</Link>.</p>
+          {isSelected ? ' is a great option' : ''}. If you want to explore the other account types, <Link to="/account">click here</Link>.</p>
     </div>
     );
   }
