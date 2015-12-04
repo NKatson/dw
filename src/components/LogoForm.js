@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
 class LogoForm extends React.Component {
   render() {
-    const { error, handleSubmit, small, headerText } = this.props;
+    const { error, handleSubmit, small, headerText, redirectLink } = this.props;
     return (
       <form className="common-form login-form" onSubmit={handleSubmit}>
           <div className="wfm-logo">
@@ -23,6 +24,11 @@ class LogoForm extends React.Component {
             <p className="pad-08">{small}</p> :
             null
           }
+          {
+            redirectLink && small ?
+            <p className="pad-08"> If nothing happens click on the <Link to={redirectLink}>link</Link></p> :
+            null
+          }
           <div className="login-form__fieldset">
             {this.props.children}
           </div>
@@ -33,6 +39,7 @@ class LogoForm extends React.Component {
 
 LogoForm.propTypes = {
   error: PropTypes.string,
+  redirectLink: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   small: PropTypes.string,
 }

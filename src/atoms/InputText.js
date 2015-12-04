@@ -42,7 +42,13 @@ class InputText extends React.Component {
     const needError = field.error && field.touched ? true : false;
     return (
         <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (needError ? ' error' : '') + (needError && field.error.length > 34 ? ' error_two-lines' : '')}>
-          {label ? <div className="input-wrap__text">{label}</div> : null}
+          {label ?
+            <div className="input-wrap__text">{label} {field.name === 'annual_income'? <p style={{
+                display: 'inline',
+                fontSize: '0.8em'
+              }}>Your annual income</p> : null}</div>
+             : null}
+
           {component}
           {
             field.error && field.touched ?

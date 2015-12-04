@@ -16,7 +16,7 @@ class SsnInput extends React.Component {
           <MaskedInput
             mask="111-11-1111"
             type={showSsn ? 'text' : 'password'}
-            placeholder="Social security number"
+            placeholder="SOCIAL SECURITY NUMBER"
             className="input-text"
             {...field}
              />

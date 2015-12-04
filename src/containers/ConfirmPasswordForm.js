@@ -7,15 +7,16 @@ import { registration as validate } from '../utils/validation';
 import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPassword';
 
 class ConfirmPasswordForm extends React.Component {
-  redirect() {
+  constructor(props) {
+    super(props);
     const { category, step } = this.props;
 
-    let link = '/welcome';
+    this.redirectLink = '/welcome';
     if (category && typeof step !== 'undefined') {
-      link =  `/survey/${category.toLowerCase()}/q/${step}`;
+      this.redirectLink =  `/survey/${category.toLowerCase()}/q/${step}`;
     }
-    this.context.history.pushState(null, link);
   }
+
   componentDidMount() {
     const { location: { query: { password_token } }, dispatch, confirmingToken } = this.props;
 
@@ -28,7 +29,7 @@ class ConfirmPasswordForm extends React.Component {
       }));
     } else {
       // success
-      ::this.redirect();
+      this.context.history.pushState(null, this.redirectLink);
     }
   }
   handleSubmit(e) {
@@ -49,7 +50,7 @@ class ConfirmPasswordForm extends React.Component {
           if (timer === 0) {
             clearInterval(intervalCount);
             // redirect
-            return ::this.redirect();
+            return this.context.history.pushState(null, this.redirectLink);
           }
           this.props.dispatch(setTimer(timer));
           timer--;
@@ -76,6 +77,7 @@ class ConfirmPasswordForm extends React.Component {
             <LogoForm handleSubmit={::this.handleSubmit}
                       error={confirmError}
                       small={message ? message : null}
+                      redirectLink={this.redirectLink}
                       headerText={message ? null : "Reset your password"}>
               {
                 successMessage ? null :
