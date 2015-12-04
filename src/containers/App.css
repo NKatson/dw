@@ -2,7 +2,3 @@
 @import '../../static/styles/bootstrap.min.css';
 @import '../../static/styles/minimal.css';
 @import '../../static/styles/styles.css';
-
-.main-header a {
-  padding-left: 15px;
-}

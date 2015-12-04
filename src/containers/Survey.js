@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
-import { DynamicForm, Category, Footer } from '../components';
+import { DynamicForm, Category, Header, Footer } from '../components';
 import { SurveyFormHeader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
@@ -65,12 +65,7 @@ class Survey extends React.Component {
     }
     return (
       <div>
-        <header className="main-header">
-          <div className="container container-2">
-              <Link to="/" ><img src={require('../../static/images/logo-140.png')} /></Link>
-              <div className="wfm-cabinet"><a href="#" onClick={::this.handleLogout}>Logout</a></div>
-          </div>
-        </header>
+        <Header handleLogout={::this.handleLogout} />
         <div className="common-wrap common-wrap_rose">
           <div className="container container-2 bg-white">
             <div className="wfm-steps">

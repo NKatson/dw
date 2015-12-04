@@ -7,3 +7,4 @@ export DynamicForm from './DynamicForm';
 export Category from './Category';
 export LogoForm from './LogoForm';
 export CurrencyInput from './CurrencyInput';
+export Header from './Header';

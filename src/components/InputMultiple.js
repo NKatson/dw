@@ -17,8 +17,8 @@ class InputMultiple extends React.Component {
   render () {
     const { question : { htmlName, label }, handleClick, inputs, selectedValue } = this.props;
     return (
-      <div className="anketa-form__fieldset anketa-form__main-fieldset">
-        <p className="text-center">{label}</p>
+      <div className="anketa-form__fieldset">
+        {htmlName === 'invest-radio-210' ? null : <p className="text-center">{label}</p> }
         {inputs.map((input, index) => {
           let iProps = {
             id: 'option-'  + index,
@@ -30,7 +30,7 @@ class InputMultiple extends React.Component {
           if (handleClick) {
             iProps.onClick = handleClick;
           }
-          
+
           return (
             <div className="input-wrap input-wrap_with-radio" key={input.label}>
               <input {...input.field} {...iProps} checked={input.value == selectedValue ? true : false} />

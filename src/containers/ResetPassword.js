@@ -46,6 +46,7 @@ class ResetPassword extends React.Component {
                 text="Send"
               />
             </div>
+            <div className="login-form__get-an-account">Already have an account? <Link to="signin">Sign in</Link>.</div>
           </LogoForm>
        }
       </div>

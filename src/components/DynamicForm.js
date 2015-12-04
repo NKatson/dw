@@ -96,7 +96,7 @@ class DynamicForm extends Component {
   }
   render() {
     const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, accountType, radio } = this.props;
-    const account = radio['invest-radio-217'] ? radio['invest-radio-217'] : accountType;
+    const account = radio['invest-radio-217'] && !accountType ? radio['invest-radio-217'] : accountType;
     const selected = accountType ? true : false;
 
     // hardcode this time
@@ -118,10 +118,19 @@ class DynamicForm extends Component {
             accountType={account}
           />
            : null}
-        <p>{description}</p>
+       {categoryIndex === 1 && step === 1 ?
+         <div className="text-center">
+           <h4>Markets move up and down.<br />
+             How comfortable are you with changes?</h4>
+           <p>In 2008 the worst happened!!  The markets lost more than 50% of their value within a few short years (2007-2009).</p>
+           <p>If this happened again, would you:</p>
+         </div>
+          : null}
+          <p>{description}</p>
+
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit}>
             {::this.renderQuestions(questions, fields)}
-            {formKey === "invest-step-2" ?
+            {categoryIndex === 1 && step === 1 ?
               <p className="text-center">Tell me more about <a href="#" className="grey-color">how the markets fluctuate</a></p>
                : null}
             <div className="text-center">

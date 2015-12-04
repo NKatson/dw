@@ -22,6 +22,7 @@ class InputText extends React.Component {
         />;
     } else {
       component =  <input
+        autoFocus={defaultValue ? true : false}
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder={placeholder}
         type={type ? type : 'text'}

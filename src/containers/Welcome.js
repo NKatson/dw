@@ -1,16 +1,20 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { Footer } from '../components';
+import { PropTypes as RouterPropTypes, Link } from 'react-router';
+import { connect } from 'react-redux';
+import { Header, Footer } from '../components';
+import { logout } from '../redux/actions/auth';
 
 class Welcome extends React.Component {
+  handleLogout(e) {
+    e.preventDefault();
+    this.props.dispatch(logout( () => {
+        this.context.history.pushState(null, '/signin');
+    }));
+  }
   render() {
     return (
       <div>
-        <header className="main-header">
-          <div className="container container-2">
-              <Link to="/" ><img src={require('../../static/images/logo-140.png')} /></Link>
-          </div>
-        </header>
+        <Header handleLogout={::this.handleLogout} />
         <div className="common-wrap common-wrap_rose">
           <div className="container container-2 bg-white">
             <div className="wfm-slogan">A balanced you.</div>
@@ -50,4 +54,19 @@ class Welcome extends React.Component {
     );
   }
 }
-export default Welcome;
+
+Welcome.contextTypes = {
+  history: RouterPropTypes.history,
+};
+
+Welcome.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    category: state.survey.get('category'),
+  }
+}
+
+export default connect(mapStateToProps)(Welcome);
