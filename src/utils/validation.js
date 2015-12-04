@@ -64,8 +64,12 @@ class Validation {
 
     const diff = moment().diff([year, month, day], 'years');
 
-    if (diff > 100 || diff < 1 || !(moment([year, month, day]).isValid())) {
+    if (!moment([year, month, day]).isValid()) {
       this.errors[fieldName] = 'Please type valid date format.';
+    } else if (moment().diff([year, month, day]) < 0) {
+      this.errors[fieldName] = "Thanks for your interest! When you're born let us know!";
+    } else if (diff > 100) {
+      this.errors[fieldName] = 'Thanks for your interest! You must be 100 years old or younger to create an account';
     } else if (diff < 18 ) {
       this. errors[fieldName] = 'You must be 18 years or older to create a WorthFM account.';
     } else if (!state || state === 'default') {

@@ -5,8 +5,13 @@ import { Link } from 'react-router';
 class Submit extends React.Component {
   render() {
     return (
-      <div>
-        <div className="common-form personal-info-form">Your data has been saved.<br />      <Link to="/survey">To begin</Link></div>
+      <div className="text-center">
+        <div className="common-form personal-info-form">Your data has been saved.<br />
+          <Link
+            to="/survey"
+            className="btn btn_yellow"
+            >To Begin</Link>
+        </div>
       </div>
     );
   }
