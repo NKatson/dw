@@ -3,8 +3,18 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Header, Footer } from '../components';
 import { logout } from '../redux/actions/auth';
+import { getData } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
+  componentDidMount() {
+    const { requesting, data } = this.props;
+    if (!requesting && !data) {
+      this.props.dispatch(getData(() => {
+        // redirect if Unauthorized
+        this.context.history.pushState(null, '/signin');
+      }));
+    }
+  }
   handleLogout(e) {
     e.preventDefault();
     this.props.dispatch(logout( () => {
@@ -65,7 +75,8 @@ Welcome.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    category: state.survey.get('category'),
+    data: state.survey.get('data'),
+    requesting: state.survey.get('requesting'),
   }
 }
 
