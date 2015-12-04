@@ -128,7 +128,7 @@ class DynamicForm extends Component {
           : null}
           <p>{description}</p>
 
-        <form className="common-form anketa-form" onSubmit={this.props.handleSubmit}>
+        <form className="common-form anketa-form" onSubmit={this.props.handleSubmit} autoComplete="off">
             {::this.renderQuestions(questions, fields)}
             {categoryIndex === 1 && step === 1 ?
               <p className="text-center">Tell me more about <a href="#" className="grey-color">how the markets fluctuate</a></p>
