@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { DynamicForm, Category, Header, Footer } from '../components';
-import { SurveyFormHeader } from '../atoms';
+import { SurveyFormHeader, PreLoader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
 
@@ -57,7 +57,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType, recommendMessageType } = this.props;
+    const { data, stepType, recommendMessageType, requesting } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {

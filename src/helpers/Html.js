@@ -30,7 +30,7 @@ class Html extends Component {
           { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../containers/App.css')}}/> : null }
         </head>
         <body>
-          <div id="root" dangerouslySetInnerHTML={{__html: content}}></div>
+          <div id="root" className="wfm-main-wrap" dangerouslySetInnerHTML={{__html: content}}></div>
           <script src={assets.javascript.main} charSet="UTF-8"></script>
         </body>
       </html>

@@ -5,10 +5,14 @@
     More info at: http://lesselements.com
   ---------------------------------------------------*/
 @import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+html,
+body {
+  height: 100%;
+}
 body {
   font-family: 'Lato', sans-serif;
   font-size: 16px;
-  background-color: #959595;
+  background-color: #fff;
   color: #464646;
 }
 a {
@@ -31,6 +35,11 @@ h2 {
 h4 {
   font-weight: 700;
   font-size: 17px;
+}
+.wfm-main-wrap {
+  position: relative;
+  padding-bottom: 190px;
+  min-height: 100%;
 }
 .container-1 {
   max-width: 1130px;
@@ -110,6 +119,20 @@ h4 {
 }
 .wfm-logo {
   margin-bottom: 45px;
+  text-align: center;
+}
+.wfm-logo__img {
+  display: inline-block;
+  vertical-align: top;
+  width: 224px;
+  height: 95px;
+  background: url("../images/logo-224.png") no-repeat 0 center;
+  background-size: 224px 95px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .wfm-logo__img {
+    background-image: url(../images/login_logo@2x.png);
+  }
 }
 .wfm-logo__text {
   margin-top: 8px;
@@ -191,7 +214,22 @@ input.input-text {
 .btn:disabled .wfm-i-arr-right-blue,
 .btn.disabled .wfm-i-arr-right-grey,
 .btn:disabled .wfm-i-arr-right-grey {
-  background-image: url("../images/arr-right-disabled.png");
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/arrow_next_disabled.png");
+  background-size: 20px 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .btn.disabled .wfm-i-arr-right-blue,
+  .btn:disabled .wfm-i-arr-right-blue,
+  .btn.disabled .wfm-i-arr-right-grey,
+  .btn:disabled .wfm-i-arr-right-grey {
+    background-image: url(../images/arrow_next_disabled@2x.png);
+  }
+}
+.btn:active,
+.btn:focus {
+  outline: none!important;
 }
 .btn_yellow {
   background-color: #ffc705;
@@ -204,20 +242,31 @@ input.input-text {
   vertical-align: middle;
 }
 .wfm-i-arr-right-blue {
-  width: 12px;
-  height: 19px;
-  background: url("../images/arr-right-blue.png") no-repeat 0 0;
+  width: 20px;
+  height: 20px;
+  background: url("../images/arrow_next.png") no-repeat 0 0;
   position: relative;
   top: -2px;
-  left: 4px;
+  background-size: 20px 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .wfm-i-arr-right-blue {
+    background-image: url(../images/arrow_next@2x.png);
+  }
 }
 .wfm-i-arr-right-grey {
-  width: 12px;
-  height: 19px;
-  background: url("../images/arr-right-grey.png") no-repeat 0 0;
+  width: 20px;
+  height: 20px;
+  background: url("../images/arrow_next_grey.png") no-repeat 0 0;
   position: relative;
   top: -2px;
   left: 4px;
+  background-size: 20px 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .wfm-i-arr-right-grey {
+    background-image: url(../images/arrow_next_grey@2x.png);
+  }
 }
 .wfm-i-arr-right-yellow {
   width: 12px;
@@ -228,12 +277,18 @@ input.input-text {
   left: 4px;
 }
 .wfm-i-arr-left-grey {
-  width: 12px;
-  height: 19px;
-  background: url("../images/arr-left-grey.png") no-repeat 0 0;
+  width: 20px;
+  height: 20px;
+  background: url("../images/arrow_back_grey.png") no-repeat 0 0;
   position: relative;
   top: -2px;
   left: 4px;
+  background-size: 20px 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .wfm-i-arr-left-grey {
+    background-image: url(../images/arrow_back_grey@2x.png);
+  }
 }
 .login-form__get-an-account {
   color: #fff;
@@ -242,6 +297,12 @@ input.input-text {
   padding: 24px 0;
   font-size: 11px;
   color: #fff;
+  height: 190px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #959595;
 }
 .main-footer a {
   color: #fff;
@@ -410,6 +471,15 @@ input.input-text {
 .common-form .input-wrap.error .input-text {
   border-color: #9e005d;
 }
+.common-form .wfm-preloader {
+  color: #333!important;
+  position: absolute;
+  z-index: 200;
+  top: 50%;
+  margin-top: -32px;
+  left: 50%;
+  margin-left: -32px;
+}
 .common-form__error-msg {
   position: absolute;
   top: -30px;
@@ -521,6 +591,7 @@ input.input-text {
 }
 select.input-text {
   height: 37px;
+  border-radius: 0;
 }
 .input-descr {
   width: 150px;
@@ -725,4 +796,69 @@ select.input-text {
 .pad-10 {
   margin-bottom: 90px;
   margin-top: 20px;
+}
+.main-footer__logo-worthfm {
+  display: inline-block;
+  vertical-align: middle;
+  width: 116px;
+  height: 50px;
+  background: url("../images/footer_logo.png") no-repeat 0 0;
+  background-size: 116px 50px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .main-footer__logo-worthfm {
+    background-image: url(../images/footer_logo@2x.png);
+  }
+}
+.main-footer__logo-ameritrade {
+  display: inline-block;
+  vertical-align: middle;
+  width: 96px;
+  height: 20px;
+  background: url("../images/footer_ameritrade.png") no-repeat 0 center;
+  background-size: 96px 19px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .main-footer__logo-ameritrade {
+    background-image: url(../images/footer_ameritrade@2x.png);
+  }
+}
+.main-footer__logo-bank {
+  display: inline-block;
+  vertical-align: middle;
+  width: 96px;
+  height: 20px;
+  background: url("../images/footer_bank.png") no-repeat 0 center;
+  background-size: 59px 19px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .main-footer__logo-bank {
+    background-image: url(../images/footer_bank@2x.png);
+  }
+}
+.main-footer__logo-security {
+  display: inline-block;
+  vertical-align: middle;
+  width: 105px;
+  height: 32px;
+  background: url("../images/footer_security_designation.png") no-repeat 0 center;
+  background-size: 105px 32px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .main-footer__logo-security {
+    background-image: url(../images/footer_security_designation@2x.png);
+  }
+}
+.main-header__logo {
+  display: inline-block;
+  vertical-align: middle;
+  width: 134px;
+  height: 57px;
+  background: url("../images/header_logo.png") no-repeat 0 center;
+  background-size: 134px 57px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .main-header__logo {
+    background-image: url(../images/header_logo@2x.png);
+  }
 }
