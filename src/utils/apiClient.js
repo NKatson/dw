@@ -18,12 +18,41 @@ function saveLocal(res) {
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = uid;
   localStorage.client  = client ? client : client_id;
+  document.cookie = `uid=${uid}`;
 }
 
 function clearLocal() {
   delete localStorage.state_survey;
   delete localStorage.state_form;
   delete localStorage.state_auth;
+  document.cookie = `uid=`;
+}
+
+function checkResponse(err, res, cb) {
+  if (err && typeof res === 'undefined') return cb('Server does not respond');
+  if (err) return cb(res.body);
+  if (res.body.errors && res.body.errors.length > 0 || res.body.error) return cb(res.body);
+
+  if (typeof res.headers['access-token'] !== 'undefined') {
+    saveLocal(res);
+  }
+
+  return cb(null, res.body);
+}
+
+export function saveState(state, cb = () => {}) {
+  const url = '/state/create';
+
+  request
+    .post('http://localhost:3000' + url)
+    .send({
+      state,
+      uid: localStorage.uid,
+    })
+    .end((err, res) => {
+      if (err) return cb(err);
+        cb(null);
+    });
 }
 
 /**
@@ -36,14 +65,7 @@ export function getForm(cb) {
     .get(host + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
-      });
+        checkResponse(err, res, cb);
     });
 }
 
@@ -58,13 +80,7 @@ export function sendPersonal(data, cb = () => {}) {
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
-      });
+        checkResponse(err, res, cb);
     });
 }
 
@@ -79,13 +95,7 @@ export function sendQuestions(data, cb = () => {}) {
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
-      });
+        checkResponse(err, res, cb);
     });
 }
 
@@ -105,6 +115,7 @@ export function login({ email, password, cb }) {
       if (res.errors && res.errors.length > 0) return cb(res.body);
 
       clearLocal();
+
 
       localStorage.client = res.headers.client;
       saveLocal(res);
@@ -126,11 +137,7 @@ export function reset({ email, cb }) {
     .send({email: email, redirect_url: redirectUrl})
     .set('Accept', 'application/json')
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-
-      return cb(null, res.body);
+        checkResponse(err, res, cb);
     });
 }
 
@@ -143,11 +150,7 @@ export function checkResetPasswordToken(token, cb) {
     .send({reset_password_token: token, redirect_url: redirectUrl})
     .set('Accept', 'application/json')
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-
-      return cb(null, res.body);
+        checkResponse(err, res, cb);
     });
 }
 
