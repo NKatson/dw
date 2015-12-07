@@ -102,21 +102,20 @@ class FormContainer extends React.Component {
     let port = window.location.port.length > 0 ? ':' + window.location.port : '';
     const { state } = this.props;
 
-    // save state to local storage
-    localStorage.setItem('state_survey', JSON.stringify(state.survey.toJS()));
-    localStorage.setItem('state_form', JSON.stringify(state.form));
-    localStorage.setItem('state_auth', JSON.stringify(state.auth.toJS()));
-
     if (categoryIndex !== 0) {
         api.sendQuestions(data);
     }
 
-    window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS()
+    }, (err) => {
+      window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+    });
   }
   backClicked(e) {
     const {state} = this.props;
-    localStorage.setItem('state_form', JSON.stringify(state.form));
-    localStorage.setItem('state_form', JSON.stringify(state.form));
   }
   renderForms(data) {
     let result = [];
@@ -152,11 +151,7 @@ class FormContainer extends React.Component {
                     radio={this.props.radio}
                     showWelcomeBack={this.props.showWelcomeBack}
                    >
-                    {prevLink ?
-                        <Link onClick={::this.backClicked} to={prevLink} className="common-form__back-link">
-                          <span className="wfm-i wfm-i-arr-left-grey"></span> Go Back
-                        </Link>
-                       : null}
+                  {prevLink ? <Link to={prevLink} onClick={::this.backClicked}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
           </DynamicForm>);
         }
       });

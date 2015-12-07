@@ -9,13 +9,7 @@ import createHistory from 'history/lib/createBrowserHistory';
 import createStore from './redux/create';
 import getRoutes from './routes';
 
-let initialState = {};
-
-if (localStorage.state_survey && localStorage.state_form) {
-  initialState.form = JSON.parse(localStorage.state_form);
-  initialState.survey = fromJS(JSON.parse(localStorage.state_survey));
-  initialState.auth = localStorage.state_auth ? fromJS(JSON.parse(localStorage.state_auth)) : Map();
-}
+let initialState = window.__data;
 
 const history = createHistory();
 const store = createStore(initialState);

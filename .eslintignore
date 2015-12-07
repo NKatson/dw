@@ -1,6 +1,6 @@
 webpack
 server.js
-src/server.js
+src/server/*
 api/apiServer.js
 test/*
 shipitfile.js
