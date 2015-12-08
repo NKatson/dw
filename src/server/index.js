@@ -29,13 +29,22 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(session({
 	secret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
-	store: new MongoStore({url: 'mongodb://localhost/worthfm', autoReconnect: true })
+	store: new MongoStore({url: 'mongodb://localhost/worthfm' , autoReconnect: true })
 }));
 
 app.use('/dist', express.static('../static/dist'));
 
 // routing middleware
 app.use('/state', mainController);
+
+app.get('/config', (req, res) => {
+		res.status(200).send({
+			host: config.host,
+			port: config.port,
+			apiHost: config.apiHost,
+			apiPort: config.apiPort,
+		});
+});
 
 function processRoute(req, res, initialState) {
 		const store = createStore(initialState);
@@ -67,14 +76,18 @@ function handleRender(req, res, renderProps, store) {
     res.send('<!doctype html>' + content);
 }
 
+
 app.get('*', (req, res) => {
 	const uid = req.cookies.uid;
+	console.log('Got request with uid: ' + uid);
 
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {
 			if (!err && user.state) {
 				const initialState = user.state;
 				processRoute(req, res, initialState);
+			} else {
+				processRoute(req, res);
 			}
 		});
 	} else {

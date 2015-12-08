@@ -5,7 +5,7 @@
   "scripts": {
     "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-api\"",
     "watch-client": "node webpack/dev-server.js",
-    "start-dev": "NODE_ENV=development PORT=3000 node ./bin/server",
+    "start-dev": "NODE_ENV=development HOST=localhost PORT=3000 API_PORT=8080 API_HOST=dev.worthfm.com node ./bin/server",
     "devtools": "DEV_TOOLS=1 npm start",
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "prod": "concurrent --kill-others \"npm run start-prod\" \"npm run start-api\"",

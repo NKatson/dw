@@ -50,7 +50,7 @@ export function login(email, password, cb) {
       password,
       cb: (err, body) => {
         if (err) return dispatch(loginFailure(err));
-        dispatch(loginSuccess({confirmed: true, ...body})).then(() => {
+        dispatch(loginSuccess(body)).then(() => {
           cb();
         });
       },

@@ -15,6 +15,7 @@ export const SSN_CHANGE           = 'SSN_CHANGE';
 export const SSN_ERROR_CHANGE     = 'SSN_ERROR_CHANGE';
 export const RADIO_CLICKED        = 'RADIO_CLICKED';
 export const SHOW_WELCOME_BACK    = 'SHOW_WELCOME_BACK';
+export const HIDE_WELCOME_BACK    = 'HIDE_WELCOME_BACK';
 
 function initialRequest() {
   return {
@@ -98,6 +99,13 @@ export function showWelcomeBack() {
     type: SHOW_WELCOME_BACK
   }
 }
+
+export function hideWelcomeBack() {
+  return {
+    type: HIDE_WELCOME_BACK
+  }
+}
+
 
 export function getData(cb) {
   return dispatch => {
