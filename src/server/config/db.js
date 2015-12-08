@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import config from '../../config';
 
 mongoose.connect('mongodb://localhost/worthfm');
 mongoose.connection.on('error', function() {

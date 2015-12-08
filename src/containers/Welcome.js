@@ -3,11 +3,18 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Header, Footer } from '../components';
 import { logout } from '../redux/actions/auth';
-import { getData } from '../redux/actions/survey';
+import { getData, showWelcomeBack } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
   componentDidMount() {
-    const { requesting, data } = this.props;
+    const { requesting, data, currentLink, dispatch } = this.props;
+    console.log('Welcome');
+    console.log(currentLink);
+    if (currentLink && currentLink !== '/welcome') {
+      dispatch(showWelcomeBack());
+      return this.context.history.pushState(null, currentLink);
+    }
+
     if (!requesting && !data) {
       this.props.dispatch(getData(() => {
         // redirect if Unauthorized
@@ -77,6 +84,7 @@ function mapStateToProps(state) {
   return {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
+    currentLink: state.survey.get('currentLink'),
   }
 }
 

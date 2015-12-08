@@ -5,6 +5,7 @@ const initialState = Map({
   requesting: false,
   radio : Map(),
   showWelcomeBack: false,
+  currentLink: '/welcome',
 });
 
 function getPrevLink({ category, step, data }) {
@@ -56,6 +57,7 @@ export default function survey(state = initialState, action = {}) {
       categoryIndex: 0,
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
+      currentLink: '/survey/personal/q/0',
       nextLink: getNextLink({ category: categories[0], step: 0, data: action.data }),
       prevLink: getPrevLink({ category: categories[0], step: 0, data: action.data }),
       data: action.data,
@@ -100,6 +102,7 @@ export default function survey(state = initialState, action = {}) {
       category: nextCategory,
       categoryIndex: catIndex,
       step: action.number,
+      currentLink: `/survey/${nextCategory.toLowerCase()}/q/${action.number}`,
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
       prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
       formType: data[nextCategory][action.number].type,
@@ -107,6 +110,10 @@ export default function survey(state = initialState, action = {}) {
   case actions.SHOW_WELCOME_BACK:
     return state.merge({
       showWelcomeBack: true,
+    });
+  case actions.HIDE_WELCOME_BACK:
+    return state.merge({
+      showWelcomeBack: false,
     });
   default:
     return state;

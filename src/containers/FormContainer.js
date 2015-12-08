@@ -6,14 +6,13 @@ import * as api from '../utils/apiClient';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
 class FormContainer extends React.Component {
-  componentDidMount(props) {
-    let { category = 'personal', number = 0 } = this.props.params;
-    this.props.dispatch(surveyActions.changeQuestion(category, parseInt(number)));
-  }
   componentWillReceiveProps(nextProps) {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
     const { category, step } = this.props;
     if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
+      console.log(nextProps);
+      console.log(this.props.nextLink);
+
       this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
     }
   }
@@ -120,13 +119,16 @@ class FormContainer extends React.Component {
   renderForms(data) {
     let result = [];
     let index = 0;
-    const { prevLink, nextLink } = this.props;
+    const { prevLink, nextLink, formData } = this.props;
+    const firstName = formData && formData['personal-step-1'] && formData['personal-step-1'].first_name && formData['personal-step-1'].first_name.value ?
+                      formData['personal-step-1'].first_name.value : '';
 
     for (let category in data) {
       data[category].map((form, index) => {
        if (index === this.props.step && category == this.props.category) {
           result.push(<DynamicForm
                     key={`${category}-step-${index}`}
+                    firstName={firstName}
                     accountType={this.props.accountType}
                     title={form.title}
                     description={form.description}
