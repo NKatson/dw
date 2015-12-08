@@ -5,20 +5,11 @@ import { InputText } from '../atoms';
 import { SubmitButton, LogoForm } from '../components';
 import { registration as validate } from '../utils/validation';
 import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPassword';
+import { showWelcomeBack } from '../redux/actions/survey';
 
 class ConfirmPasswordForm extends React.Component {
-  constructor(props) {
-    super(props);
-    const { category, step } = this.props;
-
-    this.redirectLink = '/welcome';
-    if (category && typeof step !== 'undefined') {
-      this.redirectLink =  `/survey/${category.toLowerCase()}/q/${step}`;
-    }
-  }
-
   componentDidMount() {
-    const { location: { query: { password_token } }, dispatch, confirmingToken } = this.props;
+    const { location: { query: { password_token } }, dispatch, confirmingToken, currentLink } = this.props;
 
     if (password_token) {
       if (confirmingToken) return;
@@ -29,12 +20,12 @@ class ConfirmPasswordForm extends React.Component {
       }));
     } else {
       // success
-      this.context.history.pushState(null, this.redirectLink);
+      this.context.history.pushState(null, currentLink);
     }
   }
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch, fields: { password, confirmPassword }, token, client_id, email} = this.props;
+    const { dispatch, fields: { password, confirmPassword }, token, client_id, email, currentLink} = this.props;
     const { query: {client_id: client, token: accessToken, uid } } = this.props.location;
 
     if (client_id && email && token) {
@@ -50,7 +41,10 @@ class ConfirmPasswordForm extends React.Component {
           if (timer === 0) {
             clearInterval(intervalCount);
             // redirect
-            return this.context.history.pushState(null, this.redirectLink);
+            if (currentLink !== '/welcome') {
+              dispatch(showWelcomeBack());
+            }
+            return this.context.history.pushState(null, currentLink);
           }
           this.props.dispatch(setTimer(timer));
           timer--;
@@ -77,7 +71,7 @@ class ConfirmPasswordForm extends React.Component {
             <LogoForm handleSubmit={::this.handleSubmit}
                       error={confirmError}
                       small={message ? message : null}
-                      redirectLink={this.redirectLink}
+                      redirectLink={this.props.nextLink}
                       headerText={message ? null : "Reset your password"}>
               {
                 successMessage ? null :
@@ -130,20 +124,16 @@ function mapStateToProps(state) {
   return {
     confirmingToken: resetPassword.get('confirmingToken'),
     confirmTokenError: resetPassword.get('confirmTokenError'),
-    tokenConfirmed : resetPassword.get('tokenConfirmed'),
-
     token: resetPassword.get('token'),
     client_id: resetPassword.get('client_id'),
     email: resetPassword.get('email'),
-
-    category: state.survey.get('category'),
-    step: state.survey.get('step'),
-
     resetting: resetPassword.get('resetting'),
-
     confirmError: resetPassword.get('confirmError'),
     successMessage: resetPassword.get('message'),
     timer: resetPassword.get('timer'),
+
+    currentLink: state.survey.get('currentLink'),
+
     form: state.auth,
   };
 }

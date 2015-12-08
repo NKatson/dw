@@ -7,7 +7,7 @@ import { InputText, Select, RecommendBlock, WelcomeBack } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
-import { radioClick, enableButton } from '../redux/actions/survey';
+import { radioClick, enableButton, hideWelcomeBack } from '../redux/actions/survey';
 
 class DynamicForm extends Component {
   getInputs(question, fields) {
@@ -22,6 +22,9 @@ class DynamicForm extends Component {
   }
   handleRadioClick(name, value) {
     this.props.dispatch(radioClick(name, value));
+  }
+  handleWelcomeClose() {
+    this.props.dispatch(hideWelcomeBack());
   }
   renderInput(question, fields) {
     const multipleTypes = ['checkbox', 'radio'];
@@ -95,22 +98,27 @@ class DynamicForm extends Component {
     }
   }
   render() {
-    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, accountType, radio } = this.props;
-    const account = radio['invest-radio-217'] && !accountType ? radio['invest-radio-217'] : accountType;
+    const { title, formKey, fields, questions, description, hint, categoryIndex
+      , step, prevLink, nextLink, accountType, radio, showWelcomeBack, firstName } = this.props;
+    const account = radio['invest-radio-251'] && !accountType ? radio['invest-radio-251'] : accountType;
     const selected = accountType ? true : false;
 
     // hardcode this time
     let disableNext = false;
-    if (categoryIndex === 1 && step === 0 && !radio['invest-radio-217']) {
+    if (categoryIndex === 1 && step === 0 && !radio['invest-radio-251']) {
       disableNext = true;
     }
 
-    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-210']) {
+    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-244']) {
       disableNext = true;
     }
 
     return (
       <div>
+        {showWelcomeBack ? <WelcomeBack
+            firstName={firstName}
+            handleClose={::this.handleWelcomeClose}
+           /> : null}
         <h2>{title}</h2>
         {formKey === "invest-step-2" ?
           <RecommendBlock

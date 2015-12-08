@@ -31,7 +31,7 @@ module.exports = {
       __SERVER__: false,
       __DEVELOPMENT__: true,
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false')),
-   }), 
+   }),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
@@ -39,11 +39,6 @@ module.exports = {
       "root.jQuery": "jquery"
     }),
     webpackIsomorphicToolsPlugin.development(),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
-    })
   ],
   progress: true,
   resolve: {

@@ -6,6 +6,7 @@ import { DynamicForm, Category, Header, Footer } from '../components';
 import { SurveyFormHeader, PreLoader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
+import { saveState } from '../utils/apiClient';
 
 class Survey extends React.Component {
   componentDidMount() {
@@ -19,8 +20,12 @@ class Survey extends React.Component {
   }
   handleLogout(e) {
     e.preventDefault();
-    this.props.dispatch(auth.logout( () => {
+    const { state } = this.props;
+    this.props.dispatch(saveState(state, err => {
+      if (err) return console.log(err);
+      this.props.dispatch(auth.logout(() => {
         this.context.history.pushState(null, '/signin');
+      }));
     }));
   }
   renderCategories(data) {
@@ -90,6 +95,7 @@ Survey.contextTypes = {
 
 function mapStateToProps(state) {
   return {
+    state: state,
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
     category: state.survey.get('category'),

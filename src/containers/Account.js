@@ -28,7 +28,7 @@ class Account extends React.Component {
         <h2>2. Account options</h2>
         <p>We offer three different types of accounts. Pick the one you would like to open today. (You can always create an additional account type later.)</p>
         <form className="common-form anketa-form">
-          <div className="anketa-form__fieldset anketa-form__main-fieldset">
+          <div className="anketa-form__fieldset">
                <div className="input-wrap input-wrap_with-radio">
                    <input type="radio" className="chbx-styled" name="accountOptions" id="option1" value="General Investment Account"  onClick={::this.handleCheckboxClick} />
                    <label htmlFor="option1"><span className="common-form__label-title">A General Investment Portfolio:</span><span className="common-form__label-text">Best if you already have a retirement account or want access to your money anywhere between 5 and 20 years from now — say for a big purchase like a house.</span></label>

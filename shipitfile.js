@@ -8,7 +8,7 @@ module.exports = function (shipit) {
             repositoryUrl: 'git@github.com:DailyWorth/dailyworth-client.git',
             ignores: ['.git', 'node_modules', 'static/dist', 'webpack-assets.json'],
             rsync: ['--del'],
-            keepReleases: 2,
+            keepReleases: 5,
             shallowClone: true
         },
         staging: {
