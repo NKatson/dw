@@ -7,7 +7,7 @@ function getConfig(cb) {
     let { apiPort = 8080, apiHost = 'localhost', host = 'localhost', port = 3000 } = res.body;
     host = `http://${host}`;
     if (host === 'localhost') {
-      host += ':' + port;
+    host = `http://${host}:${port}`;
     }
     apiHost = `http://${apiHost}`;
 

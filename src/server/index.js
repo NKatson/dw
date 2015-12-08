@@ -32,7 +32,8 @@ app.use(session({
 	store: new MongoStore({url: 'mongodb://localhost/worthfm' , autoReconnect: true })
 }));
 
-app.use('/dist', express.static('../static/dist'));
+console.log(path);
+app.use('/dist', express.static(path.join(__dirname, '../../static/dist')));
 
 // routing middleware
 app.use('/state', mainController);
