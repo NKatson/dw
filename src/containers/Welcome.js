@@ -8,8 +8,6 @@ import { getData, showWelcomeBack } from '../redux/actions/survey';
 class Welcome extends React.Component {
   componentDidMount() {
     const { requesting, data, currentLink, dispatch } = this.props;
-    console.log('Welcome');
-    console.log(currentLink);
     if (currentLink && currentLink !== '/welcome') {
       dispatch(showWelcomeBack());
       return this.context.history.pushState(null, currentLink);

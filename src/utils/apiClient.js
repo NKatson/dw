@@ -5,11 +5,14 @@ function getConfig(cb) {
     if (err) return { host: 'localhost:3000', apiHost: 'http://dev.worthfm.com' };
 
     let { apiPort = 8080, apiHost = 'localhost', host = 'localhost', port = 3000 } = res.body;
-    host = `http://${host}`;
+
     if (host === 'localhost') {
-    host = `http://${host}:${port}`;
+      host = `http://${host}:${port}`;
+      apiHost = `http://${apiHost}:${apiPort}`;
+    } else {
+      host = `http://${host}`;
+      apiHost = `http://${apiHost}`;
     }
-    apiHost = `http://${apiHost}`;
 
     return cb({ host, apiHost });
   });
