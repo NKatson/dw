@@ -71,7 +71,7 @@ class ConfirmPasswordForm extends React.Component {
             <LogoForm handleSubmit={::this.handleSubmit}
                       error={confirmError}
                       small={message ? message : null}
-                      redirectLink={this.props.nextLink}
+                      redirectLink={this.props.currentLink}
                       headerText={message ? null : "Reset your password"}>
               {
                 successMessage ? null :

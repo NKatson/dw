@@ -14,7 +14,7 @@ class Survey extends React.Component {
     if (!requesting && !data) {
       this.props.dispatch(surveyActions.getData(() => {
         // redirect if Unauthorized
-        this.context.history.push( '/signin');
+        this.context.history.push('/signin');
       }));
     }
   }
