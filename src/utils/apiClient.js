@@ -156,8 +156,6 @@ export function reset({ email, cb }) {
  * POST /api/auth/password/edit
  */
 export function checkResetPasswordToken(token, cb) {
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .post(config.apiHost + '/api/auth/password/edit')
@@ -173,8 +171,6 @@ export function checkResetPasswordToken(token, cb) {
  * GET /api/auth/confirmation
  */
 export function confirmEmailToken(token, cb) {
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/confirmation')
@@ -197,7 +193,6 @@ export function confirmEmailToken(token, cb) {
  * GET /api/auth/confirmation
  */
 export function unlockToken(token, cb) {
-  const { apiHost } = getConfig();
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/unlock')
@@ -217,8 +212,6 @@ export function unlockToken(token, cb) {
  * GET /api/auth/password/edit
  */
 export function checkPasswordToken(token, cb) {
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/password/edit')
@@ -241,8 +234,6 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
   localStorage.accessToken = accessToken;
   localStorage.client = client;
   localStorage.uid = uid;
-
-  const { apiHost } = getConfig();
 
   getConfig(config => {
     request
