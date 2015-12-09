@@ -10,9 +10,6 @@ class FormContainer extends React.Component {
     const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
     const { category, step } = this.props;
     if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
-      console.log(nextProps);
-      console.log(this.props.nextLink);
-
       this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
     }
   }
@@ -110,6 +107,7 @@ class FormContainer extends React.Component {
       form: state.form,
       auth: state.auth.toJS()
     }, (err) => {
+      if (err) return console.log(err);
       window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
     });
   }

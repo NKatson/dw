@@ -108,6 +108,7 @@ export function hideWelcomeBack() {
 
 
 export function getData(cb) {
+  console.log('get data action...');
   return dispatch => {
     dispatch(initialRequest());
     api.getForm((err, body) => {

@@ -20,7 +20,7 @@ class ConfirmPasswordForm extends React.Component {
       }));
     } else {
       // success
-      this.context.history.pushState(null, currentLink);
+      this.context.history.push( currentLink);
     }
   }
   handleSubmit(e) {
@@ -44,7 +44,7 @@ class ConfirmPasswordForm extends React.Component {
             if (currentLink !== '/welcome') {
               dispatch(showWelcomeBack());
             }
-            return this.context.history.pushState(null, currentLink);
+            return this.context.history.push( currentLink);
           }
           this.props.dispatch(setTimer(timer));
           timer--;

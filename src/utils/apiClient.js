@@ -5,9 +5,11 @@ function getConfig(cb) {
     if (err) return { host: 'localhost:3000', apiHost: 'http://dev.worthfm.com' };
 
     let { apiPort = 8080, apiHost = 'localhost', host = 'localhost', port = 3000 } = res.body;
-    host = `http://${host}`;
+
     if (host === 'localhost') {
-    host = `http://${host}:${port}`;
+      host = `http://${host}:${port}`;
+    } else {
+      host = `http://${host}`;
     }
     apiHost = `http://${apiHost}`;
 
@@ -60,8 +62,10 @@ export function saveState(state, cb) {
  * GET /api/questions
  */
 export function getForm(cb) {
+  console.log('get form');
   const url = '/api/questions';
   getConfig(config => {
+    console.log('config....');
     request
     .get(config.apiHost + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
@@ -152,8 +156,6 @@ export function reset({ email, cb }) {
  * POST /api/auth/password/edit
  */
 export function checkResetPasswordToken(token, cb) {
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .post(config.apiHost + '/api/auth/password/edit')
@@ -169,8 +171,6 @@ export function checkResetPasswordToken(token, cb) {
  * GET /api/auth/confirmation
  */
 export function confirmEmailToken(token, cb) {
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/confirmation')
@@ -193,7 +193,6 @@ export function confirmEmailToken(token, cb) {
  * GET /api/auth/confirmation
  */
 export function unlockToken(token, cb) {
-  const { apiHost } = getConfig();
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/unlock')
@@ -213,8 +212,6 @@ export function unlockToken(token, cb) {
  * GET /api/auth/password/edit
  */
 export function checkPasswordToken(token, cb) {
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/password/edit')
@@ -238,8 +235,6 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
   localStorage.client = client;
   localStorage.uid = uid;
 
-  const { apiHost } = getConfig();
-
   getConfig(config => {
     request
     .put(config.apiHost + '/api/auth/password')
@@ -259,7 +254,7 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
 /**
  * DELETE /api/auth/sign_out
  */
-export function logout({ user = null, cb }) {
+export function logout({ user = null, cb = () => {} }) {
   getConfig(config => {
     request
     .del(config.apiHost + '/api/auth/sign_out')
@@ -269,8 +264,9 @@ export function logout({ user = null, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
 
+      console.log('Logout callback');
       clearLocal();
-
+console.log('Logout callback2');
       return cb(null, res.body);
     });
   });

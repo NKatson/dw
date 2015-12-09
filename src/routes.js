@@ -14,6 +14,7 @@ import {
     Submit as SubmitData,
     ConfirmPasswordForm,
     ConfirmEmail,
+    AppWrapper
   } from './containers';
 
 import { App } from './containers';
@@ -31,22 +32,24 @@ export default (store) => {
 
   return (
     <Route>
-      <Route component={App} >
-        <Route path="reset" component={ResetPassword} />
-        <Route path="confirm-email" component={ConfirmEmail} />
-        <Route path="confirm-password" component={ConfirmPasswordForm} />
-        <Route path="signin" component={Authorization} />
-        <Route path="signup" component={Registration} />
-      </Route>
+      <Route component={AppWrapper}>
+        <Route component={App} >
+          <Route path="reset" component={ResetPassword} />
+          <Route path="confirm-email" component={ConfirmEmail} />
+          <Route path="confirm-password" component={ConfirmPasswordForm} />
+          <Route path="signin" component={Authorization} />
+          <Route path="signup" component={Registration} />
+        </Route>
 
-      <Route path="/welcome" component={Welcome} />
-      <Route path="/survey" component={Survey}>
-          <IndexRoute component={FormContainer} />
-          <Route path="/account" component={Account} />
-          <Route path=":category/q/:number" component={FormContainer} />
-          <Route path="/submit" component={SubmitData} />
+        <Route path="/welcome" component={Welcome} />
+        <Route path="/survey" component={Survey}>
+            <IndexRoute component={FormContainer} />
+            <Route path="/account" component={Account} />
+            <Route path=":category/q/:number" component={FormContainer} />
+            <Route path="/submit" component={SubmitData} />
+        </Route>
+        <Redirect from="/" to="/signin" />
       </Route>
-      <Redirect from="/" to="/signin" />
     </Route>
   );
 };

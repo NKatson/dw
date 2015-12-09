@@ -55,6 +55,9 @@ h4 {
 .common-wrap {
   min-width: 614px;
 }
+.common-page {
+  background: url("../images/common-bg.gif") #fdfaee repeat-y center top;
+}
 .common-wrap_blue {
   background-color: #392a6b;
   background-image: url("../images/bg-blue.gif");
@@ -228,7 +231,8 @@ input.input-text {
   }
 }
 .btn:active,
-.btn:focus {
+.btn:focus,
+.btn:active:focus {
   outline: none!important;
 }
 .btn_yellow {
@@ -463,6 +467,7 @@ input.input-text {
 .common-form label {
   font-size: 17px;
   font-weight: bold;
+  cursor: pointer;
 }
 .common-form .iradio_minimal {
   position: relative;
@@ -652,6 +657,10 @@ select.input-text {
 .wfm-message__close:active,
 .wfm-message__close:focus {
   text-decoration: none;
+}
+.wfm-message_hint {
+  padding: 12px;
+  margin-top: 20px;
 }
 .wfm-common-modal .modal-dialog {
   width: 306px;

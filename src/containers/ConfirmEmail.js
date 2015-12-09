@@ -11,7 +11,7 @@ class ConfirmEmail extends React.Component {
     if (category && typeof step !== 'undefined') {
       link =  `/survey/${category.toLowerCase()}/q/${step}`;
     }
-    this.context.history.pushState(null, link);
+    this.context.history.push( link);
   }
   componentDidMount() {
     const { location: { query: { confirmation_token } }, dispatch, confirmingToken, category, step } = this.props;
@@ -20,13 +20,13 @@ class ConfirmEmail extends React.Component {
       dispatch(confirmEmail(confirmation_token, (err) => {
         // error or redirect
         if (err) {
-          return this.context.history.pushState(null, '/signin');
+          return this.context.history.push( '/signin');
         }
         // success
         ::this.redirect();
       }));
     } else {
-      this.context.history.pushState(null, '/signin');
+      this.context.history.push( '/signin');
     }
   }
   render() {
