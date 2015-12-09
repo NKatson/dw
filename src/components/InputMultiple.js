@@ -18,7 +18,7 @@ class InputMultiple extends React.Component {
     const { question : { htmlName, label }, handleClick, inputs, selectedValue } = this.props;
     return (
       <div className="anketa-form__fieldset">
-        {htmlName === 'invest-radio-244' ? null : <p className="text-center">{label}</p> }
+        {htmlName === 'crysis2008' ? null : <p className="text-center">{label}</p> }
         {inputs.map((input, index) => {
           let iProps = {
             id: 'option-'  + index,

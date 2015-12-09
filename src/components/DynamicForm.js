@@ -100,16 +100,16 @@ class DynamicForm extends Component {
   render() {
     const { title, formKey, fields, questions, description, hint, categoryIndex
       , step, prevLink, nextLink, accountType, radio, showWelcomeBack, firstName } = this.props;
-    const account = radio['invest-radio-251'] && !accountType ? radio['invest-radio-251'] : accountType;
+    const account = radio['invest_period'] && !accountType ? radio['invest_period'] : accountType;
     const selected = accountType ? true : false;
 
     // hardcode this time
     let disableNext = false;
-    if (categoryIndex === 1 && step === 0 && !radio['invest-radio-251']) {
+    if (categoryIndex === 1 && step === 0 && !radio['invest_period']) {
       disableNext = true;
     }
 
-    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-244']) {
+    if (categoryIndex === 1 && step === 1 && !radio['crysis2008']) {
       disableNext = true;
     }
 
