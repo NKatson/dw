@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-api\"",
+    "start": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\"",
     "watch-client": "node webpack/dev-server.js",
     "start-dev": "NODE_ENV=development HOST=localhost PORT=3000 API_PORT=8080 API_HOST=dev.worthfm.com node ./bin/server",
     "devtools": "DEV_TOOLS=1 npm start",

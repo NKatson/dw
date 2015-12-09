@@ -6,13 +6,13 @@ import * as api from '../utils/apiClient';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
 class FormContainer extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
-    const { category, step } = this.props;
-    if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
-      this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
+  //   const { category, step } = this.props;
+  //   if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
+  //     this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
+  //   }
+  // }
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
   }
@@ -72,7 +72,6 @@ class FormContainer extends React.Component {
     if (formData && formData && formData['personal-step-1']) {
       const data = formData['personal-step-1'];
       for (let key in data) {
-        console.log(key);
         if (key.charAt(0) !== '_') {
           result[key] = data[key].value;
         }
@@ -89,6 +88,7 @@ class FormContainer extends React.Component {
       api.sendPersonal({
         ...::this.grabPersonalData(),
         annual_income: val,
+        income_source: data.income_source,
         employment_status: data.employment_status,
       }, () => {
         api.sendQuestions(data);

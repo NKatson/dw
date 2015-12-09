@@ -13,13 +13,12 @@ class Welcome extends React.Component {
       return this.context.history.push( currentLink);
     }
 
-    console.log(requesting);
-    console.log(data);
     if (!requesting && !data) {
-      console.log('WELCOME request....');
-      this.props.dispatch(getData(() => {
+      this.props.dispatch(getData((err) => {
         // redirect if Unauthorized
-        this.context.history.push( '/signin');
+        if (err) {
+          return this.context.history.push( '/signin');
+        }
       }));
     }
   }

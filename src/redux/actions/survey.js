@@ -1,12 +1,18 @@
 import * as api from '../../utils/apiClient';
 
-export const INITIAL_REQUEST      = 'INITIAL_REQUEST';
+export const GET_DATA_REQUEST         = 'GET_DATA_REQUEST';
+export const GET_DATA_REQUEST_SUCCESS = 'GET_DATA_REQUEST_SUCCESS';
+export const GET_DATA_REQUEST_ERROR   = 'GET_DATA_REQUEST_ERROR';
+
 export const FILL_STATE           = 'FILL_STATE';
 export const TOGGLE_SSN           = 'TOGGLE_SSN';
 export const SELECT_CHANGE        = 'SELECT_CHANGE';
 export const SUBMIT_NEXT          = 'SUBMIT_NEXT';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
+
+export const CHANGING_QUESTION    = 'CHANGING_QUESTION'
 export const CHANGE_QUESTION      = 'CHANGE_QUESTION';
+
 export const SEND_DATA            = 'SEND_DATA';
 export const DISABLE_NEXT         = 'DISABLE_NEXT';
 export const ENABLE_NEXT          = 'ENABLE_NEXT';
@@ -19,8 +25,20 @@ export const HIDE_WELCOME_BACK    = 'HIDE_WELCOME_BACK';
 
 function initialRequest() {
   return {
-    type: INITIAL_REQUEST,
+    type: GET_DATA_REQUEST,
   };
+}
+
+function getDataSuccess() {
+  return {
+    type: GET_DATA_REQUEST_SUCCESS
+  }
+}
+
+function getDataError() {
+  return {
+    type: GET_DATA_REQUEST_ERROR
+  }
 }
 
 function fillState(data) {
@@ -51,7 +69,13 @@ export function accountTypeChanged(type) {
   }
 }
 
-export function changeQuestion(category, number) {
+export function changingQuestion() {
+  return {
+    type: CHANGING_QUESTION,
+  }
+}
+
+export function beginChangeQuestion(category, number) {
   return {
     type: CHANGE_QUESTION,
     category,
@@ -106,14 +130,27 @@ export function hideWelcomeBack() {
   }
 }
 
+export function changeQuestion(cat, number, cb) {
+  return dispatch => {
+    dispatch(beginChangeQuestion(cat, number)).then(() => {
+      cb();
+    });
+  }
+}
 
 export function getData(cb) {
-  console.log('get data action...');
   return dispatch => {
     dispatch(initialRequest());
     api.getForm((err, body) => {
-      if (err) return cb();
-      dispatch(fillState(body));
+      if (err) {
+        dispatch(getDataError()).then(() => {
+          return cb(err);
+        });
+      }
+      return dispatch(getDataSuccess()).then(() => {
+        dispatch(fillState(body));
+        cb();
+      });
     });
   };
 }

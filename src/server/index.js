@@ -79,8 +79,7 @@ function handleRender(req, res, renderProps, store) {
 
 app.get('*', (req, res) => {
 	const uid = req.cookies.uid;
-	console.log('Got request with uid: ' + uid);
-
+	console.log('Request uid: ' + uid);
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {
 			if (!err && user.state) {

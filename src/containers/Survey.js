@@ -9,13 +9,29 @@ import * as auth from '../redux/actions/auth';
 import { saveState } from '../utils/apiClient';
 
 class Survey extends React.Component {
-  componentDidMount() {
+  componentWillReceiveProps(nextProps) {
+    const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
+    const { category, step } = this.props;
+    if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
+      console.log('dispatch...');
+      this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
+    }
+  }
+  componentWillMount() {
     const { requesting, data } = this.props;
     if (!requesting && !data) {
       this.props.dispatch(surveyActions.getData(() => {
         // redirect if Unauthorized
-        this.context.history.push( '/signin');
+        this.context.history.push('/signin');
       }));
+    }
+
+    if (!requesting && data) {
+      const { category: nextCategory = null, number: nextNumber = null } = this.props.params;
+      const { category, step } = this.props;
+      if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
+          this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
+        }
     }
   }
   handleLogout(e) {
@@ -101,6 +117,8 @@ function mapStateToProps(state) {
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     accountType: state.survey.get('accountType'),
+    step: state.survey.get('step'),
+    category: state.survey.get('category'),
     recommendMessageType: state.survey.get('recommendMessageType'),
   };
 }

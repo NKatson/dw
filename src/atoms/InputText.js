@@ -13,23 +13,23 @@ class InputText extends React.Component {
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
-        autoComplete="off"
         className="input-text"
         mask={mask}
         placeholder={placeholder}
         type={type ? type : 'text'}
         value={defaultValue ? defaultValue : ""}
         {...field}
+        autoComplete="off"
         />;
     } else {
       component =  <input
-        autoComplete="off"
         autoFocus={defaultValue ? true : false}
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder={placeholder}
         type={type ? type : 'text'}
         value={field.value ? '' : defaultValue}
         {...field}
+        autoComplete="off"
         />
       }
 
