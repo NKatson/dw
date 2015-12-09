@@ -63,9 +63,9 @@ class AppWrapper extends React.Component {
       this.innerTimer = setTimeout(() => {
           clearTimeout(this.innerTimer);
           ::this.handleLogout();
-      }, 1000 * 2);
+      }, 1000 * 60 * 2);
       clearTimeout(this.timer);
-    }, 1000 * 5);
+    }, 1000 * 60 * 13);
   }
   render() {
     let sessionProps = {};
