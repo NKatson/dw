@@ -38,6 +38,7 @@ app.use('/dist', express.static(path.join(__dirname, '../../static/dist')));
 app.use('/state', mainController);
 
 app.get('/config', (req, res) => {
+	console.log('/config!');
 		res.status(200).send({
 			host: config.host,
 			port: config.port,

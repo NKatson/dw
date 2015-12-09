@@ -8,11 +8,10 @@ function getConfig(cb) {
 
     if (host === 'localhost') {
       host = `http://${host}:${port}`;
-      apiHost = `http://${apiHost}:${apiPort}`;
     } else {
       host = `http://${host}`;
-      apiHost = `http://${apiHost}`;
     }
+    apiHost = `http://${apiHost}`;
 
     return cb({ host, apiHost });
   });
@@ -262,7 +261,7 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
 /**
  * DELETE /api/auth/sign_out
  */
-export function logout({ user = null, cb }) {
+export function logout({ user = null, cb = () => {} }) {
   getConfig(config => {
     request
     .del(config.apiHost + '/api/auth/sign_out')
@@ -272,8 +271,9 @@ export function logout({ user = null, cb }) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
 
+      console.log('Logout callback');
       clearLocal();
-
+console.log('Logout callback2');
       return cb(null, res.body);
     });
   });
