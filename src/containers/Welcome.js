@@ -10,20 +10,23 @@ class Welcome extends React.Component {
     const { requesting, data, currentLink, dispatch } = this.props;
     if (currentLink && currentLink !== '/welcome') {
       dispatch(showWelcomeBack());
-      return this.context.history.pushState(null, currentLink);
+      return this.context.history.push( currentLink);
     }
 
+    console.log(requesting);
+    console.log(data);
     if (!requesting && !data) {
+      console.log('WELCOME request....');
       this.props.dispatch(getData(() => {
         // redirect if Unauthorized
-        this.context.history.pushState(null, '/signin');
+        this.context.history.push( '/signin');
       }));
     }
   }
   handleLogout(e) {
     e.preventDefault();
     this.props.dispatch(logout( () => {
-        this.context.history.pushState(null, '/signin');
+        this.context.history.push( '/signin');
     }));
   }
   render() {

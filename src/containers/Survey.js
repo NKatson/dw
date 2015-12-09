@@ -14,7 +14,7 @@ class Survey extends React.Component {
     if (!requesting && !data) {
       this.props.dispatch(surveyActions.getData(() => {
         // redirect if Unauthorized
-        this.context.history.pushState(null, '/signin');
+        this.context.history.push( '/signin');
       }));
     }
   }
@@ -24,7 +24,7 @@ class Survey extends React.Component {
     this.props.dispatch(saveState(state, err => {
       if (err) return console.log(err);
       this.props.dispatch(auth.logout(() => {
-        this.context.history.pushState(null, '/signin');
+        this.context.history.push( '/signin');
       }));
     }));
   }

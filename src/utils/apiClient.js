@@ -62,8 +62,10 @@ export function saveState(state, cb) {
  * GET /api/questions
  */
 export function getForm(cb) {
+  console.log('get form');
   const url = '/api/questions';
   getConfig(config => {
+    console.log('config....');
     request
     .get(config.apiHost + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})

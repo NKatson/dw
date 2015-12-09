@@ -26,7 +26,7 @@ class AppWrapper extends React.Component {
   handleLogout() {
     $('#modalInactivity').on('hidden.bs.modal', () => {
       if (this.needLogout) {
-        this.context.history.pushState(null, '/signin');
+        this.context.history.push('/signin');
       }
     });
     const { state } = this.props;
@@ -63,9 +63,9 @@ class AppWrapper extends React.Component {
       this.innerTimer = setTimeout(() => {
           clearTimeout(this.innerTimer);
           ::this.handleLogout();
-      }, 1000 * 60 * 2);
+      }, 1000 * 2);
       clearTimeout(this.timer);
-    }, 1000 * 60 * 13);
+    }, 1000 * 5);
   }
   render() {
     let sessionProps = {};
