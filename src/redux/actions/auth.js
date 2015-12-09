@@ -1,16 +1,18 @@
 import * as api from '../../utils/apiClient';
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGIN_REQUEST            = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS            = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE            = 'LOGIN_FAILURE';
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+export const LOGOUT_REQUEST           = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS           = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE           = 'LOGOUT_FAILURE';
 
 export const CONFIRM_TOKEN_REQUEST    = 'CONFIRM_TOKEN_REQUEST';
 export const CONFIRM_TOKEN_SUCCESS    = 'CONFIRM_TOKEN_SUCCESS';
 export const CONFIRM_TOKEN_ERROR      = 'CONFIRM_TOKEN_ERROR';
+
+export const UPDATE_SESSION_TIMER_ID  = 'UPDATE_SESSION_TIMER_ID';
 
 // Login actions
 
