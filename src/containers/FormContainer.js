@@ -6,13 +6,6 @@ import * as api from '../utils/apiClient';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
 class FormContainer extends React.Component {
-  // componentWillReceiveProps(nextProps) {
-  //   const { category: nextCategory = null, number: nextNumber = null } = nextProps.params;
-  //   const { category, step } = this.props;
-  //   if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
-  //     this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
-  //   }
-  // }
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
   }

@@ -35,7 +35,7 @@ class DynamicForm extends Component {
               key={question.name}
               question={question}
               inputs={inputs}
-              selectedValue={radio[question.htmlName] ? radio[question.htmlName] : null }
+              selectedValue={radio[question.name] ? radio[question.name] : null }
               handleClick={::this.handleRadioClick}
             />
     } else if (question.type === 'dropdown') {

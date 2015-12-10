@@ -45,7 +45,7 @@ export default function auth(state = initialState, action = {}) {
   case actions.CONFIRM_TOKEN_SUCCESS:
     return state.merge(Map({
       confirmTokenError: null,
-      confirmTokenMessage: action.message,
+      confirmed: true,
       confirmingToken: false,
     }));
   default:

@@ -6,12 +6,12 @@ function getConfig(cb) {
 
     let { apiPort = 8080, apiHost = 'localhost', host = 'localhost', port = 3000 } = res.body;
 
-    if (host === 'localhost') {
-      host = `http://${host}:${port}`;
-    } else {
-      host = `http://${host}`;
-    }
+    host = `http://${host}`;
     apiHost = `http://${apiHost}`;
+
+    if (host === 'http://localhost') {
+      host = `http://${host}:${port}`;
+    }
 
     return cb({ host, apiHost });
   });
