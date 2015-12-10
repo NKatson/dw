@@ -10,7 +10,7 @@ function getConfig(cb) {
     apiHost = `http://${apiHost}`;
 
     if (host === 'http://localhost') {
-      host = `http://${host}:${port}`;
+      host = `${host}:${port}`;
     }
 
     return cb({ host, apiHost });

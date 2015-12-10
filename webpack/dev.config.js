@@ -10,6 +10,12 @@ var host = (process.env.HOST || 'localhost');
 var port = parseInt(process.env.PORT) + 1 || 3001;
 
 module.exports = {
+  node: {
+    net: 'empty',
+    fs: 'empty',
+    tls: 'empty',
+  },
+  context: __dirname,
   devtool: 'inline-source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
@@ -48,6 +54,9 @@ module.exports = {
     ],
     extensions: ['', '.json', '.js']
   },
+  // resolveLoader: {
+  //    packageMains: ['json-loader'],
+  // },
   module: {
     loaders : [
         {

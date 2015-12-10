@@ -24,7 +24,6 @@ export default function createStore(initialState) {
   const reducer = require('./reducer');
 
   if (typeof initialState === 'object' && initialState) {
-    console.log(initialState.survey);
     initialState.auth = fromJS(initialState.auth);
     initialState.resetPassword = fromJS(initialState.resetPassword);
     initialState.registration = fromJS(initialState.registration);

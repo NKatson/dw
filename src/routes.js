@@ -14,7 +14,8 @@ import {
     Submit as SubmitData,
     ConfirmPasswordForm,
     ConfirmEmail,
-    AppWrapper
+    AppWrapper,
+    ConnectBank,
   } from './containers';
 
 import { App } from './containers';
@@ -44,7 +45,7 @@ export default (store) => {
         <Route path="/welcome" component={Welcome} />
         <Route path="/survey" component={Survey}>
             <IndexRoute component={FormContainer} />
-            <Route path="/account" component={Account} />
+            <Route path="/connect" component={ConnectBank} />
             <Route path=":category/q/:number" component={FormContainer} />
             <Route path="/submit" component={SubmitData} />
         </Route>
