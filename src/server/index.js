@@ -89,8 +89,8 @@ function processRoute(req, res, initialState) {
 }
 
 app.get('*', (req, res) => {
-	//const uid = req.cookies.uid;
-	const uid = 'anastacia160592@gmail.com';
+	const uid = req.cookies.uid;
+	//const uid = 'anastacia160592@gmail.com';
 	console.log('Request uid: ' + uid);
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {

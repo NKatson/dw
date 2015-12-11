@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import  PersonalForm from './PersonalForm';
-import { InputText, Select, WelcomeBack } from '../atoms/index';
+import { InputText, Select } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
@@ -22,9 +22,6 @@ class DynamicForm extends Component {
   }
   handleRadioClick(name, value) {
     this.props.dispatch(radioClick(name, value));
-  }
-  handleWelcomeClose() {
-    this.props.dispatch(hideWelcomeBack());
   }
   renderInput(question, fields) {
     const multipleTypes = ['checkbox', 'radio'];
@@ -99,7 +96,7 @@ class DynamicForm extends Component {
   }
   render() {
     const { title, formKey, fields, questions, description, hint, categoryIndex
-      , step, prevLink, nextLink, accountType, radio, showWelcomeBack, firstName } = this.props;
+      , step, prevLink, nextLink, accountType, radio, firstName } = this.props;
     const account = radio['invest_period'] && !accountType ? radio['invest_period'] : accountType;
     const selected = accountType ? true : false;
 
@@ -111,10 +108,6 @@ class DynamicForm extends Component {
 
     return (
       <div>
-        {showWelcomeBack ? <WelcomeBack
-            firstName={firstName}
-            handleClose={::this.handleWelcomeClose}
-           /> : null}
         <h2>{title}</h2>
 
        {formKey === 'invest-step-1'?
@@ -172,7 +165,6 @@ DynamicForm.propTypes = {
     formData: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     radio: PropTypes.object.isRequired,
-    showWelcomeBack: PropTypes.bool,
 };
 
 function mapDispatchToProps(dispatch) {

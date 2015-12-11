@@ -6,7 +6,7 @@ import { DynamicForm, ConnectBank } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
-
+import { WelcomeBack } from '../atoms';
 
 class FormContainer extends React.Component {
   handleShowSsnClick() {
@@ -21,6 +21,9 @@ class FormContainer extends React.Component {
   handlePrevClick(e) {
     e.preventDefault();
     this.props.dispatch(surveyActions.prevClicked());
+  }
+  handleWelcomeClose() {
+    this.props.dispatch(surveyActions.hideWelcomeBack());
   }
   handleBanksSearch(e) {
     this.props.dispatch(searchBanks(e.target.value));
@@ -112,11 +115,8 @@ class FormContainer extends React.Component {
   }
   renderDynamicForm(category, form, index) {
     const { prevLink, nextLink, formData } = this.props;
-    const firstName = formData && formData['personal-step-1'] && formData['personal-step-1'].first_name && formData['personal-step-1'].first_name.value ?
-                      formData['personal-step-1'].first_name.value : '';
     return <DynamicForm
               key={`${category}-step-${index}`}
-              firstName={firstName}
               accountType={this.props.accountType}
               title={form.title}
               description={form.description}
@@ -174,9 +174,15 @@ class FormContainer extends React.Component {
     return result;
   }
   render () {
-    const { category, currentIndex, step, nextLink, prevLink } = this.props;
+    const { category, currentIndex, step, nextLink, prevLink, showWelcomeBack, formData } = this.props;
+    const firstName = formData && formData['personal-step-1'] && formData['personal-step-1'].first_name && formData['personal-step-1'].first_name.value ?
+                      formData['personal-step-1'].first_name.value : '';
     return (
       <div>
+        {showWelcomeBack ? <WelcomeBack
+            firstName={firstName}
+            handleClose={::this.handleWelcomeClose}
+           /> : null}
         {::this.renderView(this.props.data.toJS())}
       </div>
     );
