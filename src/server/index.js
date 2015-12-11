@@ -73,7 +73,7 @@ function processRoute(req, res, initialState) {
 	      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 	    } else if (renderProps) {
 
-				if (req.url === '/connect') {
+				if (req.url === '/survey/fund/q/0') {
 					// plaid API institutions request
 					plaid.getInstitutions(plaid.environments.tartan, (err, data) => {
 						store.dispatch(setBanks(data));
@@ -88,9 +88,9 @@ function processRoute(req, res, initialState) {
 	  });
 }
 
-
 app.get('*', (req, res) => {
-	const uid = req.cookies.uid;
+	//const uid = req.cookies.uid;
+	const uid = 'anastacia160592@gmail.com';
 	console.log('Request uid: ' + uid);
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {

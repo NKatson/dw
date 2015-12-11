@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import  PersonalForm from './PersonalForm';
-import { InputText, Select, RecommendBlock, WelcomeBack } from '../atoms/index';
+import { InputText, Select, WelcomeBack } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
@@ -30,7 +30,7 @@ class DynamicForm extends Component {
     const multipleTypes = ['checkbox', 'radio'];
     if (multipleTypes.indexOf(question.type) !== - 1) {
       const inputs = ::this.getInputs(question, fields);
-      const { formKey, chooseAccount, radio } = this.props;
+      const { formKey, radio } = this.props;
       return <InputMultiple
               key={question.name}
               question={question}
@@ -105,11 +105,7 @@ class DynamicForm extends Component {
 
     // hardcode this time
     let disableNext = false;
-    if (categoryIndex === 1 && step === 0 && !radio['invest_period']) {
-      disableNext = true;
-    }
-
-    if (categoryIndex === 1 && step === 1 && !radio['crysis2008']) {
+    if (formKey === 'invest-step-1' && !radio['crysis2008']) {
       disableNext = true;
     }
 
@@ -120,25 +116,23 @@ class DynamicForm extends Component {
             handleClose={::this.handleWelcomeClose}
            /> : null}
         <h2>{title}</h2>
-        {formKey === "invest-step-2" ?
-          <RecommendBlock
-            isSelected={selected}
-            accountType={account}
-          />
-           : null}
-       {categoryIndex === 1 && step === 1 ?
+
+       {formKey === 'invest-step-1'?
          <div>
-           <div className="text-center">
+           <div className="text-center" style={{paddingTop: '15px'}}>
              <h4>Markets move up and down.<br />
                How comfortable are you with changes?</h4>
+              <p>In 2008 the worst happened!!  The markets lost more than 50% of their value within a few short years (2007-2009).</p>
+              <p>If this happened again, would you:</p>
            </div>
-           {disableNext ? null :    <div className="wfm-message wfm-message_hint">
+           {disableNext ? null : <div className="wfm-message wfm-message_hint">
                   By 2012 the markets had fully recovered – and since have grown 170% since the low in 2009.
                   WorthFM recommends investing over a longer period time to achieve sustained growth (if you want to change your answer below, its OK).
               </div>}
          </div>
           :
           null}
+
           <p>{description}</p>
 
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit} autoComplete="off">

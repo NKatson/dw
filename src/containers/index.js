@@ -10,4 +10,3 @@ export Submit from './Submit';
 export ConfirmPasswordForm from './ConfirmPasswordForm';
 export ConfirmEmail from './ConfirmEmail';
 export AppWrapper from './AppWrapper';
-export ConnectBank from './ConnectBank';

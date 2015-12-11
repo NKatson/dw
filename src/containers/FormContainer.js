@@ -1,9 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { DynamicForm } from '../components';
+import { PropTypes as RouterPropTypes, Link } from 'react-router';
+
+import { DynamicForm, ConnectBank } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
-import { PropTypes as RouterPropTypes, Link } from 'react-router';
+import { setBanks, searchBanks } from '../redux/actions/plaid';
+
 
 class FormContainer extends React.Component {
   handleShowSsnClick() {
@@ -19,8 +22,8 @@ class FormContainer extends React.Component {
     e.preventDefault();
     this.props.dispatch(surveyActions.prevClicked());
   }
-  chooseAccount(e) {
-    this.props.dispatch(surveyActions.accountTypeChanged(e.target.value));
+  handleBanksSearch(e) {
+    this.props.dispatch(searchBanks(e.target.value));
   }
   parseMultipleNames(question) {
     let names = [];
@@ -107,45 +110,64 @@ class FormContainer extends React.Component {
   backClicked(e) {
     const {state} = this.props;
   }
-  renderForms(data) {
-    let result = [];
-    let index = 0;
+  renderDynamicForm(category, form, index) {
     const { prevLink, nextLink, formData } = this.props;
     const firstName = formData && formData['personal-step-1'] && formData['personal-step-1'].first_name && formData['personal-step-1'].first_name.value ?
                       formData['personal-step-1'].first_name.value : '';
+    return <DynamicForm
+              key={`${category}-step-${index}`}
+              firstName={firstName}
+              accountType={this.props.accountType}
+              title={form.title}
+              description={form.description}
+              hint={form.hint}
+              formKey={form.formKey}
+              formType={this.props.formType}
+              fields={::this.generateFields(form)}
+              questions={form.questions}
+              handleShowSsnClick={::this.handleShowSsnClick}
+              showSsn={this.props.showSsn ? true : false}
+              categoryIndex={this.props.categoryIndex}
+              step={this.props.step}
+              handleSelectChange={::this.handleSelectChange}
+              stateSelectValue={this.props.stateSelectValue}
+              nextLink={this.props.nextLink}
+              prevLink={this.props.prevLink}
+              disabledNext={this.props.disabledNext}
+              onSubmit={::this.handleFormSubmit}
+              dispatch={this.props.dispatch}
+              formData={this.props.formData}
+              radio={this.props.radio}
+              showWelcomeBack={this.props.showWelcomeBack}
+             >
+            {prevLink ? <Link to={prevLink} onClick={::this.backClicked}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+    </DynamicForm>
+  }
+  renderBanks() {
+    const { prevLink, nextLink } = this.props;
+    return <ConnectBank
+            banks={this.props.banks}
+            searchBanks={this.props.searchBanks}
+            handleBanksSearch={::this.handleBanksSearch}
+            >
+            <div className="common-form__buttons">
+                {prevLink ? <Link to={prevLink} onClick={::this.backClicked}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+                <Link to={nextLink} className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+            </div>
+    </ConnectBank>
+  }
+  renderView(data) {
+    let result = [];
+    let index = 0;
 
     for (let category in data) {
       data[category].map((form, index) => {
        if (index === this.props.step && category == this.props.category) {
-          result.push(<DynamicForm
-                    key={`${category}-step-${index}`}
-                    firstName={firstName}
-                    accountType={this.props.accountType}
-                    title={form.title}
-                    description={form.description}
-                    hint={form.hint}
-                    formKey={form.formKey}
-                    formType={this.props.formType}
-                    fields={::this.generateFields(form)}
-                    questions={form.questions}
-                    handleShowSsnClick={::this.handleShowSsnClick}
-                    showSsn={this.props.showSsn ? true : false}
-                    categoryIndex={this.props.categoryIndex}
-                    step={this.props.step}
-                    handleSelectChange={::this.handleSelectChange}
-                    stateSelectValue={this.props.stateSelectValue}
-                    chooseAccount={::this.chooseAccount}
-                    nextLink={this.props.nextLink}
-                    prevLink={this.props.prevLink}
-                    disabledNext={this.props.disabledNext}
-                    onSubmit={::this.handleFormSubmit}
-                    dispatch={this.props.dispatch}
-                    formData={this.props.formData}
-                    radio={this.props.radio}
-                    showWelcomeBack={this.props.showWelcomeBack}
-                   >
-                  {prevLink ? <Link to={prevLink} onClick={::this.backClicked}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
-          </DynamicForm>);
+          if (form.formKey === 'fund-step-1') {
+            result.push(::this.renderBanks());
+          } else {
+            result.push(::this.renderDynamicForm(category, form, index));
+          }
         }
       });
     }
@@ -155,7 +177,7 @@ class FormContainer extends React.Component {
     const { category, currentIndex, step, nextLink, prevLink } = this.props;
     return (
       <div>
-        {::this.renderForms(this.props.data.toJS())}
+        {::this.renderView(this.props.data.toJS())}
       </div>
     );
   }
@@ -182,6 +204,9 @@ function mapStateToProps(state) {
     radio: state.survey.get('radio').toJS(),
     accountType: state.survey.get('accountType'),
     showWelcomeBack: state.survey.get('showWelcomeBack'),
+
+    banks: state.plaid.banks,
+    searchBanks: state.plaid.searchBanks,
   };
 }
 

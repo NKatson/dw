@@ -10,8 +10,10 @@ import { destroy } from 'redux-form/lib/actions';
 class Registration extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
-    const {email, password, confirmPassword} = this.props.fields;
+    const { email, password, confirmPassword, firstName, lastName } = this.props.fields;
     const data = {
+      first_name: firstName.value,
+      last_name: lastName.value,
       email: email.value,
       password: password.value,
       password_confirmation: confirmPassword.value,
@@ -24,7 +26,7 @@ class Registration extends React.Component {
   }
   render() {
     const {
-      fields: { email, password, confirmPassword },
+      fields: { email, password, confirmPassword, firstName, lastName },
       registrationError,
       loggedIn,
       registeringIn,
@@ -32,6 +34,18 @@ class Registration extends React.Component {
     } = this.props;
     return (
       <LogoForm error={registrationError} handleSubmit={::this.handleSubmit}>
+          <InputText
+            inputClass="full-width"
+            errorMessageClass="login-form__error-msg"
+            field={firstName}
+            placeholder="First name"
+          />
+          <InputText
+            inputClass="full-width"
+            errorMessageClass="login-form__error-msg"
+            field={lastName}
+            placeholder="First name"
+          />
           <InputText
               inputClass="full-width"
               errorMessageClass="login-form__error-msg"
@@ -93,6 +107,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'registration',
-  fields: ['email', 'password', 'confirmPassword'],
+  fields: ['email', 'password', 'confirmPassword', 'firstName', 'lastName'],
   validate,
 }, mapStateToProps)(Registration);

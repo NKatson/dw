@@ -1,6 +1,4 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { setBanks, searchBanks } from '../redux/actions/plaid';
 
 class ConnectBank extends React.Component {
   componentDidMount() {
@@ -14,9 +12,6 @@ class ConnectBank extends React.Component {
           //window.location = '/accounts.html?public_token=' + token;
         },
       });
-  }
-  handleSearch(e) {
-    this.props.dispatch(searchBanks(e.target.value));
   }
   handleBankClick(e) {
     e.preventDefault();
@@ -56,7 +51,7 @@ class ConnectBank extends React.Component {
           </div>
           <div className="input-wrap">
               <div className="input-wrap__text">Search all banks:</div>
-              <input onKeyUp={::this.handleSearch} type="text" className="input-text" placeholder="Enter Your Bank Name" />
+              <input onKeyUp={::this.props.handleBanksSearch} type="text" className="input-text" placeholder="Enter Your Bank Name" />
               {this.props.searchBanks.map((bank, index) => {
                 return <p key={bank + index}>{bank.name}</p>
               })}
@@ -64,10 +59,7 @@ class ConnectBank extends React.Component {
           <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
               Your bank login are never stored.</p>
             <div className="text-center">
-              <div className="common-form__buttons">
-                  <a href="#" className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</a>
-                  <button className="btn btn_yellow" disabled>Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
-              </div>
+              {this.props.children}
           </div>
         </form>
       </div>
@@ -75,11 +67,10 @@ class ConnectBank extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    banks: state.plaid.banks,
-    searchBanks: state.plaid.searchBanks,
-  }
+ConnectBank.propTypes = {
+  handleBanksSearch: PropTypes.func.isRequired,
+  banks: PropTypes.array.isRequired,
+  searchBanks: PropTypes.array.isRequired,
 }
 
-export default connect(mapStateToProps)(ConnectBank);
+export default ConnectBank;

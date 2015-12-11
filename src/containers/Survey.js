@@ -11,7 +11,7 @@ import { saveState } from '../utils/apiClient';
 class Survey extends React.Component {
   handleParams(params) {
     const { category: nextCategory = null, number: nextNumber = null } = params;
-    const { category, step } = this.props;
+    const { category = 'personal', step = 0 } = this.props;
     if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
       this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
     }
