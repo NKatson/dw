@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 class ConnectBank extends React.Component {
   componentDidMount() {
@@ -11,6 +12,9 @@ class ConnectBank extends React.Component {
           console.log('GOT TOKEN --> ' + token);
           //window.location = '/accounts.html?public_token=' + token;
         },
+        onExit() {
+          console.log('EXIT!');
+        }
       });
   }
   handleBankClick(e) {
@@ -22,10 +26,10 @@ class ConnectBank extends React.Component {
     }
   }
   renderBanks() {
-    if (!this.props.banks) return;
-    const bankTypes = ['amex', 'bofa', 'chase', 'citi', 'suntrust', 'td', 'us', 'wells'];
+    const { banks, bankTypes } = this.props;
+    if (!banks) return;
 
-    return this.props.banks.filter(bank => {
+    return banks.filter(bank => {
       return bankTypes.indexOf(bank.type) !== -1;
     })
     .map(bank => {
@@ -45,7 +49,7 @@ class ConnectBank extends React.Component {
       <div>
         <h2>3. CONNECT YOUR BANK</h2>
         <p>Securely connect your bank account to your WorthFM account. When you fund your WorthFM account, your personalized plan automagically creates balance between your savings, investments, and retirement.</p>
-        <form id="connect-banks-form" className="common-form anketa-form">
+        <form className="common-form anketa-form">
           <div className="wfm-banks-list">
             {::this.renderBanks()}
           </div>
@@ -73,4 +77,10 @@ ConnectBank.propTypes = {
   searchBanks: PropTypes.array.isRequired,
 }
 
-export default ConnectBank;
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch: dispatch,
+  }
+}
+
+export default connect(null, mapDispatchToProps)(ConnectBank);

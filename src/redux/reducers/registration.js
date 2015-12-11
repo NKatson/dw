@@ -1,5 +1,5 @@
-import * as actions from '../actions/registration';
 import { Map } from 'immutable';
+import * as actions from '../actions/registration';
 
 const initialState = Map();
 

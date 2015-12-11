@@ -147,6 +147,7 @@ class FormContainer extends React.Component {
     const { prevLink, nextLink } = this.props;
     return <ConnectBank
             banks={this.props.banks}
+            bankTypes={['amex', 'bofa', 'chase', 'citi', 'suntrust', 'td', 'us', 'wells']}
             searchBanks={this.props.searchBanks}
             handleBanksSearch={::this.handleBanksSearch}
             >
