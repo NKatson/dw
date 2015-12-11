@@ -10,18 +10,13 @@ class LogoForm extends React.Component {
               <div><img src={require('../../static/images/logo-224.png')} /></div>
               <div className="wfm-logo__text">Invest in possibility.</div>
           </div>
-          {
-            headerText ?
-            <p className="login-form__message"><b>{headerText}</b></p>
-            : null}
+           <div className="login-form__message">
+             {headerText ? <p><b>{headerText}</b></p> : null}
+             {small ? <p>{small}</p> : null}
+           </div>
           {
             error ?
             <p className="login-form__message">{error}</p> :
-            null
-          }
-          {
-            small ?
-            <p className="pad-08">{small}</p> :
             null
           }
           {

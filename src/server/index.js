@@ -10,13 +10,16 @@ import { renderToString } from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import plaid from 'plaid';
 
 import User from './models/User';
-import mainController from './controllers/main';
+import { mainController } from './controllers';
 import createStore from '../redux/create';
 import config from '../config';
 import getRoutes from '../routes';
 import Html from '../helpers/Html';
+
+import { setBanks } from '../redux/actions/plaid';
 
 const MongoStore = require('connect-mongo')(session);
 import './config/db';
@@ -46,23 +49,6 @@ app.get('/config', (req, res) => {
 		});
 });
 
-function processRoute(req, res, initialState) {
-		const store = createStore(initialState);
-		const routes = getRoutes(store);
-
-	  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
-	    if (error) {
-	      res.status(500).send(error.message);
-	    } else if (redirectLocation) {
-	      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-	    } else if (renderProps) {
-	      handleRender(req, res, renderProps, store);
-	    } else {
-	      res.status(404).send('Not found');
-	    }
-	  });
-}
-
 function handleRender(req, res, renderProps, store) {
     if (__DEVELOPMENT__) {
       webpackIsomorphicTools.refresh();
@@ -76,11 +62,36 @@ function handleRender(req, res, renderProps, store) {
     res.send('<!doctype html>' + content);
 }
 
+function processRoute(req, res, initialState) {
+		const store = createStore(initialState);
+		const routes = getRoutes(store);
+
+	  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+	    if (error) {
+	      res.status(500).send(error.message);
+	    } else if (redirectLocation) {
+	      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+	    } else if (renderProps) {
+
+				if (req.url === '/survey/fund/q/0') {
+					// plaid API institutions request
+					plaid.getInstitutions(plaid.environments.tartan, (err, data) => {
+						store.dispatch(setBanks(data));
+						handleRender(req, res, renderProps, store);
+					});
+				} else {
+					  handleRender(req, res, renderProps, store);
+				}
+	    } else {
+	      res.status(404).send('Not found');
+	    }
+	  });
+}
 
 app.get('*', (req, res) => {
 	const uid = req.cookies.uid;
-	console.log('Got request with uid: ' + uid);
-
+	//const uid = 'anastacia160592@gmail.com';
+	console.log('Request uid: ' + uid);
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {
 			if (!err && user.state) {

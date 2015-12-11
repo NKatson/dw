@@ -6,12 +6,12 @@ function getConfig(cb) {
 
     let { apiPort = 8080, apiHost = 'localhost', host = 'localhost', port = 3000 } = res.body;
 
-    if (host === 'localhost') {
-      host = `http://${host}:${port}`;
-    } else {
-      host = `http://${host}`;
-    }
+    host = `http://${host}`;
     apiHost = `http://${apiHost}`;
+
+    if (host === 'http://localhost') {
+      host = `${host}:${port}`;
+    }
 
     return cb({ host, apiHost });
   });
@@ -62,10 +62,8 @@ export function saveState(state, cb) {
  * GET /api/questions
  */
 export function getForm(cb) {
-  console.log('get form');
   const url = '/api/questions';
   getConfig(config => {
-    console.log('config....');
     request
     .get(config.apiHost + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
@@ -263,10 +261,7 @@ export function logout({ user = null, cb = () => {} }) {
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
-
-      console.log('Logout callback');
       clearLocal();
-console.log('Logout callback2');
       return cb(null, res.body);
     });
   });

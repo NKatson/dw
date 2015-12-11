@@ -104,6 +104,9 @@ export function registration(data) {
   const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
   valid.checkRequired('email', 'Your email address is required.');
+  valid.checkRequired('firstName', 'Your first name is required.');
+  valid.checkRequired('lastName', 'Your last name is required.');
+
   valid.checkRegex('email', emailReg, 'Please use valid email address.');
 
   valid.checkRequired('password', 'Enter your password.');

@@ -6,6 +6,7 @@ const initialState = Map({
   radio : Map(),
   showWelcomeBack: false,
   currentLink: '/welcome',
+  changingQuestion: false,
 });
 
 function getPrevLink({ category, step, data }) {
@@ -31,7 +32,7 @@ function getNextLink({ category, step, data }) {
   // if last step in category
   if (data[category].length - 1 === step) {
     // if last category
-    if (categoryIndex === 1) return '/submit';
+    if (categoryIndex === 2) return '/submit';
     // change category and step to 0
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
@@ -45,9 +46,14 @@ export default function survey(state = initialState, action = {}) {
   const currentIndex = state.get('categoryIndex');
 
   switch (action.type) {
-  case actions.INITIAL_REQUEST:
+  case actions.GET_DATA_REQUEST:
     return state.merge({
       requesting: true,
+    });
+  case actions.GET_DATA_REQUEST_ERROR:
+  case actions.GET_DATA_REQUEST_SUCCESS:
+    return state.merge({
+      requesting: false,
     });
   case actions.FILL_STATE:
     const categories = Object.keys(action.data);
@@ -90,6 +96,10 @@ export default function survey(state = initialState, action = {}) {
       storedSsn: action.ssn,
       ssnError: isValid ? null : 'Please type valid SSN',
     });
+  case actions.CHANGING_QUESTION:
+    return state.merge({
+      changingQuestion: true
+    });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
 
@@ -99,6 +109,7 @@ export default function survey(state = initialState, action = {}) {
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
 
     return state.merge({
+      changingQuestion: false,
       category: nextCategory,
       categoryIndex: catIndex,
       step: action.number,

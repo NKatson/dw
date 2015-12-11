@@ -13,13 +13,12 @@ class Welcome extends React.Component {
       return this.context.history.push( currentLink);
     }
 
-    console.log(requesting);
-    console.log(data);
     if (!requesting && !data) {
-      console.log('WELCOME request....');
-      this.props.dispatch(getData(() => {
+      this.props.dispatch(getData((err) => {
         // redirect if Unauthorized
-        this.context.history.push( '/signin');
+        if (err) {
+          return this.context.history.push( '/signin');
+        }
       }));
     }
   }
@@ -31,7 +30,7 @@ class Welcome extends React.Component {
   }
   render() {
     return (
-      <div className="wfm-main-wrap">
+      <div>
         <Header handleLogout={::this.handleLogout} />
         <div className="common-wrap common-wrap_rose">
           <div className="container container-2 bg-white">

@@ -30,7 +30,12 @@ class ResetPassword extends React.Component {
             small={small}
             handleSubmit={::this.handleSubmit} />
            :
-          <LogoForm error={resetError} handleSubmit={::this.handleSubmit}>
+          <LogoForm
+            error={resetError}
+            handleSubmit={::this.handleSubmit}
+            headerText="Forgot your password?"
+            small="We’ll send you password reset instructions to the email you registered with below."
+            >
             <InputText
                 inputClass="full-width"
                 errorMessageClass="login-form__error-msg"

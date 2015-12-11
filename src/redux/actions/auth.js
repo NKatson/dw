@@ -87,13 +87,10 @@ function logoutFailure(error) {
 }
 
 export function logout(cb) {
-  console.log('auth.js logout...');
   return dispatch => {
     dispatch(logoutRequest());
-    console.log('begin api.logout...');
     api.logout({
       cb: (err, body) => {
-        console.log('AUTH.js cb');
         if (err) return dispatch(logoutFailure(err));
         dispatch(logoutSuccess()).then(() => {
           cb();
@@ -128,7 +125,10 @@ export function confirmEmail(token, cb) {
   return dispatch => {
     dispatch(confirmTokenRequest());
     api.confirmEmailToken(token, (err, body) => {
-      if (err) return dispatch(confirmTokenError(err));
+      if (err) {
+        dispatch(confirmTokenError(err));
+        return cb(err);
+      }
       dispatch(confirmTokenSuccess()).then(() => {
         cb();
       });

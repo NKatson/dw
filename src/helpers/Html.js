@@ -30,7 +30,8 @@ class Html extends Component {
         </head>
         <body>
           <div id="root" className="wfm-main-wrap" dangerouslySetInnerHTML={{__html: content}}></div>
-            <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
+          <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} charSet="UTF-8"/>
+          <script src="https://cdn.plaid.com/link/stable/link-initialize.js"></script>
           <script src={assets.javascript.main} charSet="UTF-8"></script>
         </body>
       </html>

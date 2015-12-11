@@ -161,6 +161,9 @@ h4 {
 .input-text:-ms-input-placeholder {
   color: rgba(70, 70, 70, 0.5);
 }
+textarea.input-text {
+  resize: none;
+}
 input.input-text {
   height: 37px;
 }
@@ -749,9 +752,6 @@ select.input-text {
 .input-wrap__text {
   margin-bottom: 4px;
 }
-.anketa-form__main-fieldset {
-  min-height: 400px;
-}
 .input-wrap_with-radio {
   padding-left: 80px;
   position: relative;
@@ -870,4 +870,73 @@ select.input-text {
   .main-header__logo {
     background-image: url(../images/header_logo@2x.png);
   }
+}
+.pad-11 {
+  margin-bottom: 82px;
+}
+.pad-11 p {
+  font-size: 16px;
+}
+.pad-11 p b {
+  font-size: 16px;
+}
+.pad-11 h4 {
+  margin-bottom: 20px;
+}
+.pad-12 {
+  font-size: 13px!important;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+.wfm-help-sign {
+  display: inline-block;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: #392a6b;
+  border-radius: 50%;
+  background-color: #ffc705;
+  font-weight: bold;
+  font-size: 12px;
+  position: relative;
+  top: -2px;
+}
+.pad-13 {
+  font-size: 16px;
+}
+.pad-13 p {
+  margin-bottom: 20px;
+}
+.pad-13 a {
+  color: #fff!important;
+  text-decoration: underline!important;
+}
+.wfm-bank-item {
+  width: 113px;
+  height: 95px;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 10px;
+  border: 1px solid #ffc705;
+  overflow: hidden;
+  line-height: 93px;
+  text-align: center;
+  margin-right: 14px;
+  margin-bottom: 16px;
+}
+.wfm-bank-item:nth-child(4n + 4) {
+  margin-right: 0;
+}
+.wfm-banks-list {
+  margin-bottom: 30px;
+}
+.faded-text {
+  color: #9b9b9b;
+}
+.pad-14 {
+  margin: 40px 0 60px;
+  font-size: 13px;
 }
