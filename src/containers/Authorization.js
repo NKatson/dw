@@ -12,7 +12,7 @@ export class Authorization extends React.Component {
       if (unlock_token) {
         if (confirmingToken) return;
         dispatch(unlockToken(unlock_token, () => {
-           this.context.history.replaceState(null, nextLink);
+           this.context.history.replaceState(null, '/signin');
         }));
       }
   }

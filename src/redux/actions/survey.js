@@ -23,6 +23,8 @@ export const RADIO_CLICKED        = 'RADIO_CLICKED';
 export const SHOW_WELCOME_BACK    = 'SHOW_WELCOME_BACK';
 export const HIDE_WELCOME_BACK    = 'HIDE_WELCOME_BACK';
 
+export const TERMS_TOGGLE          = 'TERMS_TOGGLE';
+
 function initialRequest() {
   return {
     type: GET_DATA_REQUEST,
@@ -96,13 +98,6 @@ export function saveWelcome(welcome) {
   }
 }
 
-export function ssnChange(ssn) {
-  return {
-    type: SSN_CHANGE,
-    ssn,
-  }
-}
-
 export function ssnErrorChange(error) {
   return {
     type: SSN_ERROR_CHANGE,
@@ -127,6 +122,12 @@ export function showWelcomeBack() {
 export function hideWelcomeBack() {
   return {
     type: HIDE_WELCOME_BACK
+  }
+}
+
+export function toggleTerms() {
+  return {
+    type: TERMS_TOGGLE
   }
 }
 

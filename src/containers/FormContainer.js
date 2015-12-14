@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
-import { DynamicForm, ConnectBank } from '../components';
+import { DynamicForm, ConnectBank, BundleForm } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
@@ -12,8 +12,8 @@ class FormContainer extends React.Component {
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
   }
-  onSsnChange(ssn) {
-    this.props.dispatch(surveyActions.ssnChange(ssn));
+  handleTermsToggle() {
+    this.props.dispatch(surveyActions.toggleTerms());
   }
   handleSelectChange(e) {
     this.props.dispatch(surveyActions.selectChange(e.target.value));
@@ -82,15 +82,12 @@ class FormContainer extends React.Component {
     const { step, categoryIndex, formData, nextLink } = this.props;
     if (step === 1 && categoryIndex === 0 && data.annual_income && data.employment_status) {
       let val = data.annual_income.replace(/[,\$\s]/g, '');
-      val = parseInt(val);
-
+      data.annual_income = parseInt(val);
       api.sendPersonal({
         ...::this.grabPersonalData(),
-        annual_income: val,
-        income_source: data.income_source,
-        employment_status: data.employment_status,
-      }, () => {
-        api.sendQuestions(data);
+        ...data
+        }, () => {
+        console.log('OK!');
       });
     }
 
@@ -109,9 +106,6 @@ class FormContainer extends React.Component {
       if (err) return console.log(err);
       window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
     });
-  }
-  backClicked(e) {
-    const {state} = this.props;
   }
   renderDynamicForm(category, form, index) {
     const { prevLink, nextLink, formData } = this.props;
@@ -140,7 +134,7 @@ class FormContainer extends React.Component {
               radio={this.props.radio}
               showWelcomeBack={this.props.showWelcomeBack}
              >
-            {prevLink ? <Link to={prevLink} onClick={::this.backClicked}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+            {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
     </DynamicForm>
   }
   renderBanks() {
@@ -152,10 +146,22 @@ class FormContainer extends React.Component {
             handleBanksSearch={::this.handleBanksSearch}
             >
             <div className="common-form__buttons">
-                {prevLink ? <Link to={prevLink} onClick={::this.backClicked}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+                {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
                 <Link to={nextLink} className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
             </div>
     </ConnectBank>
+  }
+  renderBundle() {
+    const { prevLink, nextLink, termsAccepted } = this.props;
+    return <BundleForm
+        handleTermsToggle={::this.handleTermsToggle}
+        checked={termsAccepted}
+       >
+       <div className="common-form__buttons">
+           {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+           <Link to={nextLink} className="btn btn_yellow" disabled={!termsAccepted} >I Agree <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+       </div>
+    </BundleForm>;
   }
   renderView(data) {
     let result = [];
@@ -164,7 +170,9 @@ class FormContainer extends React.Component {
     for (let category in data) {
       data[category].map((form, index) => {
        if (index === this.props.step && category == this.props.category) {
-          if (form.formKey === 'fund-step-1') {
+          if (form.formKey === 'invest-step-1') {
+            result.push(::this.renderBundle());
+          } else if (form.formKey === 'fund-step-1') {
             result.push(::this.renderBanks());
           } else {
             result.push(::this.renderDynamicForm(category, form, index));
@@ -214,6 +222,8 @@ function mapStateToProps(state) {
 
     banks: state.plaid.banks,
     searchBanks: state.plaid.searchBanks,
+
+    termsAccepted: state.survey.get('termsAccepted'),
   };
 }
 

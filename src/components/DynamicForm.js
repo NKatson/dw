@@ -102,7 +102,7 @@ class DynamicForm extends Component {
 
     // hardcode this time
     let disableNext = false;
-    if (formKey === 'invest-step-1' && !radio['crysis2008']) {
+    if (formKey === 'invest-step-2' && !radio['crysis2008']) {
       disableNext = true;
     }
 
@@ -110,7 +110,7 @@ class DynamicForm extends Component {
       <div>
         <h2>{title}</h2>
 
-       {formKey === 'invest-step-1'?
+       {formKey === 'invest-step-2'?
          <div>
            <div className="text-center" style={{paddingTop: '15px'}}>
              <h4>Markets move up and down.<br />

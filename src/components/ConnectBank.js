@@ -12,9 +12,6 @@ class ConnectBank extends React.Component {
           console.log('GOT TOKEN --> ' + token);
           //window.location = '/accounts.html?public_token=' + token;
         },
-        onExit() {
-          console.log('EXIT!');
-        }
       });
   }
   handleBankClick(e) {
