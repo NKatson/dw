@@ -42,7 +42,7 @@ class CurrencyInput extends React.Component {
   render () {
     return (
       <input
-        className="input-text"
+        className={this.props.className}
         type='text'
         value={'$ ' + this.state.value}
         onChange={::this._onChange}

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { plaidAuth } from '../utils/apiClient';
+import * as api from '../utils/apiClient';
 import { auth } from '../redux/actions/plaid';
 
 class ConnectBank extends React.Component {
@@ -13,7 +13,16 @@ class ConnectBank extends React.Component {
         onSuccess: (publicToken) => {
             this.props.dispatch(auth(publicToken, (err, data) => {
               if (err) return console.log(err);
-              window.location = '/survey/fund/q/1';
+
+              const { state } = this.props;
+              api.saveState({
+                survey: state.survey.toJS(),
+                form: state.form,
+                plaid: state.plaid,
+              }, (err) => {
+                if (err) return console.log(err);
+                window.location = '/survey/fund/q/1';
+              });
             }));
         },
       });
