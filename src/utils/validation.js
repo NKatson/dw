@@ -31,7 +31,7 @@ class Validation {
       this.errors[fieldName] = `Field must be minimum ${min} characters long`;
     }
   }
-  checkIncome(fieldName) {
+  checkCurrency(fieldName, min, message) {
     if (this.errors[fieldName] || !this.data[fieldName]) return;
 
     if (this.data[fieldName] === '$ ') {
@@ -42,8 +42,8 @@ class Validation {
     let val = this.data[fieldName].replace(/[,\$\s]/g, '');
     val = parseInt(val);
 
-    if (val < 8000) {
-      this.errors[fieldName] = 'Please confirm your annual income.';
+    if (val < min) {
+      this.errors[fieldName] = message;
     }
   }
   checkDateOfBirth(fieldName) {
@@ -127,9 +127,23 @@ export function validateSurvey(data) {
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const requiredFields = [
-    'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
-   'date_of_birth', 'employer', 'title', 'industry_kind',
-   'state', 'employment_status', 'ssn', 'annual_income', 'income_source'];
+    'first_name',
+    'last_name',
+    'address',
+    'city',
+    'zip_code',
+    'phone',
+    'date_of_birth',
+    'employer',
+    'title',
+    'industry_kind',
+    'state',
+    'employment_status',
+    'ssn',
+    'annual_income',
+    'income_source',
+    'bank_connected_how_much'
+ ];
 
   requiredFields.forEach(fieldName => {
     valid.checkRequired(fieldName);
@@ -142,7 +156,8 @@ export function validateSurvey(data) {
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
 
   valid.checkDateOfBirth('date_of_birth');
-  valid.checkIncome('annual_income');
+  valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
+  valid.checkCurrency('bank_connected_how_much', 25, 'Please double check your initial funding amount.');
 
   return valid.getErrors();
 }

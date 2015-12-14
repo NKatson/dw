@@ -130,9 +130,11 @@ class DynamicForm extends Component {
 
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit} autoComplete="off">
             {::this.renderQuestions(questions, fields)}
-            {categoryIndex === 1 && step === 1 ?
+            {
+              formKey === 'invest-step-2' ?
               <p className="text-center">Tell me more about <a href="#" className="grey-color">how the markets fluctuate</a></p>
-               : null}
+              : null
+            }
             <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
@@ -172,6 +174,7 @@ function mapDispatchToProps(dispatch) {
     dispatch: dispatch,
   }
 }
+
 export default reduxForm({
   form: 'dynamic',
   validate,

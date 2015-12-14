@@ -6,7 +6,7 @@ import $ from 'jquery';
 class InputText extends React.Component {
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
-      label, defaultValue, maskPattern, errorMessageClass, inputClass } = this.props;
+      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency } = this.props;
     const mask = maskPattern || '111-111-1111';
     const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
     let component = null;
@@ -33,7 +33,7 @@ class InputText extends React.Component {
         />
       }
 
-    if (isIncome) {
+    if (isIncome || isCurrency) {
       component =  <CurrencyInput
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder="$"

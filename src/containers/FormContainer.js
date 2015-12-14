@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
-import { DynamicForm, ConnectBank, BundleForm } from '../components';
+import { DynamicForm, ConnectBank, BundleForm, Accounts } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
@@ -138,12 +138,13 @@ class FormContainer extends React.Component {
     </DynamicForm>
   }
   renderBanks() {
-    const { prevLink, nextLink } = this.props;
+    const { prevLink, nextLink, banks, searchBanks, state } = this.props;
     return <ConnectBank
-            banks={this.props.banks}
+            banks={banks}
             bankTypes={['amex', 'bofa', 'chase', 'citi', 'suntrust', 'td', 'us', 'wells']}
-            searchBanks={this.props.searchBanks}
+            searchBanks={searchBanks}
             handleBanksSearch={::this.handleBanksSearch}
+            state={state}
             >
             <div className="common-form__buttons">
                 {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
@@ -163,6 +164,14 @@ class FormContainer extends React.Component {
        </div>
     </BundleForm>;
   }
+  renderAccounts() {
+    const { prevLink, nextLink, termsAccepted } = this.props;
+    return (
+      <Accounts onSubmit={::this.handleFormSubmit}>
+        {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+      </Accounts>
+    );
+  }
   renderView(data) {
     let result = [];
     let index = 0;
@@ -174,6 +183,8 @@ class FormContainer extends React.Component {
             result.push(::this.renderBundle());
           } else if (form.formKey === 'fund-step-1') {
             result.push(::this.renderBanks());
+          } else if (form.formKey === 'fund-step-2') {
+            result.push(::this.renderAccounts());
           } else {
             result.push(::this.renderDynamicForm(category, form, index));
           }

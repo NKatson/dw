@@ -10,3 +10,4 @@ export CurrencyInput from './CurrencyInput';
 export Header from './Header';
 export ConnectBank from './ConnectBank';
 export BundleForm from './BundleForm';
+export Accounts from './Accounts';

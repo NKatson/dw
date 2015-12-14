@@ -29,11 +29,16 @@ class InputMultiple extends React.Component {
           if (handleClick) {
             iProps.onClick = handleClick;
           }
+          if (name) {
+            iProps.name = name;
+          }
 
           return (
             <div className="input-wrap input-wrap_with-radio" key={input.label}>
               <input {...input.field} {...iProps} checked={input.value == selectedValue ? true : false} />
-              <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span></label>
+              <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
+              {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
+              </label>
             </div>
           );
         })}
@@ -44,9 +49,9 @@ class InputMultiple extends React.Component {
 
 InputMultiple.propTypes = {
   question: PropTypes.shape({
-    htmlName: PropTypes.string,
     class: PropTypes.string,
     label: PropTypes.string,
+    balance: PropTypes.string,
   }),
   handleClick: PropTypes.func,
   inputs: PropTypes.arrayOf(PropTypes.shape({
