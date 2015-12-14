@@ -8,8 +8,8 @@ let router = Router();
  * Create state for user
  */
 router.post('/create', (req, res, next) => {
-  const uid = req.cookies.uid;
-  //const uid = 'anastacia160592@gmail.com';
+  //const uid = req.cookies.uid;
+  const uid = 'anastacia160592@gmail.com';
   const state = req.body.state;
 	const object = {
 			uid,

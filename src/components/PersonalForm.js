@@ -1,21 +1,9 @@
 import React, { PropTypes } from 'react';
-import { InputText, Select, SsnInput } from '../atoms';
+import { InputText, Select, SsnInput, Checkbox } from '../atoms';
 
 class PersonalForm extends React.Component {
-  componentDidMount() {
-    require('icheck');
-    $('input.chbx-styled').iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal',
-        increaseArea: '20%'
-    });
-    const that = this;
-    $('input').on('ifToggled', function(e) {
-      that.props.handleShowSsnClick();
-    });
-  }
   render () {
-    const { questions, fields, handleStateChange, showSsn, onSsnChange, storedSsn,
+    const { questions, fields, handleStateChange, showSsn, storedSsn,
        ssnError, handleShowSsnClick } = this.props;
     return (
       <div>
@@ -79,11 +67,8 @@ class PersonalForm extends React.Component {
                   handleShowSsnClick={handleShowSsnClick}
                   />
                   <div className="input-descr">
-                      <input
-                        type="checkbox"
-                        onClick={handleShowSsnClick}
-                        className="chbx-styled"
-                        id="showSecurityNumber" /> <label htmlFor="showSecurityNumber">Show</label>
+                    <Checkbox id="showSecurityNumber" handleToggle={handleShowSsnClick} />
+                    <label htmlFor="showSecurityNumber">Show</label>
                   </div>
             </div>
             {/* date of birth */}

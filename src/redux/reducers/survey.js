@@ -7,6 +7,7 @@ const initialState = Map({
   showWelcomeBack: false,
   currentLink: '/welcome',
   changingQuestion: false,
+  termsAccepted: false,
 });
 
 function getPrevLink({ category, step, data }) {
@@ -125,6 +126,10 @@ export default function survey(state = initialState, action = {}) {
   case actions.HIDE_WELCOME_BACK:
     return state.merge({
       showWelcomeBack: false,
+    });
+  case actions.TERMS_TOGGLE:
+    return state.merge({
+      termsAccepted: state.get('termsAccepted') ? false : true,
     });
   default:
     return state;
