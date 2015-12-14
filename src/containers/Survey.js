@@ -58,7 +58,7 @@ class Survey extends React.Component {
         result.push(
               <div
                 key={'dvdr-' + index}
-                className={'wfm-steps__dvdr ' + (index === categoryIndex - 1 ? 'passed' : null )}>
+                className={'wfm-steps__dvdr ' + (index < categoryIndex ? 'passed' : null )}>
                 <span></span>
                 <span></span>
                 <span></span>

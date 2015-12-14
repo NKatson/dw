@@ -82,15 +82,12 @@ class FormContainer extends React.Component {
     const { step, categoryIndex, formData, nextLink } = this.props;
     if (step === 1 && categoryIndex === 0 && data.annual_income && data.employment_status) {
       let val = data.annual_income.replace(/[,\$\s]/g, '');
-      val = parseInt(val);
-
+      data.annual_income = parseInt(val);
       api.sendPersonal({
         ...::this.grabPersonalData(),
-        annual_income: val,
-        income_source: data.income_source,
-        employment_status: data.employment_status,
-      }, () => {
-        api.sendQuestions(data);
+        ...data
+        }, () => {
+        console.log('OK!');
       });
     }
 

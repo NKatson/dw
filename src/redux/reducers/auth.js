@@ -46,6 +46,7 @@ export default function auth(state = initialState, action = {}) {
     return state.merge(Map({
       confirmTokenError: null,
       confirmed: true,
+      loginError: action.message,
       confirmingToken: false,
     }));
   default:
