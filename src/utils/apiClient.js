@@ -267,6 +267,22 @@ export function logout({ user = null, cb = () => {} }) {
   });
 }
 
+/**
+ * POST /plaid/auth
+ */
+export function plaidAuth(publicToken, cb) {
+  getConfig(config => {
+    request
+    .post(config.host + '/plaid/auth')
+    .send({ publicToken })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      return cb(null, res.body);
+    });
+  });
+}
 
 /**
  * POST /api/auth

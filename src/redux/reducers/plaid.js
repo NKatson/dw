@@ -4,10 +4,13 @@ import { Map, fromJS } from 'immutable';
 const initialState = {
   banks: [],
   searchBanks: [],
+  accounts: [],
 }
 
 export default function auth(state = initialState, action = {}) {
   switch (action.type) {
+    case actions.SET_ACCOUNTS:
+      return Object.assign({}, state, { accounts: action.accounts });
     case actions.SET_BANKS:
       return Object.assign({}, state, {banks: action.banks});
     case actions.SEARCH_BANKS:

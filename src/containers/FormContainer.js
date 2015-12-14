@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
-import { DynamicForm, ConnectBank, BundleForm } from '../components';
+import { DynamicForm, ConnectBank, BundleForm, ConnectBankSuccessed } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
@@ -163,6 +163,17 @@ class FormContainer extends React.Component {
        </div>
     </BundleForm>;
   }
+  renderConnectBankSuccessed() {
+    const { prevLink, nextLink, termsAccepted } = this.props;
+    return (
+      <ConnectBankSuccessed>
+        <div className="common-form__buttons">
+            {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+            <Link to={nextLink} className="btn btn_yellow" disabled={!termsAccepted} >I Agree <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+        </div>
+      </ConnectBankSuccessed>
+    );
+  }
   renderView(data) {
     let result = [];
     let index = 0;
@@ -174,6 +185,8 @@ class FormContainer extends React.Component {
             result.push(::this.renderBundle());
           } else if (form.formKey === 'fund-step-1') {
             result.push(::this.renderBanks());
+          } else if (form.formKey === 'fund-step-2') {
+            result.push(::this.renderConnectBankSuccessed());
           } else {
             result.push(::this.renderDynamicForm(category, form, index));
           }

@@ -49,6 +49,21 @@ app.get('/config', (req, res) => {
 		});
 });
 
+const plaidClient =
+  new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
+
+app.post('/plaid/auth', (req, res, next) => {
+		const publicToken = req.body.publicToken;
+		plaidClient.exchangeToken(publicToken, (err, resClient) => {
+			if (err) return next(err);
+			const accessToken = resClient.access_token;
+			plaidClient.getAuthUser(accessToken, (err, resData) => {
+				if (err) return next(err);
+				return res.send({'accounts' : resData.accounts});
+			})
+		});
+});
+
 function handleRender(req, res, renderProps, store) {
     if (__DEVELOPMENT__) {
       webpackIsomorphicTools.refresh();
