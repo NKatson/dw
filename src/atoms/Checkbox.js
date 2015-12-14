@@ -8,9 +8,8 @@ class Checkbox extends React.Component {
         radioClass: 'iradio_minimal',
         increaseArea: '20%'
     });
-    const that = this;
-    $('input').on('ifToggled', function(e) {
-      that.props.handleToggle();
+    $('input').on('ifToggled', (e) => {
+      this.props.handleToggle();
     });
   }
   render() {
