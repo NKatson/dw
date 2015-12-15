@@ -146,13 +146,7 @@ class FormContainer extends React.Component {
             handleBanksSearch={::this.handleBanksSearch}
             exit={exit}
             state={state}
-            >
-            <Buttons
-              prevLink={prevLink}
-              nextLink={nextLink}
-              isDisabled={false}
-            />
-    </ConnectBank>
+            ><Buttons prevLink={prevLink} /></ConnectBank>
   }
   renderBundle() {
     const { prevLink, nextLink, termsAccepted } = this.props;
@@ -179,6 +173,7 @@ class FormContainer extends React.Component {
   renderView(data) {
     let result = [];
     let index = 0;
+    const { prevLink, nextLink } = this.props;
 
     for (let category in data) {
       data[category].map((form, index) => {
@@ -190,12 +185,15 @@ class FormContainer extends React.Component {
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
           } else if (form.formKey === 'fund-step-4') {
-            result.push(<Transfer><Buttons
-                                    nextLink={nextLink}
-                                    prevLink={prevLink}
-                                  /></Transfer>);
+            result.push(<Transfer>
+              <Buttons
+                prevLink='/survey/fund/q/0'
+              /></Transfer>);
           } else if (form.formKey === 'fund-step-5') {
-            result.push(<MailCheck />);
+            result.push(<MailCheck>
+              <Buttons
+                prevLink='/survey/fund/q/0'
+              /></MailCheck>);
           } else {
             result.push(::this.renderDynamicForm(category, form, index));
           }

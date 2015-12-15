@@ -30,6 +30,11 @@ const MailCheck = ({children}) => {
                     Account #16424641
                 </p>
             </div>
+            <form className="common-form anketa-form">
+               <div className="text-center">
+                 {children}
+               </div>
+            </form>
         </div>
     </div>
   );

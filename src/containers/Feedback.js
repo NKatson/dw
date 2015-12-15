@@ -8,14 +8,14 @@ import { validateSurvey as validate } from '../utils/validation';
 
 class Feedback extends React.Component {
   handleSubmit(data) {
-    if (data.citizen === "I'm not a US Citizen") {
+    if (data.reason === "I'm not a US Citizen") {
       this.props.dispatch(feedbackFailed());
     } else {
       this.props.dispatch(feedbackSuccess());
     }
   }
   render() {
-    const { fields: { citizen, comment }, success, failed } = this.props;
+    const { fields: { reason, comment }, success, failed } = this.props;
     const answers = [
       {label : "I'm not a US Citizen", value: "1"},
       {label : "I am affiliated with a Broker/Dealer", value: "2"},
@@ -33,8 +33,6 @@ class Feedback extends React.Component {
       text = "Sorry";
       desc = "At this time only US Citizens can create WorthFM accounts.";
     }
-    console.log(success);
-    console.log(failed);
     return (
       <div>
         {
@@ -42,7 +40,7 @@ class Feedback extends React.Component {
           <form className="common-form anketa-form" autoComplete="off">
             <div className="anketa-form__fieldset anketa-form__main-fieldset">
                   <Select
-                    field={citizen}
+                    field={reason}
                     label="Which of these items applies to you?"
                     options={answers}
                     />
@@ -86,7 +84,7 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'feedback',
-  fields: ['citizen', 'comment'],
+  fields: ['reason', 'comment'],
   validate,
   destroyOnUnmount: true,
 }, mapStateToProps)(Feedback);

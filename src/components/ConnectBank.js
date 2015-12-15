@@ -80,11 +80,11 @@ class ConnectBank extends React.Component {
               </div>
               <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
                   Your bank login are never stored.</p>
-                <p>You can also fund your account by sending a <Link to='/survey/fund/q/3'>wire transfer</Link> or <Link to='/survey/check'>check</Link>. You can also enter your
+                <p>You can also fund your account by sending a <Link to='/survey/fund/q/3'>wire transfer</Link> or <Link to='/survey/fund/q/4'>check</Link>. You can also enter your
                   <Link to='/survey/fund/q/2'> banking information</Link>.</p>
                 <div className="text-center">
                   {this.props.children}
-              </div>
+                </div>
             </form>
           </div>
       }
