@@ -160,7 +160,9 @@ class FormContainer extends React.Component {
        >
        <div className="common-form__buttons">
            {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
-           <Link to={nextLink} className="btn btn_yellow" disabled={!termsAccepted} >I Agree <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+           <Link to={nextLink} onClick={(e) => {
+               if (!termsAccepted) e.preventDefault();
+            }} className="btn btn_yellow" disabled={!termsAccepted} >I Agree <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
        </div>
     </BundleForm>;
   }
