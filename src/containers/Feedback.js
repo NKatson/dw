@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 import { Select } from '../atoms/index';
 import { feedbackFailed, feedbackSuccess } from '../redux/actions/survey';
+import { sendFeedback } from '../utils/apiClient';
 import { validateSurvey as validate } from '../utils/validation';
 
 class Feedback extends React.Component {
@@ -11,6 +12,7 @@ class Feedback extends React.Component {
     if (data.reason === "I'm not a US Citizen") {
       this.props.dispatch(feedbackFailed());
     } else {
+      sendFeedback(data);
       this.props.dispatch(feedbackSuccess());
     }
   }

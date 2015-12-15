@@ -24,11 +24,18 @@ class Validation {
       this.errors[fieldName] = message;
     }
   }
-  checkLength(fieldName, min) {
+  checkMin(fieldName, min) {
     if (this.errors[fieldName]) return;
 
     if (this.data[fieldName] && this.data[fieldName].length < min) {
       this.errors[fieldName] = `Field must be minimum ${min} characters long`;
+    }
+  }
+  checkMax(fieldName, max) {
+    if (this.errors[fieldName]) return;
+
+    if (this.data[fieldName] && this.data[fieldName].length > max) {
+      this.errors[fieldName] = `Field must be maximum ${max} characters long`;
     }
   }
   checkCurrency(fieldName, min, message) {
@@ -149,6 +156,7 @@ export function validateSurvey(data) {
     'routing_number',
     'routing_name',
     'account_number',
+    'initial_fund',
  ];
 
   requiredFields.forEach(fieldName => {
@@ -160,6 +168,14 @@ export function validateSurvey(data) {
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
   valid.checkRegex('city', addressRegex, 'Please type valid city format');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
+
+  valid.checkMax('bank_name', 100);
+  valid.checkMax('title', 150);
+  valid.checkMax('routing', 150);
+  valid.checkRegex('bank_name', addressRegex, 'Please type valid bank name format');
+  valid.checkRegex('account_name', addressRegex, 'Please type valid account name format');
+  valid.checkRegex('title', addressRegex, 'Please type valid title name format');
+  valid.checkCurrency('initial_fund', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
 
   valid.checkDateOfBirth('date_of_birth');
   valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');

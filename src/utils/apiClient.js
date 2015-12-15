@@ -285,6 +285,22 @@ export function plaidAuth(publicToken, cb) {
 }
 
 /**
+ * POST /api/feedback
+ */
+export function sendFeedback(data) {
+  getConfig(config => {
+    request
+    .post(config.host + '/api/feedback')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+    });
+  });
+}
+
+/**
  * POST /api/auth
  */
 export function registration({ data, cb }) {
