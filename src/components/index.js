@@ -12,3 +12,6 @@ export ConnectBank from './ConnectBank';
 export BundleForm from './BundleForm';
 export Accounts from './Accounts';
 export ConnectBankError from './ConnectBankError';
+export Transfer from './Transfer';
+export MailCheck from './MailCheck';
+export Buttons from './Buttons';

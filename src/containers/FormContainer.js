@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
-import { DynamicForm, ConnectBank, BundleForm, Accounts } from '../components';
+import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Buttons } from '../components';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
@@ -147,10 +147,11 @@ class FormContainer extends React.Component {
             exit={exit}
             state={state}
             >
-            <div className="common-form__buttons">
-                {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
-                <Link to={nextLink} className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
-            </div>
+            <Buttons
+              prevLink={prevLink}
+              nextLink={nextLink}
+              isDisabled={false}
+            />
     </ConnectBank>
   }
   renderBundle() {
@@ -159,10 +160,12 @@ class FormContainer extends React.Component {
         handleTermsToggle={::this.handleTermsToggle}
         checked={termsAccepted}
        >
-       <div className="common-form__buttons">
-           {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
-           <Link to={nextLink} className="btn btn_yellow" disabled={!termsAccepted} >I Agree <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
-       </div>
+       <Buttons
+         prevLink={prevLink}
+         nextLink={nextLink}
+         isDisabled={!termsAccepted}
+         txt="I Agree"
+       />
     </BundleForm>;
   }
   renderAccounts() {
@@ -186,6 +189,13 @@ class FormContainer extends React.Component {
             result.push(::this.renderBanks());
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
+          } else if (form.formKey === 'fund-step-4') {
+            result.push(<Transfer><Buttons
+                                    nextLink={nextLink}
+                                    prevLink={prevLink}
+                                  /></Transfer>);
+          } else if (form.formKey === 'fund-step-5') {
+            result.push(<MailCheck />);
           } else {
             result.push(::this.renderDynamicForm(category, form, index));
           }
@@ -194,7 +204,7 @@ class FormContainer extends React.Component {
     }
     return result;
   }
-  render () {
+  render() {
     const { category, currentIndex, step, nextLink, prevLink, showWelcomeBack, formData } = this.props;
     const firstName = formData && formData['personal-step-1'] && formData['personal-step-1'].first_name && formData['personal-step-1'].first_name.value ?
                       formData['personal-step-1'].first_name.value : '';

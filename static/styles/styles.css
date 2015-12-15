@@ -1104,6 +1104,9 @@ select.input-text {
   height: 24px;
   text-decoration: none;
 }
+.icon_print {
+  background: url("../images/print-icon.png") no-repeat center center;
+}
 .wfm-big-link {
   text-align: center;
   margin: 20px 0;
@@ -1145,4 +1148,7 @@ select.input-text {
 .wfm-vcentered-block {
   text-align: center;
   padding: 150px 0 200px;
+}
+.pad-17 {
+  margin-bottom: 40px;
 }
