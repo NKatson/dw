@@ -129,6 +129,7 @@ class DynamicForm extends Component {
           <p>{description}</p>
 
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit} autoComplete="off">
+            {formKey === 'fund-step-3' ? <div className="anketa-form__fieldset"><img src={require('../../static/images/routing-number.png')} alt="" /></div> : null}
             {::this.renderQuestions(questions, fields)}
             {
               formKey === 'invest-step-2' ?

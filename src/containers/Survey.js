@@ -24,7 +24,6 @@ class Survey extends React.Component {
         this.context.history.push('/signin');
       }));
     }
-
     ::this.handleParams(this.props.params);
   }
   componentWillReceiveProps(nextProps) {

@@ -578,6 +578,7 @@ input.input-text {
 .anketa-form {
   margin-top: 40px;
   margin-bottom: 56px;
+  position: relative;
 }
 .anketa-form .input-text {
   width: 100%;
@@ -1084,4 +1085,64 @@ select.input-text {
 }
 .wfm-live-search ul a:hover {
   color: #392a6b;
+}
+.wfm-not-agree-link {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+}
+.wfm-not-agree-link a {
+  text-decoration: none;
+}
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  text-decoration: none;
+}
+.wfm-big-link {
+  text-align: center;
+  margin: 20px 0;
+  text-transform: uppercase;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.wfm-big-link a {
+  color: #392a6b;
+  text-decoration: none;
+}
+.wfm-big-link a:hover span {
+  text-decoration: none;
+}
+.wfm-big-link a span {
+  text-decoration: underline;
+}
+.wfm-big-link a .icon {
+  position: relative;
+  top: -2px;
+}
+.pad-16 {
+  margin-bottom: 30px;
+}
+.pad-16 h5 {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  margin-bottom: 4px;
+}
+.pad-16__col {
+  display: inline-block;
+  vertical-align: top;
+  width: 220px;
+  margin-right: 30px;
+  font-size: 16px;
+}
+.wfm-vcentered-block {
+  text-align: center;
+  padding: 150px 0 200px;
 }

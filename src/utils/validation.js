@@ -142,7 +142,13 @@ export function validateSurvey(data) {
     'ssn',
     'annual_income',
     'income_source',
-    'bank_connected_how_much'
+    'bank_connected_how_much',
+    'citizen',
+    'bank_name',
+    'account_name',
+    'routing_number',
+    'routing_name',
+    'account_number',
  ];
 
   requiredFields.forEach(fieldName => {
@@ -157,7 +163,7 @@ export function validateSurvey(data) {
 
   valid.checkDateOfBirth('date_of_birth');
   valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
-  valid.checkCurrency('bank_connected_how_much', 25, 'Please double check your initial funding amount.');
+  valid.checkCurrency('bank_connected_how_much', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
 
   return valid.getErrors();
 }

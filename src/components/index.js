@@ -11,3 +11,4 @@ export Header from './Header';
 export ConnectBank from './ConnectBank';
 export BundleForm from './BundleForm';
 export Accounts from './Accounts';
+export ConnectBankError from './ConnectBankError';

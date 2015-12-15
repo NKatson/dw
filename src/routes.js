@@ -10,11 +10,12 @@ import {
     Welcome,
     Survey,
     FormContainer,
-    Account,
     Submit as SubmitData,
     ConfirmPasswordForm,
     ConfirmEmail,
     AppWrapper,
+    Feedback,
+    Check,
   } from './containers';
 
 import { App } from './containers';
@@ -46,6 +47,8 @@ export default (store) => {
             <IndexRoute component={FormContainer} />
             <Route path=":category/q/:number" component={FormContainer} />
             <Route path="/submit" component={SubmitData} />
+            <Route path="feedback" component={Feedback} />
+            <Route path="check" component={Check} />
         </Route>
         <Redirect from="/" to="/signin" />
       </Route>

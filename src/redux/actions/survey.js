@@ -25,6 +25,9 @@ export const HIDE_WELCOME_BACK    = 'HIDE_WELCOME_BACK';
 
 export const TERMS_TOGGLE          = 'TERMS_TOGGLE';
 
+export const FEEDBACK_FAILED      = 'FEEDBACK_FAILED';
+export const FEEDBACK_SUCCESS     = 'FEEDBACK_SUCCESS';
+
 function initialRequest() {
   return {
     type: GET_DATA_REQUEST,
@@ -128,6 +131,18 @@ export function hideWelcomeBack() {
 export function toggleTerms() {
   return {
     type: TERMS_TOGGLE
+  }
+}
+
+export function feedbackFailed() {
+  return {
+    type: FEEDBACK_FAILED
+  }
+}
+
+export function feedbackSuccess() {
+  return {
+    type: FEEDBACK_SUCCESS
   }
 }
 

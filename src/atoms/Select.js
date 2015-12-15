@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 class Select extends React.Component {
   render() {
-    const { options, additionalClass, label, handleChange, placeholder, field, stateSelectValue } = this.props;
+    const { options, additionalClass, label, handleChange, field, stateSelectValue } = this.props;
     let additionalProps = {};
     if (handleChange) {
       additionalProps.onChange = handleChange;

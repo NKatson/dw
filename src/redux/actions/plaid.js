@@ -3,6 +3,7 @@ import * as api from '../../utils/apiClient';
 export const SET_BANKS  = 'SET_BANKS';
 export const SEARCH_BANKS = 'SEARCH_BANKS';
 export const SET_ACCOUNTS = 'SET_ACCOUNTS';
+export const EXIT = 'EXIT';
 
 export function setBanks(data, cb) {
   return {
@@ -15,6 +16,12 @@ export function setAccounts(accounts) {
   return {
     type: SET_ACCOUNTS,
     accounts,
+  }
+}
+
+export function exit() {
+  return {
+    type: EXIT
   }
 }
 

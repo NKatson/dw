@@ -5,6 +5,7 @@ const initialState = {
   banks: [],
   searchBanks: [],
   accounts: [],
+  exit: false,
 }
 
 export default function auth(state = initialState, action = {}) {
@@ -21,6 +22,8 @@ export default function auth(state = initialState, action = {}) {
         });
       }
       return Object.assign({}, state, {searchBanks: b});
+    case actions.EXIT:
+      return Object.assign({}, state, { exit: true });
     default:
       return state;
     }

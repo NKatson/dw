@@ -138,12 +138,13 @@ class FormContainer extends React.Component {
     </DynamicForm>
   }
   renderBanks() {
-    const { prevLink, nextLink, banks, searchBanks, state } = this.props;
+    const { prevLink, nextLink, banks, searchBanks, state, exit } = this.props;
     return <ConnectBank
             banks={banks}
             bankTypes={['amex', 'bofa', 'chase', 'citi', 'suntrust', 'td', 'us', 'wells']}
             searchBanks={searchBanks}
             handleBanksSearch={::this.handleBanksSearch}
+            exit={exit}
             state={state}
             >
             <div className="common-form__buttons">
@@ -213,6 +214,10 @@ FormContainer.contextTypes = {
   history: RouterPropTypes.history,
 };
 
+FormContainer.contextTypes = {
+  history: RouterPropTypes.history,
+};
+
 function mapStateToProps(state) {
   return {
     state: state,
@@ -233,6 +238,7 @@ function mapStateToProps(state) {
 
     banks: state.plaid.banks,
     searchBanks: state.plaid.searchBanks,
+    exit: state.plaid.exit,
 
     termsAccepted: state.survey.get('termsAccepted'),
   };

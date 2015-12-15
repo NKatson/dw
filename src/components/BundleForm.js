@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Checkbox } from '../atoms';
+import { Link } from 'react-router';
 
 class BundleForm extends React.Component {
   render() {
@@ -56,6 +57,9 @@ class BundleForm extends React.Component {
 
           <div className="text-center">
             {this.props.children}
+            <div className="wfm-not-agree-link">
+                <Link to="/survey/feedback">If you cannot agree to our Term of Service, please tell us why. We'd like to help.</Link>
+            </div>
           </div>
         </form>
       </div>
