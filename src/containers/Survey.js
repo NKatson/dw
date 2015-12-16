@@ -112,10 +112,7 @@ function mapStateToProps(state) {
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     accountType: state.survey.get('accountType'),
-    step: state.survey.get('step'),
-    category: state.survey.get('category'),
     recommendMessageType: state.survey.get('recommendMessageType'),
-    category: state.survey.get('category'),
     step: state.survey.get('step'),
   };
 }
