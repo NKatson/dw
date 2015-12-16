@@ -150,7 +150,7 @@ export default function survey(state = initialState, action = {}) {
     });
   case actions.SET_CATEGORY_INDEX:
     return state.merge({
-      categoryIndex: 3,
+      categoryIndex: action.index,
     });
   default:
     return state;

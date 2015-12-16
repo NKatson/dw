@@ -3,11 +3,14 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import { Select, Question } from '../atoms';
-import { feedbackFailed, feedbackSuccess } from '../redux/actions/survey';
+import { feedbackFailed, feedbackSuccess, setCategoryIndex } from '../redux/actions/survey';
 import { sendFeedback } from '../utils/apiClient';
 import { validateSurvey as validate } from '../utils/validation';
 
 class Feedback extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(setCategoryIndex(3));
+  }
   handleSubmit(data) {
     if (data.reason === "I'm not a US Citizen") {
       this.props.dispatch(feedbackFailed());
