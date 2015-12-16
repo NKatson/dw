@@ -156,6 +156,9 @@ class FormContainer extends React.Component {
        >
        <Buttons
          prevLink={prevLink}
+         nextLinkHandler={(e) => {
+             if (!termsAccepted) e.preventDefault();
+          }}
          nextLink={nextLink}
          isDisabled={!termsAccepted}
          txt="I Agree"

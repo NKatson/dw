@@ -106,6 +106,10 @@ class DynamicForm extends Component {
       disableNext = true;
     }
 
+    if (formKey === 'fund-step-3' && !radio['typeOfAccount']) {
+      disableNext = true;
+    }
+
     return (
       <div>
         <h2>{title}</h2>
@@ -139,10 +143,12 @@ class DynamicForm extends Component {
             <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
+                    {formKey === 'fund-step-3' ? null :
                     <button
                       className="btn btn_yellow"
                       disabled={disableNext}
                       >Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
+                    }
                 </div>
             </div>
         </form>

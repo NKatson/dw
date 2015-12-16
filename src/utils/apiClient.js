@@ -287,10 +287,10 @@ export function plaidAuth(publicToken, cb) {
 /**
  * POST /api/feedback
  */
-export function sendFeedback(data) {
+export function sendFeedback(data, cb = () => {}) {
   getConfig(config => {
     request
-    .post(config.host + '/api/feedback')
+    .post(config.apiHost + '/api/feedback')
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
