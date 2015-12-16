@@ -34,7 +34,7 @@ class Survey extends React.Component {
     const { state } = this.props;
     this.props.dispatch(saveState(state, err => {
       if (err) return console.log(err);
-      this.props.dispatch(auth.logout(() => {
+      this.props.dispatch(auth.logout(null, () => {
         this.context.history.push( '/signin');
       }));
     }));

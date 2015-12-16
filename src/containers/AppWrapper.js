@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes } from 'react-router';
 import $ from 'jquery';
 
-import { logout } from '../redux/actions/auth';
+import { logout, setError } from '../redux/actions/auth';
 import * as api from '../utils/apiClient';
 
 class AppWrapper extends React.Component {
@@ -36,8 +36,9 @@ class AppWrapper extends React.Component {
       auth: state.auth.toJS()
     }, (err) => {
       if (err) return console.log(err);
-      this.props.dispatch(logout(() => {
-        $("#modalInactivity").modal("hide");
+      const errorMessage = 'You have been logged out due to inactivity.';
+      this.props.dispatch(logout(errorMessage, () => {
+        $('#modalInactivity').modal('hide');
         this.needLogout = true;
       }));
     });

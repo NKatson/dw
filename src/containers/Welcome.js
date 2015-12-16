@@ -24,7 +24,7 @@ class Welcome extends React.Component {
   }
   handleLogout(e) {
     e.preventDefault();
-    this.props.dispatch(logout( () => {
+    this.props.dispatch(logout(null, () => {
         this.context.history.push( '/signin');
     }));
   }

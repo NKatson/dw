@@ -28,7 +28,9 @@ export default function auth(state = initialState, action = {}) {
       loggingOut: true,
     }));
   case actions.LOGOUT_SUCCESS:
-    return initialState;
+    return initialState.merge(Map({
+      loginError: action.message,
+    }));
   case actions.LOGOUT_FAILURE:
     return state.merge(Map({
       logoutError: action.error,

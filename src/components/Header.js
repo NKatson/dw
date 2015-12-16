@@ -7,7 +7,7 @@ class Header extends React.Component {
       <header className="main-header">
         <div className="container container-2">
             <Link to="/" ><img src={require('../../static/images/logo-140.png')} /></Link>
-            <div className="wfm-cabinet"><a href="#" onClick={this.props.handleLogout}>Logout</a></div>
+            <div className="wfm-cabinet"><a href="#" onClick={this.props.handleLogout}>Log out</a></div>
         </div>
       </header>
     );

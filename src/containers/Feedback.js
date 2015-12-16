@@ -33,7 +33,7 @@ class Feedback extends React.Component {
 
     if (success) {
       text = "We can help";
-      desc = "A WorthFM Customer Service representative will reach out of your help. In most cased, we've able to continue setting up your account.";
+      desc = "A WorthFM Customer Service represantative will reach out to your help. In most cases we're able to continue setting up your account.";
     } else if (failed) {
       text = "Sorry!";
       desc = "At this time only US citizens can create WorthFM accounts.";

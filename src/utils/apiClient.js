@@ -1,4 +1,5 @@
 import request from 'superagent';
+import Cookies from 'js-cookie';
 
 function getConfig(cb) {
   request.get('/config').end((err, res) => {
@@ -22,11 +23,17 @@ function saveLocal(res) {
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = uid;
   localStorage.client  = client ? client : client_id;
-  document.cookie = `uid=${uid}`;
+
+  if (!Cookies.get('uid')) {
+      Cookies.set('uid', uid, { expires: 7, path: '' });
+  }
 }
 
 function clearLocal() {
-  document.cookie = `uid=`;
+  delete localStorage.accessToken;
+  delete localStorage.uid;
+  delete localStorage.client;
+  Cookies.remove('uid');
 }
 
 function checkResponse(err, res, cb) {

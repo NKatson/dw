@@ -73,9 +73,10 @@ function logoutRequest(user) {
   };
 }
 
-function logoutSuccess() {
+function logoutSuccess(message = null) {
   return {
     type: LOGOUT_SUCCESS,
+    message,
   };
 }
 
@@ -86,13 +87,13 @@ function logoutFailure(error) {
   };
 }
 
-export function logout(cb) {
+export function logout(message, cb) {
   return dispatch => {
     dispatch(logoutRequest());
     api.logout({
       cb: (err, body) => {
         if (err) return dispatch(logoutFailure(err));
-        dispatch(logoutSuccess()).then(() => {
+        dispatch(logoutSuccess(message)).then(() => {
           cb();
         });
       },
