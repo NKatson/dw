@@ -134,7 +134,7 @@ class FormContainer extends React.Component {
               radio={this.props.radio}
               showWelcomeBack={this.props.showWelcomeBack}
              >
-            {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+            {prevLink && form.formKey !== 'personal-step-1' ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
     </DynamicForm>
   }
   renderBanks() {
@@ -149,10 +149,14 @@ class FormContainer extends React.Component {
             ><Buttons prevLink={prevLink} /></ConnectBank>
   }
   renderBundle() {
-    const { prevLink, nextLink, termsAccepted } = this.props;
+    const { prevLink, nextLink, termsAccepted, bundleTextAccount, bundleLinkAccount
+          , joint } = this.props;
     return <BundleForm
         handleTermsToggle={::this.handleTermsToggle}
         checked={termsAccepted}
+        text={bundleTextAccount}
+        link={bundleLinkAccount}
+        joint={joint}
        >
        <Buttons
          prevLink={prevLink}
@@ -251,6 +255,10 @@ function mapStateToProps(state) {
     banks: state.plaid.banks,
     searchBanks: state.plaid.searchBanks,
     exit: state.plaid.exit,
+
+    bundleTextAccount: state.bundle.text,
+    bundleLinkAccount: state.bundle.link,
+    joint: state.bundle.string,
 
     termsAccepted: state.survey.get('termsAccepted'),
   };

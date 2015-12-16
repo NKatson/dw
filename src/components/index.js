@@ -15,3 +15,4 @@ export ConnectBankError from './ConnectBankError';
 export Transfer from './Transfer';
 export MailCheck from './MailCheck';
 export Buttons from './Buttons';
+export RothModal from './RothModal';

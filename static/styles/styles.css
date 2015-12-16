@@ -1190,3 +1190,30 @@ select.input-text {
 .wfm-biglinks-list a:last-child {
   border-bottom: 1px #d8d8d8 solid;
 }
+.modal-roth-ira p {
+  font-size: 16px;
+}
+.pad-18 {
+  color: white;
+  font-size: 13px;
+  line-height: 17px;
+}
+.pad-19 {
+  margin-top: 30px;
+}
+.pad-19 a {
+  color: #fff!important;
+  border-bottom: 1px dotted;
+  text-decoration: none;
+}
+.pad-19 a.opened {
+  color: #ffc705!important;
+}
+.wfm-link-descr {
+  display: none;
+}
+.pad-20 {
+  font-size: 13px!important;
+  margin-top: 30px;
+  text-transform: uppercase;
+}
