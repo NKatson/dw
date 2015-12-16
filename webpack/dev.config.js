@@ -10,6 +10,12 @@ var host = (process.env.HOST || 'localhost');
 var port = parseInt(process.env.PORT) + 1 || 3001;
 
 module.exports = {
+  node: {
+    net: 'empty',
+    fs: 'empty',
+    tls: 'empty',
+  },
+  context: __dirname,
   devtool: 'inline-source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
@@ -31,7 +37,7 @@ module.exports = {
       __SERVER__: false,
       __DEVELOPMENT__: true,
      __DEVTOOLS__: JSON.stringify(JSON.parse(process.env.DEV_TOOLS || 'false')),
-   }), 
+   }),
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
@@ -39,11 +45,6 @@ module.exports = {
       "root.jQuery": "jquery"
     }),
     webpackIsomorphicToolsPlugin.development(),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
-    })
   ],
   progress: true,
   resolve: {
@@ -53,6 +54,9 @@ module.exports = {
     ],
     extensions: ['', '.json', '.js']
   },
+  // resolveLoader: {
+  //    packageMains: ['json-loader'],
+  // },
   module: {
     loaders : [
         {

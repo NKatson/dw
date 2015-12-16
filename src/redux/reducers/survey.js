@@ -5,6 +5,9 @@ const initialState = Map({
   requesting: false,
   radio : Map(),
   showWelcomeBack: false,
+  currentLink: '/welcome',
+  changingQuestion: false,
+  termsAccepted: false,
 });
 
 function getPrevLink({ category, step, data }) {
@@ -30,7 +33,7 @@ function getNextLink({ category, step, data }) {
   // if last step in category
   if (data[category].length - 1 === step) {
     // if last category
-    if (categoryIndex === 1) return '/submit';
+    if (categoryIndex === 2) return '/submit';
     // change category and step to 0
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
@@ -44,9 +47,14 @@ export default function survey(state = initialState, action = {}) {
   const currentIndex = state.get('categoryIndex');
 
   switch (action.type) {
-  case actions.INITIAL_REQUEST:
+  case actions.GET_DATA_REQUEST:
     return state.merge({
       requesting: true,
+    });
+  case actions.GET_DATA_REQUEST_ERROR:
+  case actions.GET_DATA_REQUEST_SUCCESS:
+    return state.merge({
+      requesting: false,
     });
   case actions.FILL_STATE:
     const categories = Object.keys(action.data);
@@ -56,6 +64,7 @@ export default function survey(state = initialState, action = {}) {
       categoryIndex: 0,
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
+      currentLink: '/survey/personal/q/0',
       nextLink: getNextLink({ category: categories[0], step: 0, data: action.data }),
       prevLink: getPrevLink({ category: categories[0], step: 0, data: action.data }),
       data: action.data,
@@ -88,6 +97,10 @@ export default function survey(state = initialState, action = {}) {
       storedSsn: action.ssn,
       ssnError: isValid ? null : 'Please type valid SSN',
     });
+  case actions.CHANGING_QUESTION:
+    return state.merge({
+      changingQuestion: true
+    });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
 
@@ -95,18 +108,49 @@ export default function survey(state = initialState, action = {}) {
     const categoryNames = Object.keys(data).map(key => key.toLowerCase());
     const catIndex = categoryNames.indexOf(action.category);
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
+    let prevLink = getPrevLink({ category: nextCategory, step: action.number, data });
+
+    if (action.number === 2 && catIndex === 2) { // Check
+      prevLink = '/survey/fund/q/0';
+    }
+
+    // if (action.number === 2 && catIndex === 2) { // Accounts page
+    //   prevLink = '/survey/fund/q/1';
+    // }
 
     return state.merge({
+      changingQuestion: false,
       category: nextCategory,
       categoryIndex: catIndex,
       step: action.number,
+      currentLink: `/survey/${nextCategory.toLowerCase()}/q/${action.number}`,
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
-      prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
+      prevLink,
       formType: data[nextCategory][action.number].type,
     });
   case actions.SHOW_WELCOME_BACK:
     return state.merge({
       showWelcomeBack: true,
+    });
+  case actions.HIDE_WELCOME_BACK:
+    return state.merge({
+      showWelcomeBack: false,
+    });
+  case actions.TERMS_TOGGLE:
+    return state.merge({
+      termsAccepted: state.get('termsAccepted') ? false : true,
+    });
+  case actions.FEEDBACK_SUCCESS:
+    return state.merge({
+      feedbackSuccess: true,
+    });
+  case actions.FEEDBACK_FAILED:
+    return state.merge({
+      feedbackFailed: true,
+    });
+  case actions.SET_CATEGORY_INDEX:
+    return state.merge({
+      categoryIndex: action.index,
     });
   default:
     return state;

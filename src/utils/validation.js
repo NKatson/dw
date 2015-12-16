@@ -24,14 +24,28 @@ class Validation {
       this.errors[fieldName] = message;
     }
   }
-  checkLength(fieldName, min) {
+  checkMin(fieldName, min) {
     if (this.errors[fieldName]) return;
 
     if (this.data[fieldName] && this.data[fieldName].length < min) {
       this.errors[fieldName] = `Field must be minimum ${min} characters long`;
     }
   }
-  checkIncome(fieldName) {
+  checkMax(fieldName, max) {
+    if (this.errors[fieldName]) return;
+
+    if (this.data[fieldName] && this.data[fieldName].length > max) {
+      this.errors[fieldName] = `Field must be maximum ${max} characters long`;
+    }
+  }
+  checkLength(fieldName, length) {
+    if (this.errors[fieldName]) return;
+
+    if (this.data[fieldName] && this.data[fieldName].length !== length) {
+      this.errors[fieldName] = `Field length must be ${length} characters long`;
+    }
+  }
+  checkCurrency(fieldName, min, message) {
     if (this.errors[fieldName] || !this.data[fieldName]) return;
 
     if (this.data[fieldName] === '$ ') {
@@ -42,8 +56,8 @@ class Validation {
     let val = this.data[fieldName].replace(/[,\$\s]/g, '');
     val = parseInt(val);
 
-    if (val < 8000) {
-      this.errors[fieldName] = 'Please confirm your annual income.';
+    if (val < min) {
+      this.errors[fieldName] = message;
     }
   }
   checkDateOfBirth(fieldName) {
@@ -104,6 +118,9 @@ export function registration(data) {
   const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
   valid.checkRequired('email', 'Your email address is required.');
+  valid.checkRequired('firstName', 'Your first name is required.');
+  valid.checkRequired('lastName', 'Your last name is required.');
+
   valid.checkRegex('email', emailReg, 'Please use valid email address.');
 
   valid.checkRequired('password', 'Enter your password.');
@@ -124,22 +141,54 @@ export function validateSurvey(data) {
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const requiredFields = [
-    'first_name', 'last_name', 'address', 'city', 'zip_code', 'phone',
-   'date_of_birth', 'employer', 'title', 'industry_kind',
-   'state', 'employment_status', 'ssn', 'annual_income', 'income_source'];
+    'first_name',
+    'last_name',
+    'address',
+    'city',
+    'zip_code',
+    'phone',
+    'date_of_birth',
+    'employer',
+    'title',
+    'industry_kind',
+    'state',
+    'employment_status',
+    'ssn',
+    'annual_income',
+    'income_source',
+    'bank_connected_how_much',
+    'citizen',
+    'bankName',
+    'accountTitle',
+    'transitRouting',
+    'routing_name',
+    'bankAccount',
+    'amountOfTransaction',
+ ];
 
   requiredFields.forEach(fieldName => {
     valid.checkRequired(fieldName);
   });
 
+  // personal
   valid.checkRegex('date_of_birth', dateOfBirthRegex, 'Please type a valid date (MM/DD/YYYY)');
   valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
   valid.checkRegex('city', addressRegex, 'Please type valid city format');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
-
   valid.checkDateOfBirth('date_of_birth');
-  valid.checkIncome('annual_income');
+
+  // check
+  valid.checkMax('bankName', 100);
+  valid.checkMax('accountTitle', 150);
+  valid.checkLength('transitRouting', 9);
+  valid.checkRegex('bankName', addressRegex, 'Please type valid bank name format');
+  valid.checkRegex('accountTitle', addressRegex, 'Please type valid account name format');
+  valid.checkCurrency('amountOfTransaction', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
+
+  // accounts page
+  valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
+  valid.checkCurrency('bank_connected_how_much', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
 
   return valid.getErrors();
 }

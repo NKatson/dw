@@ -3,6 +3,12 @@ import MaskedInput from 'react-maskedinput';
 import CurrencyMaskedInput from 'react-currency-masked-input';
 
 class SsnInput extends React.Component {
+  componentWillMount() {
+    const { showSsn, handleShowSsnClick } = this.props;
+    if (showSsn) {
+      handleShowSsnClick();
+    }
+  }
   componentWillUnmount() {
     const { showSsn, handleShowSsnClick } = this.props;
     if (showSsn) {

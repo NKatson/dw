@@ -8,19 +8,20 @@ import { registration as validate } from '../utils/validation';
 
 export class Authorization extends React.Component {
   componentDidMount() {
-      const { location: { query: { unlock_token } }, dispatch, confirmingToken } = this.props;
+      const { location: { query: { unlock_token } }, dispatch, confirmingToken, nextLink } = this.props;
       if (unlock_token) {
         if (confirmingToken) return;
         dispatch(unlockToken(unlock_token, () => {
-          this.context.history.replaceState(null, '/signin');
+           this.context.history.replaceState(null, '/signin');
         }));
       }
   }
   handleSubmit(e) {
-    const { dispatch, fields: { email, password } } = this.props;
+    const { dispatch, fields: { email, password }, nextLink } = this.props;
     e.preventDefault();
     dispatch(login(email.value, password.value, () => {
-      this.context.history.replaceState(null, '/welcome');
+      let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+      window.location.href = `http://${window.location.hostname}${port}/welcome`;
     }));
   }
   render() {
@@ -87,6 +88,7 @@ function mapStateToProps(state) {
     userEmail: state.auth.getIn(['user', 'email']),
     confirmingToken: state.auth.get('confirmingToken'),
     confirmTokenMessage: state.auth.get('confirmTokenMessage'),
+    nextLink: state.survey.get('nextLink'),
   };
 }
 

@@ -3,22 +3,29 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Header, Footer } from '../components';
 import { logout } from '../redux/actions/auth';
-import { getData } from '../redux/actions/survey';
+import { getData, showWelcomeBack } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
   componentDidMount() {
-    const { requesting, data } = this.props;
+    const { requesting, data, currentLink, dispatch } = this.props;
+    if (currentLink && currentLink !== '/welcome') {
+      dispatch(showWelcomeBack());
+      return this.context.history.push( currentLink);
+    }
+
     if (!requesting && !data) {
-      this.props.dispatch(getData(() => {
+      this.props.dispatch(getData((err) => {
         // redirect if Unauthorized
-        this.context.history.pushState(null, '/signin');
+        if (err) {
+          return this.context.history.push( '/signin');
+        }
       }));
     }
   }
   handleLogout(e) {
     e.preventDefault();
-    this.props.dispatch(logout( () => {
-        this.context.history.pushState(null, '/signin');
+    this.props.dispatch(logout(null, () => {
+        this.context.history.push( '/signin');
     }));
   }
   render() {
@@ -77,6 +84,7 @@ function mapStateToProps(state) {
   return {
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
+    currentLink: state.survey.get('currentLink'),
   }
 }
 

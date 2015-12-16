@@ -15,7 +15,7 @@ class CurrencyInput extends React.Component {
    }
 
   _onChange(e) {
-    let [ , val ] = /\$\s([\d\,]*)/.exec(e.target.value) || [];
+    let [ , val ] = /\$\s*([\d\,]*)/.exec(e.target.value) || [];
 
     if (!val) {
       this.setState({ value: ''});
@@ -42,7 +42,7 @@ class CurrencyInput extends React.Component {
   render () {
     return (
       <input
-        className="input-text"
+        className={this.props.className}
         type='text'
         value={'$ ' + this.state.value}
         onChange={::this._onChange}

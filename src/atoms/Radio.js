@@ -5,7 +5,7 @@ class Radio extends React.Component {
     const { text, imagePath, description, isChecked, handleClick } = this.props;
     return (
       <label className={'btn tell-us-block__choise' + (isChecked ? ' active' : '')}>
-          <input type="radio" name="options" autoComplete="off" onClick={handleClick} value={text}  />
+          <input type="radio" name="options" onClick={handleClick} value={text}  />
           {
             imagePath ? <img src={imagePath} className="tell-us-block__choise-img" /> : null
           }

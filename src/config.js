@@ -11,6 +11,7 @@ const environment = {
 
 module.exports = Object.assign({
   port: process.env.PORT,
+  host: process.env.HOST,
   apiHost: process.env.API_HOST,
   apiPort: process.env.API_PORT,
   app: {

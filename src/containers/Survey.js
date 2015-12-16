@@ -3,24 +3,40 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { DynamicForm, Category, Header, Footer } from '../components';
-import { SurveyFormHeader } from '../atoms';
+import { SurveyFormHeader, PreLoader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
+import { saveState } from '../utils/apiClient';
 
 class Survey extends React.Component {
-  componentDidMount() {
+  handleParams(params) {
+    const { category: nextCategory = null, number: nextNumber = null } = params;
+    const { category = 'personal', step = 0 } = this.props;
+    if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
+      this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
+    }
+  }
+  componentWillMount() {
     const { requesting, data } = this.props;
     if (!requesting && !data) {
       this.props.dispatch(surveyActions.getData(() => {
         // redirect if Unauthorized
-        this.context.history.pushState(null, '/signin');
+        this.context.history.push('/signin');
       }));
     }
+    ::this.handleParams(this.props.params);
+  }
+  componentWillReceiveProps(nextProps) {
+    ::this.handleParams(nextProps.params);
   }
   handleLogout(e) {
     e.preventDefault();
-    this.props.dispatch(auth.logout( () => {
-        this.context.history.pushState(null, '/signin');
+    const { state } = this.props;
+    this.props.dispatch(saveState(state, err => {
+      if (err) return console.log(err);
+      this.props.dispatch(auth.logout(null, () => {
+        this.context.history.push( '/signin');
+      }));
     }));
   }
   renderCategories(data) {
@@ -41,7 +57,7 @@ class Survey extends React.Component {
         result.push(
               <div
                 key={'dvdr-' + index}
-                className={'wfm-steps__dvdr ' + (index === categoryIndex - 1 ? 'passed' : null )}>
+                className={'wfm-steps__dvdr ' + (index < categoryIndex ? 'passed' : '' )}>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -57,7 +73,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType, recommendMessageType } = this.props;
+    const { data, stepType, recommendMessageType, requesting } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
@@ -90,12 +106,17 @@ Survey.contextTypes = {
 
 function mapStateToProps(state) {
   return {
+    state: state,
     data: state.survey.get('data'),
     requesting: state.survey.get('requesting'),
     category: state.survey.get('category'),
     categoryIndex: state.survey.get('categoryIndex'),
     accountType: state.survey.get('accountType'),
+    step: state.survey.get('step'),
+    category: state.survey.get('category'),
     recommendMessageType: state.survey.get('recommendMessageType'),
+    category: state.survey.get('category'),
+    step: state.survey.get('step'),
   };
 }
 export default connect(mapStateToProps)(Survey);

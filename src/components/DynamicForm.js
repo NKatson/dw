@@ -3,11 +3,11 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import  PersonalForm from './PersonalForm';
-import { InputText, Select, RecommendBlock, WelcomeBack } from '../atoms/index';
+import { InputText, Select } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
-import { radioClick, enableButton } from '../redux/actions/survey';
+import { radioClick, enableButton, hideWelcomeBack } from '../redux/actions/survey';
 
 class DynamicForm extends Component {
   getInputs(question, fields) {
@@ -27,12 +27,12 @@ class DynamicForm extends Component {
     const multipleTypes = ['checkbox', 'radio'];
     if (multipleTypes.indexOf(question.type) !== - 1) {
       const inputs = ::this.getInputs(question, fields);
-      const { formKey, chooseAccount, radio } = this.props;
+      const { formKey, radio } = this.props;
       return <InputMultiple
               key={question.name}
               question={question}
               inputs={inputs}
-              selectedValue={radio[question.htmlName] ? radio[question.htmlName] : null }
+              selectedValue={radio[question.name] ? radio[question.name] : null }
               handleClick={::this.handleRadioClick}
             />
     } else if (question.type === 'dropdown') {
@@ -95,51 +95,60 @@ class DynamicForm extends Component {
     }
   }
   render() {
-    const { title, formKey, fields, questions, description, hint, categoryIndex, step, prevLink, nextLink, accountType, radio } = this.props;
-    const account = radio['invest-radio-217'] && !accountType ? radio['invest-radio-217'] : accountType;
+    const { title, formKey, fields, questions, description, hint, categoryIndex
+      , step, prevLink, nextLink, accountType, radio, firstName } = this.props;
+    const account = radio['invest_period'] && !accountType ? radio['invest_period'] : accountType;
     const selected = accountType ? true : false;
 
     // hardcode this time
     let disableNext = false;
-    if (categoryIndex === 1 && step === 0 && !radio['invest-radio-217']) {
+    if (formKey === 'invest-step-2' && !radio['crysis2008']) {
       disableNext = true;
     }
 
-    if (categoryIndex === 1 && step === 1 && !radio['invest-radio-210']) {
+    if (formKey === 'fund-step-3' && !radio['typeOfAccount']) {
       disableNext = true;
     }
 
     return (
       <div>
         <h2>{title}</h2>
-        {formKey === "invest-step-2" ?
-          <RecommendBlock
-            isSelected={selected}
-            accountType={account}
-          />
-           : null}
-       {categoryIndex === 1 && step === 1 ?
-         <div className="text-center">
-           <h4>Markets move up and down.<br />
-             How comfortable are you with changes?</h4>
-           <p>In 2008 the worst happened!!  The markets lost more than 50% of their value within a few short years (2007-2009).</p>
-           <p>If this happened again, would you:</p>
+
+       {formKey === 'invest-step-2'?
+         <div>
+           <div className="text-center" style={{paddingTop: '15px'}}>
+             <h4>Markets move up and down.<br />
+               How comfortable are you with changes?</h4>
+              <p>In 2008 the worst happened!!  The markets lost more than 50% of their value within a few short years (2007-2009).</p>
+              <p>If this happened again, would you:</p>
+           </div>
+           {disableNext ? null : <div className="wfm-message wfm-message_hint">
+                  By 2012 the markets had fully recovered – and since have grown 170% since the low in 2009.
+                  WorthFM recommends investing over a longer period time to achieve sustained growth (if you want to change your answer below, its OK).
+              </div>}
          </div>
-          : null}
+          :
+          null}
+
           <p>{description}</p>
 
         <form className="common-form anketa-form" onSubmit={this.props.handleSubmit} autoComplete="off">
+            {formKey === 'fund-step-3' ? <div className="anketa-form__fieldset"><img src={require('../../static/images/routing-number.png')} alt="" /></div> : null}
             {::this.renderQuestions(questions, fields)}
-            {categoryIndex === 1 && step === 1 ?
+            {
+              formKey === 'invest-step-2' ?
               <p className="text-center">Tell me more about <a href="#" className="grey-color">how the markets fluctuate</a></p>
-               : null}
+              : null
+            }
             <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
+                    {formKey === 'fund-step-3' ? null :
                     <button
                       className="btn btn_yellow"
                       disabled={disableNext}
                       >Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
+                    }
                 </div>
             </div>
         </form>
@@ -165,7 +174,6 @@ DynamicForm.propTypes = {
     formData: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
     radio: PropTypes.object.isRequired,
-    showWelcomeBack: PropTypes.bool,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -173,6 +181,7 @@ function mapDispatchToProps(dispatch) {
     dispatch: dispatch,
   }
 }
+
 export default reduxForm({
   form: 'dynamic',
   validate,

@@ -1,29 +1,68 @@
 import request from 'superagent';
-import config from '../config';
+import Cookies from 'js-cookie';
 
-const apiPort = config.apiPort || 8080;
-const apiHost = config.apiHost || 'localhost';
-let host = `http://dev.worthfm.com` ;
-let redirectUrl = host + '/confirm-password';
+function getConfig(cb) {
+  request.get('/config').end((err, res) => {
+    if (err) return { host: 'localhost:3000', apiHost: 'http://dev.worthfm.com' };
 
-// if (apiPort === 8080 && apiHost === 'localhost') {
-//   host += `:${apiPort}`;
-// }
-//
-//host = 'http://localhost:8080';
-redirectUrl = 'http://localhost:3000/welcome';
+    let { apiPort = 8080, apiHost = 'localhost', host = 'localhost', port = 3000 } = res.body;
+
+    host = `http://${host}`;
+    apiHost = `http://${apiHost}`;
+
+    if (host === 'http://localhost') {
+      host = `${host}:${port}`;
+    }
+
+    return cb({ host, apiHost });
+  });
+}
 
 function saveLocal(res) {
   const { uid, client, client_id} = res.headers;
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = uid;
   localStorage.client  = client ? client : client_id;
+
+  if (!Cookies.get('uid')) {
+      Cookies.set('uid', uid, { expires: 7, path: '' });
+  }
 }
 
 function clearLocal() {
-  delete localStorage.state_survey;
-  delete localStorage.state_form;
-  delete localStorage.state_auth;
+  delete localStorage.accessToken;
+  delete localStorage.uid;
+  delete localStorage.client;
+  Cookies.remove('uid');
+}
+
+function checkResponse(err, res, cb) {
+  if (err && typeof res === 'undefined') return cb('Server does not respond');
+  if (err) return cb(res.body);
+  if (res.body.errors && res.body.errors.length > 0 || res.body.error) return cb(res.body);
+
+  if (typeof res.headers['access-token'] !== 'undefined') {
+    saveLocal(res);
+  }
+
+  return cb(null, res.body);
+}
+
+export function saveState(state, cb) {
+  const url = '/state/create';
+
+  getConfig(config => {
+    request
+    .post(config.host + url)
+    .send({
+      state,
+      uid: localStorage.uid,
+    })
+    .end((err, res) => {
+      if (err) return cb(err);
+        cb(null);
+    });
+  });
 }
 
 /**
@@ -31,20 +70,14 @@ function clearLocal() {
  */
 export function getForm(cb) {
   const url = '/api/questions';
-
-  request
-    .get(host + url)
+  getConfig(config => {
+    request
+    .get(config.apiHost + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
-      });
+        checkResponse(err, res, cb);
     });
+  });
 }
 
 /**
@@ -53,19 +86,15 @@ export function getForm(cb) {
 export function sendPersonal(data, cb = () => {}) {
   const url = '/api/accounts';
 
-  request
-    .post(host + url)
+  getConfig(config => {
+    request
+    .post(config.apiHost + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
-      });
+        checkResponse(err, res, cb);
     });
+  });
 }
 
 /**
@@ -73,20 +102,15 @@ export function sendPersonal(data, cb = () => {}) {
  */
 export function sendQuestions(data, cb = () => {}) {
   const url = '/api/question_answers';
-
-  request
-    .post(host + url)
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-    .send(data)
-    .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-      saveLocal(res);
-      return cb(null, {
-        ...res.body,
+  getConfig(config => {
+    request
+      .post(config.apiHost + url)
+      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      .send(data)
+      .end((err, res) => {
+          checkResponse(err, res, cb);
       });
-    });
+  });
 }
 
 /**
@@ -94,69 +118,67 @@ export function sendQuestions(data, cb = () => {}) {
  */
 export function login({ email, password, cb }) {
   const url = '/api/auth/sign_in';
+  getConfig(config => {
+    request
+      .post(config.apiHost + url)
+      .send({email, password, 'access-token': localStorage.accessToken})
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        if (err && typeof res === 'undefined') return cb('Server does not respond');
+        if (err) return cb(res.body);
+        if (res.errors && res.errors.length > 0) return cb(res.body);
 
-  request
-    .post(host + url)
-    .send({email, password, 'access-token': localStorage.accessToken})
-    .set('Accept', 'application/json')
-    .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
+        clearLocal();
 
-      clearLocal();
-
-      localStorage.client = res.headers.client;
-      saveLocal(res);
-      return cb(null, {
-        accessToken: res.headers['access-token'],
-        uid: res.headers.uid,
-        client: res.headers.client,
-        ...res.body,
+        localStorage.client = res.headers.client;
+        saveLocal(res);
+        return cb(null, {
+          accessToken: res.headers['access-token'],
+          uid: res.headers.uid,
+          client: res.headers.client,
+          ...res.body,
+        });
       });
-    });
+  });
 }
 
 /**
  * POST /api/auth/password
  */
 export function reset({ email, cb }) {
-  request
-    .post(host + '/api/auth/password')
-    .send({email: email, redirect_url: redirectUrl})
-    .set('Accept', 'application/json')
-    .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-
-      return cb(null, res.body);
-    });
+  getConfig(config => {
+    request
+      .post(config.apiHost + '/api/auth/password')
+      .send({email: email})
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+          checkResponse(err, res, cb);
+      });
+  });
 }
 
 /**
  * POST /api/auth/password/edit
  */
 export function checkResetPasswordToken(token, cb) {
-  request
-    .post(host + '/api/auth/password/edit')
-    .send({reset_password_token: token, redirect_url: redirectUrl})
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/auth/password/edit')
+    .send({reset_password_token: token})
     .set('Accept', 'application/json')
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-
-      return cb(null, res.body);
+        checkResponse(err, res, cb);
     });
+  });
 }
 
 /**
  * GET /api/auth/confirmation
  */
 export function confirmEmailToken(token, cb) {
-  request
-    .get(host + '/api/auth/confirmation')
+  getConfig(config => {
+    request
+    .get(config.apiHost + '/api/auth/confirmation')
     .query({config: 'default'})
     .query({confirmation_token: token})
     .set('Accept', 'application/json')
@@ -168,6 +190,7 @@ export function confirmEmailToken(token, cb) {
 
       return cb(null, res.body);
     });
+  });
 }
 
 
@@ -175,8 +198,9 @@ export function confirmEmailToken(token, cb) {
  * GET /api/auth/confirmation
  */
 export function unlockToken(token, cb) {
-  request
-    .get(host + '/api/auth/unlock')
+  getConfig(config => {
+    request
+    .get(config.apiHost + '/api/auth/unlock')
     .query({config: 'default'})
     .query({unlock_token: token})
     .set('Accept', 'application/json')
@@ -186,14 +210,16 @@ export function unlockToken(token, cb) {
 
       return cb(null, res.body.message);
     });
+  });
 }
 
 /**
  * GET /api/auth/password/edit
  */
 export function checkPasswordToken(token, cb) {
-  request
-    .get(host + '/api/auth/password/edit')
+  getConfig(config => {
+    request
+    .get(config.apiHost + '/api/auth/password/edit')
     .query({config: 'default'})
     .query({reset_password_token: token})
     .set('Accept', 'application/json')
@@ -204,6 +230,7 @@ export function checkPasswordToken(token, cb) {
 
       return cb(null, res.body);
     });
+  });
 }
 /**
  * PUT /api/auth/password
@@ -213,8 +240,9 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
   localStorage.client = client;
   localStorage.uid = uid;
 
-  request
-    .put(host + '/api/auth/password')
+  getConfig(config => {
+    request
+    .put(config.apiHost + '/api/auth/password')
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send({password, password_confirmation: confirmPassword})
     .set('Accept', 'application/json')
@@ -225,37 +253,70 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
       saveLocal(res);
       return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
     });
+  });
 }
 
 /**
  * DELETE /api/auth/sign_out
  */
-export function logout({ user = null, cb }) {
-  request
-    .del(host + '/api/auth/sign_out')
+export function logout({ user = null, cb = () => {} }) {
+  getConfig(config => {
+    request
+    .del(config.apiHost + '/api/auth/sign_out')
     .send({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
-
       clearLocal();
-
       return cb(null, res.body);
     });
+  });
 }
 
+/**
+ * POST /plaid/auth
+ */
+export function plaidAuth(publicToken, cb) {
+  getConfig(config => {
+    request
+    .post(config.host + '/plaid/auth')
+    .send({ publicToken })
+    .set('Accept', 'application/json')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      return cb(null, res.body);
+    });
+  });
+}
+
+/**
+ * POST /api/feedback
+ */
+export function sendFeedback(data, cb = () => {}) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/feedback')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+    });
+  });
+}
 
 /**
  * POST /api/auth
  */
 export function registration({ data, cb }) {
-  request
-    .post(host + '/api/auth')
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/auth')
     .send({
       ...data,
       'access-token': localStorage.accessToken,
-      //confirm_success_url: 'http://localhost:3000/confirm-email'
     })
     .set('Accept', 'application/json')
     .end((err, res) => {
@@ -275,9 +336,11 @@ export function registration({ data, cb }) {
       localStorage.uid = data.email;
       localStorage.accessToken = res.headers['access-token'];
 
+      console.log(res.body);return;
       return cb(null, {
         ...res.body,
         accessToken: res.headers['access-token'],
       });
     });
+  });
 }

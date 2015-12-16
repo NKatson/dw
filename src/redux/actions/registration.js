@@ -34,7 +34,7 @@ export function registration(data, cb) {
         if (err) return dispatch(registrationFailure(err));
 
         dispatch(registrationSuccess());
-        dispatch(loginSuccess({confirmed: false, ...body})).then(() => {
+        dispatch(loginSuccess(body)).then(() => {
           cb();
         });
       },

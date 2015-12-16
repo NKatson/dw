@@ -6,34 +6,34 @@ import $ from 'jquery';
 class InputText extends React.Component {
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
-      label, defaultValue, maskPattern, errorMessageClass, inputClass } = this.props;
+      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency } = this.props;
     const mask = maskPattern || '111-111-1111';
-    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
+    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income' || field.name === 'initial_fund';
     let component = null;
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
-        autoComplete="off"
         className="input-text"
         mask={mask}
         placeholder={placeholder}
         type={type ? type : 'text'}
         value={defaultValue ? defaultValue : ""}
         {...field}
+        autoComplete="off"
         />;
     } else {
       component =  <input
-        autoComplete="off"
         autoFocus={defaultValue ? true : false}
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder={placeholder}
         type={type ? type : 'text'}
         value={field.value ? '' : defaultValue}
         {...field}
+        autoComplete="off"
         />
       }
 
-    if (isIncome) {
+    if (isIncome || isCurrency) {
       component =  <CurrencyInput
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder="$"

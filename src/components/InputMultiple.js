@@ -15,26 +15,30 @@ class InputMultiple extends React.Component {
     });
   }
   render () {
-    const { question : { htmlName, label }, handleClick, inputs, selectedValue } = this.props;
+    const { question : { name, label }, handleClick, inputs, selectedValue } = this.props;
     return (
       <div className="anketa-form__fieldset">
-        {htmlName === 'invest-radio-210' ? null : <p className="text-center">{label}</p> }
+        {name === 'crysis2008' ? null : <p>{label}</p> }
         {inputs.map((input, index) => {
           let iProps = {
             id: 'option-'  + index,
             className: 'chbx-styled',
             type: 'radio',
             value: input.value,
-            htmlName: htmlName,
           };
           if (handleClick) {
             iProps.onClick = handleClick;
+          }
+          if (name) {
+            iProps.name = name;
           }
 
           return (
             <div className="input-wrap input-wrap_with-radio" key={input.label}>
               <input {...input.field} {...iProps} checked={input.value == selectedValue ? true : false} />
-              <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span></label>
+              <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
+              {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
+              </label>
             </div>
           );
         })}
@@ -45,9 +49,9 @@ class InputMultiple extends React.Component {
 
 InputMultiple.propTypes = {
   question: PropTypes.shape({
-    htmlName: PropTypes.string,
     class: PropTypes.string,
     label: PropTypes.string,
+    balance: PropTypes.string,
   }),
   handleClick: PropTypes.func,
   inputs: PropTypes.arrayOf(PropTypes.shape({

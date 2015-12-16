@@ -20,7 +20,6 @@ export default function auth(state = initialState, action = {}) {
     }));
   case actions.LOGIN_SUCCESS:
     return fromJS({
-      confirmed: action.confirmed,
       loggedIn: true,
       user: action.user,
     });
@@ -29,7 +28,9 @@ export default function auth(state = initialState, action = {}) {
       loggingOut: true,
     }));
   case actions.LOGOUT_SUCCESS:
-    return initialState;
+    return initialState.merge(Map({
+      loginError: action.message,
+    }));
   case actions.LOGOUT_FAILURE:
     return state.merge(Map({
       logoutError: action.error,
@@ -46,7 +47,8 @@ export default function auth(state = initialState, action = {}) {
   case actions.CONFIRM_TOKEN_SUCCESS:
     return state.merge(Map({
       confirmTokenError: null,
-      confirmTokenMessage: action.message,
+      confirmed: true,
+      loginError: action.message,
       confirmingToken: false,
     }));
   default:
