@@ -336,7 +336,6 @@ export function registration({ data, cb }) {
       localStorage.uid = data.email;
       localStorage.accessToken = res.headers['access-token'];
 
-      console.log(res.body);return;
       return cb(null, {
         ...res.body,
         accessToken: res.headers['access-token'],
