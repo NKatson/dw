@@ -1,15 +1,17 @@
 import React, { PropTypes } from 'react';
-import { Checkbox } from '../atoms';
-import { RothModal } from '../components';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { Checkbox } from '../atoms';
+import { RothModal } from '../components';
+import { joint, buttonClick, showModalToggle } from '../redux/actions/bundle';
+
 class BundleForm extends React.Component {
-  showModal(e) {
-    e.preventDefault();
-    $('#modalRothIRA').modal('show');
+  showModal() {
+      this.props.dispatch(showModalToggle());
   }
   render() {
-    const { handleTermsToggle, checked } = this.props;
+    const { handleTermsToggle, checked, showModal, joint, step } = this.props;
     return (
       <div>
         <h2>2. LET’S OPEN YOUR WORTHFM ACCOUNT</h2>
@@ -61,6 +63,10 @@ class BundleForm extends React.Component {
               </div>
           </div>
 
+          <RothModal
+            {...this.props}
+          />
+
           <div className="text-center">
             {this.props.children}
             <div className="wfm-not-agree-link">
@@ -69,48 +75,27 @@ class BundleForm extends React.Component {
             </div>
           </div>
         </form>
-
-        <div className="modal fade wfm-common-modal modal-roth-ira" id="modalRothIRA" role="dialog" aria-labelledby="myModalLabel">
-          <RothModal
-            header={this.props.header}
-            >
-            <form className="common-form text-center">
-                <p>Do you fill taxes jointly?</p>
-                <p>
-                    <span className="pad-01">
-                      <Checkbox
-                        type="radio"
-                        id="yes"
-                        />
-                      <label htmlFor="yes">Yes</label></span>
-                    <span className="pad-01"><input type="radio" name="jointly" className="chbx-styled" id="no" /> <label htmlFor="no">No</label></span>
-                </p>
-                <div className="wfm-common-modal__buttons"><a href="#" className="btn btn_yellow btn_blue-text">Continue
-                  <span className="wfm-i wfm-i-arr-right-blue"></span></a></div>
-            </form>
-            <p className="text-center pad-19"><a href="#" data-descr="iraDescr" className="wfm-link-with-descr">What is Roth IRA?</a></p>
-            <div  className="wfm-link-descr pad-18">A Roth IRA is a type of retirement
-              account that allows earnings to grow tax-free.Contributions are made
-               with after-tax dollars, and withdrawals are tax and penalty-free as
-                long as the account has been open for five years and you are over 59 1/2.
-                The amount that you are able contribute is dependent upon your income,
-                age, and tax filling status. Roth IRAs do not require you to start
-                making withdrawals at a certain age and they also allow an individual
-                to make a tax and penalty-free withdrawal up to $10,000 for a first
-                time home purchase.</div>
-          </RothModal>
-        </div>
       </div>
     );
   }
 }
 
 BundleForm.propTypes = {
-  children: PropTypes.object.isRequired,
-  handleTermsToggle: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-  joint: PropTypes.string,
 }
 
-export default BundleForm;
+function mapStateToProps(state) {
+  return {
+    text: state.bundle.text,
+    link: state.bundle.link,
+    joint: state.bundle.joint,
+    header: state.bundle.header,
+    question: state.bundle.question,
+    showModal: state.bundle.showModal,
+    step: state.bundle.step,
+    totalIncome: state.bundle.income,
+  };
+}
+
+export default connect(mapStateToProps)(BundleForm);

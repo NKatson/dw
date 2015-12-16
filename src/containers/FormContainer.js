@@ -4,6 +4,7 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
 import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Buttons } from '../components';
 import * as surveyActions from '../redux/actions/survey';
+import * as bundleActions from '../redux/actions/bundle';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
 import { WelcomeBack, Question } from '../atoms';
@@ -149,15 +150,8 @@ class FormContainer extends React.Component {
             ><Buttons prevLink={prevLink} /></ConnectBank>
   }
   renderBundle() {
-    const { prevLink, nextLink, termsAccepted, bundleTextAccount, bundleLinkAccount
-          , joint } = this.props;
-    return <BundleForm
-        handleTermsToggle={::this.handleTermsToggle}
-        checked={termsAccepted}
-        text={bundleTextAccount}
-        link={bundleLinkAccount}
-        joint={joint}
-       >
+    const { prevLink, nextLink, termsAccepted } = this.props;
+    return <BundleForm>
        <Buttons
          prevLink={prevLink}
          nextLinkHandler={(e) => {
@@ -255,10 +249,6 @@ function mapStateToProps(state) {
     banks: state.plaid.banks,
     searchBanks: state.plaid.searchBanks,
     exit: state.plaid.exit,
-
-    bundleTextAccount: state.bundle.text,
-    bundleLinkAccount: state.bundle.link,
-    joint: state.bundle.string,
 
     termsAccepted: state.survey.get('termsAccepted'),
   };

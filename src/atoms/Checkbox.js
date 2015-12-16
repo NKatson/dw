@@ -9,16 +9,18 @@ class Checkbox extends React.Component {
         increaseArea: '20%'
     });
     $('input').on('ifToggled', (e) => {
-      console.log('toggle');
-      this.props.handleToggle();
+      if (this.props.handleToggle) {
+        this.props.handleToggle();
+      }
     });
     $('input').on('ifChecked', (e) => {
-      console.log('checked');
-      console.log(e.target.name, e.target.value);
+      if (this.props.handleCheck) {
+        this.props.handleCheck(e.target.name, e.target.value);
+      }
     });
   }
   render() {
-    const { handleToggle, id, checked, type } = this.props;
+    const { handleToggle, name, id, value, checked, type } = this.props;
     let addProps = {};
     if (typeof checked !== 'undefiend') {
       addProps.checked = checked;
@@ -31,6 +33,8 @@ class Checkbox extends React.Component {
     }
     return <input
       {...addProps}
+      value={value}
+      name={name}
       type={type ? type : 'checkbox'}
       className="chbx-styled"
       />

@@ -48,6 +48,7 @@ class CurrencyInput extends React.Component {
         onChange={::this._onChange}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
+        onKeyUp={this.props.onKeyUp}
       />
     )
   }

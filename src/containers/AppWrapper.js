@@ -20,9 +20,6 @@ class AppWrapper extends React.Component {
   if (!this.needUpdateTimer) return;
     ::this.resetTimer();
   }
-  componentDidMount() {
-    require('../../static/scripts/bootstrap.min');
-  }
   handleLogout() {
     $('#modalInactivity').on('hidden.bs.modal', () => {
       if (this.needLogout) {
