@@ -24,6 +24,8 @@ export default function auth(state = initialState, action = {}) {
       return Object.assign({}, state, {searchBanks: b});
     case actions.EXIT:
       return Object.assign({}, state, { exit: true });
+    case actions.RESET_ERROR:
+      return Object.assign({}, state, { exit: false });
     default:
       return state;
     }

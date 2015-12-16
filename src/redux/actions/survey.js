@@ -28,6 +28,8 @@ export const TERMS_TOGGLE          = 'TERMS_TOGGLE';
 export const FEEDBACK_FAILED      = 'FEEDBACK_FAILED';
 export const FEEDBACK_SUCCESS     = 'FEEDBACK_SUCCESS';
 
+export const SET_CATEGORY_INDEX   = 'SET_CATEGORY_INDEX';
+
 function initialRequest() {
   return {
     type: GET_DATA_REQUEST,
@@ -143,6 +145,13 @@ export function feedbackFailed() {
 export function feedbackSuccess() {
   return {
     type: FEEDBACK_SUCCESS
+  }
+}
+
+export function setCategoryIndex(index) {
+  return {
+    type: SET_CATEGORY_INDEX,
+    index,
   }
 }
 

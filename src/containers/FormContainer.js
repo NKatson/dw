@@ -6,7 +6,7 @@ import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Bu
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
-import { WelcomeBack } from '../atoms';
+import { WelcomeBack, Question } from '../atoms';
 
 class FormContainer extends React.Component {
   handleShowSsnClick() {
@@ -213,6 +213,7 @@ class FormContainer extends React.Component {
             handleClose={::this.handleWelcomeClose}
            /> : null}
         {::this.renderView(this.props.data.toJS())}
+        <Question />
       </div>
     );
   }

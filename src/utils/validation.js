@@ -151,33 +151,35 @@ export function validateSurvey(data) {
     'income_source',
     'bank_connected_how_much',
     'citizen',
-    'bank_name',
-    'account_name',
-    'routing_number',
+    'bankName',
+    'accountTitle',
+    'transitRouting',
     'routing_name',
-    'account_number',
-    'initial_fund',
+    'bankAccount',
+    'amountOfTransaction',
  ];
 
   requiredFields.forEach(fieldName => {
     valid.checkRequired(fieldName);
   });
 
+  // personal
   valid.checkRegex('date_of_birth', dateOfBirthRegex, 'Please type a valid date (MM/DD/YYYY)');
   valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
   valid.checkRegex('city', addressRegex, 'Please type valid city format');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
-
-  valid.checkMax('bank_name', 100);
-  valid.checkMax('title', 150);
-  valid.checkMax('routing', 150);
-  valid.checkRegex('bank_name', addressRegex, 'Please type valid bank name format');
-  valid.checkRegex('account_name', addressRegex, 'Please type valid account name format');
-  valid.checkRegex('title', addressRegex, 'Please type valid title name format');
-  valid.checkCurrency('initial_fund', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
-
   valid.checkDateOfBirth('date_of_birth');
+
+  // check
+  valid.checkMax('bankName', 100);
+  valid.checkMax('accountTitle', 150);
+  valid.checkMax('transitRouting', 150);
+  valid.checkRegex('bankName', addressRegex, 'Please type valid bank name format');
+  valid.checkRegex('accountTitle', addressRegex, 'Please type valid account name format');
+  valid.checkCurrency('amountOfTransaction', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
+
+  // accounts page
   valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
   valid.checkCurrency('bank_connected_how_much', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
 

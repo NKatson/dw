@@ -148,6 +148,10 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       feedbackFailed: true,
     });
+  case actions.SET_CATEGORY_INDEX:
+    return state.merge({
+      categoryIndex: 3,
+    });
   default:
     return state;
   }

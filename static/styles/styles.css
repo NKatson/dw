@@ -1149,6 +1149,44 @@ select.input-text {
   text-align: center;
   padding: 150px 0 200px;
 }
+.wfm-vcentered-block_mini {
+  padding: 20px 0 50px;
+}
 .pad-17 {
   margin-bottom: 40px;
+}
+.wfm-biglinks-list {
+  margin-bottom: 200px;
+}
+.wfm-biglinks-list a {
+  display: block;
+  border-top: 1px #d8d8d8 solid;
+  text-decoration: none;
+  line-height: 60px;
+  color: #464646;
+  font-size: 17px;
+  font-weight: 700;
+  position: relative;
+}
+.wfm-biglinks-list a:after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -10px;
+  background: url("../images/arrow_next.png") no-repeat center center;
+  background-size: 20px 20px;
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 240dpi) {
+  .wfm-biglinks-list a:after {
+    background-image: url(../images/arrow_next@2x.png);
+  }
+}
+.wfm-biglinks-list a:hover {
+  text-decoration: underline;
+}
+.wfm-biglinks-list a:last-child {
+  border-bottom: 1px #d8d8d8 solid;
 }

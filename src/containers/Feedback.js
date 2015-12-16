@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
-import { Select } from '../atoms/index';
+import { Select, Question } from '../atoms';
 import { feedbackFailed, feedbackSuccess } from '../redux/actions/survey';
 import { sendFeedback } from '../utils/apiClient';
 import { validateSurvey as validate } from '../utils/validation';
@@ -32,8 +32,8 @@ class Feedback extends React.Component {
       text = "We can help";
       desc = "A WorthFM Customer Service representative will reach out of your help. In most cased, we've able to continue setting up your account.";
     } else if (failed) {
-      text = "Sorry";
-      desc = "At this time only US Citizens can create WorthFM accounts.";
+      text = "Sorry!";
+      desc = "At this time only US citizens can create WorthFM accounts.";
     }
     return (
       <div>
@@ -63,6 +63,7 @@ class Feedback extends React.Component {
             </div>
           </form>
         }
+        <Question />
       </div>
     );
   }

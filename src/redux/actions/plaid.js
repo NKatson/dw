@@ -3,7 +3,8 @@ import * as api from '../../utils/apiClient';
 export const SET_BANKS  = 'SET_BANKS';
 export const SEARCH_BANKS = 'SEARCH_BANKS';
 export const SET_ACCOUNTS = 'SET_ACCOUNTS';
-export const EXIT = 'EXIT';
+export const EXIT         = 'EXIT';
+export const RESET_ERROR  = 'RESET_ERROR';
 
 export function setBanks(data, cb) {
   return {
@@ -22,6 +23,12 @@ export function setAccounts(accounts) {
 export function exit() {
   return {
     type: EXIT
+  }
+}
+
+export function reset() {
+  return {
+    type: RESET_ERROR
   }
 }
 

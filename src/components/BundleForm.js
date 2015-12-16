@@ -68,7 +68,7 @@ class BundleForm extends React.Component {
 }
 
 BundleForm.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.object.isRequired,
   handleTermsToggle: PropTypes.func.isRequired,
 }
 

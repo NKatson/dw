@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
 import ConnectBankError from './ConnectBankError';
 import * as api from '../utils/apiClient';
-import { auth, exit } from '../redux/actions/plaid';
+import { auth, exit, reset } from '../redux/actions/plaid';
+import { Question } from '../atoms';
 
 class ConnectBank extends React.Component {
   componentDidMount() {
@@ -40,6 +41,9 @@ class ConnectBank extends React.Component {
       this.linkHandler.open(id);
     }
   }
+  reconnect() {
+      this.props.dispatch(reset());
+  }
   renderBanks() {
     const { banks, bankTypes } = this.props;
     if (!banks) return;
@@ -51,6 +55,7 @@ class ConnectBank extends React.Component {
       const src = '../../static/images/banks/' + bank.type + '.png';
       return  (
         <a href="#"
+          key={bank.type}
           id={bank.type + '-a'}
           onClick={::this.handleBankClick}
           className="wfm-bank-item">
@@ -63,7 +68,7 @@ class ConnectBank extends React.Component {
     return (
       <div>
         {
-          this.props.exit ? <ConnectBankError /> :
+          this.props.exit ? <ConnectBankError reconnect={::this.reconnect} /> :
           <div>
             <h2>3. CONNECT YOUR BANK</h2>
             <p>Securely connect your bank account to your WorthFM account. When you fund your WorthFM account, your personalized plan automagically creates balance between your savings, investments, and retirement.</p>
@@ -88,6 +93,7 @@ class ConnectBank extends React.Component {
             </form>
           </div>
       }
+      <Question />
       </div>
     );
   }
