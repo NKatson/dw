@@ -98,6 +98,26 @@ export function sendPersonal(data, cb = () => {}) {
 }
 
 /**
+ * PATCH /api/accounts/type
+ */
+export function sendAccountType(data, cb) {
+  const url = '/api/accounts/type';
+
+  getConfig(config => {
+    request
+    .patch(config.apiHost + url)
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send({
+      'account-type' : data.accountType,
+      'annual_income' : data.income,
+    })
+    .end((err, res) => {
+        checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
  * POST /api/question_answers
  */
 export function sendQuestions(data, cb = () => {}) {

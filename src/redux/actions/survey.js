@@ -130,9 +130,10 @@ export function hideWelcomeBack() {
   }
 }
 
-export function toggleTerms() {
+export function toggleTerms(isAccepted) {
   return {
-    type: TERMS_TOGGLE
+    type: TERMS_TOGGLE,
+    isAccepted,
   }
 }
 

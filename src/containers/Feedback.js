@@ -57,7 +57,7 @@ class Feedback extends React.Component {
 
             <div className="text-center">
                 <div className="common-form__buttons">
-                    <Link to='/survey/invest/q/0' className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
+                    <Link to='/survey/invest/q/1' className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
                     <button
                       onClick={this.props.handleSubmit(::this.handleSubmit)}
                       className="btn btn_yellow"

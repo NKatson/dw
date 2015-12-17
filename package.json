@@ -39,6 +39,7 @@
     "react-bootstrap": "^0.28.1",
     "react-currency-masked-input": "^1.0.0",
     "react-dom": "^0.14.0",
+    "react-icheck": "^0.1.1",
     "react-maskedinput": "^3.0.0",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.2",

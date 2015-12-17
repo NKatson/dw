@@ -4,3 +4,5 @@ export SsnInput from './SsnInput';
 export WelcomeBack from './WelcomeBack';
 export Checkbox from './Checkbox';
 export Question from './Question';
+export ModalButton from './ModalButton';
+export Radio from './Radio';
