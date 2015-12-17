@@ -181,7 +181,7 @@ class FormContainer extends React.Component {
     for (let category in data) {
       data[category].map((form, index) => {
        if (index === this.props.step && category == this.props.category) {
-          if (form.formKey === 'invest-step-1') {
+          if (form.formKey === 'invest-step-2') {
             result.push(::this.renderBundle());
           } else if (form.formKey === 'fund-step-1') {
             result.push(::this.renderBanks());

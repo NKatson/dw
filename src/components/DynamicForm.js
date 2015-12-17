@@ -102,7 +102,7 @@ class DynamicForm extends Component {
 
     // hardcode this time
     let disableNext = false;
-    if (formKey === 'invest-step-2' && !radio['crysis2008']) {
+    if (formKey === 'invest-step-1' && !radio['crysis2008']) {
       disableNext = true;
     }
 
@@ -114,7 +114,7 @@ class DynamicForm extends Component {
       <div>
         <h2>{title}</h2>
 
-       {formKey === 'invest-step-2'?
+       {formKey === 'invest-step-1'?
          <div>
            <div className="text-center" style={{paddingTop: '15px'}}>
              <h4>Markets move up and down.<br />
@@ -136,7 +136,7 @@ class DynamicForm extends Component {
             {formKey === 'fund-step-3' ? <div className="anketa-form__fieldset"><img src={require('../../static/images/routing-number.png')} alt="" /></div> : null}
             {::this.renderQuestions(questions, fields)}
             {
-              formKey === 'invest-step-2' ?
+              formKey === 'invest-step-1' ?
               <p className="text-center">Tell me more about <a href="#" className="grey-color">how the markets fluctuate</a></p>
               : null
             }
