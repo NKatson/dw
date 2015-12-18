@@ -44,7 +44,7 @@ class Registration extends React.Component {
             inputClass="full-width"
             errorMessageClass="login-form__error-msg"
             field={lastName}
-            placeholder="First name"
+            placeholder="Last name"
           />
           <InputText
               inputClass="full-width"

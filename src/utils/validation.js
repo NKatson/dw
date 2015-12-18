@@ -38,6 +38,13 @@ class Validation {
       this.errors[fieldName] = `Field must be maximum ${max} characters long`;
     }
   }
+  checkLength(fieldName, length) {
+    if (this.errors[fieldName]) return;
+
+    if (this.data[fieldName] && this.data[fieldName].length !== length) {
+      this.errors[fieldName] = `Field length must be ${length} characters long`;
+    }
+  }
   checkCurrency(fieldName, min, message) {
     if (this.errors[fieldName] || !this.data[fieldName]) return;
 
@@ -174,7 +181,7 @@ export function validateSurvey(data) {
   // check
   valid.checkMax('bankName', 100);
   valid.checkMax('accountTitle', 150);
-  valid.checkMax('transitRouting', 150);
+  valid.checkLength('transitRouting', 9);
   valid.checkRegex('bankName', addressRegex, 'Please type valid bank name format');
   valid.checkRegex('accountTitle', addressRegex, 'Please type valid account name format');
   valid.checkCurrency('amountOfTransaction', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
