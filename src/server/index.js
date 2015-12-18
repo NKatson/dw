@@ -19,7 +19,7 @@ import config from '../config';
 import getRoutes from '../routes';
 import Html from '../helpers/Html';
 
-import { setBanks } from '../redux/actions/plaid';
+import { saveBanks } from '../redux/actions/plaid';
 
 const MongoStore = require('connect-mongo')(session);
 import './config/db';
@@ -87,12 +87,24 @@ function processRoute(req, res, initialState) {
 	    } else if (redirectLocation) {
 	      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 	    } else if (renderProps) {
-
-				if (req.url === '/survey/fund/q/0') {
+				if (req.url === '/survey/fund/q/0' && store.getState().plaid.banks.length === 0) {
 					// plaid API institutions request
 					plaid.getInstitutions(plaid.environments.tartan, (err, data) => {
-						store.dispatch(setBanks(data));
-						handleRender(req, res, renderProps, store);
+						store.dispatch(saveBanks(data, () => {
+							const newState = store.getState();
+							const object = {
+									uid,
+									state: {
+										survey: newState.survey.toJS(),
+										form: newState.form,
+										auth: newState.auth.toJS(),
+										plaid: newState.plaid,
+									}
+								};
+							User.createOrUpdate(object, (err, user) => {
+								handleRender(req, res, renderProps, store);
+							});
+						}));
 					});
 				} else {
 					  handleRender(req, res, renderProps, store);
