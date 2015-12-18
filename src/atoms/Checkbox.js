@@ -1,35 +1,24 @@
 import React, { PropTypes } from 'react';
+import { Checkbox as _Checkbox } from 'react-icheck';
 
 class Checkbox extends React.Component {
-  componentDidMount() {
-    require('icheck');
-    $('input.chbx-styled').iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal',
-        increaseArea: '20%'
-    });
-    $('input').on('ifToggled', (e) => {
-      this.props.handleToggle();
-    });
-  }
   render() {
-    const { handleToggle, id, checked } = this.props;
-    let addProps = {};
-    if (typeof checked !== 'undefiend') {
-      addProps.checked = checked;
-    }
-    return <input
-      {...addProps}
-      type="checkbox"
-      onClick={handleToggle}
-      className="chbx-styled"
-      id={id} />
+    const { label, handleClick, checked } = this.props;
+    return <_Checkbox
+          onClick={handleClick}
+          defaultChecked={checked ? true : false}
+          checkboxClass="icheckbox_minimal"
+          className="chbx-styled"
+          increaseArea="20%"
+          label={label}
+        />;
   }
 }
 
 Checkbox.propTypes = {
-  handleToggle: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
+  handleToggle: PropTypes.func,
+  handleCheck: PropTypes.func,
+  id: PropTypes.string,
   checked: PropTypes.bool,
 }
 

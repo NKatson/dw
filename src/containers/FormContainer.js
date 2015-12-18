@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
-import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Buttons } from '../components';
+import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Buttons, Docusign } from '../components';
 import * as surveyActions from '../redux/actions/survey';
+import * as bundleActions from '../redux/actions/bundle';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
 import { WelcomeBack, Question } from '../atoms';
@@ -149,20 +150,13 @@ class FormContainer extends React.Component {
             ><Buttons prevLink={prevLink} /></ConnectBank>
   }
   renderBundle() {
-    const { prevLink, nextLink, termsAccepted } = this.props;
-    return <BundleForm
-        handleTermsToggle={::this.handleTermsToggle}
-        checked={termsAccepted}
-       >
-       <Buttons
-         prevLink={prevLink}
-         nextLinkHandler={(e) => {
-             if (!termsAccepted) e.preventDefault();
-          }}
-         nextLink={nextLink}
-         isDisabled={!termsAccepted}
-         txt="I Agree"
-       />
+    const { prevLink, nextLink, termsAccepted, formData } = this.props;
+    let employeeIncome = formData && formData['personal-step-2'] && formData['personal-step-2'].annual_income ? formData['personal-step-2'].annual_income.value : '';
+    let val = employeeIncome.replace(/[,\$\s]/g, '');
+    val = val ? val = parseInt(val) : 0;
+
+    return <BundleForm employeeIncome={val} termsAccepted={termsAccepted} nextLink={nextLink}>
+        {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
     </BundleForm>;
   }
   renderAccounts() {
@@ -187,6 +181,8 @@ class FormContainer extends React.Component {
             result.push(::this.renderBanks());
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
+          // } else if (form.formKey === 'fund-step-3') { //Check!
+          //   result.push(<Docusign />);
           } else if (form.formKey === 'fund-step-4') {
             result.push(<Transfer>
               <Buttons

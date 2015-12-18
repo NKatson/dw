@@ -138,7 +138,7 @@ export default function survey(state = initialState, action = {}) {
     });
   case actions.TERMS_TOGGLE:
     return state.merge({
-      termsAccepted: state.get('termsAccepted') ? false : true,
+      termsAccepted: action.isAccepted,
     });
   case actions.FEEDBACK_SUCCESS:
     return state.merge({

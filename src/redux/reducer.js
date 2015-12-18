@@ -5,6 +5,7 @@ import registration from './reducers/registration';
 import resetPassword from './reducers/resetPassword';
 import survey from './reducers/survey';
 import plaid from './reducers/plaid';
+import bundle from './reducers/bundle';
 
 export default combineReducers({
   form,
@@ -13,4 +14,5 @@ export default combineReducers({
   resetPassword,
   survey,
   plaid,
+  bundle,
 });
