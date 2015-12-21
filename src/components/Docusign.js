@@ -1,7 +1,19 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
+import { setLink } from '../redux/actions/docusign';
+import { getDocusignLink } from '../utils/apiClient';
 
 class Docusign extends React.Component {
+  componentDidMount() {
+    getDocusignLink((err, data) => {
+      const link = data.docusign_url;
+      console.log(link);
+      if (link && !this.props.link) {
+          this.props.dispatch(setLink(link));
+      }
+    });
+  }
   render() {
+    const { link } = this.props;
     return (
       <div>
         <h2>4. SIGN</h2>
@@ -22,7 +34,7 @@ class Docusign extends React.Component {
             </div>
         </div>
         <div className="wfm-docusign">
-            .....DocuSign here.......
+            {link ? <iframe style={{width: '550px', height: '700px'}} src={link}></iframe> : null }
         </div>
       </div>
     );

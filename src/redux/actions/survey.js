@@ -29,6 +29,7 @@ export const FEEDBACK_FAILED      = 'FEEDBACK_FAILED';
 export const FEEDBACK_SUCCESS     = 'FEEDBACK_SUCCESS';
 
 export const SET_CATEGORY_INDEX   = 'SET_CATEGORY_INDEX';
+export const SET_CURRENT_LINK     = 'SET_CURRENT_LINK';
 
 function initialRequest() {
   return {
@@ -156,6 +157,13 @@ export function setCategoryIndex(index) {
   }
 }
 
+export function setCurrentLink(link) {
+  return {
+    type: SET_CURRENT_LINK,
+    link,
+  }
+}
+
 export function changeQuestion(cat, number, cb) {
   return dispatch => {
     dispatch(beginChangeQuestion(cat, number)).then(() => {
@@ -175,7 +183,7 @@ export function getData(cb) {
       }
       return dispatch(getDataSuccess()).then(() => {
         dispatch(fillState(body));
-        cb();
+        cb(null);
       });
     });
   };

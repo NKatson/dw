@@ -64,7 +64,7 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
-    return fields
+    return fields;
   }
   grabPersonalData() {
     const { formData } = this.props;
@@ -77,6 +77,8 @@ class FormContainer extends React.Component {
         }
       }
     }
+    result.first_name = 'Vasya';
+    result.last_name = 'Pupkin';
     return result;
   }
   handleFormSubmit(data) {
@@ -170,7 +172,7 @@ class FormContainer extends React.Component {
   renderView(data) {
     let result = [];
     let index = 0;
-    const { prevLink, nextLink } = this.props;
+    const { prevLink, nextLink, dispatch, docusignLink } = this.props;
 
     for (let category in data) {
       data[category].map((form, index) => {
@@ -181,8 +183,11 @@ class FormContainer extends React.Component {
             result.push(::this.renderBanks());
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
-          // } else if (form.formKey === 'fund-step-3') { //Check!
-          //   result.push(<Docusign />);
+          } else if (form.formKey === 'confirm-step-1') {
+            result.push(<Docusign
+              dispatch={dispatch}
+              link={docusignLink}
+               />);
           } else if (form.formKey === 'fund-step-4') {
             result.push(<Transfer>
               <Buttons
@@ -249,6 +254,8 @@ function mapStateToProps(state) {
     exit: state.plaid.exit,
 
     termsAccepted: state.survey.get('termsAccepted'),
+
+    docusignLink: state.docusign.link,
   };
 }
 

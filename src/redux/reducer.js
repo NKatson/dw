@@ -6,6 +6,7 @@ import resetPassword from './reducers/resetPassword';
 import survey from './reducers/survey';
 import plaid from './reducers/plaid';
 import bundle from './reducers/bundle';
+import docusign from './reducers/docusign';
 
 export default combineReducers({
   form,
@@ -15,4 +16,5 @@ export default combineReducers({
   survey,
   plaid,
   bundle,
+  docusign,
 });

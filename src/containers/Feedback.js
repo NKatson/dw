@@ -3,20 +3,35 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 
 import { Select, Question } from '../atoms';
-import { feedbackFailed, feedbackSuccess, setCategoryIndex } from '../redux/actions/survey';
-import { sendFeedback } from '../utils/apiClient';
+import { feedbackFailed, feedbackSuccess, setCategoryIndex, setCurrentLink } from '../redux/actions/survey';
+import * as api from '../utils/apiClient';
 import { validateSurvey as validate } from '../utils/validation';
 
 class Feedback extends React.Component {
   componentDidMount() {
     this.props.dispatch(setCategoryIndex(3));
+    this.props.dispatch(setCurrentLink('/survey/feedback/'));
+  }
+  saveState(data) {
+    const { state } = this.props;
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS(),
+    }, (err) => {
+      if (err) return console.log(err);
+      api.sendFeedback(data);
+    });
   }
   handleSubmit(data) {
     if (data.reason === "I'm not a US Citizen") {
-      this.props.dispatch(feedbackFailed());
+      this.props.dispatch(feedbackFailed()).then(() => {
+        ::this.saveState(data);
+      });
     } else {
-      sendFeedback(data);
-      this.props.dispatch(feedbackSuccess());
+      this.props.dispatch(feedbackSuccess()).then(() => {
+        ::this.saveState(data);
+      });
     }
   }
   render() {
@@ -40,6 +55,7 @@ class Feedback extends React.Component {
     }
     return (
       <div>
+        {!success && !failed ? <div><h2>{text}</h2>  <p>{desc}</p></div> : null }
         {
           success || failed ? <div className="wfm-vcentered-block"> <h2>{text}</h2>  <p>{desc}</p> </div>    :
           <form className="common-form anketa-form" autoComplete="off">
@@ -60,7 +76,7 @@ class Feedback extends React.Component {
                     <Link to='/survey/invest/q/1' className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
                     <button
                       onClick={this.props.handleSubmit(::this.handleSubmit)}
-                      className="btn btn_yellow"
+                      className='btn btn_yellow '
                       >Send <span className="wfm-i wfm-i-arr-right-grey"></span></button>
                 </div>
             </div>
@@ -81,6 +97,7 @@ Feedback.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    state: state,
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
     success: state.survey.get('feedbackSuccess'),

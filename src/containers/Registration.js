@@ -24,6 +24,12 @@ class Registration extends React.Component {
       this.context.history.replaceState(null, '/welcome');
     }));
   }
+  showHelp() {
+     $(".input-warp-help__text").fadeIn(200);
+  }
+  hideHelp() {
+     $(".input-warp-help__text").fadeOut(200);
+  }
   render() {
     const {
       fields: { email, password, confirmPassword, firstName, lastName },
@@ -53,13 +59,24 @@ class Registration extends React.Component {
               placeholder="Email address"
               type="email"
             />
+          <hr />
           <InputText
               inputClass="full-width"
               errorMessageClass="login-form__error-msg"
               field={password}
               placeholder="Password"
               type="password"
-            />
+            >
+            <div className="input-wrap-help" onMouseOver={::this.showHelp} onMouseLeave={::this.hideHelp}>
+              <a href="#" onClick={(e) => e.preventDefault()} className="input-wrap-help__link wfm-help-sign">?</a>
+              <div className="input-warp-help__text" >
+                  Password must be 8 characters
+                  long and contain at least
+                  one uppercase letter and
+                  at least one number
+              </div>
+            </div>
+          </InputText>
           <InputText
               inputClass="full-width"
               errorMessageClass="login-form__error-msg"
