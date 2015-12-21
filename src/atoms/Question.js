@@ -3,6 +3,6 @@ import { Link } from 'react-router';
 
 export default () => {
   return (
-      <Link to="#" className="wfm-help-link">?</Link>
+      <a href="#" className="wfm-help-link">?</a>
   );
 }

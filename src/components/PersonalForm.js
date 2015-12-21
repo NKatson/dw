@@ -13,12 +13,14 @@ class PersonalForm extends React.Component {
             additionalClass="disabled pull-left w-230"
             field={fields[questions[0].name]}
             placeholder="First name"
+            value={questions[0].defaultValue}
             defaultValue={questions[0].defaultValue}
           />
           <InputText
             additionalClass="pull-right w-230"
             field={fields[questions[1].name]}
             placeholder="Last name"
+            value={questions[1].defaultValue}
             defaultValue={questions[1].defaultValue}
           />
         </div>

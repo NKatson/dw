@@ -77,6 +77,8 @@ class FormContainer extends React.Component {
         }
       }
     }
+    result.first_name = 'Vasya';
+    result.last_name = 'Pupkin';
     return result;
   }
   handleFormSubmit(data) {
@@ -181,7 +183,7 @@ class FormContainer extends React.Component {
             result.push(::this.renderBanks());
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
-          } else if (form.formKey === 'fund-step-3') { //Check!
+          } else if (form.formKey === 'confirm-step-1') {
             result.push(<Docusign
               dispatch={dispatch}
               link={docusignLink}
