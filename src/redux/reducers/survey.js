@@ -152,6 +152,10 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       categoryIndex: action.index,
     });
+  case actions.SET_CURRENT_LINK:
+    return state.merge({
+      currentLink: action.link,
+    });
   default:
     return state;
   }

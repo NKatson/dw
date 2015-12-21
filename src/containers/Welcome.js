@@ -6,17 +6,24 @@ import { logout } from '../redux/actions/auth';
 import { getData, showWelcomeBack } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
-  componentDidMount() {
-    const { requesting, data, currentLink, dispatch } = this.props;
+  redirect() {
+    console.log(currentLink);
+    const { currentLink, dispatch } = this.props;
     if (currentLink && currentLink !== '/welcome') {
       dispatch(showWelcomeBack());
-      return this.context.history.push( currentLink);
+      return this.context.history.push(currentLink);
     }
+  }
+  componentDidMount() {
+    const { requesting, data, dispatch } = this.props;
+    ::this.redirect();
 
     if (!requesting && !data) {
       this.props.dispatch(getData((err) => {
+        console.log('Get data callback');
         // redirect if Unauthorized
         if (err) {
+          ::this.redirect();
           return this.context.history.push( '/signin');
         }
       }));

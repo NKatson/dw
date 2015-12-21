@@ -50,7 +50,6 @@ function checkResponse(err, res, cb) {
 
 export function saveState(state, cb) {
   const url = '/state/create';
-
   getConfig(config => {
     request
     .post(config.host + url)
@@ -160,6 +159,33 @@ export function login({ email, password, cb }) {
         });
       });
   });
+}
+
+/**
+ * GET /api/steps/validation
+ * GET /api/docusign
+ */
+export function getDocusignLink(cb = () => {}) {
+  const validateUrl = '/api/steps/validation';
+  const docusitnUrl = '/api/docusign';
+  getConfig(config => {
+    request
+      .get(config.apiHost + validateUrl)
+      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      .end((err, res) => {
+        checkResponse(err, res, () => {
+          console.log('Vanare validation:');
+          console.log(res.body);
+          request
+            .get(config.apiHost + docusitnUrl)
+            .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+            .query({'return_url': config.host + '/test'})
+            .end((err, res) => {
+              checkResponse(err, res, cb);
+            });
+        });
+      });
+  })
 }
 
 /**
@@ -312,12 +338,12 @@ export function plaidAuth(publicToken, cb) {
 }
 
 /**
- * POST /api/feedback
+ * POST /api/tos/feedback
  */
 export function sendFeedback(data, cb = () => {}) {
   getConfig(config => {
     request
-    .post(config.apiHost + '/api/feedback')
+    .post(config.apiHost + '/api/tos/feedback')
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
     .end((err, res) => {
