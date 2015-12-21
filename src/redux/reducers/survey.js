@@ -64,7 +64,7 @@ export default function survey(state = initialState, action = {}) {
       categoryIndex: 0,
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
-      currentLink: '/survey/personal/q/0',
+      currentLink: state.get('currentLink') ? state.get('currentLink') : '/survey/personal/q/0',
       nextLink: getNextLink({ category: categories[0], step: 0, data: action.data }),
       prevLink: getPrevLink({ category: categories[0], step: 0, data: action.data }),
       data: action.data,

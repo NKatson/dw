@@ -10,14 +10,16 @@ class PersonalForm extends React.Component {
         {/* first name, last name */}
         <div className="anketa-form__fieldset clearfix">
           <InputText
-            additionalClass="pull-left w-230"
+            additionalClass="disabled pull-left w-230"
             field={fields[questions[0].name]}
             placeholder="First name"
+            defaultValue={questions[0].defaultValue}
           />
           <InputText
             additionalClass="pull-right w-230"
             field={fields[questions[1].name]}
             placeholder="Last name"
+            defaultValue={questions[1].defaultValue}
           />
         </div>
         {/* address, city, state, zip code */}

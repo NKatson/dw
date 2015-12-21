@@ -7,7 +7,6 @@ import { getData, showWelcomeBack } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
   redirect() {
-    console.log(currentLink);
     const { currentLink, dispatch } = this.props;
     if (currentLink && currentLink !== '/welcome') {
       dispatch(showWelcomeBack());
@@ -20,10 +19,9 @@ class Welcome extends React.Component {
 
     if (!requesting && !data) {
       this.props.dispatch(getData((err) => {
-        console.log('Get data callback');
-        // redirect if Unauthorized
+        ::this.redirect();
+
         if (err) {
-          ::this.redirect();
           return this.context.history.push( '/signin');
         }
       }));

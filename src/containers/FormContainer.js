@@ -64,7 +64,7 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
-    return fields
+    return fields;
   }
   grabPersonalData() {
     const { formData } = this.props;

@@ -141,8 +141,6 @@ export function validateSurvey(data) {
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const requiredFields = [
-    'first_name',
-    'last_name',
     'address',
     'city',
     'zip_code',
