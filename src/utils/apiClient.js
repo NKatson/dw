@@ -180,7 +180,7 @@ export function getDocusignLink(cb = () => {}) {
           request
             .get(config.apiHost + docusitnUrl)
             .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-            .query({'return_url': config.host + '/test'})
+            .query({'return_url': config.host + '/redirect-to-dashboard'})
             .end((err, res) => {
               checkResponse(err, res, cb);
             });
