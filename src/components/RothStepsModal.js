@@ -7,11 +7,21 @@ import { Checkbox, Radio as _radio, ModalButton } from '../atoms';
 import { joint, updateIncome, hideModal, resetAccount } from '../redux/actions/bundle';
 
 class RothStepsModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      iraDescrClass: '',
+    };
+  }
   handleRadioClick(e) {
     this.props.dispatch(joint(e.target.value));
   }
   toggleIraDescr() {
     $('#iraDescr').slideToggle(200);
+    const iraDescrClass = this.state.iraDescrClass.length > 0 ? '' : 'opened';
+    this.setState({
+      iraDescrClass,
+    });
   }
   reject(e) {
     e.preventDefault();
@@ -91,7 +101,7 @@ class RothStepsModal extends React.Component {
 
         { step ? null :
           <div>
-            <p className="text-center pad-19"><a href="#" onClick={::this.toggleIraDescr}  className="wfm-link-with-descr">What is Roth IRA?</a></p>
+            <p className="text-center pad-19"><a href="#" onClick={::this.toggleIraDescr}  className={'wfm-link-with-descr ' + (this.state.iraDescrClass)}>What is a Roth IRA?</a></p>
             <div id="iraDescr"  className="wfm-link-descr pad-18">A Roth IRA is a type of retirement
               account that allows earnings to grow tax-free.Contributions are made
                with after-tax dollars, and withdrawals are tax and penalty-free as

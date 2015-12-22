@@ -81,8 +81,11 @@ class PersonalForm extends React.Component {
                   handleShowSsnClick={handleShowSsnClick}
                   />
                   <div className="input-descr">
-                    <Checkbox id="showSecurityNumber" handleToggle={handleShowSsnClick} />
-                    <label htmlFor="showSecurityNumber">Show</label>
+                    <Checkbox
+                      id="showSecurityNumber"
+                      handleClick={handleShowSsnClick}
+                      label="Show"
+                      />
                   </div>
             </div>
             {/* date of birth */}

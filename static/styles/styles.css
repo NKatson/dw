@@ -164,6 +164,9 @@ h4 {
 .input-text:-ms-input-placeholder {
   color: rgba(70, 70, 70, 0.5);
 }
+.input-text:disabled {
+  background-color: #ebebe4;
+}
 textarea.input-text {
   resize: none;
 }
@@ -1193,6 +1196,9 @@ select.input-text {
 .modal-roth-ira p {
   font-size: 16px;
 }
+.modal-roth-ira label {
+  cursor: pointer;
+}
 .pad-18 {
   color: white;
   font-size: 13px;
@@ -1217,6 +1223,15 @@ select.input-text {
   margin-top: 30px;
   text-transform: uppercase;
 }
-.docusign {
-  width: 1170px!important;
+.wfm-dashboard-welcome {
+  text-align: center;
+  margin: 100px 0 250px;
+}
+.pad-21 {
+  font-size: 14px;
+  line-height: 17px;
+  margin: 20px 40px 40px;
+}
+.pad-21 a {
+  color: #464646;
 }

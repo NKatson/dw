@@ -191,7 +191,10 @@ class FormContainer extends React.Component {
   renderView(data) {
     let result = [];
     let index = 0;
-    const { prevLink, nextLink, dispatch, docusignLink } = this.props;
+    const { prevLink, nextLink, dispatch, docusignLink, formData} = this.props;
+    const firstStepData = formData && formData['personal-step-1'] && formData['personal-step-1'] ? formData['personal-step-1'] : null;
+    const firstName = data.Personal[0].questions[0].defaultValue;
+    const lastName = data.Personal[0].questions[1].defaultValue;
 
     for (let category in data) {
       data[category].map((form, index) => {
@@ -205,12 +208,16 @@ class FormContainer extends React.Component {
           } else if (form.formKey === 'confirm-step-1') {
             result.push(::this.renderDocusign());
           } else if (form.formKey === 'fund-step-4') {
-            result.push(<Transfer>
+            result.push(<Transfer
+              firstName={firstName}
+              lastName={lastName}
+              data={firstStepData}
+              >
               <Buttons
                 prevLink='/survey/fund/q/0'
               /></Transfer>);
           } else if (form.formKey === 'fund-step-5') {
-            result.push(<MailCheck>
+            result.push(<MailCheck data={firstStepData}>
               <Buttons
                 prevLink='/survey/fund/q/0'
               /></MailCheck>);
