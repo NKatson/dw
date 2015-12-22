@@ -49,6 +49,7 @@ function checkResponse(err, res, cb) {
 }
 
 export function saveState(state, cb) {
+  console.log(localStorage.uid);
   const url = '/state/create';
   getConfig(config => {
     request

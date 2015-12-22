@@ -19,7 +19,7 @@ class Select extends React.Component {
         <select className="input-text" {...field} {...additionalProps}>
           <option key='default' value='default'>Choose One</option>
           {options.map((option, index) => {
-            return <option key={option.value+""} value={option.label+""}>{option.label}</option>;
+            return <option key={option.value+""} value={option.value+""}>{option.label}</option>;
           })}
         </select>
       </div>

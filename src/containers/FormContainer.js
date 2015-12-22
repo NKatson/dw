@@ -33,7 +33,7 @@ class FormContainer extends React.Component {
     let names = [];
     question.answers.map(answer => {
       if (answer.dynamicFields && answer.dynamicFields.length > 0) {
-          if (answer.label !== this.props.stateSelectValue) return;
+          if (answer.value !== this.props.stateSelectValue) return;
           if (answer.dynamicFields.length > 0) {
             answer.dynamicFields.map(field => {
               names.push(field.name);
@@ -77,8 +77,8 @@ class FormContainer extends React.Component {
         }
       }
     }
-    result.first_name = 'Vasya';
-    result.last_name = 'Pupkin';
+    result.first_name = 'Emily';
+    result.last_name = 'Jipson';
     return result;
   }
   handleFormSubmit(data) {
@@ -107,7 +107,11 @@ class FormContainer extends React.Component {
       auth: state.auth.toJS()
     }, (err) => {
       if (err) return console.log(err);
-      window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+      if (categoryIndex === 2 &&  step === 2) {
+        this.context.history.replaceState(null, nextLink);
+      } else {
+        window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+      }
     });
   }
   renderDynamicForm(category, form, index) {
@@ -165,8 +169,23 @@ class FormContainer extends React.Component {
     const { prevLink, nextLink, termsAccepted } = this.props;
     return (
       <Accounts onSubmit={::this.handleFormSubmit}>
-        {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+        <Buttons
+          prevLink={prevLink}
+          nextLink="/survey/confirm/q/0"
+          text="Continue"
+        />
       </Accounts>
+    );
+  }
+  renderDocusign() {
+    const { prevLink, dispatch, nextLink, docusignLink} = this.props;
+    return (
+      <Docusign
+          dispatch={dispatch}
+          link={docusignLink}
+         >
+         {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+      </Docusign>
     );
   }
   renderView(data) {
@@ -184,10 +203,7 @@ class FormContainer extends React.Component {
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
           } else if (form.formKey === 'confirm-step-1') {
-            result.push(<Docusign
-              dispatch={dispatch}
-              link={docusignLink}
-               />);
+            result.push(::this.renderDocusign());
           } else if (form.formKey === 'fund-step-4') {
             result.push(<Transfer>
               <Buttons

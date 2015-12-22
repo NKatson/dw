@@ -30,6 +30,8 @@ export const FEEDBACK_SUCCESS     = 'FEEDBACK_SUCCESS';
 
 export const SET_CATEGORY_INDEX   = 'SET_CATEGORY_INDEX';
 export const SET_CURRENT_LINK     = 'SET_CURRENT_LINK';
+export const SET_PREV_LINK        = 'SET_PREV_LINK';
+export const SET_NEXT_LINK        = 'SET_NEXT_LINK';
 
 function initialRequest() {
   return {
@@ -164,6 +166,20 @@ export function setCurrentLink(link) {
   }
 }
 
+export function setPrevLink(link) {
+  return {
+    type: SET_PREV_LINK,
+    link,
+  }
+}
+
+export function setNextLink(link) {
+  return {
+    type: SET_NEXT_LINK,
+    link,
+  }
+}
+
 export function changeQuestion(cat, number, cb) {
   return dispatch => {
     dispatch(beginChangeQuestion(cat, number)).then(() => {
@@ -182,8 +198,9 @@ export function getData(cb) {
         });
       }
       return dispatch(getDataSuccess()).then(() => {
-        dispatch(fillState(body));
-        cb(null);
+        dispatch(fillState(body)).then(() => {
+          cb(null);
+        });
       });
     });
   };
