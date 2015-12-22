@@ -4,7 +4,7 @@ const initialState = {
   accountType: 'traditional',
   accountText: 'Traditional IRA',
   accountLink: 'Roth IRA',
-  header: 'Not problem. Just a few questions.',
+  header: 'No problem. Just a few questions.',
   showModal: false,
   joint: null,
   success: null,

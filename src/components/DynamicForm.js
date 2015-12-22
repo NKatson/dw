@@ -7,9 +7,14 @@ import { InputText, Select } from '../atoms/index';
 import { InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import * as api from '../utils/apiClient';
-import { radioClick, enableButton, hideWelcomeBack } from '../redux/actions/survey';
+import { radioClick, enableButton, hideWelcomeBack, setPrevLink, setNextLink } from '../redux/actions/survey';
 
 class DynamicForm extends Component {
+  componentDidMount() {
+    if (this.props.formKey === 'fund-step-3') {
+      this.props.dispatch(setNextLink('/survey/confirm/q/0'));
+    }
+  }
   getInputs(question, fields) {
     return question.answers.map((answer, index) => {
       return {
@@ -54,7 +59,7 @@ class DynamicForm extends Component {
         if (answer.dynamicFields && answer.dynamicFields.length > 0) {
           answer.dynamicFields.map((field, index) => {
             // is parent selected ?
-            if (answer.label === this.props.stateSelectValue) {
+            if (answer.value === this.props.stateSelectValue) {
               result.push(::this.renderInput(field, fields));
             }
           });
@@ -97,16 +102,13 @@ class DynamicForm extends Component {
   render() {
     const { title, formKey, fields, questions, description, hint, categoryIndex
       , step, prevLink, nextLink, accountType, radio, firstName } = this.props;
+
     const account = radio['invest_period'] && !accountType ? radio['invest_period'] : accountType;
     const selected = accountType ? true : false;
 
     // hardcode this time
     let disableNext = false;
     if (formKey === 'invest-step-1' && !radio['crysis2008']) {
-      disableNext = true;
-    }
-
-    if (formKey === 'fund-step-3' && !radio['typeOfAccount']) {
       disableNext = true;
     }
 
@@ -143,12 +145,10 @@ class DynamicForm extends Component {
             <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
-                    {formKey === 'fund-step-3' ? null :
                     <button
                       className="btn btn_yellow"
                       disabled={disableNext}
                       >Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
-                    }
                 </div>
             </div>
         </form>

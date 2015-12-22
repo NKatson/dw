@@ -11,16 +11,14 @@ const MailCheck = ({children}) => {
                 <a href="#"><span>Print</span> <span className="icon icon_print"></span></a>
             </div>
             <div className="pad-17">
-                <p>TD Ameritrade Clearing, Inc.<br />
+              <b>Regular mail:</b>
+                <p>TD Ameritrade PO Box 2760<br />
                     FBO Client Name and<br />
                   Account Number<br />
                 PO BOX 919031<br />
               San Diego, CA 92191-9031<br />
             5010 Wateridge Vista Drive<br />
                     San Diego, CA 92121-5775</p>
-            </div>
-            <div className="text-center">
-                <h4>Your WorthFM TD Ameritrade Account #: 123456677</h4>
             </div>
             <form className="common-form anketa-form">
                <div className="text-center">

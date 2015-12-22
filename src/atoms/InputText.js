@@ -14,7 +14,6 @@ class InputText extends React.Component {
     const disabled = ['first_name', 'last_name'];
 
     if (isNormalized && !isIncome && type !== 'password') {
-      console.log(defaultValue);
       component = <MaskedInput
         className="input-text"
         defaultValue={defaultValue}
