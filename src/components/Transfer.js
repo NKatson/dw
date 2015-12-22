@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Print } from '../atoms';
 
 const Transfer = ({ children, data, firstName, lastName }) => {
   return (
@@ -6,14 +7,12 @@ const Transfer = ({ children, data, firstName, lastName }) => {
       <h2>SEND A WIRE TRANSFER</h2>
         <p>If you’d like to wire us your funds, please print these instructions
             and take them to your bank.</p>
-          <div className="wfm-big-link">
-            <a href="#"><span>Print</span> <span className="icon icon_print"></span></a>
-        </div>
+            <Print />
         <div className="pad-16">
             <h4>If your bank is located in the United States:</h4>
             <p>Wells Fargo Bank, NA<br />
                 420 Montgomery Street<br />
-              San Fancisco, CA 94104<br />
+              San Francisco, CA 94104<br />
                 ABA transit routing #121000248
             </p>
             <div className="pad-16__col">

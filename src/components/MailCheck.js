@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Print } from '../atoms';
 
 const MailCheck = ({children}) => {
   return (
@@ -7,18 +8,18 @@ const MailCheck = ({children}) => {
         <p>Please send your check to the following address.<br />
                 Enter your WorthFM TD Ameritrade Account Number in the Memo
                 field on your check.</p>
-            <div className="wfm-big-link">
-                <a href="#"><span>Print</span> <span className="icon icon_print"></span></a>
-            </div>
+            <Print />
             <div className="pad-17">
               <b>Regular mail:</b>
-                <p>TD Ameritrade PO Box 2760<br />
-                    FBO Client Name and<br />
-                  Account Number<br />
-                PO BOX 919031<br />
-              San Diego, CA 92191-9031<br />
-            5010 Wateridge Vista Drive<br />
-                    San Diego, CA 92121-5775</p>
+                <p>TD Ameritrade <br />
+                 PO Box 2760<br />
+               Omaha, NE 68172<br /></p>
+                <br />
+              <p><b>Overnight mail:</b><br />
+                TD Ameritrade<br />
+                200 S 108th Ave<br />
+                Omaha, NE 68154<br />
+              </p>
             </div>
             <form className="common-form anketa-form">
                <div className="text-center">
