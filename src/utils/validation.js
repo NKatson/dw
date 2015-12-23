@@ -163,7 +163,6 @@ export function validateSurvey(data) {
     'bankAccount',
     'amountOfTransaction',
     'reason',
-    'marital_status',
  ];
 
   requiredFields.forEach(fieldName => {

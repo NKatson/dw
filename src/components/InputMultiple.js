@@ -1,48 +1,36 @@
 import React, { PropTypes } from 'react';
-import $ from 'jquery';
+import { RadioGroup, Radio } from '../../lib/react-icheck';
 
 class InputMultiple extends React.Component {
-  componentDidMount() {
-    require('icheck');
-    $('input.chbx-styled').iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal',
-        increaseArea: '20%'
-    });
-    const that = this;
-    $('input').on('ifChecked', function(e) {
-      that.props.handleClick(e.target.name, e.target.value);
-    });
-  }
   render () {
     const { question : { name, label }, handleClick, inputs, selectedValue } = this.props;
+    const props = {};
+    if (handleClick) {
+      props.onClick = handleClick;
+    }
     return (
-      <div className="anketa-form__fieldset">
-        {name === 'crysis2008' ? null : <p>{label}</p> }
-        {inputs.map((input, index) => {
-          let iProps = {
-            id: 'option-'  + index,
-            className: 'chbx-styled',
-            type: 'radio',
-            value: input.value,
-          };
-          if (handleClick) {
-            iProps.onClick = handleClick;
-          }
-          if (name) {
-            iProps.name = name;
-          }
-
-          return (
-            <div className="input-wrap input-wrap_with-radio" key={input.label}>
-              <input {...input.field} {...iProps} checked={input.value == selectedValue ? true : false} />
-              <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
-              {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
-              </label>
-            </div>
-          );
-        })}
-      </div>
+      <RadioGroup name={name} value={selectedValue}>
+        {
+          inputs.map((input, index) => {
+            const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
+                            {input.balance ? <span className="common-form__label-text">{input.balance}</span> : null}
+                          </label>;
+            return (
+                <Radio
+                    {...input.field}
+                    {...props}
+                    labelWrapperClass="input-wrap input-wrap_with-radio"
+                    key={'option' + index}
+                    id={'option-' + index}
+                    radioClass="iradio_minimal"
+                    increaseArea="20%"
+                    value={input.value}
+                    label={input.label}
+                  />
+            );
+          })
+        }
+      </RadioGroup>
     );
   }
 }
