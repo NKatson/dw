@@ -8,6 +8,7 @@ import * as bundleActions from '../redux/actions/bundle';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
 import { WelcomeBack, Question } from '../atoms';
+import * as commonActions from '../redux/actions/common';
 
 class FormContainer extends React.Component {
   handleShowSsnClick() {
@@ -115,7 +116,7 @@ class FormContainer extends React.Component {
     });
   }
   renderDynamicForm(category, form, index) {
-    const { prevLink, nextLink, formData } = this.props;
+    const { prevLink, nextLink, formData, dispatch } = this.props;
     return <DynamicForm
               key={`${category}-step-${index}`}
               accountType={this.props.accountType}
@@ -141,7 +142,13 @@ class FormContainer extends React.Component {
               radio={this.props.radio}
               showWelcomeBack={this.props.showWelcomeBack}
              >
-            {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+            {prevLink ?
+              <Link to={prevLink} onClick={() => {
+                  if (prevLink === '/welcome') {
+                    dispatch(commonActions.setForceWelcome());
+                  }
+                }} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
+               : null}
     </DynamicForm>
   }
   renderBanks() {

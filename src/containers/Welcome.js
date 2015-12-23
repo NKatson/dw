@@ -15,8 +15,10 @@ class Welcome extends React.Component {
     }
   }
   componentDidUpdate() {
-    const {data, state } = this.props;
-    if (this.props.data) {
+    const { data, state, forceWelcome } = this.props;
+    if (forceWelcome) return;
+
+    if (!forceWelcome && this.props.data) {
       api.saveState({
         survey: state.survey.toJS(),
         form: state.form,
@@ -30,13 +32,13 @@ class Welcome extends React.Component {
     }
   }
   componentDidMount() {
-    const { requesting, data, dispatch, state } = this.props;
+    const { requesting, data, dispatch, state, forceWelcome } = this.props;
+    if (forceWelcome) return;
     ::this.redirect();
 
     if (!requesting && !data) {
       this.props.dispatch(getData((err) => {
         console.log('callback');
-        console.log(this.props.data);
       }));
     }
   }
@@ -112,6 +114,7 @@ function mapStateToProps(state) {
   return {
     state,
     data: state.survey.get('data'),
+    forceWelcome: state.common.forceWelcome,
     requesting: state.survey.get('requesting'),
     currentLink: state.survey.get('currentLink'),
   }

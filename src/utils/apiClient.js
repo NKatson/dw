@@ -324,9 +324,8 @@ export function logout({ user = null, cb = () => {} }) {
       request
         .get('/logout')
         .end((err, res) => {
-          console.log('RES!');
+            return cb(null, res.body);
         });
-      return cb(null, res.body);
     });
   });
 }

@@ -6,7 +6,7 @@ import { DynamicForm, Category, Header, Footer } from '../components';
 import { SurveyFormHeader, PreLoader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
-import { saveState } from '../utils/apiClient';
+import * as api from '../utils/apiClient';
 
 class Survey extends React.Component {
   handleParams(params) {
@@ -32,12 +32,16 @@ class Survey extends React.Component {
   handleLogout(e) {
     e.preventDefault();
     const { state } = this.props;
-    this.props.dispatch(saveState(state, err => {
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS()
+    }, err => {
       if (err) return console.log(err);
       this.props.dispatch(auth.logout(null, () => {
         this.context.history.push( '/signin');
       }));
-    }));
+    });
   }
   renderCategories(data) {
     let result = [];

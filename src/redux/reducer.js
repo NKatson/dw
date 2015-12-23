@@ -7,6 +7,7 @@ import survey from './reducers/survey';
 import plaid from './reducers/plaid';
 import bundle from './reducers/bundle';
 import docusign from './reducers/docusign';
+import common from './reducers/common';
 
 export default combineReducers({
   form,
@@ -17,4 +18,5 @@ export default combineReducers({
   plaid,
   bundle,
   docusign,
+  common,
 });
