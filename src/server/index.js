@@ -49,6 +49,12 @@ app.get('/config', (req, res) => {
 		});
 });
 
+app.get('/logout', (req, res) => {
+	console.log('Logout!');
+	req.session.destroy();
+	res.clearCookie('uid');
+	return res.redirect('/signin');
+});
 const plaidClient =
   new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
 
@@ -120,7 +126,7 @@ function processRoute(req, res, initialState) {
 
 app.get('*', (req, res) => {
 	const uid = req.cookies.uid;
-	//const uid = 'anastacia160592@gmail.com';
+	//const uid = 'eg@4xxi.com';
 	console.log('Request uid: ' + uid);
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {

@@ -80,17 +80,19 @@ class Survey extends React.Component {
       categories = ::this.renderCategories(data.toJS());
     }
     return (
-      <div>
-        <Header handleLogout={::this.handleLogout} />
-        <div className="common-wrap common-wrap_rose">
-          <div className={'container container-2 bg-white ' + (isDocusign ? 'docusign' : '')}>
-            <div className="wfm-steps">
-               {categories}
+      <div className="common-page">
+        <div className="wfm-main-wrap">
+          <Header handleLogout={::this.handleLogout} />
+          <div className="common-wrap common-wrap_rose">
+            <div className={'container container-2 bg-white ' + (isDocusign ? 'docusign' : '')}>
+              <div className="wfm-steps">
+                 {categories}
+              </div>
+              {data ? this.props.children : null}
             </div>
-            {data ? this.props.children : null}
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     );
   }

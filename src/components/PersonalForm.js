@@ -5,7 +5,6 @@ class PersonalForm extends React.Component {
   render () {
     const { questions, fields, handleStateChange, showSsn, storedSsn,
        ssnError, handleShowSsnClick } = this.props;
-       console.log(fields);
     return (
       <div>
         {/* first name, last name */}

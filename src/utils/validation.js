@@ -64,10 +64,7 @@ class Validation {
     if (this.errors[fieldName] || !this.data[fieldName]) return;
 
     let [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(this.data[fieldName]) || [];
-    const min18States = [
-      'California', 'District of Columbia', 'Kentucky',
-      'Louisiana', 'Maine', 'Michigan', 'Nevada', 'New Jersey',
-      'South Dakota', 'Oklahoma', 'Virginia'];
+    const min18States = ['CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
     const state = this.data['state'];
 
     month = parseInt(month);

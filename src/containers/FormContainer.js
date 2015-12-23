@@ -141,7 +141,7 @@ class FormContainer extends React.Component {
               radio={this.props.radio}
               showWelcomeBack={this.props.showWelcomeBack}
              >
-            {prevLink && form.formKey !== 'personal-step-1' ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+            {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
     </DynamicForm>
   }
   renderBanks() {

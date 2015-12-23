@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { RadioGroup, Radio } from '../../lib/react-icheck';
+import { RadioGroup, Radio } from 'react-icheck';
 
 class InputMultiple extends React.Component {
   render () {

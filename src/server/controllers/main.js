@@ -9,7 +9,7 @@ let router = Router();
  */
 router.post('/create', (req, res, next) => {
   const uid = req.cookies.uid;
-  //const uid = 'anastacia160592@gmail.com';
+  //const uid = 'eg@4xxi.com';
   const state = req.body.state;
 	const object = {
 			uid,

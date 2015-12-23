@@ -199,6 +199,7 @@ export function getData(cb) {
       }
       return dispatch(getDataSuccess()).then(() => {
         dispatch(fillState(body)).then(() => {
+          console.log('State filled!');
           cb(null);
         });
       });
