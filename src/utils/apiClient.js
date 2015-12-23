@@ -22,18 +22,21 @@ function saveLocal(res) {
   const { uid, client, client_id} = res.headers;
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = uid;
+
   localStorage.client  = client ? client : client_id;
 
-  if (!Cookies.get('uid')) {
-      Cookies.set('uid', uid, { expires: 7, path: '' });
+  if (uid.length !== 0 & typeof uid !== 'undefined') {
+    //  Cookies.remove('uid', uid, {path: '/'});
+      console.log('Set cookie: uid = ' + uid);
+      Cookies.set('uid', uid, { expires: 7, path: '/' });
   }
 }
 
 function clearLocal() {
+  Cookies.remove('uid', {path: '/'});
   delete localStorage.accessToken;
   delete localStorage.uid;
   delete localStorage.client;
-  Cookies.remove('uid');
 }
 
 function checkResponse(err, res, cb) {
@@ -315,7 +318,14 @@ export function logout({ user = null, cb = () => {} }) {
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
+
       clearLocal();
+
+      request
+        .get('/logout')
+        .end((err, res) => {
+          console.log('RES!');
+        });
       return cb(null, res.body);
     });
   });

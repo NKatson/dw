@@ -14,16 +14,29 @@ class Welcome extends React.Component {
       return this.context.history.push(currentLink);
     }
   }
+  componentDidUpdate() {
+    const {data, state } = this.props;
+    if (this.props.data) {
+      api.saveState({
+        survey: state.survey.toJS(),
+        form: state.form,
+        auth: state.auth.toJS()
+      }, (err) => {
+        if (err) {
+          return this.context.history.push( '/signin');
+        }
+        ::this.redirect();
+    });
+    }
+  }
   componentDidMount() {
     const { requesting, data, dispatch, state } = this.props;
     ::this.redirect();
 
     if (!requesting && !data) {
       this.props.dispatch(getData((err) => {
-        if (err) {
-          return this.context.history.push( '/signin');
-        }
-        ::this.redirect();
+        console.log('callback');
+        console.log(this.props.data);
       }));
     }
   }

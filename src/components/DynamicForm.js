@@ -25,8 +25,8 @@ class DynamicForm extends Component {
       }
     });
   }
-  handleRadioClick(name, value) {
-    this.props.dispatch(radioClick(name, value));
+  handleRadioClick(e) {
+    this.props.dispatch(radioClick(e.target.name, e.target.value));
   }
   renderInput(question, fields) {
     const multipleTypes = ['checkbox', 'radio'];
@@ -108,7 +108,7 @@ class DynamicForm extends Component {
 
     // hardcode this time
     let disableNext = false;
-    if (formKey === 'invest-step-1' && !radio['crysis2008']) {
+     if (formKey === 'invest-step-1' && !radio['crysis2008']) {
       disableNext = true;
     }
 

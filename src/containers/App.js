@@ -10,7 +10,7 @@ class App extends React.Component {
   render() {
     const { userEmail, loggedIn } = this.props;
       return (
-        <div>
+        <div className="wfm-main-wrap">
           <div className="common-wrap common-wrap_white-shadowed">
             <div className="container container-2">
               {this.props.children}

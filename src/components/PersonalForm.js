@@ -51,16 +51,6 @@ class PersonalForm extends React.Component {
             />
           </div>
           <div className="anketa-form__fieldset">
-            {/* marital_status */}
-            <div>
-              <Select
-                  additionalClass="w-230 pad-03"
-                  field={fields[questions[9].name]}
-                  key={questions[9].name}
-                  options={questions[9].answers}
-                  />
-                  <div className="input-descr"> What is your marital status? </div>
-            </div>
             {/* phone */}
             <div>
               <InputText
