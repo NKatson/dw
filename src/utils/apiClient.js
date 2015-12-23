@@ -24,16 +24,16 @@ function saveLocal(res) {
   localStorage.uid = uid;
   localStorage.client  = client ? client : client_id;
 
-  if (!Cookies.get('uid')) {
-      Cookies.set('uid', uid, { expires: 7, path: '' });
-  }
+  Cookies.remove('uid', uid, {path: ''});
+  Cookies.set('uid', uid, { expires: 7, path: '' });
 }
 
 function clearLocal() {
+  Cookies.remove('uid', localStorage.uid, {path: ''});
+
   delete localStorage.accessToken;
   delete localStorage.uid;
   delete localStorage.client;
-  Cookies.remove('uid');
 }
 
 function checkResponse(err, res, cb) {
