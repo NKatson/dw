@@ -192,7 +192,7 @@ export function validateDocusign(cb = () => {}) {
       .get(config.apiHost + validateUrl)
       .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
       .end((err, res) => {
-        checkResponse(err, res, cb);
+        checkResponse(err, res, cb  );
       });
   })
 }
@@ -406,12 +406,12 @@ export function sendFeedback(data, cb = () => {}) {
 }
 
 /**
- * PATCH /api/tos/accept
+ * PUT /api/tos/accept
  */
 export function acceptTerms(cb = () => {}) {
   getConfig(config => {
     request
-    .patch(config.apiHost + '/api/tos/accept')
+    .put(config.apiHost + '/api/tos/accept')
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .end((err, res) => {
         checkResponse(err, res, cb);

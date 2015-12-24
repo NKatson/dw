@@ -132,7 +132,7 @@ export function registration(data) {
 export function validateSurvey(data) {
   const valid = new Validation(data);
 
-  const addressRegex = /^[a-zA-Z\- ,0-9#\-\.]+$/i;
+  const addressRegex = /^[a-zA-Z\- ,'0-9#\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{6}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
@@ -160,6 +160,7 @@ export function validateSurvey(data) {
     'bankAccount',
     'amountOfTransaction',
     'reason',
+    'marital_status',
  ];
 
   requiredFields.forEach(fieldName => {

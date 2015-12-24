@@ -1235,7 +1235,17 @@ select.input-text {
 .pad-21 a {
   color: #464646;
 }
-
+.input-wrap_with-radio-2 label {
+  padding-left: 80px;
+  position: relative;
+  margin-bottom: 10px;
+  display: block;
+}
+.input-wrap_with-radio-2 label .iradio_minimal {
+  position: absolute;
+  top: 3px;
+  left: 50px;
+}
 .docusign {
   width: 1130px;
 }

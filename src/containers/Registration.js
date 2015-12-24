@@ -67,7 +67,7 @@ class Registration extends React.Component {
               type="password"
             >
             <div className="input-wrap-help" onMouseOver={::this.showHelp} onMouseLeave={::this.hideHelp}>
-              <a href="#" onClick={(e) => e.preventDefault()} className="input-wrap-help__link wfm-help-sign">?</a>
+              <a tabIndex="-1" href="#" onClick={(e) => e.preventDefault()} className="input-wrap-help__link wfm-help-sign">?</a>
               <div className="input-warp-help__text" >
                   Password must be 8 characters
                   long and contain at least

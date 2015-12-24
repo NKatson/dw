@@ -9,7 +9,7 @@ class InputMultiple extends React.Component {
       props.onClick = handleClick;
     }
     return (
-      <RadioGroup name={name} value={selectedValue}>
+      <RadioGroup name={name} value={selectedValue} className="input-wrap_with-radio-2">
         {
           inputs.map((input, index) => {
             const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
