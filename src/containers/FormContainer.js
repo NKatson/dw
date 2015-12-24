@@ -104,7 +104,8 @@ class FormContainer extends React.Component {
     api.saveState({
       survey: state.survey.toJS(),
       form: state.form,
-      auth: state.auth.toJS()
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
     }, (err) => {
       if (err) return console.log(err);
       if (categoryIndex === 2 &&  step === 2) {

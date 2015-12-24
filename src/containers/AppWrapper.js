@@ -30,7 +30,8 @@ class AppWrapper extends React.Component {
     api.saveState({
       survey: state.survey.toJS(),
       form: state.form,
-      auth: state.auth.toJS()
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
     }, (err) => {
       if (err) return console.log(err);
       const errorMessage = 'You have been logged out due to inactivity.';

@@ -18,6 +18,7 @@ class Feedback extends React.Component {
       survey: state.survey.toJS(),
       form: state.form,
       auth: state.auth.toJS(),
+      bundle: state.bundle,
     }, (err) => {
       if (err) return console.log(err);
       api.sendFeedback(data);

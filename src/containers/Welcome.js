@@ -22,7 +22,8 @@ class Welcome extends React.Component {
       api.saveState({
         survey: state.survey.toJS(),
         form: state.form,
-        auth: state.auth.toJS()
+        auth: state.auth.toJS(),
+        bundle: state.bundle,
       }, (err) => {
         if (err) {
           return this.context.history.push( '/signin');
@@ -45,7 +46,8 @@ class Welcome extends React.Component {
     api.saveState({
       survey: state.survey.toJS(),
       form: state.form,
-      auth: state.auth.toJS()
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
     }, (err) => {
       if (err) return console.log(err);
       ::this.redirect();
@@ -59,7 +61,7 @@ class Welcome extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="common-wrap">
         <Header handleLogout={::this.handleLogout} />
         <div className="common-wrap common-wrap_rose">
           <div className="container container-2 bg-white">
