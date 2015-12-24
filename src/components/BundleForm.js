@@ -14,26 +14,27 @@ class BundleForm extends React.Component {
   }
   sendData(e) {
     e.preventDefault();
-    const { nextLink, state, accountType, income } = this.props;
+    const { nextLink, state, accountType, income, termsAccepted } = this.props;
     const port = window.location.port.length > 0 ? ':' + window.location.port : '';
-    // api.sendAccountType({
-    //   accountType,
-    //   income,
-    // }, (err) => {
-    //   if (err) return console.log(err);
-    //   return;
-      api.saveState({
-        survey: state.survey.toJS(),
-        form: state.form,
-        auth: state.auth.toJS()
-      }, (err) => {
-        if (err) return console.log(err);
-         window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
-       });
-    // });
+    // api.sendAccountType({});
+
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS()
+    }, (err) => {
+      if (err) return console.log(err);
+        window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+     });
   }
   handleTermsToggle(e) {
-    this.props.dispatch(surveyActions.toggleTerms(e.target.checked));
+    const isAccepted = e.target.checked;
+    this.props.dispatch(surveyActions.toggleTerms(isAccepted));
+    if (isAccepted) {
+      api.acceptTerms();
+    } else {
+      api.cancelTerms();
+    }
   }
   render() {
     const { handleTermsToggle, checked, employeeIncome, termsAccepted, nextLink } = this.props;
@@ -107,9 +108,6 @@ class BundleForm extends React.Component {
       </div>
     );
   }
-}
-
-BundleForm.propTypes = {
 }
 
 function mapStateToProps(state) {

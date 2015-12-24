@@ -185,9 +185,11 @@ class FormContainer extends React.Component {
     );
   }
   renderDocusign() {
-    const { prevLink, dispatch, nextLink, docusignLink} = this.props;
+    const { prevLink, dispatch, nextLink, docusignLink, isDocusign, docusignError } = this.props;
     return (
       <Docusign
+          error={docusignError}
+          isDocusign={isDocusign}
           dispatch={dispatch}
           link={docusignLink}
          >
@@ -257,10 +259,6 @@ FormContainer.contextTypes = {
   history: RouterPropTypes.history,
 };
 
-FormContainer.contextTypes = {
-  history: RouterPropTypes.history,
-};
-
 function mapStateToProps(state) {
   return {
     state: state,
@@ -284,7 +282,8 @@ function mapStateToProps(state) {
     exit: state.plaid.exit,
 
     termsAccepted: state.survey.get('termsAccepted'),
-
+    isDocusign: state.docusign.isDocusign,
+    docusignError: state.docusign.error,
     docusignLink: state.docusign.link,
   };
 }

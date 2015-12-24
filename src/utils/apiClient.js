@@ -166,29 +166,33 @@ export function login({ email, password, cb }) {
 }
 
 /**
- * GET /api/steps/validation
  * GET /api/docusign
  */
 export function getDocusignLink(cb = () => {}) {
-  const validateUrl = '/api/steps/validation';
   const docusitnUrl = '/api/docusign';
+  getConfig(config => {
+    request
+      .get(config.apiHost + docusitnUrl)
+      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      .query({'return_url': config.host + '/redirect-to-dashboard'})
+      .end((err, res) => {
+        checkResponse(err, res, cb);
+      });
+  })
+}
+
+
+/**
+ * GET /api/steps/validation
+ */
+export function validateDocusign(cb = () => {}) {
+  const validateUrl = '/api/steps/validation';
   getConfig(config => {
     request
       .get(config.apiHost + validateUrl)
       .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
       .end((err, res) => {
-
-        checkResponse(err, res, () => {
-          console.log('Vanare validation:');
-          console.log(res.body);
-          request
-            .get(config.apiHost + docusitnUrl)
-            .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-            .query({'return_url': config.host + '/redirect-to-dashboard'})
-            .end((err, res) => {
-              checkResponse(err, res, cb);
-            });
-        });
+        checkResponse(err, res, cb);
       });
   })
 }
@@ -349,22 +353,6 @@ export function plaidAuth(publicToken, cb) {
 }
 
 /**
- * POST /api/tos/feedback
- */
-export function sendFeedback(data, cb = () => {}) {
-  getConfig(config => {
-    request
-    .post(config.apiHost + '/api/tos/feedback')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-    .send(data)
-    .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-    });
-  });
-}
-
-/**
  * POST /api/auth
  */
 export function registration({ data, cb }) {
@@ -400,3 +388,47 @@ export function registration({ data, cb }) {
     });
   });
 }
+
+
+/**
+ * POST /api/tos/feedback
+ */
+export function sendFeedback(data, cb = () => {}) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/tos/feedback')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * PATCH /api/tos/accept
+ */
+export function acceptTerms(cb = () => {}) {
+  getConfig(config => {
+    request
+    .patch(config.apiHost + '/api/tos/accept')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .end((err, res) => {
+        checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * DELETE /api/tos
+ */
+export function cancelTerms(cb = () => {}) {
+  getConfig(config => {
+    request
+    .delete(config.apiHost + '/api/tos')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+};

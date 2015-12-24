@@ -2,7 +2,7 @@ import * as api from '../../utils/apiClient';
 
 export const SET_LINK = 'SET_LINK';
 export const SET_IS_DOCUSIGN = 'SET_IS_DOCUSIGN';
-export const GET_LINK_ERROR = 'GET_LINK_ERROR';
+export const SET_ERROR = 'SET_ERROR';
 
 export function setLink(link) {
   return {
@@ -18,9 +18,9 @@ export function setIsDocusign(value) {
   }
 }
 
-export function getLinkError(error) {
+export function setError(error) {
   return {
-    type: GET_LINK_ERROR,
+    type: SET_ERROR,
     error,
   }
 }

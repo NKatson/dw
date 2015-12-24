@@ -13,15 +13,15 @@ global.localStorage = {};
 global.navigator = {
   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36',
 }
-//
-// if (__DEVELOPMENT__) {
-//   if (!require('piping')({
-//       hook: true,
-//       ignore: /(\/\.|~$|\.json|\.scss$)/i
-//     })) {
-//     return;
-//   }
-// }
+
+if (__DEVELOPMENT__) {
+  if (!require('piping')({
+      hook: true,
+      ignore: /(\/\.|~$|\.json|\.scss$)/i
+    })) {
+    return;
+  }
+}
 
 var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/isomorphic-config'))

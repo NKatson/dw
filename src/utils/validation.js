@@ -80,7 +80,7 @@ class Validation {
     } else if (moment().diff([year, month, day]) < 0) {
       this.errors[fieldName] = "Thanks for your interest! When you're born let us know!";
     } else if (diff > 100) {
-      this.errors[fieldName] = 'Thanks for your interest! You must be 100 years old or younger to create an account';
+      this.errors[fieldName] = 'Thanks for your interest! You must be 100 years old or younger to create an account.';
     } else if (diff < 18 ) {
       this. errors[fieldName] = 'You must be 18 years or older to create a WorthFM account.';
     } else if (!state || state === 'default') {
@@ -177,6 +177,7 @@ export function validateSurvey(data) {
 
   // check
   valid.checkMax('bankName', 100);
+  valid.checkMax('bankAccount', 25);
   valid.checkMax('accountTitle', 150);
   valid.checkLength('transitRouting', 9);
   valid.checkRegex('bankName', addressRegex, 'Please type valid bank name format');

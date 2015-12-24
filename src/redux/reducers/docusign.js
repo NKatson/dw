@@ -7,10 +7,17 @@ export default function auth(state = initialState, action = {}) {
   switch (action.type) {
     case actions.SET_LINK:
       return Object.assign({}, state, { link: action.link });
-    case actions.GET_LINK_ERROR:
+    case actions.SET_ERROR:
       return Object.assign({}, state, { error: action.error });
     case actions.SET_IS_DOCUSIGN:
-      return Object.assign({}, state, { isDocusign: action.value });
+      let error = state.error;
+      if (action.value === false) {
+        error = null
+      }
+      return Object.assign({}, state, {
+        isDocusign: action.value,
+        error,
+       });
     default:
       return state;
     }
