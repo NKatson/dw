@@ -50,7 +50,6 @@ app.get('/config', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-	console.log('Logout!');
 	req.session.destroy();
 	res.clearCookie('uid');
 	return res.redirect('/signin');

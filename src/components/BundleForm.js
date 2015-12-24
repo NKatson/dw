@@ -21,7 +21,8 @@ class BundleForm extends React.Component {
     api.saveState({
       survey: state.survey.toJS(),
       form: state.form,
-      auth: state.auth.toJS()
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
     }, (err) => {
       if (err) return console.log(err);
         window.location.href = `http://${window.location.hostname}${port}${nextLink}`;

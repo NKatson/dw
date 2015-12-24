@@ -91,7 +91,6 @@ class FormContainer extends React.Component {
         ...::this.grabPersonalData(),
         ...data
         }, () => {
-        console.log('OK!');
       });
     }
 

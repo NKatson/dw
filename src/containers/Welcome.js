@@ -38,7 +38,6 @@ class Welcome extends React.Component {
 
     if (!requesting && !data) {
       this.props.dispatch(getData((err) => {
-        console.log('callback');
       }));
     }
   }

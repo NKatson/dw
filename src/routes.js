@@ -45,7 +45,7 @@ export default (store) => {
           <Route path="signin" component={Authorization} />
           <Route path="signup" component={Registration} />
         </Route>
-
+        <Redirect from="/survey" to="/survey/personal/q/0" />
         <Route path="/welcome" component={Welcome} />
         <Route path="/survey" component={Survey}>
             <IndexRoute component={FormContainer} />

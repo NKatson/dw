@@ -13,7 +13,7 @@ class InputMultiple extends React.Component {
         {
           inputs.map((input, index) => {
             const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
-                            {input.balance ? <span className="common-form__label-text">{input.balance}</span> : null}
+                            {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
                           </label>;
             return (
                 <Radio
@@ -25,7 +25,7 @@ class InputMultiple extends React.Component {
                     radioClass="iradio_minimal"
                     increaseArea="20%"
                     value={input.value}
-                    label={input.label}
+                    label={label}
                   />
             );
           })

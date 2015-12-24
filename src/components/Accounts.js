@@ -24,7 +24,6 @@ class Accounts extends React.Component {
         }}
         inputs={inputs}
         handleClick={(name, value) => {
-          console.log('Clicked ' + name + ' ' + value);
         }}
          />
      );

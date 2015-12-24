@@ -12,6 +12,7 @@ class Docusign extends React.Component {
         if (err) return console.log(err);
 
         let isValid = true;
+
         // check validation
         data.steps.map(step => {
           if (!isValid) return;
@@ -26,8 +27,11 @@ class Docusign extends React.Component {
         // if valid, get docusign_url
         if (isValid) {
           api.getDocusignLink((err, data) => {
-            if (err) return console.log(err);
-            dispatch(setLink(data.docusign_url))
+            if (err) {
+              dispatch(actions.setError(err.error));
+              return;
+            }
+            dispatch(actions.setLink(data.docusign_url))
           });
         }
       });

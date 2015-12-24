@@ -5,10 +5,14 @@ import { setShowCategories } from '../redux/actions/survey';
 
 class Dashboard extends React.Component {
   componentDidMount() {
-    this.props.dispatch(setShowCategories(true));
+    if (this.props.showCategories) {
+      this.props.dispatch(setShowCategories(false));
+    }
   }
   componentWillUnmount() {
-    this.props.dispatch(setShowCategories(false));
+    if (!this.props.showCategories) {
+      this.props.dispatch(setShowCategories(true));
+    }
   }
   render() {
     return (

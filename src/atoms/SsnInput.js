@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import MaskedInput from 'react-maskedinput';
-import CurrencyMaskedInput from 'react-currency-masked-input';
 
 class SsnInput extends React.Component {
   componentWillMount() {
