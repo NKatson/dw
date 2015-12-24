@@ -6,9 +6,9 @@ export default ({ reconnect }) => {
     <div>
       <div className="wfm-vcentered-block wfm-vcentered-block_mini">
           <h2>OH NO!</h2>
-          <p>Sorry we were unable to connect your bank.</p>
+          <p>Sorry we were unable to connect to your bank.</p>
       </div>
-      <p>Here are another options to fund your account:</p>
+      <p>Here are other options to fund your account:</p>
       <div className="wfm-biglinks-list">
           <Link onClick={reconnect} to="/survey/fund/q/0">Connect to your bank</Link>
           <Link to="/survey/fund/q/2">Enter your bank information</Link>

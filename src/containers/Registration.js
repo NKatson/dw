@@ -5,7 +5,6 @@ import { registration } from '../redux/actions/registration';
 import { registration as validate } from '../utils/validation';
 import { SubmitButton, LogoForm } from '../components';
 import { InputText } from '../atoms';
-import { destroy } from 'redux-form/lib/actions';
 
 class Registration extends React.Component {
   handleSubmit(event) {
@@ -20,9 +19,15 @@ class Registration extends React.Component {
     };
 
     this.props.dispatch(registration(data, () => {
-      this.props.dispatch(destroy());
-      this.context.history.replaceState(null, '/welcome');
+      let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+      window.location.href = `http://${window.location.hostname}${port}/welcome`;
     }));
+  }
+  showHelp() {
+     $(".input-warp-help__text").fadeIn(200);
+  }
+  hideHelp() {
+     $(".input-warp-help__text").fadeOut(200);
   }
   render() {
     const {
@@ -53,13 +58,24 @@ class Registration extends React.Component {
               placeholder="Email address"
               type="email"
             />
+          <hr />
           <InputText
               inputClass="full-width"
               errorMessageClass="login-form__error-msg"
               field={password}
               placeholder="Password"
               type="password"
-            />
+            >
+            <div className="input-wrap-help" onMouseOver={::this.showHelp} onMouseLeave={::this.hideHelp}>
+              <a tabIndex="-1" href="#" onClick={(e) => e.preventDefault()} className="input-wrap-help__link wfm-help-sign">?</a>
+              <div className="input-warp-help__text" >
+                  Password must be 8 characters
+                  long and contain at least
+                  one uppercase letter and
+                  at least one number
+              </div>
+            </div>
+          </InputText>
           <InputText
               inputClass="full-width"
               errorMessageClass="login-form__error-msg"

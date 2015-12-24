@@ -19,7 +19,7 @@ import config from '../config';
 import getRoutes from '../routes';
 import Html from '../helpers/Html';
 
-import { setBanks } from '../redux/actions/plaid';
+import { saveBanks, setBanks } from '../redux/actions/plaid';
 
 const MongoStore = require('connect-mongo')(session);
 import './config/db';
@@ -49,6 +49,11 @@ app.get('/config', (req, res) => {
 		});
 });
 
+app.get('/logout', (req, res) => {
+	req.session.destroy();
+	res.clearCookie('uid');
+	return res.redirect('/signin');
+});
 const plaidClient =
   new plaid.Client('test_id', 'test_secret', plaid.environments.tartan);
 
@@ -87,12 +92,27 @@ function processRoute(req, res, initialState) {
 	    } else if (redirectLocation) {
 	      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 	    } else if (renderProps) {
-
+				const state = store.getState();
 				if (req.url === '/survey/fund/q/0') {
 					// plaid API institutions request
 					plaid.getInstitutions(plaid.environments.tartan, (err, data) => {
 						store.dispatch(setBanks(data));
 						handleRender(req, res, renderProps, store);
+						// store.dispatch(saveBanks(data, () => {
+						// 	const newState = store.getState();
+						// 	const object = {
+						// 			uid,
+						// 			state: {
+						// 				survey: newState.survey.toJS(),
+						// 				form: newState.form,
+						// 				auth: newState.auth.toJS(),
+						// 				plaid: newState.plaid,
+						// 			}
+						// 		};
+						// 	//User.createOrUpdate(object, (err, user) => {
+						// 	//});
+						// 	handleRender(req, res, renderProps, store);
+						// }));
 					});
 				} else {
 					  handleRender(req, res, renderProps, store);
@@ -105,7 +125,7 @@ function processRoute(req, res, initialState) {
 
 app.get('*', (req, res) => {
 	const uid = req.cookies.uid;
-	//const uid = 'anastacia160592@gmail.com';
+	//const uid = 'eg@4xxi.com';
 	console.log('Request uid: ' + uid);
 	if (uid) {
 		User.findOneByUid(uid, (err, user) => {

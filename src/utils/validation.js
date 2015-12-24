@@ -64,10 +64,7 @@ class Validation {
     if (this.errors[fieldName] || !this.data[fieldName]) return;
 
     let [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(this.data[fieldName]) || [];
-    const min18States = [
-      'California', 'District of Columbia', 'Kentucky',
-      'Louisiana', 'Maine', 'Michigan', 'Nevada', 'New Jersey',
-      'South Dakota', 'Oklahoma', 'Virginia'];
+    const min18States = ['CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
     const state = this.data['state'];
 
     month = parseInt(month);
@@ -83,7 +80,7 @@ class Validation {
     } else if (moment().diff([year, month, day]) < 0) {
       this.errors[fieldName] = "Thanks for your interest! When you're born let us know!";
     } else if (diff > 100) {
-      this.errors[fieldName] = 'Thanks for your interest! You must be 100 years old or younger to create an account';
+      this.errors[fieldName] = 'Thanks for your interest! You must be 100 years old or younger to create an account.';
     } else if (diff < 18 ) {
       this. errors[fieldName] = 'You must be 18 years or older to create a WorthFM account.';
     } else if (!state || state === 'default') {
@@ -135,14 +132,12 @@ export function registration(data) {
 export function validateSurvey(data) {
   const valid = new Validation(data);
 
-  const addressRegex = /^[a-zA-Z\- ,0-9\-\.]+$/i;
+  const addressRegex = /^[a-zA-Z\- ,'0-9#\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{6}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
   const requiredFields = [
-    'first_name',
-    'last_name',
     'address',
     'city',
     'zip_code',
@@ -164,6 +159,8 @@ export function validateSurvey(data) {
     'routing_name',
     'bankAccount',
     'amountOfTransaction',
+    'reason',
+    'marital_status',
  ];
 
   requiredFields.forEach(fieldName => {
@@ -173,6 +170,7 @@ export function validateSurvey(data) {
   // personal
   valid.checkRegex('date_of_birth', dateOfBirthRegex, 'Please type a valid date (MM/DD/YYYY)');
   valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
+  valid.checkRegex('address', addressRegex, 'Please type valid address');
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
   valid.checkRegex('city', addressRegex, 'Please type valid city format');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
@@ -180,6 +178,7 @@ export function validateSurvey(data) {
 
   // check
   valid.checkMax('bankName', 100);
+  valid.checkMax('bankAccount', 25);
   valid.checkMax('accountTitle', 150);
   valid.checkLength('transitRouting', 9);
   valid.checkRegex('bankName', addressRegex, 'Please type valid bank name format');

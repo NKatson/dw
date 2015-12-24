@@ -5,7 +5,7 @@ class LogoForm extends React.Component {
   render() {
     const { error, handleSubmit, small, headerText, redirectLink } = this.props;
     return (
-      <form className="common-form login-form" onSubmit={handleSubmit}>
+      <form className="common-form login-form" onSubmit={handleSubmit} autoComplete="off">
           <div className="wfm-logo">
               <div><img src={require('../../static/images/logo-224.png')} /></div>
               <div className="wfm-logo__text">Invest in possibility.</div>

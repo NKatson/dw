@@ -6,23 +6,30 @@ import $ from 'jquery';
 class InputText extends React.Component {
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
-      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency } = this.props;
+      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency, tabIndex } = this.props;
     const mask = maskPattern || '111-111-1111';
-    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income' || field.name === 'initial_fund';
+    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income'
+    || field.name === 'initial_fund' || field.name === 'amountOfTransaction';
     let component = null;
+    const disabled = ['first_name', 'last_name'];
+
+    if (tabIndex) {
+      field.tabIndex = tabIndex;
+    }
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
         className="input-text"
+        defaultValue={defaultValue}
         mask={mask}
         placeholder={placeholder}
         type={type ? type : 'text'}
-        value={defaultValue ? defaultValue : ""}
         {...field}
         autoComplete="off"
         />;
     } else {
       component =  <input
+        disabled={disabled.indexOf(field.name) !== -1 ? true : false}
         autoFocus={defaultValue ? true : false}
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder={placeholder}
@@ -52,6 +59,7 @@ class InputText extends React.Component {
              : null}
 
           {component}
+          {this.props.children}
           {
             field.error && field.touched ?
               <div className={errorMessageClass ? errorMessageClass : 'input-wrap__error-msg' }>{field.error}</div>
@@ -70,6 +78,7 @@ InputText.propTypes = {
   icon: PropTypes.string,
   label: PropTypes.string,
   type: PropTypes.string,
+  tabIndex: PropTypes.string,
 }
 
 export default InputText;

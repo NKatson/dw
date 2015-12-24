@@ -1,10 +1,44 @@
 import React, { PropTypes } from 'react';
-import { Checkbox } from '../atoms';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import { Checkbox } from '../atoms';
+import { RothModal } from '../components';
+import { joint, buttonClick, showModal } from '../redux/actions/bundle';
+import * as surveyActions from '../redux/actions/survey';
+import * as api from '../utils/apiClient';
+
 class BundleForm extends React.Component {
+  showModal() {
+    this.props.dispatch(showModal());
+  }
+  sendData(e) {
+    e.preventDefault();
+    const { nextLink, state, accountType, income, termsAccepted } = this.props;
+    const port = window.location.port.length > 0 ? ':' + window.location.port : '';
+    // api.sendAccountType({});
+
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
+    }, (err) => {
+      if (err) return console.log(err);
+        window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+     });
+  }
+  handleTermsToggle(e) {
+    const isAccepted = e.target.checked;
+    this.props.dispatch(surveyActions.toggleTerms(isAccepted));
+    if (isAccepted) {
+      api.acceptTerms();
+    } else {
+      api.cancelTerms();
+    }
+  }
   render() {
-    const { handleTermsToggle, checked } = this.props;
+    const { handleTermsToggle, checked, employeeIncome, termsAccepted, nextLink } = this.props;
     return (
       <div>
         <h2>2. LET’S OPEN YOUR WORTHFM ACCOUNT</h2>
@@ -28,8 +62,8 @@ class BundleForm extends React.Component {
                 <div className="wfm-account-plan__pic"><img src={require('../../static/images/plan-retirement.jpg')} alt="" /></div>
                 <div className="wfm-account-plan__title">Retirement</div>
                 <div className="wfm-account-plan__text">
-                    Your Worth FM sunset account offers you confidence in a secure future. This account is set up as a Traditional IRA at TD Ameritrade and can be enabled from your WorthFM homepage.
-                    <a href="#">Want a Roth IRA instead?</a>
+                    Your Worth FM sunset account offers you confidence in a secure future. This account is set up as a {this.props.accountText} at TD Ameritrade and can be enabled from your WorthFM homepage.
+                    <a onClick={::this.showModal} href="#">Want a {this.props.accountLink} instead?</a>
                 </div>
             </div>
         </div>
@@ -47,18 +81,28 @@ class BundleForm extends React.Component {
               </div>
               <div className="wfm-terms-of-service__confirm">
                   <Checkbox
-                    id="confirm"
-                    handleToggle={this.props.handleTermsToggle}
-                    checked={checked}
+                    handleClick={::this.handleTermsToggle}
+                    checked={termsAccepted}
+                    label="I confirm that I have read and understand the terms of service for WorthFM documented above"
                     />
-                  <label htmlFor="confirm">I confirm that I have read and understand the terms of service for WorthFM documented&nbsp;above</label>
               </div>
           </div>
 
+          <RothModal {...this.props} employeeIncome={employeeIncome}  />
+
           <div className="text-center">
-            {this.props.children}
-            <div className="wfm-not-agree-link">
-                <Link to="/survey/feedback">If you cannot agree to our Term of Service, please tell us why. We'd like to help.</Link>
+            <div className="common-form__buttons">
+              {this.props.children}
+              <Link
+                to={nextLink}
+                onClick={::this.sendData}
+                className={'btn btn_yellow ' + (termsAccepted ? '' : 'disabled')}
+                >Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+            </div>
+
+          <div className="wfm-not-agree-link">
+                <Link to="/survey/feedback">If you cannot agree to our Term of
+                  Service, please tell us why. We'd like to help.</Link>
             </div>
           </div>
         </form>
@@ -67,9 +111,8 @@ class BundleForm extends React.Component {
   }
 }
 
-BundleForm.propTypes = {
-  children: PropTypes.object.isRequired,
-  handleTermsToggle: PropTypes.func.isRequired,
+function mapStateToProps(state) {
+  return {...state.bundle, state};
 }
 
-export default BundleForm;
+export default connect(mapStateToProps)(BundleForm);

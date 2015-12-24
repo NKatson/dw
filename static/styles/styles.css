@@ -164,6 +164,9 @@ h4 {
 .input-text:-ms-input-placeholder {
   color: rgba(70, 70, 70, 0.5);
 }
+.input-text:disabled {
+  background-color: #ebebe4;
+}
 textarea.input-text {
   resize: none;
 }
@@ -1189,4 +1192,60 @@ select.input-text {
 }
 .wfm-biglinks-list a:last-child {
   border-bottom: 1px #d8d8d8 solid;
+}
+.modal-roth-ira p {
+  font-size: 16px;
+}
+.modal-roth-ira label {
+  cursor: pointer;
+}
+.pad-18 {
+  color: white;
+  font-size: 13px;
+  line-height: 17px;
+}
+.pad-19 {
+  margin-top: 30px;
+}
+.pad-19 a {
+  color: #fff!important;
+  border-bottom: 1px dotted;
+  text-decoration: none;
+}
+.pad-19 a.opened {
+  color: #ffc705!important;
+}
+.wfm-link-descr {
+  display: none;
+}
+.pad-20 {
+  font-size: 13px!important;
+  margin-top: 30px;
+  text-transform: uppercase;
+}
+.wfm-dashboard-welcome {
+  text-align: center;
+  margin: 100px 0 250px;
+}
+.pad-21 {
+  font-size: 14px;
+  line-height: 17px;
+  margin: 20px 40px 40px;
+}
+.pad-21 a {
+  color: #464646;
+}
+.input-wrap_with-radio-2 label {
+  padding-left: 40px;
+  position: relative;
+  margin-bottom: 10px;
+  display: block;
+}
+.input-wrap_with-radio-2 label .iradio_minimal {
+  position: absolute;
+  top: 3px;
+  left: 50px;
+}
+.docusign {
+  width: 1130px;
 }

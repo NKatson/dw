@@ -6,7 +6,7 @@ import { DynamicForm, Category, Header, Footer } from '../components';
 import { SurveyFormHeader, PreLoader } from '../atoms';
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
-import { saveState } from '../utils/apiClient';
+import * as api from '../utils/apiClient';
 
 class Survey extends React.Component {
   handleParams(params) {
@@ -32,12 +32,17 @@ class Survey extends React.Component {
   handleLogout(e) {
     e.preventDefault();
     const { state } = this.props;
-    this.props.dispatch(saveState(state, err => {
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
+    }, err => {
       if (err) return console.log(err);
       this.props.dispatch(auth.logout(null, () => {
         this.context.history.push( '/signin');
       }));
-    }));
+    });
   }
   renderCategories(data) {
     let result = [];
@@ -73,24 +78,28 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType, recommendMessageType, requesting } = this.props;
+    const { data, stepType, recommendMessageType, requesting, isDocusign, showCategories } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
       categories = ::this.renderCategories(data.toJS());
     }
     return (
-      <div>
-        <Header handleLogout={::this.handleLogout} />
-        <div className="common-wrap common-wrap_rose">
-          <div className="container container-2 bg-white">
-            <div className="wfm-steps">
-               {categories}
+      <div className="common-page">
+          <Header handleLogout={::this.handleLogout} />
+          <div className="common-wrap common-wrap_rose">
+            <div className={'container container-2 bg-white ' + (isDocusign ? 'docusign' : '')}>
+              {
+                showCategories ?
+                <div className="wfm-steps">
+                   {categories}
+                </div>
+                : null
+              }
+              {data ? this.props.children : null}
             </div>
-            {data ? this.props.children : null}
           </div>
-        </div>
-        <Footer />
+          <Footer />
       </div>
     );
   }
@@ -114,6 +123,8 @@ function mapStateToProps(state) {
     accountType: state.survey.get('accountType'),
     recommendMessageType: state.survey.get('recommendMessageType'),
     step: state.survey.get('step'),
+    isDocusign: state.docusign.isDocusign,
+    showCategories: state.survey.get('showCategories'),
   };
 }
 export default connect(mapStateToProps)(Survey);

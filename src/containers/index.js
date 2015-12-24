@@ -10,4 +10,3 @@ export ConfirmPasswordForm from './ConfirmPasswordForm';
 export ConfirmEmail from './ConfirmEmail';
 export AppWrapper from './AppWrapper';
 export Feedback from './Feedback';
-export Check from './Check';

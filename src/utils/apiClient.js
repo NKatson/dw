@@ -22,18 +22,21 @@ function saveLocal(res) {
   const { uid, client, client_id} = res.headers;
   localStorage.accessToken = res.headers['access-token'];
   localStorage.uid = uid;
+
   localStorage.client  = client ? client : client_id;
 
-  if (!Cookies.get('uid')) {
-      Cookies.set('uid', uid, { expires: 7, path: '' });
+  if (uid.length !== 0 & typeof uid !== 'undefined') {
+    //  Cookies.remove('uid', uid, {path: '/'});
+      console.log('Set cookie: uid = ' + uid);
+      Cookies.set('uid', uid, { expires: 7, path: '/' });
   }
 }
 
 function clearLocal() {
+  Cookies.remove('uid', {path: '/'});
   delete localStorage.accessToken;
   delete localStorage.uid;
   delete localStorage.client;
-  Cookies.remove('uid');
 }
 
 function checkResponse(err, res, cb) {
@@ -49,8 +52,8 @@ function checkResponse(err, res, cb) {
 }
 
 export function saveState(state, cb) {
+  console.log(localStorage.uid);
   const url = '/state/create';
-
   getConfig(config => {
     request
     .post(config.host + url)
@@ -91,6 +94,26 @@ export function sendPersonal(data, cb = () => {}) {
     .post(config.apiHost + url)
     .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
     .send(data)
+    .end((err, res) => {
+        checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * PATCH /api/accounts/type
+ */
+export function sendAccountType(data, cb) {
+  const url = '/api/accounts/type';
+
+  getConfig(config => {
+    request
+    .patch(config.apiHost + url)
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send({
+      'account-type' : data.accountType,
+      'annual_income' : data.income,
+    })
     .end((err, res) => {
         checkResponse(err, res, cb);
     });
@@ -140,6 +163,38 @@ export function login({ email, password, cb }) {
         });
       });
   });
+}
+
+/**
+ * GET /api/docusign
+ */
+export function getDocusignLink(cb = () => {}) {
+  const docusitnUrl = '/api/docusign';
+  getConfig(config => {
+    request
+      .get(config.apiHost + docusitnUrl)
+      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      .query({'return_url': config.host + '/redirect-to-dashboard'})
+      .end((err, res) => {
+        checkResponse(err, res, cb);
+      });
+  })
+}
+
+
+/**
+ * GET /api/steps/validation
+ */
+export function validateDocusign(cb = () => {}) {
+  const validateUrl = '/api/steps/validation';
+  getConfig(config => {
+    request
+      .get(config.apiHost + validateUrl)
+      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      .end((err, res) => {
+        checkResponse(err, res, cb  );
+      });
+  })
 }
 
 /**
@@ -268,8 +323,14 @@ export function logout({ user = null, cb = () => {} }) {
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
+
       clearLocal();
-      return cb(null, res.body);
+
+      request
+        .get('/logout')
+        .end((err, res) => {
+            return cb(null, res.body);
+        });
     });
   });
 }
@@ -287,22 +348,6 @@ export function plaidAuth(publicToken, cb) {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       return cb(null, res.body);
-    });
-  });
-}
-
-/**
- * POST /api/feedback
- */
-export function sendFeedback(data, cb = () => {}) {
-  getConfig(config => {
-    request
-    .post(config.apiHost + '/api/feedback')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-    .send(data)
-    .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
     });
   });
 }
@@ -343,3 +388,47 @@ export function registration({ data, cb }) {
     });
   });
 }
+
+
+/**
+ * POST /api/tos/feedback
+ */
+export function sendFeedback(data, cb = () => {}) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/tos/feedback')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .send(data)
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * PUT /api/tos/accept
+ */
+export function acceptTerms(cb = () => {}) {
+  getConfig(config => {
+    request
+    .put(config.apiHost + '/api/tos/accept')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .end((err, res) => {
+        checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * DELETE /api/tos
+ */
+export function cancelTerms(cb = () => {}) {
+  getConfig(config => {
+    request
+    .delete(config.apiHost + '/api/tos')
+    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+};

@@ -3,24 +3,55 @@ import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Header, Footer } from '../components';
 import { logout } from '../redux/actions/auth';
+import * as api from '../utils/apiClient';
 import { getData, showWelcomeBack } from '../redux/actions/survey';
 
 class Welcome extends React.Component {
-  componentDidMount() {
-    const { requesting, data, currentLink, dispatch } = this.props;
+  redirect() {
+    const { currentLink, dispatch } = this.props;
     if (currentLink && currentLink !== '/welcome') {
       dispatch(showWelcomeBack());
-      return this.context.history.push( currentLink);
+      return this.context.history.push(currentLink);
     }
+  }
+  componentDidUpdate() {
+    const { data, state, forceWelcome } = this.props;
+    if (forceWelcome) return;
 
-    if (!requesting && !data) {
-      this.props.dispatch(getData((err) => {
-        // redirect if Unauthorized
+    if (!forceWelcome && this.props.data) {
+      api.saveState({
+        survey: state.survey.toJS(),
+        form: state.form,
+        auth: state.auth.toJS(),
+        bundle: state.bundle,
+      }, (err) => {
         if (err) {
           return this.context.history.push( '/signin');
         }
+        ::this.redirect();
+    });
+    }
+  }
+  componentDidMount() {
+    const { requesting, data, dispatch, state, forceWelcome } = this.props;
+    if (forceWelcome) return;
+    ::this.redirect();
+
+    if (!requesting && !data) {
+      this.props.dispatch(getData((err) => {
       }));
     }
+  }
+  saveState() {
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
+    }, (err) => {
+      if (err) return console.log(err);
+      ::this.redirect();
+    });
   }
   handleLogout(e) {
     e.preventDefault();
@@ -30,7 +61,7 @@ class Welcome extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="common-wrap">
         <Header handleLogout={::this.handleLogout} />
         <div className="common-wrap common-wrap_rose">
           <div className="container container-2 bg-white">
@@ -82,7 +113,9 @@ Welcome.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    state,
     data: state.survey.get('data'),
+    forceWelcome: state.common.forceWelcome,
     requesting: state.survey.get('requesting'),
     currentLink: state.survey.get('currentLink'),
   }

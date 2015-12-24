@@ -10,14 +10,18 @@ class PersonalForm extends React.Component {
         {/* first name, last name */}
         <div className="anketa-form__fieldset clearfix">
           <InputText
-            additionalClass="pull-left w-230"
+            additionalClass="disabled pull-left w-230"
             field={fields[questions[0].name]}
             placeholder="First name"
+            value={questions[0].defaultValue}
+            defaultValue={questions[0].defaultValue}
           />
           <InputText
             additionalClass="pull-right w-230"
             field={fields[questions[1].name]}
             placeholder="Last name"
+            value={questions[1].defaultValue}
+            defaultValue={questions[1].defaultValue}
           />
         </div>
         {/* address, city, state, zip code */}
@@ -47,6 +51,17 @@ class PersonalForm extends React.Component {
             />
           </div>
           <div className="anketa-form__fieldset">
+            {questions.length > 9 ?
+              <div>
+                <Select
+                    additionalClass="w-230 pad-03"
+                    field={fields[questions[9].name]}
+                    key={questions[9].name}
+                    options={questions[9].answers}
+                    />
+                <div className="input-descr"> What is your marital status?</div>
+              </div>
+            : null}
             {/* phone */}
             <div>
               <InputText
@@ -67,8 +82,11 @@ class PersonalForm extends React.Component {
                   handleShowSsnClick={handleShowSsnClick}
                   />
                   <div className="input-descr">
-                    <Checkbox id="showSecurityNumber" handleToggle={handleShowSsnClick} />
-                    <label htmlFor="showSecurityNumber">Show</label>
+                    <Checkbox
+                      id="showSecurityNumber"
+                      handleClick={handleShowSsnClick}
+                      label="Show"
+                      />
                   </div>
             </div>
             {/* date of birth */}

@@ -2,11 +2,13 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 
-import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Buttons } from '../components';
+import { DynamicForm, ConnectBank, BundleForm, Accounts, Transfer, MailCheck, Buttons, Docusign } from '../components';
 import * as surveyActions from '../redux/actions/survey';
+import * as bundleActions from '../redux/actions/bundle';
 import * as api from '../utils/apiClient';
 import { setBanks, searchBanks } from '../redux/actions/plaid';
 import { WelcomeBack, Question } from '../atoms';
+import * as commonActions from '../redux/actions/common';
 
 class FormContainer extends React.Component {
   handleShowSsnClick() {
@@ -32,7 +34,7 @@ class FormContainer extends React.Component {
     let names = [];
     question.answers.map(answer => {
       if (answer.dynamicFields && answer.dynamicFields.length > 0) {
-          if (answer.label !== this.props.stateSelectValue) return;
+          if (answer.value !== this.props.stateSelectValue) return;
           if (answer.dynamicFields.length > 0) {
             answer.dynamicFields.map(field => {
               names.push(field.name);
@@ -63,7 +65,7 @@ class FormContainer extends React.Component {
       fields.push(question.name);
       return fields;
     }, []);
-    return fields
+    return fields;
   }
   grabPersonalData() {
     const { formData } = this.props;
@@ -76,6 +78,8 @@ class FormContainer extends React.Component {
         }
       }
     }
+    result.first_name = 'Emily';
+    result.last_name = 'Jipson';
     return result;
   }
   handleFormSubmit(data) {
@@ -87,7 +91,6 @@ class FormContainer extends React.Component {
         ...::this.grabPersonalData(),
         ...data
         }, () => {
-        console.log('OK!');
       });
     }
 
@@ -101,14 +104,19 @@ class FormContainer extends React.Component {
     api.saveState({
       survey: state.survey.toJS(),
       form: state.form,
-      auth: state.auth.toJS()
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
     }, (err) => {
       if (err) return console.log(err);
-      window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+      if (categoryIndex === 2 &&  step === 2) {
+        this.context.history.replaceState(null, nextLink);
+      } else {
+        window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+      }
     });
   }
   renderDynamicForm(category, form, index) {
-    const { prevLink, nextLink, formData } = this.props;
+    const { prevLink, nextLink, formData, dispatch } = this.props;
     return <DynamicForm
               key={`${category}-step-${index}`}
               accountType={this.props.accountType}
@@ -134,7 +142,13 @@ class FormContainer extends React.Component {
               radio={this.props.radio}
               showWelcomeBack={this.props.showWelcomeBack}
              >
-            {prevLink && form.formKey !== 'personal-step-1' ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+            {prevLink ?
+              <Link to={prevLink} onClick={() => {
+                  if (prevLink === '/welcome') {
+                    dispatch(commonActions.setForceWelcome());
+                  }
+                }} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
+               : null}
     </DynamicForm>
   }
   renderBanks() {
@@ -149,34 +163,47 @@ class FormContainer extends React.Component {
             ><Buttons prevLink={prevLink} /></ConnectBank>
   }
   renderBundle() {
-    const { prevLink, nextLink, termsAccepted } = this.props;
-    return <BundleForm
-        handleTermsToggle={::this.handleTermsToggle}
-        checked={termsAccepted}
-       >
-       <Buttons
-         prevLink={prevLink}
-         nextLinkHandler={(e) => {
-             if (!termsAccepted) e.preventDefault();
-          }}
-         nextLink={nextLink}
-         isDisabled={!termsAccepted}
-         txt="I Agree"
-       />
+    const { prevLink, nextLink, termsAccepted, formData } = this.props;
+    let employeeIncome = formData && formData['personal-step-2'] && formData['personal-step-2'].annual_income ? formData['personal-step-2'].annual_income.value : '';
+    let val = employeeIncome.replace(/[,\$\s]/g, '');
+    val = val ? val = parseInt(val) : 0;
+
+    return <BundleForm employeeIncome={val} termsAccepted={termsAccepted} nextLink={nextLink}>
+        {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
     </BundleForm>;
   }
   renderAccounts() {
     const { prevLink, nextLink, termsAccepted } = this.props;
     return (
       <Accounts onSubmit={::this.handleFormSubmit}>
-        {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+        <Buttons
+          prevLink={prevLink}
+          nextLink="/survey/confirm/q/0"
+          text="Continue"
+        />
       </Accounts>
+    );
+  }
+  renderDocusign() {
+    const { prevLink, dispatch, nextLink, docusignLink, isDocusign, docusignError } = this.props;
+    return (
+      <Docusign
+          error={docusignError}
+          isDocusign={isDocusign}
+          dispatch={dispatch}
+          link={docusignLink}
+         >
+         {prevLink ? <Link to={prevLink} className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+      </Docusign>
     );
   }
   renderView(data) {
     let result = [];
     let index = 0;
-    const { prevLink, nextLink } = this.props;
+    const { prevLink, nextLink, dispatch, docusignLink, formData} = this.props;
+    const firstStepData = formData && formData['personal-step-1'] && formData['personal-step-1'] ? formData['personal-step-1'] : null;
+    const firstName = data.Personal[0].questions[0].defaultValue;
+    const lastName = data.Personal[0].questions[1].defaultValue;
 
     for (let category in data) {
       data[category].map((form, index) => {
@@ -187,13 +214,19 @@ class FormContainer extends React.Component {
             result.push(::this.renderBanks());
           } else if (form.formKey === 'fund-step-2') {
             result.push(::this.renderAccounts());
+          } else if (form.formKey === 'confirm-step-1') {
+            result.push(::this.renderDocusign());
           } else if (form.formKey === 'fund-step-4') {
-            result.push(<Transfer>
+            result.push(<Transfer
+              firstName={firstName}
+              lastName={lastName}
+              data={firstStepData}
+              >
               <Buttons
                 prevLink='/survey/fund/q/0'
               /></Transfer>);
           } else if (form.formKey === 'fund-step-5') {
-            result.push(<MailCheck>
+            result.push(<MailCheck data={firstStepData}>
               <Buttons
                 prevLink='/survey/fund/q/0'
               /></MailCheck>);
@@ -226,10 +259,6 @@ FormContainer.contextTypes = {
   history: RouterPropTypes.history,
 };
 
-FormContainer.contextTypes = {
-  history: RouterPropTypes.history,
-};
-
 function mapStateToProps(state) {
   return {
     state: state,
@@ -253,6 +282,9 @@ function mapStateToProps(state) {
     exit: state.plaid.exit,
 
     termsAccepted: state.survey.get('termsAccepted'),
+    isDocusign: state.docusign.isDocusign,
+    docusignError: state.docusign.error,
+    docusignLink: state.docusign.link,
   };
 }
 

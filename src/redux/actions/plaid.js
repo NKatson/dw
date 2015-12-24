@@ -39,6 +39,14 @@ export function searchBanks(value) {
   }
 }
 
+export function saveBanks(data, cb) {
+  return dispatch => {
+    dispatch(setBanks(data)).then(() => {
+      cb();
+    })
+  }
+}
+
 export function auth(publicToken, cb) {
   return dispatch => {
     api.plaidAuth(publicToken, (err, data) => {

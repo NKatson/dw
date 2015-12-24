@@ -24,7 +24,6 @@ class Accounts extends React.Component {
         }}
         inputs={inputs}
         handleClick={(name, value) => {
-          console.log('Clicked ' + name + ' ' + value);
         }}
          />
      );
@@ -79,9 +78,6 @@ class Accounts extends React.Component {
               <div className="text-center">
                 <div className="common-form__buttons">
                     {this.props.children}
-                    <button
-                      className="btn btn_yellow"
-                      >Continue <span className="wfm-i wfm-i-arr-right-grey"></span></button>
                 </div>
               </div>
           </form>

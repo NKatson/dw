@@ -2,6 +2,7 @@ import * as actions from '../actions/survey';
 import { Map, fromJS } from 'immutable';
 
 const initialState = Map({
+  showCategories: true,
   requesting: false,
   radio : Map(),
   showWelcomeBack: false,
@@ -64,7 +65,7 @@ export default function survey(state = initialState, action = {}) {
       categoryIndex: 0,
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
-      currentLink: '/survey/personal/q/0',
+      currentLink: '/welcome',
       nextLink: getNextLink({ category: categories[0], step: 0, data: action.data }),
       prevLink: getPrevLink({ category: categories[0], step: 0, data: action.data }),
       data: action.data,
@@ -104,19 +105,21 @@ export default function survey(state = initialState, action = {}) {
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
 
-    const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
     const categoryNames = Object.keys(data).map(key => key.toLowerCase());
+    const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
     const catIndex = categoryNames.indexOf(action.category);
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
     let prevLink = getPrevLink({ category: nextCategory, step: action.number, data });
 
+    if (action.number === 0 && catIndex === 3) { // Docusign page
+      if (['/survey/fund/q/2', '/survey/fund/q/1'].indexOf(state.get('currentLink')) !== -1 ) { // Account or Check
+        prevLink = state.get('currentLink');
+      }
+    }
+
     if (action.number === 2 && catIndex === 2) { // Check
       prevLink = '/survey/fund/q/0';
     }
-
-    // if (action.number === 2 && catIndex === 2) { // Accounts page
-    //   prevLink = '/survey/fund/q/1';
-    // }
 
     return state.merge({
       changingQuestion: false,
@@ -138,7 +141,7 @@ export default function survey(state = initialState, action = {}) {
     });
   case actions.TERMS_TOGGLE:
     return state.merge({
-      termsAccepted: state.get('termsAccepted') ? false : true,
+      termsAccepted: action.isAccepted,
     });
   case actions.FEEDBACK_SUCCESS:
     return state.merge({
@@ -152,6 +155,16 @@ export default function survey(state = initialState, action = {}) {
     return state.merge({
       categoryIndex: action.index,
     });
+  case actions.SET_CURRENT_LINK:
+    return state.merge({
+      currentLink: action.link,
+    });
+  case actions.SET_PREV_LINK:
+    return state.set('prevLink', action.link);
+  case actions.SET_NEXT_LINK:
+    return state.set('nextLink', action.link);
+  case actions.SET_SHOW_CATEGORIES:
+    return state.set('showCategories', action.show);
   default:
     return state;
   }

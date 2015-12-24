@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import  { Link } from 'react-router';
 
-const Buttons = ({prevLink, nextLink, isDisabled, text, nextLinkHandler}) => {
+const Buttons = ({prevLink, nextLink, isDisabled = false, text, nextLinkHandler}) => {
   let pr = {};
   if (nextLinkHandler) {
     pr.onClick = nextLinkHandler;
