@@ -224,11 +224,13 @@ class FormContainer extends React.Component {
               >
               <Buttons
                 prevLink='/survey/fund/q/0'
+                nextLink='/survey/confirm/q/0'
               /></Transfer>);
           } else if (form.formKey === 'fund-step-5') {
             result.push(<MailCheck data={firstStepData}>
               <Buttons
                 prevLink='/survey/fund/q/0'
+                nextLink='/survey/confirm/q/0'
               /></MailCheck>);
           } else {
             result.push(::this.renderDynamicForm(category, form, index));
