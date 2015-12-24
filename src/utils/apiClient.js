@@ -177,6 +177,7 @@ export function getDocusignLink(cb = () => {}) {
       .get(config.apiHost + validateUrl)
       .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
       .end((err, res) => {
+
         checkResponse(err, res, () => {
           console.log('Vanare validation:');
           console.log(res.body);

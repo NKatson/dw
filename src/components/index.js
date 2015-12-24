@@ -19,3 +19,4 @@ export RothModal from './RothModal';
 export RothStepsModal from './RothStepsModal';
 export Docusign from './Docusign';
 export Redirect from './Redirect';
+export Dashboard from './Dashboard';

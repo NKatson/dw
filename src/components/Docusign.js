@@ -1,15 +1,16 @@
 import React, { PropTypes } from 'react';
-import { setLink, setIsDocusign } from '../redux/actions/docusign';
+import * as actions from '../redux/actions/docusign';
 import { getDocusignLink } from '../utils/apiClient';
 
 class Docusign extends React.Component {
   componentDidMount() {
-    this.props.dispatch(setIsDocusign(true));
+    this.props.dispatch(actions.setIsDocusign(true));
     getDocusignLink((err, data) => {
       const link = data.docusign_url;
       console.log(link);
+      
       if (link && !this.props.link) {
-          this.props.dispatch(setLink(link));
+          this.props.dispatch(actions.setLink(link));
       }
     });
   }

@@ -2,6 +2,7 @@ import * as actions from '../actions/survey';
 import { Map, fromJS } from 'immutable';
 
 const initialState = Map({
+  showCategories: true,
   requesting: false,
   radio : Map(),
   showWelcomeBack: false,
@@ -162,6 +163,8 @@ export default function survey(state = initialState, action = {}) {
     return state.set('prevLink', action.link);
   case actions.SET_NEXT_LINK:
     return state.set('nextLink', action.link);
+  case actions.SET_SHOW_CATEGORIES:
+    return state.set('showCategories', action.show);
   default:
     return state;
   }

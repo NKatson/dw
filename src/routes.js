@@ -1,7 +1,11 @@
 import React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 import { isLoggedIn } from './redux/actions/auth';
-import { Category, Redirect as _Redirect } from './components';
+import {
+  Category,
+  Redirect as _Redirect,
+  Dashboard,
+} from './components';
 
 import {
     Registration,
@@ -49,6 +53,8 @@ export default (store) => {
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />
+
+            <Route path="/dashboard" component={Dashboard} />
         </Route>
         <Redirect from="/" to="/signin" />
       </Route>

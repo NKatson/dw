@@ -33,6 +33,8 @@ export const SET_CURRENT_LINK     = 'SET_CURRENT_LINK';
 export const SET_PREV_LINK        = 'SET_PREV_LINK';
 export const SET_NEXT_LINK        = 'SET_NEXT_LINK';
 
+export const SET_SHOW_CATEGORIES  = 'SET_SHOW_CATEGORIES';
+
 function initialRequest() {
   return {
     type: GET_DATA_REQUEST,
@@ -177,6 +179,13 @@ export function setNextLink(link) {
   return {
     type: SET_NEXT_LINK,
     link,
+  }
+}
+
+export function setShowCategories(show) {
+  return {
+    type: SET_SHOW_CATEGORIES,
+    show,
   }
 }
 

@@ -77,7 +77,7 @@ class Survey extends React.Component {
     return result;
   }
   render () {
-    const { data, stepType, recommendMessageType, requesting, isDocusign } = this.props;
+    const { data, stepType, recommendMessageType, requesting, isDocusign, showCategories } = this.props;
     let categories = [];
     let steps = [];
     if (typeof data !== 'undefined') {
@@ -88,9 +88,13 @@ class Survey extends React.Component {
           <Header handleLogout={::this.handleLogout} />
           <div className="common-wrap common-wrap_rose">
             <div className={'container container-2 bg-white ' + (isDocusign ? 'docusign' : '')}>
-              <div className="wfm-steps">
-                 {categories}
-              </div>
+              {
+                showCategories ?
+                <div className="wfm-steps">
+                   {categories}
+                </div>
+                : null
+              }
               {data ? this.props.children : null}
             </div>
           </div>
@@ -119,6 +123,7 @@ function mapStateToProps(state) {
     recommendMessageType: state.survey.get('recommendMessageType'),
     step: state.survey.get('step'),
     isDocusign: state.docusign.isDocusign,
+    showCategories: state.survey.get('showCategories'),
   };
 }
 export default connect(mapStateToProps)(Survey);
