@@ -1,83 +1,68 @@
 import React, { PropTypes } from 'react';
 import MaskedInput from 'react-maskedinput';
-import CurrencyMaskedInput from 'react-currency-masked-input';
+import { CurrencyInput } from '../components';
+import $ from 'jquery';
 
 class InputText extends React.Component {
-  maskedChange(e) {
-    console.log('masked!');
-  }
   render () {
-    const { field, placeholder, additionalClass, icon, type, isNormalized , label, defaultValue } = this.props;
-    let mask = '111-111-1111';
-    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income';
+    const { field, placeholder, additionalClass, icon, type, isNormalized ,
+      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency, tabIndex } = this.props;
+    const mask = maskPattern || '111-111-1111';
+    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income'
+    || field.name === 'initial_fund' || field.name === 'amountOfTransaction';
     let component = null;
+    const disabled = ['first_name', 'last_name'];
 
-    if (field.name === 'date_of_birth') {
-      mask = '11/11/1111';
-    } else if (field.name === '_ssn') {
-      mask = '111-11-1111';  
-      //field.value = '123-__-____';
-    }
-
-    if (!field.value && defaultValue) {
-      field.value = defaultValue;
+    if (tabIndex) {
+      field.tabIndex = tabIndex;
     }
 
     if (isNormalized && !isIncome && type !== 'password') {
       component = <MaskedInput
-        size={3}
+        className="input-text"
+        defaultValue={defaultValue}
         mask={mask}
-        type={type ? type : 'text'}
         placeholder={placeholder}
-        className="text full-width" {...field} />;
-    } else {
-      console.log(field.name);
-      component =  <input
         type={type ? type : 'text'}
-        className="text full-width"
-        placeholder={placeholder}
         {...field}
-        defaultValue={defaultValue ? defaultValue : ""}
+        autoComplete="off"
+        />;
+    } else {
+      component =  <input
+        disabled={disabled.indexOf(field.name) !== -1 ? true : false}
+        autoFocus={defaultValue ? true : false}
+        className={'input-text ' + (inputClass ? inputClass : '')}
+        placeholder={placeholder}
+        type={type ? type : 'text'}
+        value={field.value ? '' : defaultValue}
+        {...field}
+        autoComplete="off"
+        />
+      }
+
+    if (isIncome || isCurrency) {
+      component =  <CurrencyInput
+        className={'input-text ' + (inputClass ? inputClass : '')}
+        placeholder="$"
+        type="text"
+        {...field}
         />
     }
-
-    if (isIncome) {
-      component = <CurrencyMaskedInput
-                    placeholder="0"
-                    required
-                    {...field}
-                    className="text full-width"
-                    type="text"
-                    pattern="\d.*"
-                    defaultValue={defaultValue ? defaultValue : ""}
-                  />;
-    }
-
-    // Additional class hardcode
-    let addClass = '';
-    if (placeholder === 'Zip Code') {
-      addClass = 'inline-block w-210';
-    }
-    if (placeholder === 'Phone') {
-      addClass = 'w-342 inline-block valign-mid';
-    }
-    if (placeholder === 'SSN') {
-      addClass = 'w-342 inline-block valign-mid';
-    }
-    if (placeholder === 'Date of Birth (MM/DD/YYYY)') {
-      addClass = 'w-342';
-    }
+    const needError = field.error && field.touched ? true : false;
     return (
-        <div className={'input-wrap ' + addClass + (icon ? ' input-wrap_with-icon ' : '') + (field.error && field.touched ? ' input-wrap_error' : '')}>
-          {icon ? <div className="input-wrap__icon"><span aria-hidden="true" className={'glyphicon ' + icon }></span></div> : null}
-          {label ? <p><b>{label}</b><br /></p> : null}
+        <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (needError ? ' error' : '') + (needError && field.error.length > 34 ? ' error_two-lines' : '')}>
+          {label ?
+            <div className="input-wrap__text">{label} {field.name === 'annual_income'? <p style={{
+                display: 'inline',
+                fontSize: '0.8em'
+              }}>Your annual income</p> : null}</div>
+             : null}
+
           {component}
+          {this.props.children}
           {
             field.error && field.touched ?
-              <div className="input-wrap__error-msg">
-                <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                 {field.error}
-              </div>
+              <div className={errorMessageClass ? errorMessageClass : 'input-wrap__error-msg' }>{field.error}</div>
               : null
           }
         </div>
@@ -88,10 +73,12 @@ class InputText extends React.Component {
 InputText.propTypes = {
   field: PropTypes.object,
   placeholder: PropTypes.string,
+  defaultValue: PropTypes.string,
   additionalClass: PropTypes.string,
   icon: PropTypes.string,
   label: PropTypes.string,
   type: PropTypes.string,
+  tabIndex: PropTypes.string,
 }
 
 export default InputText;

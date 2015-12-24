@@ -3,6 +3,7 @@ import {Map, fromJS} from 'immutable';
 
 const initialState = Map({
   loggedIn: false,
+  confirmingToken: false,
 });
 
 export default function auth(state = initialState, action = {}) {
@@ -19,7 +20,6 @@ export default function auth(state = initialState, action = {}) {
     }));
   case actions.LOGIN_SUCCESS:
     return fromJS({
-      confirmed: action.confirmed,
       loggedIn: true,
       user: action.user,
     });
@@ -28,10 +28,28 @@ export default function auth(state = initialState, action = {}) {
       loggingOut: true,
     }));
   case actions.LOGOUT_SUCCESS:
-    return initialState;
+    return initialState.merge(Map({
+      loginError: action.message,
+    }));
   case actions.LOGOUT_FAILURE:
     return state.merge(Map({
       logoutError: action.error,
+    }));
+  case actions.CONFIRM_TOKEN_REQUEST:
+    return state.merge(Map({
+      confirmingToken: true,
+    }));
+  case actions.CONFIRM_TOKEN_ERROR:
+    return state.merge(Map({
+      confirmingToken: false,
+      confirmTokenError: 'Error',
+    }));
+  case actions.CONFIRM_TOKEN_SUCCESS:
+    return state.merge(Map({
+      confirmTokenError: null,
+      confirmed: true,
+      loginError: action.message,
+      confirmingToken: false,
     }));
   default:
     return state;

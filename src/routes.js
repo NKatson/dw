@@ -1,25 +1,33 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Redirect } from 'react-router';
 import { isLoggedIn } from './redux/actions/auth';
-import { Category, Submit } from './components';
+import {
+  Category,
+  Redirect as _Redirect,
+  Dashboard,
+} from './components';
 
 import {
-    App,
     Registration,
     Authorization,
     ResetPassword,
     Welcome,
     Survey,
     FormContainer,
-    Account,
     Submit as SubmitData,
+    ConfirmPasswordForm,
+    ConfirmEmail,
+    AppWrapper,
+    Feedback,
+    Check,
   } from './containers';
 
+import { App } from './containers';
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
     function checkAuth() {
-      if (!isLoggedIn(store.getState())) {
+      if (!store.getState().auth.get('loggedIn')) {
         replaceState(null, '/signin');
       }
       cb();
@@ -28,21 +36,29 @@ export default (store) => {
   };
 
   return (
-    <Route path="/" component={App}>
-      <Route path="welcome" component={Welcome} />
-      <Route onEnter={requireLogin} >
+    <Route>
+      <Route component={AppWrapper}>
+        <Route component={App} >
+          <Route path="reset" component={ResetPassword} />
+          <Route path="confirm-email" component={ConfirmEmail} />
+          <Route path="confirm-password" component={ConfirmPasswordForm} />
+          <Route path="signin" component={Authorization} />
+          <Route path="signup" component={Registration} />
+        </Route>
+        <Redirect from="/survey" to="/survey/personal/q/0" />
+        <Route path="/welcome" component={Welcome} />
+        <Route path="/survey" component={Survey}>
+            <IndexRoute component={FormContainer} />
+            <Route path=":category/q/:number" component={FormContainer} />
+            <Route path="/submit" component={SubmitData} />
+            <Route path="feedback" component={Feedback} />
+            <Route path="check" component={Check} />
 
+            <Route path="/dashboard" component={Dashboard} />
+        </Route>
+        <Redirect from="/" to="/signin" />
       </Route>
-      <Route path="reset" component={ResetPassword} />
-      <Route path="submit" component={Submit} />
-      <Route path="survey" component={Survey}>
-          <IndexRoute component={FormContainer} />
-          <Route path="/account" component={Account} />
-          <Route path=":category/q/:number" component={FormContainer} />
-      </Route>
-      <Route path="/submit" component={SubmitData} />
-      <Route path="signin" component={Authorization} />
-      <Route path="signup" component={Registration} />
+      <Route path="/redirect-to-dashboard" component={_Redirect} />
     </Route>
   );
 };

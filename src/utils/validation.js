@@ -1,146 +1,193 @@
 import moment from 'moment';
 
-export function authorization(data) {
-  const errors = {};
-  if (!data.email) {
-    errors.email = 'Required';
+class Validation {
+  constructor(data) {
+    this.data = data;
+    this.errors = {};
   }
-  if (!data.password) {
-    errors.password = 'Required';
+  getErrors() {
+    return this.errors;
   }
-  const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  checkRequired(fieldName, message = 'Required') {
+    if (this.data.hasOwnProperty(fieldName)) {
+      if (!this.data[fieldName] || this.data[fieldName].trim() === '') {
+        this.errors[fieldName] = message;
+      }
+      if (this.data[fieldName] === 'default') {
+        this.errors[fieldName] = message;
+      }
+    }
+  }
+  checkRegex(fieldName, regex, message) {
+    if (this.errors[fieldName]) return;
+    if (this.data[fieldName] && !regex.test(this.data[fieldName])) {
+      this.errors[fieldName] = message;
+    }
+  }
+  checkMin(fieldName, min) {
+    if (this.errors[fieldName]) return;
 
-  if (data.email && !emailReg.test(data.email)) {
-    errors.email = 'Please use valid email address';
+    if (this.data[fieldName] && this.data[fieldName].length < min) {
+      this.errors[fieldName] = `Field must be minimum ${min} characters long`;
+    }
   }
-  return errors;
+  checkMax(fieldName, max) {
+    if (this.errors[fieldName]) return;
+
+    if (this.data[fieldName] && this.data[fieldName].length > max) {
+      this.errors[fieldName] = `Field must be maximum ${max} characters long`;
+    }
+  }
+  checkLength(fieldName, length) {
+    if (this.errors[fieldName]) return;
+
+    if (this.data[fieldName] && this.data[fieldName].length !== length) {
+      this.errors[fieldName] = `Field length must be ${length} characters long`;
+    }
+  }
+  checkCurrency(fieldName, min, message) {
+    if (this.errors[fieldName] || !this.data[fieldName]) return;
+
+    if (this.data[fieldName] === '$ ') {
+      this.errors[fieldName] = 'Required';
+      return;
+    }
+
+    let val = this.data[fieldName].replace(/[,\$\s]/g, '');
+    val = parseInt(val);
+
+    if (val < min) {
+      this.errors[fieldName] = message;
+    }
+  }
+  checkDateOfBirth(fieldName) {
+    if (this.errors[fieldName] || !this.data[fieldName]) return;
+
+    let [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(this.data[fieldName]) || [];
+    const min18States = ['CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
+    const state = this.data['state'];
+
+    month = parseInt(month);
+    day = parseInt(day);
+    year = parseInt(year);
+
+    month = month - 1;
+
+    const diff = moment().diff([year, month, day], 'years');
+
+    if (!moment([year, month, day]).isValid()) {
+      this.errors[fieldName] = 'Please type valid date format.';
+    } else if (moment().diff([year, month, day]) < 0) {
+      this.errors[fieldName] = "Thanks for your interest! When you're born let us know!";
+    } else if (diff > 100) {
+      this.errors[fieldName] = 'Thanks for your interest! You must be 100 years old or younger to create an account.';
+    } else if (diff < 18 ) {
+      this. errors[fieldName] = 'You must be 18 years or older to create a WorthFM account.';
+    } else if (!state || state === 'default') {
+      this.errors[fieldName] = 'Please select your state.';
+    } else if (state && min18States.indexOf(state) === -1 && diff < 21) {
+      this.errors[fieldName] = 'You must be 21 years or older to create a WorthFM account.';
+    }
+  }
+  checkPassword() {
+    if (this.errors.password) return;
+
+    if (this.data.password && this.data.password.length < 8) {
+      this.errors.password = 'Passwords must be minimum 8 characters long';
+      return;
+    }
+
+    if (!/^(?=.*[A-Z]).*$/.test(this.data.password)) {
+      this.errors.password = 'Password must contain at least one uppercase letter (A-Z)';
+    } else if (!/^(?=.*[0-9]).*$/.test(this.data.password)) {
+      this.errors.password = 'Password must contain at least one number (0-9)';
+    }
+  }
+  checkPasswordsEqual() {
+    if (this.data.password && this.data.confirmPassword && this.data.confirmPassword !== this.data.password) {
+      this.errors.confirmPassword = 'Passwords do not match';
+    }
+  }
 }
 
 export function registration(data) {
-  const errors = authorization(data);
+  const valid = new Validation(data);
+  const emailReg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
-  if (data.password && data.password.length < 8) {
-    errors.password = 'Passwords must be minimum 8 characters long';
-  }
-  if (!data.confirmPassword) {
-    errors.confirmPassword = 'Please enter password again';
-  }
-  if (data.password && !errors.password) {
-    if (!/^(?=.*[A-Z]).*$/.test(data.password)) {
-      errors.password = 'Password must contain at least one uppercase letter (A-Z)';
-    } else if (!/^(?=.*[0-9]).*$/.test(data.password)) {
-      errors.password = 'Password must contain at least one number (0-9)';
-    }
-  }
-  if (data.password && data.confirmPassword && data.confirmPassword !== data.password) {
-    errors.confirmPassword = 'Passwords do not match';
-  }
-  return errors;
-}
+  valid.checkRequired('email', 'Your email address is required.');
+  valid.checkRequired('firstName', 'Your first name is required.');
+  valid.checkRequired('lastName', 'Your last name is required.');
 
-function checkDateOfBirth(data, fieldName, errors, state) {
-  if (errors[fieldName] || !data[fieldName]) return errors;
+  valid.checkRegex('email', emailReg, 'Please use valid email address.');
 
-  const inputYearLength = data[fieldName].length;
-  const currentYear = (new Date()).getFullYear();
-  const [, month, day, year ] = /^(\d\d)\/(\d\d)\/(\d\d\d\d)$/.exec(data[fieldName]) || [];
-  const min18States = [ 'CA', 'DC', 'KY', 'LA', 'ME', 'MI', 'NV', 'NJ', 'SD', 'OK', 'VA'];
+  valid.checkRequired('password', 'Enter your password.');
+  valid.checkRequired('confirmPassword', 'Please enter password again.');
 
-  console.log(day, month, year);
-  if (year < (currentYear - 100)
-      || (currentYear - year) < 3
-      || !(moment([year, day, month]).isValid())) {
-    errors[fieldName] = 'Please type valid date format';
-    return errors;
-  }
+  valid.checkPassword();
+  valid.checkPasswordsEqual();
 
-  if ((currentYear - year) < 13 ) {
-    errors[fieldName] = `I'm sorry, you must be 18 or over to create an account with WorthFM`;
-    return errors;
-  }
-
-  if ((currentYear - year) < 18 ) {
-    errors[fieldName] = `Most state laws require that you are 18 or older to setup investment accounts. Please double-check your birthdate - and if you're under 18, we'd love to see you again in a few years.`;
-    return errors;
-  }
-
-  if (!state) {
-    errors[fieldName] = 'Please select state';
-    return errors;
-  }
-
-  if (state && min18States.indexOf(state) === -1 && (currentYear - year) < 21) {
-    errors[fieldName] = `Most state laws require that you are 21 or older to setup investment accounts. Please double-check your birthdate - and if you're under 21, we'd love to see you again in a few years.`;
-    return errors;
-  }
-
-  return errors;
-}
-
-function checkRequired(data, fieldName, errors) {
-  if (data.hasOwnProperty(fieldName) && !data[fieldName]) {
-    errors[fieldName] = 'Required';
-  }
-  return errors;
-}
-
-function checkLength({ data, fieldName, errors, min }) {
-  if (errors[fieldName]) return errors;
-
-  if (data[fieldName] && data[fieldName].length < min) {
-    errors[fieldName] = `Field must be minimum ${min} characters long`;
-  }
-  return errors;
-}
-
-function checkRegex({ data, fieldName, regex, errors, message }) {
-  if (errors[fieldName]) return errors;
-
-  if (data[fieldName] && !regex.test(data[fieldName])) {
-    errors[fieldName] = message;
-  }
-  return errors;
-}
-
-function checkIncome(data, fieldName, errors) {
-  if (errors[fieldName]) return errors;
-
-  if (data[fieldName] && data[fieldName] < 8000) {
-    errors[fieldName] = 'Please confirm your annual income.';
-  }
-
-  return errors;
+  return valid.getErrors();
 }
 
 export function validateSurvey(data) {
-  let errors = {};
-  const addressRegex = /^[a-zA-Z\- ,0-9\-\.]+$/i;
-  const zipCodeRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/i;
+  const valid = new Validation(data);
+
+  const addressRegex = /^[a-zA-Z\- ,'0-9#\-\.]+$/i;
+  const zipCodeRegex = /(^\d{5}$)|(^\d{6}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
-  const ssnRegex = /(^\d{9}$)/i;
-  const _ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
+  const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
-  const message = 'Valid characters include a-zA-Z, 0-9 and (._-)';
-  const requiredFields = ['first_name', 'last_name', 'address', 'city', 'zip_code', 'phone', 'date_of_birth', 'employer', 'title', 'industry_kind', 'annual_income', 'state'];
+  const requiredFields = [
+    'address',
+    'city',
+    'zip_code',
+    'phone',
+    'date_of_birth',
+    'employer',
+    'title',
+    'industry_kind',
+    'state',
+    'employment_status',
+    'ssn',
+    'annual_income',
+    'income_source',
+    'bank_connected_how_much',
+    'citizen',
+    'bankName',
+    'accountTitle',
+    'transitRouting',
+    'routing_name',
+    'bankAccount',
+    'amountOfTransaction',
+    'reason',
+    'marital_status',
+ ];
 
   requiredFields.forEach(fieldName => {
-    errors = checkRequired(data, fieldName, errors);
-    if (fieldName === 'annual_income') {
-      errors = checkIncome(data, fieldName, errors);
-    }
-  });
-  const minTwo = ['first_name', 'last_name', 'address', 'employer', 'title', 'industry_kind'];
-
-  minTwo.forEach(elem => {
-      errors = checkLength({ data, fieldName: elem, errors, min: 2 });
+    valid.checkRequired(fieldName);
   });
 
-  errors = checkRegex({ data, fieldName: 'address', regex: addressRegex, errors, message });
-  errors = checkRegex({ data, fieldName: 'phone', regex: phoneRegex, errors, message: 'Please type valid phone format' });
-  errors = checkRegex({ data, fieldName: 'city', regex: addressRegex, errors, message });
-  errors = checkRegex({ data, fieldName: 'zip_code', regex: zipCodeRegex, errors, message: '5 numbers' });
-  errors = checkRegex({ data, fieldName: 'date_of_birth', regex: dateOfBirthRegex, errors, message: 'Please type valid date format' });
+  // personal
+  valid.checkRegex('date_of_birth', dateOfBirthRegex, 'Please type a valid date (MM/DD/YYYY)');
+  valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
+  valid.checkRegex('address', addressRegex, 'Please type valid address');
+  valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
+  valid.checkRegex('city', addressRegex, 'Please type valid city format');
+  valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
+  valid.checkDateOfBirth('date_of_birth');
 
-  errors = checkDateOfBirth(data, 'date_of_birth', errors, data.state);
-  return errors;
+  // check
+  valid.checkMax('bankName', 100);
+  valid.checkMax('bankAccount', 25);
+  valid.checkMax('accountTitle', 150);
+  valid.checkLength('transitRouting', 9);
+  valid.checkRegex('bankName', addressRegex, 'Please type valid bank name format');
+  valid.checkRegex('accountTitle', addressRegex, 'Please type valid account name format');
+  valid.checkCurrency('amountOfTransaction', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
+
+  // accounts page
+  valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
+  valid.checkCurrency('bank_connected_how_much', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
+
+  return valid.getErrors();
 }

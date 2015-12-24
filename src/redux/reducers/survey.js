@@ -2,8 +2,13 @@ import * as actions from '../actions/survey';
 import { Map, fromJS } from 'immutable';
 
 const initialState = Map({
+  showCategories: true,
   requesting: false,
-  welcome: "Fresh",
+  radio : Map(),
+  showWelcomeBack: false,
+  currentLink: '/welcome',
+  changingQuestion: false,
+  termsAccepted: false,
 });
 
 function getPrevLink({ category, step, data }) {
@@ -13,7 +18,9 @@ function getPrevLink({ category, step, data }) {
   if (categoryIndex === -1) return '-1';
   if (step === 0) {
     if (categoryIndex === 0) return '/welcome';
-    return `/survey/${categoryNames[categoryIndex - 1].toLowerCase()}/q/${categoryNames.length - 1}`;
+    const prevCat = categoryNames[categoryIndex - 1];
+    const lastQuestionIndex = Object.keys(data[prevCat]).length - 1;
+    return `/survey/${prevCat.toLowerCase()}/q/${lastQuestionIndex}`;
   }
 
   return `/survey/${category.toLowerCase()}/q/${step - 1}`;
@@ -27,22 +34,12 @@ function getNextLink({ category, step, data }) {
   // if last step in category
   if (data[category].length - 1 === step) {
     // if last category
-    if (categoryIndex === 1) return '/submit';
+    if (categoryIndex === 2) return '/submit';
     // change category and step to 0
     return `/survey/${categoryNames[categoryIndex + 1].toLowerCase()}/q/0`;
   }
   // step++ in current category
   return `/survey/${category.toLowerCase()}/q/${step + 1}`;
-}
-
-function showRecommend({ category, step, data }) {
-  if (step > 0) {
-    if (data[category][step - 1].type === 'recommend') {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 export default function survey(state = initialState, action = {}) {
@@ -51,9 +48,14 @@ export default function survey(state = initialState, action = {}) {
   const currentIndex = state.get('categoryIndex');
 
   switch (action.type) {
-  case actions.INITIAL_REQUEST:
+  case actions.GET_DATA_REQUEST:
     return state.merge({
       requesting: true,
+    });
+  case actions.GET_DATA_REQUEST_ERROR:
+  case actions.GET_DATA_REQUEST_SUCCESS:
+    return state.merge({
+      requesting: false,
     });
   case actions.FILL_STATE:
     const categories = Object.keys(action.data);
@@ -63,6 +65,7 @@ export default function survey(state = initialState, action = {}) {
       categoryIndex: 0,
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
+      currentLink: '/welcome',
       nextLink: getNextLink({ category: categories[0], step: 0, data: action.data }),
       prevLink: getPrevLink({ category: categories[0], step: 0, data: action.data }),
       data: action.data,
@@ -80,50 +83,88 @@ export default function survey(state = initialState, action = {}) {
       accountType: action.accountType,
       recommendMessageType: 'recommend',
     });
-  case actions.SHOW_RECOMMEND:
-    return state.merge({
-      showRecommend: true,
-      recommendMessageType: action.messageType
-    });
-  case actions.HIDE_RECOMMEND:
-    return state.merge({
-      showRecommend: false,
-    });
-  case actions.SAVE_WELCOME:
-    return state.merge({
-      welcome: action.welcome,
-    });
   case actions.SSN_ERROR_CHANGE:
     return state.merge({
       ssnError: action.error,
     });
+  case actions.RADIO_CLICKED:
+    return state.updateIn(['radio', action.name], action.name, value => action.value);
   case actions.SSN_CHANGE:
     let isValid = true;
     if (action.ssn.length > 0) {
-        console.log(action.ssn);
         isValid = /(^\d{9}$)/.exec(action.ssn) ? true : false;
     }
     return state.merge({
       storedSsn: action.ssn,
       ssnError: isValid ? null : 'Please type valid SSN',
     });
+  case actions.CHANGING_QUESTION:
+    return state.merge({
+      changingQuestion: true
+    });
   case actions.CHANGE_QUESTION:
     if (state.get('step') === action.number && state.get('category').toLowerCase() === action.category) return state;
 
-    const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
     const categoryNames = Object.keys(data).map(key => key.toLowerCase());
+    const currentLink = `/survey/${state.get('category').toLowerCase()}/q/${state.get('step')}`;
     const catIndex = categoryNames.indexOf(action.category);
     const nextCategory = catIndex !== -1 ? (action.category.charAt(0).toUpperCase() + action.category.slice(1)) : null;
+    let prevLink = getPrevLink({ category: nextCategory, step: action.number, data });
+
+    if (action.number === 0 && catIndex === 3) { // Docusign page
+      if (['/survey/fund/q/2', '/survey/fund/q/1'].indexOf(state.get('currentLink')) !== -1 ) { // Account or Check
+        prevLink = state.get('currentLink');
+      }
+    }
+
+    if (action.number === 2 && catIndex === 2) { // Check
+      prevLink = '/survey/fund/q/0';
+    }
 
     return state.merge({
+      changingQuestion: false,
       category: nextCategory,
       categoryIndex: catIndex,
       step: action.number,
+      currentLink: `/survey/${nextCategory.toLowerCase()}/q/${action.number}`,
       nextLink: getNextLink({ category: nextCategory, step: action.number, data }),
-      prevLink: getPrevLink({ category: nextCategory, step: action.number, data }),
+      prevLink,
       formType: data[nextCategory][action.number].type,
-      showRecommend: showRecommend({ category: nextCategory, step: action.number, data}),
     });
+  case actions.SHOW_WELCOME_BACK:
+    return state.merge({
+      showWelcomeBack: true,
+    });
+  case actions.HIDE_WELCOME_BACK:
+    return state.merge({
+      showWelcomeBack: false,
+    });
+  case actions.TERMS_TOGGLE:
+    return state.merge({
+      termsAccepted: action.isAccepted,
+    });
+  case actions.FEEDBACK_SUCCESS:
+    return state.merge({
+      feedbackSuccess: true,
+    });
+  case actions.FEEDBACK_FAILED:
+    return state.merge({
+      feedbackFailed: true,
+    });
+  case actions.SET_CATEGORY_INDEX:
+    return state.merge({
+      categoryIndex: action.index,
+    });
+  case actions.SET_CURRENT_LINK:
+    return state.merge({
+      currentLink: action.link,
+    });
+  case actions.SET_PREV_LINK:
+    return state.set('prevLink', action.link);
+  case actions.SET_NEXT_LINK:
+    return state.set('nextLink', action.link);
+  case actions.SET_SHOW_CATEGORIES:
+    return state.set('showCategories', action.show);
   default:
     return state;
   }
