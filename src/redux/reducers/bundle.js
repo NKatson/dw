@@ -64,7 +64,7 @@ export default function bundle(state = initialState, action = {}) {
       return Object.assign({}, state, {
         accountText: 'Roth IRA',
         accountLink: 'Traditional IRA',
-        accountType: state.joint === 'yes' ? 'joint' : 'individual',
+        accountType: state.joint === 'yes' ? 'joint_roth' : 'individual_roth',
       });
     case actions.UPDATE_INCOME:
 

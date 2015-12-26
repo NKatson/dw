@@ -37,27 +37,28 @@ export default (store) => {
 
   return (
     <Route>
+      <Route component={App} >
+        <Route path="reset" component={ResetPassword} />
+        <Route path="confirm-email" component={ConfirmEmail} />
+        <Route path="confirm-password" component={ConfirmPasswordForm} />
+        <Route path="signin" component={Authorization} />
+        <Route path="signup" component={Registration} />
+      </Route>
+      
       <Route component={AppWrapper}>
-        <Route component={App} >
-          <Route path="reset" component={ResetPassword} />
-          <Route path="confirm-email" component={ConfirmEmail} />
-          <Route path="confirm-password" component={ConfirmPasswordForm} />
-          <Route path="signin" component={Authorization} />
-          <Route path="signup" component={Registration} />
-        </Route>
-        <Redirect from="/survey" to="/survey/personal/q/0" />
-        <Route path="/welcome" component={Welcome} />
         <Route path="/survey" component={Survey}>
             <IndexRoute component={FormContainer} />
             <Route path=":category/q/:number" component={FormContainer} />
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />
-
             <Route path="/dashboard" component={Dashboard} />
         </Route>
+        <Route path="/welcome" component={Welcome} />
+        <Redirect from="/survey" to="/survey/personal/q/0" />
         <Redirect from="/" to="/signin" />
       </Route>
+      
       <Route path="/redirect-to-dashboard" component={_Redirect} />
     </Route>
   );

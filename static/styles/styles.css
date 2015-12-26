@@ -36,6 +36,9 @@ h4 {
   font-weight: 700;
   font-size: 17px;
 }
+body > div:not(.wfm-main-wrap) {
+  height: 100%;
+}
 .wfm-main-wrap {
   position: relative;
   padding-bottom: 190px;
@@ -52,11 +55,11 @@ h4 {
   padding: 0 55px;
   position: relative;
 }
-.common-wrap {
-  min-width: 614px;
-}
 .common-page {
   background: url("../images/common-bg.gif") #fdfaee repeat-y center top;
+}
+.common-wrap {
+  min-width: 614px;
 }
 .common-wrap_blue {
   background-color: #392a6b;
@@ -166,6 +169,10 @@ h4 {
 }
 .input-text:disabled {
   background-color: #ebebe4;
+}
+.input-text:active,
+.input-text:focus {
+  outline: none!important;
 }
 textarea.input-text {
   resize: none;
@@ -1235,6 +1242,9 @@ select.input-text {
 .pad-21 a {
   color: #464646;
 }
+.input-wrap_with-radio-2 {
+  padding-bottom: 15px;
+}
 .input-wrap_with-radio-2 label {
   padding-left: 40px;
   position: relative;
@@ -1248,4 +1258,53 @@ select.input-text {
 }
 .docusign {
   width: 1130px;
+}
+.wfm-system-error {
+  text-align: center;
+  margin: 150px 0 250px;
+}
+.wfm-system-error__number {
+  color: #392a6b;
+  font-size: 100px;
+  font-weight: 700;
+  line-height: 120px;
+}
+.wfm-system-error__descr {
+  color: #392a6b;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19px;
+  text-transform: uppercase;
+}
+.wfm-system-error__text {
+  margin-top: 30px;
+  color: #464646;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+}
+.wfm-system-error__button {
+  margin-top: 40px;
+}
+.pad-22 {
+  margin-bottom: 250px;
+}
+.wfm-big-blue {
+  color: #392a6b;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 30px;
+}
+.c3-chart-arc text {
+  font-size: 10px;
+}
+.wfm-dashboard-chart-01 {
+  width: 250px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+  margin: 40px 0 0;
+}
+.input-wrap-help__link:hover {
+  cursor: default;
 }

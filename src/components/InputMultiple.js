@@ -9,28 +9,31 @@ class InputMultiple extends React.Component {
       props.onClick = handleClick;
     }
     return (
-      <RadioGroup name={name} value={selectedValue} className="input-wrap_with-radio-2">
-        {
-          inputs.map((input, index) => {
-            const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
-                            {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
-                          </label>;
-            return (
-                <Radio
-                    {...input.field}
-                    {...props}
-                    labelWrapperClass="input-wrap input-wrap_with-radio"
-                    key={'option' + index}
-                    id={'option-' + index}
-                    radioClass="iradio_minimal"
-                    increaseArea="20%"
-                    value={input.value}
-                    label={label}
-                  />
-            );
-          })
-        }
-      </RadioGroup>
+      <div>
+        {name === 'crysis2008' ? null : <p>{label}</p> }
+        <RadioGroup name={name} value={selectedValue} className="input-wrap_with-radio-2">
+          {
+            inputs.map((input, index) => {
+              const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
+                              {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
+                            </label>;
+              return (
+                  <Radio
+                      {...input.field}
+                      {...props}
+                      labelWrapperClass="input-wrap input-wrap_with-radio"
+                      key={'option' + index}
+                      id={'option-' + index}
+                      radioClass="iradio_minimal"
+                      increaseArea="20%"
+                      value={input.value}
+                      label={label}
+                    />
+              );
+            })
+          }
+        </RadioGroup>
+      </div>
     );
   }
 }
