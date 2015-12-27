@@ -6,6 +6,9 @@ import { employmentSelector } from '../redux/selectors/surveySelectors';
 import * as surveyActions from '../redux/actions/survey';
 
 class EmploymentContainer extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(surveyActions.setCategoryIndex(0));
+  }
   handleSelectChange(e) {
     this.props.dispatch(surveyActions.selectChange(e.target.value));
   }

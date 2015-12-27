@@ -7,6 +7,9 @@ import { personalSelector } from '../redux/selectors/surveySelectors';
 import * as surveyActions from '../redux/actions/survey';
 
 class PersonalForm extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(surveyActions.setCategoryIndex(0));
+  }
   handleShowSsnClick() {
     this.props.dispatch(surveyActions.toggleSsn());
   }

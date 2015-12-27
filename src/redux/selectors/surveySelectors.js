@@ -9,6 +9,7 @@ const showCategoriesSelector  = state => state.survey.get('showCategories');
 const showSsnSelector         = state => state.survey.get('showSsn');
 const selectValueSelector     = state => state.survey.get('selectValue');
 const riskValueSelector       = state => state.form && state.form.risk ? state.form.risk.crysis2008.value : null;
+const bundleStateSelector     = state => state.bundle;
 
 export const categoriesSelector = createSelector(
   dataSelector,
@@ -80,13 +81,24 @@ export const riskSelector = createSelector(
       title: data.getIn(['Invest', 0, 'title']),
       description: data.getIn(['Invest', 0, 'description']),
       question: data.getIn(['Invest', 0, 'questions', 0]).toJS(),
-      nextLink: '/survey/basicinfo',
+      nextLink: '/survey/bundle',
       prevLink: '/survey/employment',
       selectValue,
       riskValue,
     }
   }
-)
+);
+
+export const bundleSelector = createSelector(
+  bundleStateSelector,
+  (bundle) => {
+    return {
+      ...bundle,
+      nextLink: '/survey/banks',
+      prevLink: '/survey/risks',
+    }
+  }
+);
 
 
 

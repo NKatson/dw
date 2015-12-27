@@ -29,6 +29,10 @@ import {
   EmploymentContainer,
   RiskForm,
  } from './forms';
+ 
+ import {
+   Bundle,
+ } from './pages';
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
@@ -56,6 +60,8 @@ export default (store) => {
             <Route path="basicinfo" component={PersonalForm} />
             <Route path="employment" component={EmploymentContainer} />
             <Route path="risks" component={RiskForm} />
+            <Route path="bundle" component={Bundle} />
+            
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />

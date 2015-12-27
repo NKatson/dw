@@ -7,6 +7,9 @@ import { riskSelector } from '../redux/selectors/surveySelectors';
 import * as surveyActions from '../redux/actions/survey';
 
 class RiskForm extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(surveyActions.setCategoryIndex(1));
+  }
   render () {
     const { question, fields, title, nextLink, prevLink, riskValue } = this.props;
     return (
