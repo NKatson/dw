@@ -32,6 +32,7 @@ import {
  
  import {
    Bundle,
+   ConnectBank,
  } from './pages';
 
 export default (store) => {
@@ -61,7 +62,9 @@ export default (store) => {
             <Route path="employment" component={EmploymentContainer} />
             <Route path="risks" component={RiskForm} />
             <Route path="bundle" component={Bundle} />
+            <Route path="banks" component={ConnectBank} />
             
+          
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />

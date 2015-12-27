@@ -29,7 +29,7 @@ class EmploymentContainer extends React.Component {
         selectValue={selectValue}
         question={question}
         handleSelectChange={::this.handleSelectChange}
-        saveData={::this.saveData}
+        onNextClick={::this.saveData}
         />
     );
   }

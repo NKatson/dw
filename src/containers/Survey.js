@@ -26,19 +26,19 @@ class Survey extends React.Component {
     ::this.handleParams(nextProps.params);
   }
   handleLogout(e) {
-    // e.preventDefault();
-    // const { state } = this.props;
-    // api.saveState({
-    //   survey: state.survey.toJS(),
-    //   form: state.form,
-    //   auth: state.auth.toJS(),
-    //   bundle: state.bundle,
-    // }, err => {
-    //   if (err) return console.log(err);
-    //   this.props.dispatch(auth.logout(null, () => {
-    //     this.context.history.push( '/signin');
-    //   }));
-    // });
+    e.preventDefault();
+    const { state } = this.props;
+    api.saveState({
+      survey: state.survey.toJS(),
+      form: state.form,
+      auth: state.auth.toJS(),
+      bundle: state.bundle,
+    }, err => {
+      if (err) return console.log(err);
+      this.props.dispatch(auth.logout(null, () => {
+        this.context.history.push( '/signin');
+      }));
+    });
   }
   render () {
     const { showCategories, isDocusign, categories, currentCategoryIndex } = this.props;

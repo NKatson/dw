@@ -6,10 +6,14 @@ import { Buttons, InputMultiple } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import { riskSelector } from '../redux/selectors/surveySelectors';
 import * as surveyActions from '../redux/actions/survey';
+import { saveQuestions } from '../redux/actions/saveActions';
 
 class RiskForm extends React.Component {
   componentWillMount() {
     this.props.dispatch(surveyActions.setCategoryIndex(1));
+  }
+  saveQuestions() {
+    saveQuestions(this.props.riskForm);
   }
   render () {
     const { question, fields, title, nextLink, prevLink, riskValue } = this.props;
@@ -55,6 +59,7 @@ class RiskForm extends React.Component {
                  }
                </RadioGroup>
                <Buttons
+                 onNextClick={::this.saveQuestions}
                  fields={fields}
                  nextLink={nextLink}
                  prevLink={prevLink}

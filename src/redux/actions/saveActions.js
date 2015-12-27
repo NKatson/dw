@@ -49,6 +49,12 @@ export function savePersonal(formData, cb = () => {}) {
   });
 }
 
+export function saveQuestions(formData, cb = () => {}) {
+  api.sendQuestions(getCommon(formData), () => {
+    cb();  
+  });
+}
+
 export function saveState(state, cb = () => {}) {
   api.saveState(state, err => {
     if (err) return console.log(err);

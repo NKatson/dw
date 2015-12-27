@@ -16,15 +16,16 @@ class Buttons extends React.Component {
     
     return formValid;
   }
-  saveState() {
-    saveState(this.props.state, () => {
-      if (this.props.onNextClick) {
+  save() {
+    const { state, onNextClick} = this.props;
+    saveState(state, () => {
+      if (onNextClick) {
         onNextClick();
       }
     });
   }
   render () {
-    const { nextLink, prevLink, text, fields, onNextClick } = this.props;
+    const { nextLink, prevLink, text, fields } = this.props;
     const nextProps = {};
     const notDisabled = fields ? ::this.formIsValid() : true;
     return (
@@ -34,7 +35,7 @@ class Buttons extends React.Component {
           {
             nextLink ? 
             <Link 
-              onClick={::this.saveState}
+              onClick={::this.save}
               to={nextLink} 
               className={'btn btn_yellow ' + (notDisabled ? '' : 'disabled')}
               disabled={!notDisabled}

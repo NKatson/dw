@@ -1,13 +1,21 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
+
 import { ConnectBankError } from '../partials';
 import * as api from '../utils/apiClient';
-import { auth, exit, reset } from '../redux/actions/plaid';
+import { auth, exit, reset, setBanks } from '../redux/actions/plaid';
 import { Question } from '../atoms';
 
 class ConnectBank extends React.Component {
   componentDidMount() {
+    if (this.props.banks.length === 0) {
+      console.log('yep');
+      api.plaidGetBanks((err, data) => {
+        if (err) return console.log(err);
+        this.props.dispatch(setBanks(data));
+      });
+    }
     this.linkHandler = Plaid.create({
         clientName: 'demo',
         env: 'tartan',
@@ -32,6 +40,9 @@ class ConnectBank extends React.Component {
           this.props.dispatch(exit());
         }
       });
+  }
+  handleBanksSearch() {
+    
   }
   handleBankClick(e) {
     e.preventDefault();
@@ -78,7 +89,7 @@ class ConnectBank extends React.Component {
               </div>
               <div className="input-wrap">
                   <div className="input-wrap__text">Search all banks:</div>
-                  <input onKeyUp={::this.props.handleBanksSearch} type="text" className="input-text" placeholder="Enter Your Bank Name" />
+                  <input onKeyUp={::this.handleBanksSearch} type="text" className="input-text" placeholder="Enter Your Bank Name" />
                   {this.props.searchBanks.map((bank, index) => {
                     return <p key={bank + index}>{bank.name}</p>
                   })}
@@ -87,13 +98,9 @@ class ConnectBank extends React.Component {
                   Your bank login are never stored.</p>
                 <p>You can also fund your account by sending a <Link to='/survey/fund/q/3'>wire transfer</Link> or <Link to='/survey/fund/q/4'>check</Link>. You can also enter your
                   <Link to='/survey/fund/q/2'> banking information</Link>.</p>
-                <div className="text-center">
-                  {this.props.children}
-                </div>
             </form>
           </div>
       }
-      <Question />
       </div>
     );
   }
@@ -104,16 +111,11 @@ ConnectBank.contextTypes = {
 };
 
 ConnectBank.propTypes = {
-  handleBanksSearch: PropTypes.func.isRequired,
   banks: PropTypes.array.isRequired,
   searchBanks: PropTypes.array.isRequired,
   exit: PropTypes.bool.isRequired,
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch: dispatch,
-  }
-}
-
-export default connect(null, mapDispatchToProps)(ConnectBank);
+export default connect(state => {
+  return {...state.plaid};
+})(ConnectBank);

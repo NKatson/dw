@@ -362,6 +362,21 @@ export function plaidAuth(publicToken, cb) {
 }
 
 /**
+ * GET /plaid/banks
+ */
+export function plaidGetBanks(cb) {
+  getConfig(config => {
+    request
+    .get(config.host + '/plaid/banks')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      return cb(null, res.body);
+    });
+  });
+}
+
+/**
  * POST /api/auth
  */
 export function registration({ data, cb }) {

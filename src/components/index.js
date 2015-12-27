@@ -4,7 +4,6 @@ export InputMultiple from './InputMultiple';
 export Category from './Category';
 export LogoForm from './LogoForm';
 export CurrencyInput from './CurrencyInput';
-export ConnectBank from './ConnectBank';
 export BundleForm from './BundleForm';
 export Accounts from './Accounts';
 export Transfer from './Transfer';
