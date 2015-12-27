@@ -13,19 +13,9 @@ function getCommon(form) {
   return data;
 }
 
-function getPersonal(formData) {
+function getEmployment(formData) {
   if (!formData) return {};
-  
-  let data = {};
-  
-  // personal
-  data = Object.assign({}, data, getCommon(formData.basicinfo));
-  data.first_name = 'Emily';
-  data.last_name = 'Jipson';
-  
-  
-  // employment
-  data = Object.assign({}, data, getCommon(formData.employment));
+  const data = getCommon(formData.employment);
   if (data.annual_income) {
     let val = data.annual_income.replace(/[,\$\s]/g, '');
     data.annual_income = parseInt(val);  
@@ -33,18 +23,44 @@ function getPersonal(formData) {
   return data;
 }
 
-
-
-function getEmployment(formData) {
+function getPersonal(formData) {
   if (!formData) return {};
-  data = Object.assign({}, data, getCommon(formData.employment));
+  
+  let data = {};
+  
+  // personal
+  data = getCommon(formData.basicinfo);
+  data.first_name = 'Emily';
+  data.last_name = 'Jipson';
+  
+  // employment
+  data = Object.assign({}, data, getEmployment(formData));
+
   return data;
 }
 
+// ============== ACTIONS ==================
+
 export function savePersonal(formData, cb = () => {}) {
-  api.sendPersonal(grapPersonal(formData), () => {
-    api.saveEmployment(grapEmployment(formData), () => {
+  api.sendPersonal(getPersonal(formData), () => {
+    api.sendQuestions(getEmployment(formData), () => {
       cb();  
     });
   });
 }
+
+export function saveState(state, cb = () => {}) {
+  api.saveState(state, err => {
+    if (err) return console.log(err);
+    cb();
+  });
+}
+
+
+
+
+
+
+
+
+

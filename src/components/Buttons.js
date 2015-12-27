@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import  { Link } from 'react-router';
+import { saveState } from '../redux/actions/saveActions';
 
 class Buttons extends React.Component {
   formIsValid() {
@@ -14,12 +16,16 @@ class Buttons extends React.Component {
     
     return formValid;
   }
+  saveState() {
+    saveState(this.props.state, () => {
+      if (this.props.onNextClick) {
+        onNextClick();
+      }
+    });
+  }
   render () {
     const { nextLink, prevLink, text, fields, onNextClick } = this.props;
     const nextProps = {};
-    if (onNextClick) {
-      nextProps.onClick = onNextClick;
-    }
     const notDisabled = fields ? ::this.formIsValid() : true;
     return (
       <div className="text-center">
@@ -28,7 +34,7 @@ class Buttons extends React.Component {
           {
             nextLink ? 
             <Link 
-              {...nextProps}
+              onClick={::this.saveState}
               to={nextLink} 
               className={'btn btn_yellow ' + (notDisabled ? '' : 'disabled')}
               disabled={!notDisabled}
@@ -43,4 +49,15 @@ class Buttons extends React.Component {
   }
 }
 
-export default Buttons;
+function mapStateToProps(state) {
+  return {
+    state: {
+      form: state.form,
+      survey: state.survey.toJS(),
+      bundle: state.bundle,
+      plaid: state.plaid,
+    },
+  }
+}
+
+export default connect(mapStateToProps)(Buttons);
