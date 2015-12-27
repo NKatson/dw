@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Header, Footer } from '../components';
+import { Question } from '../atoms';
 import { logout } from '../redux/actions/auth';
 import * as api from '../utils/apiClient';
 import { getData, showWelcomeBack } from '../redux/actions/survey';
@@ -95,6 +96,7 @@ class Welcome extends React.Component {
             <div className="text-center pad-10">
                 <Link to="/survey" className="btn btn_yellow">Get started <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
             </div>
+            <Question />
           </div>
         </div>
         <Footer />

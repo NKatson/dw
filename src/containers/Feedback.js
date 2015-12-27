@@ -8,9 +8,21 @@ import * as api from '../utils/apiClient';
 import { validateSurvey as validate } from '../utils/validation';
 
 class Feedback extends React.Component {
+  constructor(props) {
+    super(props);
+    this.currentLink = '';
+    this.categoryIndex = 1;
+  }
   componentDidMount() {
+    this.currentLink = this.props.currentLink;
+    this.categoryIndex = this.props.categoryIndex;
     this.props.dispatch(setCategoryIndex(3));
     this.props.dispatch(setCurrentLink('/survey/feedback/'));
+  }
+  componentWillUnmount() {
+    console.log(this.currentLink);
+    this.props.dispatch(setCategoryIndex(this.categoryIndex));
+    this.props.dispatch(setCurrentLink(this.currentLink));
   }
   saveState(data) {
     const { state } = this.props;
@@ -101,6 +113,8 @@ function mapStateToProps(state) {
     state: state,
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
+    categoryIndex: state.survey.get('categoryIndex'),
+    currentLink: state.survey.get('currentLink'),
     success: state.survey.get('feedbackSuccess'),
     failed: state.survey.get('feedbackFailed'),
   };

@@ -241,16 +241,15 @@ class FormContainer extends React.Component {
     return result;
   }
   render() {
-    const { category, currentIndex, step, nextLink, prevLink, showWelcomeBack, formData } = this.props;
-    const firstName = formData && formData['personal-step-1'] && formData['personal-step-1'].first_name && formData['personal-step-1'].first_name.value ?
-                      formData['personal-step-1'].first_name.value : '';
+    const { category, currentIndex, step, nextLink, prevLink, showWelcomeBack, formData, data } = this.props;
+    const firstName = data.toJS().Personal[0].questions[0].defaultValue;
     return (
       <div>
         {showWelcomeBack ? <WelcomeBack
             firstName={firstName}
             handleClose={::this.handleWelcomeClose}
            /> : null}
-        {::this.renderView(this.props.data.toJS())}
+        {::this.renderView(data.toJS())}
         <Question />
       </div>
     );

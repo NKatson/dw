@@ -75,7 +75,7 @@ class AppWrapper extends React.Component {
       }
     //}
     return (
-      <div {...sessionProps} >
+      <div className="wfm-main-wrap common-page" {...sessionProps} >
         {this.props.children}
         <div className="modal fade wfm-common-modal" id="modalInactivity" role="dialog" aria-labelledby="myModalLabel">
           <div className="modal-dialog" role="document">

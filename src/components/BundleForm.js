@@ -16,17 +16,19 @@ class BundleForm extends React.Component {
     e.preventDefault();
     const { nextLink, state, accountType, income, termsAccepted } = this.props;
     const port = window.location.port.length > 0 ? ':' + window.location.port : '';
-    // api.sendAccountType({});
-
-    api.saveState({
-      survey: state.survey.toJS(),
-      form: state.form,
-      auth: state.auth.toJS(),
-      bundle: state.bundle,
-    }, (err) => {
-      if (err) return console.log(err);
-        window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
-     });
+    api.sendAccountType({
+      accountType, income
+    }, err => {
+      api.saveState({
+        survey: state.survey.toJS(),
+        form: state.form,
+        auth: state.auth.toJS(),
+        bundle: state.bundle,
+      }, (err) => {
+        if (err) return console.log(err);
+          window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
+       });  
+    });
   }
   handleTermsToggle(e) {
     const isAccepted = e.target.checked;
