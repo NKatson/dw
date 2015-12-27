@@ -19,7 +19,7 @@ class DynamicForm extends React.Component {
          });
   }
   render () {
-    const { title, description, nextLink, prevLink, fields, selectValue, question } = this.props;
+    const { title, description, nextLink, prevLink, fields, selectValue, question, saveData } = this.props;
     return (
       <div>
         <h2>{title}</h2>
@@ -37,6 +37,7 @@ class DynamicForm extends React.Component {
                 />
               {::this.renderFields()}
               <Buttons
+                onNextClick={saveData}
                 fields={fields}
                 nextLink={nextLink}
                 prevLink={prevLink}

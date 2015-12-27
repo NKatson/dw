@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { List } from 'immutable';
 
 const dataSelector            = state => state.survey.get('data');
 const categorySelector        = state => state.survey.get('category');
@@ -8,7 +9,7 @@ const isDocusignSelector      = state => state.docusign.isDocusign;
 const showCategoriesSelector  = state => state.survey.get('showCategories');
 const showSsnSelector         = state => state.survey.get('showSsn');
 const selectValueSelector     = state => state.survey.get('selectValue');
-const riskValueSelector       = state => state.form && state.form.risk ? state.form.risk.crysis2008.value : null;
+const formSelector            = state => state.form;
 const bundleStateSelector     = state => state.bundle;
 
 export const categoriesSelector = createSelector(
@@ -52,12 +53,21 @@ export const personalSelector = createSelector(
 export const employmentSelector = createSelector(
   dataSelector,
   selectValueSelector,
-  (data, selectValue) => {
+  formSelector,
+  (data, selectValue, form) => {
     const question = data.getIn(['Personal', 1, 'questions', 0]);  
     const answer = question.get('answers').find(answer => answer.get('value') === selectValue);
-    const fields = answer.get('dynamicFields')
-                          .map(field => field.get('name'))
-                          .unshift(question.get('name'));
+    let fields = List([
+      question.get('name'),
+    ]);
+    let dynamicFields = [];
+    if (answer) {
+     fields = answer.get('dynamicFields')
+                            .map(field => field.get('name'))
+                            .unshift(question.get('name'));
+      dynamicFields = answer.get('dynamicFields').toJS();
+    }
+    
     return {
       title: data.getIn(['Personal', 1, 'title']),
       description: data.getIn(['Personal', 1, 'description']),
@@ -66,7 +76,8 @@ export const employmentSelector = createSelector(
       selectValue,
       question: question.toJS(),
       fields: fields.toJS(),
-      dynamicFields: answer.get('dynamicFields').toJS(),
+      dynamicFields,
+      form,
     }
   }
 );
@@ -75,8 +86,9 @@ export const employmentSelector = createSelector(
 export const riskSelector = createSelector(
   dataSelector,
   selectValueSelector,
-  riskValueSelector,
-  (data, selectValue, riskValue) => {
+  formSelector,
+  (data, selectValue, form) => {
+    const riskValue = form.risk && form.risk.crysis2008 ? form.risk.crysis2008.value : null;
     return {
       title: data.getIn(['Invest', 0, 'title']),
       description: data.getIn(['Invest', 0, 'description']),

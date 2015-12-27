@@ -15,7 +15,11 @@ class Buttons extends React.Component {
     return formValid;
   }
   render () {
-    const { nextLink, prevLink, text, fields } = this.props;
+    const { nextLink, prevLink, text, fields, onNextClick } = this.props;
+    const nextProps = {};
+    if (onNextClick) {
+      nextProps.onClick = onNextClick;
+    }
     const notDisabled = fields ? ::this.formIsValid() : true;
     return (
       <div className="text-center">
@@ -24,10 +28,13 @@ class Buttons extends React.Component {
           {
             nextLink ? 
             <Link 
+              {...nextProps}
               to={nextLink} 
               className={'btn btn_yellow ' + (notDisabled ? '' : 'disabled')}
-              disabled={!notDisabled}>
-              {text ? text : 'Next'} <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+              disabled={!notDisabled}
+              >
+              {text ? text : 'Next'} <span className="wfm-i wfm-i-arr-right-grey"></span>
+            </Link>
              : null
             }
         </div>
