@@ -37,6 +37,7 @@ class DynamicForm extends React.Component {
                 />
               {::this.renderFields()}
               <Buttons
+                fields={fields}
                 nextLink={nextLink}
                 prevLink={prevLink}
               />

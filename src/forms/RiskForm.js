@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import { RadioGroup, Radio } from 'react-icheck';
 import { InputText, Select, SsnInput, Checkbox } from '../atoms';
 import { Buttons, InputMultiple } from '../components';
+import { validateSurvey as validate } from '../utils/validation';
 import { riskSelector } from '../redux/selectors/surveySelectors';
 import * as surveyActions from '../redux/actions/survey';
 
@@ -53,10 +54,11 @@ class RiskForm extends React.Component {
                    })
                  }
                </RadioGroup>
-              <Buttons
-                nextLink={nextLink}
-                prevLink={prevLink}
-              />
+               <Buttons
+                 fields={fields}
+                 nextLink={nextLink}
+                 prevLink={prevLink}
+               />
           </form>
       </div>
     );
@@ -68,5 +70,6 @@ export default reduxForm({
   fields: [
     'crysis2008', 
   ],
+  validate,
   destroyOnUnmount: false,
 }, riskSelector)(RiskForm);

@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
-import { DynamicForm, Category, Header, Footer } from '../components';
+import { DynamicForm, Category} from '../components';
+import { Header, Footer } from '../partials';
 import { SurveyFormHeader, Question } from '../atoms';
 import { categoriesSelector } from '../redux/selectors/surveySelectors';
 

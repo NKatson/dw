@@ -149,6 +149,7 @@ export function validateSurvey(data) {
     'state',
     'employment_status',
     'ssn',
+    'crysis2008',
     'annual_income',
     'income_source',
     'bank_connected_how_much',

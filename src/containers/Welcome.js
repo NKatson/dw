@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Header, Footer } from '../components';
+import { Header, Footer } from '../partials';
 import { Question } from '../atoms';
 import { logout } from '../redux/actions/auth';
 import * as api from '../utils/apiClient';

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
-import ConnectBankError from './ConnectBankError';
+import { ConnectBankError } from '../partials';
 import * as api from '../utils/apiClient';
 import { auth, exit, reset } from '../redux/actions/plaid';
 import { Question } from '../atoms';

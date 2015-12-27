@@ -114,6 +114,7 @@ class PersonalForm extends React.Component {
                 </div>
               </div>
               <Buttons
+                fields={fields}
                 nextLink={nextLink}
                 prevLink={prevLink}
               />
