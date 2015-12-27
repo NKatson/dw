@@ -17,7 +17,7 @@ import {
     Submit as SubmitData,
     ConfirmPasswordForm,
     ConfirmEmail,
-    AppWrapper,
+    SurveyWrapper,
     Feedback,
     Check,
   } from './containers';
@@ -45,9 +45,8 @@ export default (store) => {
         <Route path="signup" component={Registration} />
       </Route>
       
-      <Route component={AppWrapper}>
+      <Route component={SurveyWrapper}>
         <Route path="/survey" component={Survey}>
-            <IndexRoute component={FormContainer} />
             <Route path=":category/q/:number" component={FormContainer} />
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />

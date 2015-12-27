@@ -19,6 +19,8 @@ class InputMultiple extends React.Component {
                             </label>;
               return (
                   <Radio
+                      outerLabelClassName="outer-label-classname"
+                      className="radio-component-classname"
                       {...input.field}
                       {...props}
                       labelWrapperClass="input-wrap input-wrap_with-radio"

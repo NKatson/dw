@@ -8,5 +8,5 @@ export FormContainer from './FormContainer';
 export Submit from './Submit';
 export ConfirmPasswordForm from './ConfirmPasswordForm';
 export ConfirmEmail from './ConfirmEmail';
-export AppWrapper from './AppWrapper';
+export SurveyWrapper from './SurveyWrapper';
 export Feedback from './Feedback';

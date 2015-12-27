@@ -6,7 +6,7 @@ import $ from 'jquery';
 import { logout, setError } from '../redux/actions/auth';
 import * as api from '../utils/apiClient';
 
-class AppWrapper extends React.Component {
+class SurveyWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.needUpdateTimer = true;
@@ -75,34 +75,19 @@ class AppWrapper extends React.Component {
       }
     //}
     return (
-      <div className="wfm-main-wrap common-page" {...sessionProps} >
+      <div className="wfm-main-wrap common-page">
         {this.props.children}
-        <div className="modal fade wfm-common-modal" id="modalInactivity" role="dialog" aria-labelledby="myModalLabel">
-          <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                  <button onClick={::this.handleModalButtonClick} type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <div className="modal-body">
-                      <h2>Your online session will end in 2 minutes due to inactivity</h2>
-                      <p>As a security precaution, if there is no activity, the session will end and you will be brought to the homepage.</p>
-                      <p>If you are still working, chose OK to continue.</p>
-                      <div className="wfm-common-modal__buttons text-center">
-                        <a href="#" onClick={::this.handleModalButtonClick}
-                          className="btn btn_yellow btn_blue-text">OK <span className="wfm-i wfm-i-arr-right-blue"></span></a></div>
-                  </div>
-              </div>
-          </div>
-        </div>
       </div>
     );
   }
 }
 
-AppWrapper.contextTypes = {
+SurveyWrapper.contextTypes = {
   history: RouterPropTypes.history,
 };
 
 
-AppWrapper.propTypes = {
+SurveyWrapper.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
@@ -113,4 +98,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(AppWrapper);
+export default connect(mapStateToProps)(SurveyWrapper);
