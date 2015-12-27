@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { DynamicForm, Category, Header, Footer } from '../components';
-import { SurveyFormHeader, PreLoader } from '../atoms';
+import { SurveyFormHeader, Question } from '../atoms';
 import { categoriesSelector } from '../redux/selectors/surveySelectors';
 
 import * as surveyActions from '../redux/actions/survey';
@@ -60,6 +60,7 @@ class Survey extends React.Component {
                 : null
               }
               {this.props.children}
+              <Question />
             </div>
           </div>
           <Footer />

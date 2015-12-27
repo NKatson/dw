@@ -24,6 +24,8 @@ import {
 
 import { App } from './containers';
 
+import { PersonalForm } from './forms';
+
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
     function checkAuth() {
@@ -47,7 +49,7 @@ export default (store) => {
       
       <Route component={SurveyWrapper}>
         <Route path="/survey" component={Survey}>
-            <Route path=":category/q/:number" component={FormContainer} />
+            <Route path="basicinfo" component={PersonalForm} />
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />
