@@ -7,6 +7,7 @@ const stepSelector            = state => state.survey.get('step');
 const isDocusignSelector      = state => state.docusign.isDocusign;
 const showCategoriesSelector  = state => state.survey.get('showCategories');
 const showSsnSelector         = state => state.survey.get('showSsn');
+const selectValueSelector     = state => state.survey.get('selectValue');
 
 export const categoriesSelector = createSelector(
   dataSelector,
@@ -44,4 +45,42 @@ export const personalSelector = createSelector(
       showSsn,
     }
   }
-)
+);
+
+export const employmentSelector = createSelector(
+  dataSelector,
+  selectValueSelector,
+  (data, selectValue) => {
+    const question = data.getIn(['Personal', 1, 'questions', 0]);  
+    const answer = question.get('answers').find(answer => answer.get('value') === selectValue);
+    const fields = answer.get('dynamicFields')
+                          .map(field => field.get('name'))
+                          .unshift(question.get('name'));
+    return {
+      title: data.getIn(['Personal', 1, 'title']),
+      description: data.getIn(['Personal', 1, 'description']),
+      nextLink: '/survey/employment',
+      prevLink: '/welcome',
+      selectValue,
+      question: question.toJS(),
+      fields: fields.toJS(),
+      dynamicFields: answer.get('dynamicFields').toJS(),
+    }
+  }
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
