@@ -4,10 +4,14 @@ import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
 
 import { ConnectBankError } from '../partials';
 import * as api from '../utils/apiClient';
+import { setCategoryIndex } from '../redux/actions/survey';
 import { auth, exit, reset, setBanks } from '../redux/actions/plaid';
 import { Question } from '../atoms';
 
 class ConnectBank extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(setCategoryIndex(2));
+  }
   componentDidMount() {
     if (this.props.banks.length === 0) {
       console.log('yep');
@@ -57,7 +61,7 @@ class ConnectBank extends React.Component {
   }
   renderBanks() {
     const { banks, bankTypes } = this.props;
-    if (!banks) return;
+    if (!banks || !bankTypes) return;
 
     return banks.filter(bank => {
       return bankTypes.indexOf(bank.type) !== -1;
@@ -96,8 +100,8 @@ class ConnectBank extends React.Component {
               </div>
               <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
                   Your bank login are never stored.</p>
-                <p>You can also fund your account by sending a <Link to='/survey/fund/q/3'>wire transfer</Link> or <Link to='/survey/fund/q/4'>check</Link>. You can also enter your
-                  <Link to='/survey/fund/q/2'> banking information</Link>.</p>
+                <p>You can also fund your account by sending a <Link to='/survey/transfer'>wire transfer</Link> or <Link to='/survey/mail'>check</Link>. You can also enter your
+                  <Link to='/survey/check'> banking information</Link>.</p>
             </form>
           </div>
       }

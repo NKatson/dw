@@ -19,7 +19,6 @@ import {
     ConfirmEmail,
     SurveyWrapper,
     Feedback,
-    Check,
   } from './containers';
 
 import { App } from './containers';
@@ -28,11 +27,14 @@ import {
   PersonalForm, 
   EmploymentContainer,
   RiskForm,
+  Check,
  } from './forms';
  
  import {
    Bundle,
    ConnectBank,
+   MailCheck,
+   Transfer,
  } from './pages';
 
 export default (store) => {
@@ -63,6 +65,9 @@ export default (store) => {
             <Route path="risks" component={RiskForm} />
             <Route path="bundle" component={Bundle} />
             <Route path="banks" component={ConnectBank} />
+            <Route path="check" component={Check} />
+            <Route path="mail" component={MailCheck} />
+            <Route path="transfer" component={Transfer} />
             
           
             <Route path="/submit" component={SubmitData} />

@@ -6,8 +6,6 @@ export LogoForm from './LogoForm';
 export CurrencyInput from './CurrencyInput';
 export BundleForm from './BundleForm';
 export Accounts from './Accounts';
-export Transfer from './Transfer';
-export MailCheck from './MailCheck';
 export Buttons from './Buttons';
 export RothModal from './RothModal';
 export RothStepsModal from './RothStepsModal';

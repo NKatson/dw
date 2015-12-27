@@ -2,6 +2,7 @@ import * as actions from '../actions/plaid';
 import { Map, fromJS } from 'immutable';
 
 const initialState = {
+  bankTypes: ['amex', 'bofa', 'chase', 'citi', 'suntrust', 'td', 'us', 'wells'],
   banks: [],
   searchBanks: [],
   accounts: [],

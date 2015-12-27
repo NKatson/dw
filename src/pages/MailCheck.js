@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Print } from '../atoms';
 
-const MailCheck = ({children}) => {
+const MailCheck = () => {
   return (
     <div>
       <h2>MAIL A CHECK</h2>
@@ -23,7 +23,7 @@ const MailCheck = ({children}) => {
             </div>
             <form className="common-form anketa-form">
                <div className="text-center">
-                 {children}
+                
                </div>
             </form>
     </div>

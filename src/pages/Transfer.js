@@ -33,9 +33,9 @@ const Transfer = ({ children, data, firstName, lastName }) => {
            <div className="pad-16__col">
                <h5>For benefit of:</h5>
                <p>
-                  {firstName} {lastName}<br />
+                  {/*firstName} {lastName}<br />
                   {data.address.value}<br />
-                  {data.city.value}, {data.state.value} {data.zip_code.value}</p>
+                  {data.city.value}, {data.state.value} {data.zip_code.value*/}</p>
            </div>
            <div className="pad-16__col">
                <h5>For credit to:</h5>

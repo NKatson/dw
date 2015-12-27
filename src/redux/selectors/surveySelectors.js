@@ -11,7 +11,7 @@ const showSsnSelector         = state => state.survey.get('showSsn');
 const selectValueSelector     = state => state.survey.get('selectValue');
 const formSelector            = state => state.form;
 const bundleStateSelector     = state => state.bundle;
-const connectBankSelector     = state => state.plaid;
+const plaidSelector           = state => state.plaid;
 
 export const categoriesSelector = createSelector(
   dataSelector,
