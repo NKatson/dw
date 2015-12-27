@@ -24,7 +24,11 @@ import {
 
 import { App } from './containers';
 
-import { PersonalForm, EmploymentContainer } from './forms';
+import { 
+  PersonalForm, 
+  EmploymentContainer,
+  RiskForm,
+ } from './forms';
 
 export default (store) => {
   const requireLogin = (nextState, replaceState, cb) => {
@@ -51,6 +55,7 @@ export default (store) => {
         <Route path="/survey" component={Survey}>
             <Route path="basicinfo" component={PersonalForm} />
             <Route path="employment" component={EmploymentContainer} />
+            <Route path="risks" component={RiskForm} />
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />

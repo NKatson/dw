@@ -49,5 +49,5 @@ class DynamicForm extends React.Component {
 export default reduxForm({
   form: 'employment',
   validate,
-  destroyOnUnmount: true,
+  destroyOnUnmount: false,
 })(DynamicForm);

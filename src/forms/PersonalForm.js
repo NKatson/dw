@@ -136,5 +136,5 @@ export default reduxForm({
     'date_of_birth',
   ],
   validate,
-  destroyOnUnmount: true,
+  destroyOnUnmount: false,
 }, personalSelector)(PersonalForm);

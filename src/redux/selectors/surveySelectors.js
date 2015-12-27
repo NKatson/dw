@@ -8,6 +8,7 @@ const isDocusignSelector      = state => state.docusign.isDocusign;
 const showCategoriesSelector  = state => state.survey.get('showCategories');
 const showSsnSelector         = state => state.survey.get('showSsn');
 const selectValueSelector     = state => state.survey.get('selectValue');
+const riskValueSelector       = state => state.form && state.form.risk ? state.form.risk.crysis2008.value : null;
 
 export const categoriesSelector = createSelector(
   dataSelector,
@@ -59,8 +60,8 @@ export const employmentSelector = createSelector(
     return {
       title: data.getIn(['Personal', 1, 'title']),
       description: data.getIn(['Personal', 1, 'description']),
-      nextLink: '/survey/employment',
-      prevLink: '/welcome',
+      nextLink: '/survey/risks',
+      prevLink: '/survey/basicinfo',
       selectValue,
       question: question.toJS(),
       fields: fields.toJS(),
@@ -69,6 +70,23 @@ export const employmentSelector = createSelector(
   }
 );
 
+
+export const riskSelector = createSelector(
+  dataSelector,
+  selectValueSelector,
+  riskValueSelector,
+  (data, selectValue, riskValue) => {
+    return {
+      title: data.getIn(['Invest', 0, 'title']),
+      description: data.getIn(['Invest', 0, 'description']),
+      question: data.getIn(['Invest', 0, 'questions', 0]).toJS(),
+      nextLink: '/survey/basicinfo',
+      prevLink: '/survey/employment',
+      selectValue,
+      riskValue,
+    }
+  }
+)
 
 
 

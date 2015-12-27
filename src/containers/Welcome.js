@@ -94,7 +94,7 @@ class Welcome extends React.Component {
             </div>
 
             <div className="text-center pad-10">
-                <Link to="/survey" className="btn btn_yellow">Get started <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+                <Link to="/survey/basicinfo" className="btn btn_yellow">Get started <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
             </div>
             <Question />
           </div>
