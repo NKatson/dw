@@ -4,7 +4,6 @@ export Registration from './Registration';
 export ResetPassword from './ResetPassword';
 export Welcome from './Welcome';
 export Survey from './Survey';
-export Submit from './Submit';
 export ConfirmPasswordForm from './ConfirmPasswordForm';
 export ConfirmEmail from './ConfirmEmail';
 export SurveyWrapper from './SurveyWrapper';

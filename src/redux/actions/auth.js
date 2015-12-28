@@ -53,7 +53,7 @@ export function login(email, password, cb) {
       cb: (err, body) => {
         if (err) return dispatch(loginFailure(err));
         dispatch(loginSuccess(body)).then(() => {
-          cb();
+          // save state.auth to server
         });
       },
     });

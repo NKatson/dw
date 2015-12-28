@@ -8,18 +8,16 @@ import {
 } from './components';
 
 import {
-    Registration,
-    Authorization,
-    ResetPassword,
-    Welcome,
-    Survey,
-    FormContainer,
-    Submit as SubmitData,
-    ConfirmPasswordForm,
-    ConfirmEmail,
-    SurveyWrapper,
-    Feedback,
-  } from './containers';
+  Registration,
+  Authorization,
+  ResetPassword,
+  Welcome,
+  Survey,
+  ConfirmPasswordForm,
+  ConfirmEmail,
+  SurveyWrapper,
+  Feedback,
+} from './containers';
 
 import { App } from './containers';
 
@@ -73,14 +71,11 @@ export default (store) => {
             <Route path="accounts" component={Accounts} />
             <Route path="docusign" component={Docusign} />
 
-
-            <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />
             <Route path="/dashboard" component={Dashboard} />
         </Route>
         <Route path="/welcome" component={Welcome} />
-        <Redirect from="/survey" to="/survey/personal/q/0" />
         <Redirect from="/" to="/signin" />
       </Route>
 
