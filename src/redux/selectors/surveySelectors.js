@@ -1,4 +1,3 @@
-
 import { createSelector } from 'reselect';
 import { List } from 'immutable';
 
@@ -15,15 +14,15 @@ const bundleStateSelector     = state => state.bundle;
 const plaidSelector           = state => state.plaid;
 const termsAcceptedSelector   = state => state.survey.get('termsAccepted');
 const docusignSelector        = state => state.docusign;
-const stateSelector           = state => state;
+const showWelcomeBackSelector = state => state.survey.get('showWelcomeBack');
 
-export const categoriesSelector = createSelector(
+export const surveySelector = createSelector(
   dataSelector,
   showCategoriesSelector,
   categoryIndexSelector,
   isDocusignSelector,
-  stateSelector,
-  (data, showCategories, categoryIndex, isDocusign, state) => {
+  showWelcomeBackSelector,
+  (data, showCategories, categoryIndex, isDocusign, showWelcomeBack) => {
     const categories = Object.keys(data.toJS()).map(v => v.toLowerCase());
     return {
       categories: categories.map((cat, index) => {
@@ -37,7 +36,8 @@ export const categoriesSelector = createSelector(
       showCategories,
       currentCategoryIndex: categoryIndex,
       isDocusign,
-      state: state
+      showWelcomeBack,
+      firstName: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
     }
   }
 );

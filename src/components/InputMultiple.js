@@ -3,7 +3,7 @@ import { RadioGroup, Radio } from 'react-icheck';
 
 class InputMultiple extends React.Component {
   render () {
-    const { question, handleClick, inputs } = this.props;
+    const { question, handleClick, inputs, field } = this.props;
     return (
       <div>
         <p>{question.label}</p>
@@ -16,7 +16,7 @@ class InputMultiple extends React.Component {
               return (
                   <Radio
                       className="radio-component-classname"
-                      {...input.field}
+                      {...field}
                       key={'option' + index}
                       id={'option-' + index}
                       radioClass="iradio_minimal"
@@ -34,6 +34,7 @@ class InputMultiple extends React.Component {
 }
 
 InputMultiple.propTypes = {
+  field: PropTypes.object.isRequired,
   question: PropTypes.shape({
     class: PropTypes.string,
     label: PropTypes.string,
@@ -42,7 +43,6 @@ InputMultiple.propTypes = {
   handleClick: PropTypes.func,
   inputs: PropTypes.arrayOf(PropTypes.shape({
      label: PropTypes.string.isRequired,
-     field: PropTypes.object.isRequired,
      value: PropTypes.string,
      defaultChecked: PropTypes.bool,
  })).isRequired,

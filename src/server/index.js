@@ -2,7 +2,6 @@ import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import expressValidator from 'express-validator';
-import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
 import React from 'react';
@@ -29,11 +28,22 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
-app.use(cookieParser());
 app.use(session({
 	secret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 	store: new MongoStore({url: 'mongodb://localhost/worthfm' , autoReconnect: true })
 }));
+
+// custom cookie parser
+app.use(function(req, res, next) {
+	var cookieObjects = {};
+	var cookies = req.headers.cookie.split(';');
+	for (var i = 0; i < cookies.length; i++) {
+		var cookieValues = cookies[i].trim().split("=");
+		cookieObjects[cookieValues[0]] = cookieValues[1];
+	}
+	req.cookies = cookieObjects;
+	next();
+});
 
 app.use('/dist', express.static(path.join(__dirname, '../../static/dist')));
 
@@ -118,14 +128,14 @@ app.get('*', (req, res) => {
 	//const uid = 'eg@4xxi.com';
 	console.log('Request uid: ' + uid);
 	if (uid) {
-		User.findOneByUid(uid, (err, user) => {
-			if (!err && user.state) {
-				const initialState = user.state;
-				processRoute(req, res, initialState);
-			} else {
-				processRoute(req, res);
-			}
-		});
+		User.findOrCreate(uid, (err, user) => {
+			 if (!err && user.state) {
+					 const initialState = user.state;
+					 processRoute(req, res, initialState);
+			 } else {
+					 processRoute(req, res);
+			 }
+		 });
 	} else {
 		processRoute(req, res);
 	}

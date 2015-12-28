@@ -16,23 +16,11 @@ class Bundle extends React.Component {
   showModal() {
     this.props.dispatch(showModal());
   }
-  sendData(e) {
-    e.preventDefault();
-    const { nextLink, state, accountType, income, termsAccepted } = this.props;
-    const port = window.location.port.length > 0 ? ':' + window.location.port : '';
+  sendData() {
+    const { accountType, income } = this.props;
     api.sendAccountType({
       accountType, income
-    }, err => {
-      api.saveState({
-        survey: state.survey.toJS(),
-        form: state.form,
-        auth: state.auth.toJS(),
-        bundle: state.bundle,
-      }, (err) => {
-        if (err) return console.log(err);
-          window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
-       });
-    });
+    }, err => {});
   }
   handleTermsToggle(e) {
     const isAccepted = e.target.checked;
@@ -98,6 +86,7 @@ class Bundle extends React.Component {
 
           <div className="text-center">
             <Buttons
+              onNextClick={::this.sendData}
               disabled={!this.props.termsAccepted}
               nextLink={this.props.nextLink}
               prevLink={this.props.prevLink}

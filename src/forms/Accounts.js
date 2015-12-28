@@ -20,7 +20,6 @@ class Accounts extends React.Component {
         label: account.meta.name,
         balance: account.balance.available,
         value: account.meta.name,
-        field: this.props.fields.plaid_account_id,
       }});
     result.push(
       <InputMultiple
@@ -28,8 +27,7 @@ class Accounts extends React.Component {
           name: 'plaid_account_id',
         }}
         inputs={inputs}
-        handleClick={(name, value) => {
-        }}
+        field={this.props.fields.plaid_account_id}
          />
      );
     result.push(<p className="pad-15">Total assets: <b>${sum}</b></p>);

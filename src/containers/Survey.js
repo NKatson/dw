@@ -4,45 +4,25 @@ import { connect } from 'react-redux';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { DynamicForm, Category} from '../components';
 import { Header, Footer } from '../partials';
-import { SurveyFormHeader, Question } from '../atoms';
-import { categoriesSelector } from '../redux/selectors/surveySelectors';
+import { WelcomeBack, Question } from '../atoms';
+import { surveySelector } from '../redux/selectors/surveySelectors';
 
 import * as surveyActions from '../redux/actions/survey';
 import * as auth from '../redux/actions/auth';
 import * as api from '../utils/apiClient';
 
 class Survey extends React.Component {
-  handleParams(params) {
-    const { category: nextCategory = null, number: nextNumber = null } = params;
-    const { category = 'personal', step = 0 } = this.props;
-    if (nextCategory && nextNumber && (category.toLowerCase() != nextCategory || parseInt(nextNumber) != step)) {
-      this.props.dispatch(surveyActions.changeQuestion(nextCategory, parseInt(nextNumber)));
-    }
-  }
-  componentWillMount() {
-    ::this.handleParams(this.props.params);
-  }
-  componentWillReceiveProps(nextProps) {
-    ::this.handleParams(nextProps.params);
-  }
   handleLogout(e) {
     e.preventDefault();
-    const { state } = this.props;
-    this.props.dispatch(surveyActions.setCurrentLink(this.props.location.pathname)).then(() => {
-      api.saveState({
-        survey: state.survey,
-        form: state.form,
-        bundle: state.bundle,
-      }, (err) => {
-        if (err) return console.log(err);
-        this.props.dispatch(auth.logout(null, () => {
-          this.context.history.push( '/signin');
-        }));
-      });
-    })
+    this.props.dispatch(auth.logout(null, this.props.location.pathname, () => {
+        this.context.history.push('/signin');
+    }));
+  }
+  closeWelcome() {
+    this.props.dispatch(surveyActions.hideWelcomeBack());
   }
   render () {
-    const { showCategories, isDocusign, categories, currentCategoryIndex } = this.props;
+    const { showCategories, isDocusign, categories, currentCategoryIndex, showWelcomeBack } = this.props;
     return (
       <div>
           <Header handleLogout={::this.handleLogout} />
@@ -59,6 +39,14 @@ class Survey extends React.Component {
                       />
                   })}
                 </div>
+                : null
+              }
+              {
+                showWelcomeBack ?
+                  <WelcomeBack
+                    firstName={this.props.firstName}
+                    handleClose={::this.closeWelcome}
+                     />
                 : null
               }
               {this.props.children}
@@ -79,4 +67,4 @@ Survey.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect(categoriesSelector)(Survey);
+export default connect(surveySelector)(Survey);

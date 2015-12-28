@@ -4,7 +4,7 @@ import { validateSurvey as validate } from '../utils/validation';
 import * as surveyActions from '../redux/actions/survey';
 import { checkSelector } from '../redux/selectors/surveySelectors';
 import { InputText } from '../atoms';
-import { Buttons } from '../components';
+import { Buttons, InputMultiple } from '../components';
 import { saveCheck } from '../redux/actions/saveActions';
 
 class Check extends React.Component {
@@ -26,6 +26,13 @@ class Check extends React.Component {
             <div className="anketa-form__fieldset"><img src={require('../../static/images/routing-number.png')} alt="" /></div>
             <div className="anketa-form__fieldset">
               {questions.map(question => {
+                if (question.type === 'radio') {
+                  return <InputMultiple
+                          question={question}
+                          field={fields[question.name]}
+                          inputs={question.answers}
+                           />
+                }
                 return <InputText
                   field={fields[question.name] ? fields[question.name] : null}
                   label={question.label}

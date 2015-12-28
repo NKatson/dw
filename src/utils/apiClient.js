@@ -124,8 +124,8 @@ export function sendAccountType(data, cb) {
     .put(config.apiHost + url)
     ::setHeaders()
     .send({
-      'account-type' : data.accountType,
-      'annual_income' : data.income,
+      'account_type' : data.accountType,
+      'joint_annual_income' : data.income,
     })
     .end((err, res) => {
         checkResponse(err, res, cb);

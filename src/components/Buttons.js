@@ -25,17 +25,26 @@ class Buttons extends React.Component {
     });
   }
   render () {
-    const { nextLink, prevLink, text, fields, disabled } = this.props;
-    console.log(disabled);
+    const { nextLink, prevLink, text, fields, disabled, onPrevClick } = this.props;
     const nextProps = {};
+    const prevProps = {};
     let notDisabled = fields ? ::this.formIsValid() : true;
     if (typeof disabled !== 'undefined') {
       notDisabled = !disabled;
     }
+    if (onPrevClick) {
+      prevProps.onClick = onPrevClick;
+    }
     return (
       <div className="text-center">
         <div className="common-form__buttons">
-          {prevLink ? <Link to={prevLink}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
+          {
+            prevLink ?
+             <Link
+              {...prevProps}
+              to={prevLink}
+              className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
+            : null}
           {
             nextLink ?
             <Link

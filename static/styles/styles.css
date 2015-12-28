@@ -36,7 +36,8 @@ h4 {
   font-weight: 700;
   font-size: 17px;
 }
-body > div:not(.wfm-main-wrap) {
+body > div:not(.wfm-main-wrap),
+body > div > div {
   height: 100%;
 }
 .wfm-main-wrap {

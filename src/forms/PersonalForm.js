@@ -5,6 +5,7 @@ import { Buttons } from '../components';
 import { validateSurvey as validate } from '../utils/validation';
 import { personalSelector } from '../redux/selectors/surveySelectors';
 import * as surveyActions from '../redux/actions/survey';
+import { setForceWelcome } from '../redux/actions/common';
 
 class PersonalForm extends React.Component {
   componentWillMount() {
@@ -19,7 +20,7 @@ class PersonalForm extends React.Component {
       <div>
         <h2>{title}</h2>
         <p>{description}</p>
-          <form className="common-form anketa-form" autoComplete="off">
+          <div className="common-form anketa-form" autoComplete="off">
             {/* first name, last name */}
             <div className="anketa-form__fieldset clearfix">
               <InputText
@@ -117,10 +118,13 @@ class PersonalForm extends React.Component {
               </div>
               <Buttons
                 fields={fields}
+                onPrevClick={(e) => {
+                  this.props.dispatch(setForceWelcome())
+                }}
                 nextLink={nextLink}
                 prevLink={prevLink}
               />
-          </form>
+          </div>
       </div>
     );
   }
