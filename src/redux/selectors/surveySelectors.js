@@ -15,6 +15,7 @@ const plaidSelector           = state => state.plaid;
 const termsAcceptedSelector   = state => state.survey.get('termsAccepted');
 const docusignSelector        = state => state.docusign;
 const showWelcomeBackSelector = state => state.survey.get('showWelcomeBack');
+const confirmedSelector       = state => state.auth.get('confirmed');
 
 export const surveySelector = createSelector(
   dataSelector,
@@ -22,7 +23,8 @@ export const surveySelector = createSelector(
   categoryIndexSelector,
   isDocusignSelector,
   showWelcomeBackSelector,
-  (data, showCategories, categoryIndex, isDocusign, showWelcomeBack) => {
+  confirmedSelector,
+  (data, showCategories, categoryIndex, isDocusign, showWelcomeBack, confirmed) => {
     const categories = Object.keys(data.toJS()).map(v => v.toLowerCase());
     return {
       categories: categories.map((cat, index) => {
@@ -36,7 +38,7 @@ export const surveySelector = createSelector(
       showCategories,
       currentCategoryIndex: categoryIndex,
       isDocusign,
-      showWelcomeBack,
+      showWelcomeBack: confirmed && showWelcomeBack,
       firstName: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
     }
   }

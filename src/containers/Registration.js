@@ -7,6 +7,10 @@ import { SubmitButton, LogoForm } from '../components';
 import { InputText } from '../atoms';
 
 class Registration extends React.Component {
+  redirect() {
+    let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+    window.location.href = `http://${window.location.hostname}${port}/welcome`;
+  }
   handleSubmit(event) {
     event.preventDefault();
     const { email, password, confirmPassword, firstName, lastName } = this.props.fields;
@@ -19,8 +23,7 @@ class Registration extends React.Component {
     };
 
     this.props.dispatch(registration(data, () => {
-      let port = window.location.port.length > 0 ? ':' + window.location.port : '';
-      window.location.href = `http://${window.location.hostname}${port}/welcome`;
+      ::this.redirect();
     }));
   }
   showHelp() {

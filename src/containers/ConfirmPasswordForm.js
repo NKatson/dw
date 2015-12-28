@@ -6,16 +6,21 @@ import { SubmitButton, LogoForm } from '../components';
 import { registration as validate } from '../utils/validation';
 import { checkPasswordToken, confirm, setTimer } from '../redux/actions/resetPassword';
 import { showWelcomeBack } from '../redux/actions/survey';
+import * as api from '../utils/apiClient';
 
 class ConfirmPasswordForm extends React.Component {
+  redirect() {
+    let port = window.location.port.length > 0 ? ':' + window.location.port : '';
+    window.location.href = `http://${window.location.hostname}${port}/welcome`;
+  }
   componentDidMount() {
-    const { location: { query: { password_token } }, dispatch, confirmingToken, currentLink } = this.props;
+    const { location: { query: { password_token } }, dispatch, currentLink } = this.props;
 
     if (password_token) {
-      if (confirmingToken) return;
       dispatch(checkPasswordToken(password_token, (err) => {
+        // error
         if (err) {
-          this.context.history.replaceState(null, '/signin');
+          return this.context.history.push( '/signin');
         }
       }));
     } else {
@@ -27,7 +32,7 @@ class ConfirmPasswordForm extends React.Component {
     e.preventDefault();
     const { dispatch, fields: { password, confirmPassword }, token, client_id, email, currentLink} = this.props;
     const { query: {client_id: client, token: accessToken, uid } } = this.props.location;
-
+    console.log(client_id, email, token);
     if (client_id && email && token) {
       dispatch(confirm({
         password: password.value,
@@ -40,11 +45,7 @@ class ConfirmPasswordForm extends React.Component {
         let intervalCount = setInterval(() => {
           if (timer === 0) {
             clearInterval(intervalCount);
-            // redirect
-            if (currentLink !== '/welcome') {
-              dispatch(showWelcomeBack());
-            }
-            return this.context.history.push( currentLink);
+            return ::this.redirect();
           }
           this.props.dispatch(setTimer(timer));
           timer--;

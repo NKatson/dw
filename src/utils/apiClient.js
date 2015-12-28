@@ -52,6 +52,16 @@ function clearLocal() {
 }
 
 function checkResponse(err, res, cb) {
+
+  if (res.body.errors && res.body.errors.full_messages && res.body.errors.full_messages.length > 0) {
+    const error = res.body.errors.full_messages[0];
+    return cb(error);
+  }
+
+  if (res.body.errors && res.body.errors.base && res.body.errors.base.length > 0) {
+    return cb(res.body.errors.base[0]);
+  }
+
   if (err && typeof res === 'undefined') return cb('Server does not respond');
   if (err) return cb(res.body);
   if (res.body.errors && res.body.errors.length > 0 || res.body.error) return cb(res.body);
@@ -399,10 +409,9 @@ export function registration({ data, cb }) {
       }
 
       clearLocal();
-
-      localStorage.client = res.headers.client;
-      localStorage.uid = data.email;
-      localStorage.accessToken = res.headers['access-token'];
+      saveLocal(res);
+      console.log('registration apiClient:');
+      console.log(localStorage.uid);
 
       return cb(null, {
         ...res.body,
