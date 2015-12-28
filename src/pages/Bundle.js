@@ -31,7 +31,7 @@ class Bundle extends React.Component {
       }, (err) => {
         if (err) return console.log(err);
           window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
-       });  
+       });
     });
   }
   handleTermsToggle(e) {
@@ -98,6 +98,7 @@ class Bundle extends React.Component {
 
           <div className="text-center">
             <Buttons
+              disabled={!this.props.termsAccepted}
               nextLink={this.props.nextLink}
               prevLink={this.props.prevLink}
             />

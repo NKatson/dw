@@ -23,18 +23,20 @@ import {
 
 import { App } from './containers';
 
-import { 
-  PersonalForm, 
+import {
+  PersonalForm,
   EmploymentContainer,
   RiskForm,
   Check,
+  Accounts,
  } from './forms';
- 
+
  import {
    Bundle,
    ConnectBank,
    MailCheck,
    Transfer,
+   Docusign,
  } from './pages';
 
 export default (store) => {
@@ -57,7 +59,7 @@ export default (store) => {
         <Route path="signin" component={Authorization} />
         <Route path="signup" component={Registration} />
       </Route>
-      
+
       <Route component={SurveyWrapper}>
         <Route path="/survey" component={Survey}>
             <Route path="basicinfo" component={PersonalForm} />
@@ -68,8 +70,10 @@ export default (store) => {
             <Route path="check" component={Check} />
             <Route path="mail" component={MailCheck} />
             <Route path="transfer" component={Transfer} />
-            
-          
+            <Route path="accounts" component={Accounts} />
+            <Route path="docusign" component={Docusign} />
+
+
             <Route path="/submit" component={SubmitData} />
             <Route path="feedback" component={Feedback} />
             <Route path="check" component={Check} />
@@ -79,7 +83,7 @@ export default (store) => {
         <Redirect from="/survey" to="/survey/personal/q/0" />
         <Redirect from="/" to="/signin" />
       </Route>
-      
+
       <Route path="/redirect-to-dashboard" component={_Redirect} />
     </Route>
   );

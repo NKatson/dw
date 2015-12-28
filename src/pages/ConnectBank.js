@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
 
+import { Buttons } from '../components';
 import { ConnectBankError } from '../partials';
 import * as api from '../utils/apiClient';
 import { setCategoryIndex } from '../redux/actions/survey';
@@ -36,7 +37,7 @@ class ConnectBank extends React.Component {
                 plaid: state.plaid,
               }, (err) => {
                 if (err) return console.log(err);
-                this.context.history.replaceState(null, '/survey/fund/q/1');
+                this.context.history.replaceState(null, '/survey/accounts');
               });
             }));
         },
@@ -46,7 +47,7 @@ class ConnectBank extends React.Component {
       });
   }
   handleBanksSearch() {
-    
+
   }
   handleBankClick(e) {
     e.preventDefault();
@@ -102,6 +103,9 @@ class ConnectBank extends React.Component {
                   Your bank login are never stored.</p>
                 <p>You can also fund your account by sending a <Link to='/survey/transfer'>wire transfer</Link> or <Link to='/survey/mail'>check</Link>. You can also enter your
                   <Link to='/survey/check'> banking information</Link>.</p>
+                    <Buttons
+                      prevLink='/survey/bundle'
+                    />
             </form>
           </div>
       }
@@ -121,5 +125,8 @@ ConnectBank.propTypes = {
 }
 
 export default connect(state => {
-  return {...state.plaid};
+  return {
+    state: state,
+    ...state.plaid
+  };
 })(ConnectBank);

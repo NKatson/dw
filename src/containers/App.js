@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { History } from 'react-router';
-import { Footer } from '../components';
+import { Footer } from '../partials';
 
 require('./App.css');
 

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Print } from '../atoms';
+import { Buttons } from '../components';
 
 const MailCheck = () => {
   return (
@@ -22,9 +23,10 @@ const MailCheck = () => {
               </p>
             </div>
             <form className="common-form anketa-form">
-               <div className="text-center">
-                
-               </div>
+              <Buttons
+                prevLink='/survey/banks'
+                nextLink='/survey/docusign'
+               />
             </form>
     </div>
   );

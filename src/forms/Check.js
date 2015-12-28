@@ -1,7 +1,21 @@
 import React, { PropTypes } from 'react';
+import { reduxForm } from 'redux-form';
+import { validateSurvey as validate } from '../utils/validation';
+import * as surveyActions from '../redux/actions/survey';
+import { checkSelector } from '../redux/selectors/surveySelectors';
+import { InputText } from '../atoms';
+import { Buttons } from '../components';
+import { saveCheck } from '../redux/actions/saveActions';
 
 class Check extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(surveyActions.setCategoryIndex(2));
+  }
+  saveData() {
+    saveCheck(this.props.checkForm);
+  }
   render() {
+    const { questions, fields, prevLink, nextLink } = this.props;
     return (
       <div>
         <h2>3. ENTER YOUR BANK ACCOUNT INFORMATION</h2>
@@ -11,33 +25,35 @@ class Check extends React.Component {
           <form className="common-form anketa-form">
             <div className="anketa-form__fieldset"><img src={require('../../static/images/routing-number.png')} alt="" /></div>
             <div className="anketa-form__fieldset">
-                <div className="input-wrap">
-                    <div className="input-wrap__text">Enter Your Bank Name</div>
-                    <input type="text" className="input-text" />
-                </div>
-                <div className="input-wrap">
-                    <div className="input-wrap__text">Enter Your Routing Number</div>
-                    <input type="text" className="input-text" />
-                </div>
-                <div className="input-wrap">
-                    <div className="input-wrap__text">Enter Your Account Number</div>
-                    <input type="text" className="input-text" />
-                </div>
-                <div className="input-wrap">
-                    <div className="input-wrap__text">How much do you initially want to fund?</div>
-                    <input type="text" className="input-text" />
-                </div>
+              {questions.map(question => {
+                return <InputText
+                  field={fields[question.name] ? fields[question.name] : null}
+                  label={question.label}
+                />
+              })}
             </div>
-            <div className="text-center">
-                <div className="common-form__buttons">
-                    <a href="#" className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</a>
-                    <button className="btn btn_yellow">Next <span className="wfm-i wfm-i-arr-right-grey"></span></button>
-                </div>
-            </div>
+            <Buttons
+              fields={fields}
+              prevLink={prevLink}
+              nextLink={nextLink}
+              onNextClick={::this.saveData}
+             />
         </form>
       </div>
     );
   }
 }
 
-export default Check;
+export default reduxForm({
+  form: 'check',
+  fields: [
+    'bankName',
+    'accountTitle',
+    'typeOfAccount',
+    'transitRouting',
+    'bankAccount',
+    'amountOfTransaction',
+  ],
+  validate,
+  destroyOnUnmount: false,
+}, checkSelector)(Check);

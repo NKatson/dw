@@ -3,27 +3,20 @@ import { RadioGroup, Radio } from 'react-icheck';
 
 class InputMultiple extends React.Component {
   render () {
-    const { question, handleClick, inputs, selectedValue } = this.props;
-    const props = {};
-    if (handleClick) {
-      props.onClick = handleClick;
-    }
+    const { question, handleClick, inputs } = this.props;
     return (
       <div>
-        {question.name === 'crysis2008' ? null : <p>{question.label}</p> }
-        <RadioGroup name={question.ame} value={selectedValue} className="input-wrap_with-radio-2">
+        <p>{question.label}</p>
+        <RadioGroup name={question.name}  className="input-wrap_with-radio-2">
           {
-            question.answers.map((input, index) => {
+            inputs.map((input, index) => {
               const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
                               {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
                             </label>;
               return (
                   <Radio
-                      outerLabelClassName="outer-label-classname"
                       className="radio-component-classname"
                       {...input.field}
-                      {...props}
-                      labelWrapperClass="input-wrap input-wrap_with-radio"
                       key={'option' + index}
                       id={'option-' + index}
                       radioClass="iradio_minimal"

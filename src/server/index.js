@@ -103,7 +103,7 @@ function processRoute(req, res, initialState) {
 				const state = store.getState();
 				if (req.url === '/survey/fund/q/0') {
 					// plaid API institutions request
-				
+
 				} else {
 					  handleRender(req, res, renderProps, store);
 				}

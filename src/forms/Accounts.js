@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import { accountsSelector } from '../redux/selectors/surveySelectors';
 import { validateSurvey as validate } from '../utils/validation';
-
 import { InputText } from '../atoms';
-import { InputMultiple } from '../components';
+import { InputMultiple, Buttons } from '../components';
+import { savePlaidData } from '../redux/actions/saveActions';
 
 class Accounts extends React.Component {
   renderMultiple() {
@@ -16,11 +17,12 @@ class Accounts extends React.Component {
         label: account.meta.name,
         balance: account.balance.available,
         value: account.meta.name,
+        field: this.props.fields.plaid_account_id,
       }});
     result.push(
       <InputMultiple
         question={{
-          name: 'account_choice',
+          name: 'plaid_account_id',
         }}
         inputs={inputs}
         handleClick={(name, value) => {
@@ -47,8 +49,11 @@ class Accounts extends React.Component {
     }
     return ::this.renderMultiple();
   }
+  onNextClick() {
+    savePlaidData(this.props.plaidForm)
+  }
   render() {
-    const { fields: { bank_connected_how_much }, accounts } = this.props;
+    const { fields: { plaid_amount, plaid_account_id  }, accounts } = this.props;
     return (
       <div>
         <h2>3. CONNECT YOUR BANK</h2>
@@ -58,14 +63,12 @@ class Accounts extends React.Component {
                   <InputText
                     inputClass="input-text w-330"
                     label="How much do you want to start your WorthFM account with?"
-                    field={bank_connected_how_much}
+                    field={plaid_amount}
                     isCurrency={true}
                    />
               </div>
               <div className="anketa-form__fieldset">
-
                  {accounts.length === 1 ? <p>We will fund your WorthFM account from your bank:</p> : null}
-
                  <div className="wfm-from-your-bank">
                     {::this.renderAccounts()}
                  </div>
@@ -74,12 +77,11 @@ class Accounts extends React.Component {
                <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
                 Your bank login are never stored.</p>
               : null}
-
-              <div className="text-center">
-                <div className="common-form__buttons">
-                    {this.props.children}
-                </div>
-              </div>
+              <Buttons
+                fields={this.props.fields}
+                onNextClick={::this.onNextClick}
+                nextLink='/survey/docusign'
+                prevLink='/survey/banks' />
           </form>
       </div>
     );
@@ -92,15 +94,9 @@ Accounts.propTypes = {
     dispatch: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    accounts: state.plaid.accounts,
-  }
-}
-
 export default reduxForm({
-  form: 'accounts',
-  fields: ['bank_connected_how_much'],
+  form: 'plaid',
+  fields: ['plaid_account_id', 'plaid_amount'],
   validate,
-  destroyOnUnmount: true
-}, mapStateToProps)(Accounts);
+  destroyOnUnmount: false,
+}, accountsSelector)(Accounts);

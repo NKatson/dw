@@ -13,7 +13,7 @@ class Buttons extends React.Component {
       }
       return prev * error;
     }, 1);
-    
+
     return formValid;
   }
   save() {
@@ -25,18 +25,22 @@ class Buttons extends React.Component {
     });
   }
   render () {
-    const { nextLink, prevLink, text, fields } = this.props;
+    const { nextLink, prevLink, text, fields, disabled } = this.props;
+    console.log(disabled);
     const nextProps = {};
-    const notDisabled = fields ? ::this.formIsValid() : true;
+    let notDisabled = fields ? ::this.formIsValid() : true;
+    if (typeof disabled !== 'undefined') {
+      notDisabled = !disabled;
+    }
     return (
       <div className="text-center">
         <div className="common-form__buttons">
           {prevLink ? <Link to={prevLink}  className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link> : null}
           {
-            nextLink ? 
-            <Link 
+            nextLink ?
+            <Link
               onClick={::this.save}
-              to={nextLink} 
+              to={nextLink}
               className={'btn btn_yellow ' + (notDisabled ? '' : 'disabled')}
               disabled={!notDisabled}
               >

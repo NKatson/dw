@@ -1,3 +1,4 @@
+
 import { createSelector } from 'reselect';
 import { List } from 'immutable';
 
@@ -12,6 +13,8 @@ const selectValueSelector     = state => state.survey.get('selectValue');
 const formSelector            = state => state.form;
 const bundleStateSelector     = state => state.bundle;
 const plaidSelector           = state => state.plaid;
+const termsAcceptedSelector   = state => state.survey.get('termsAccepted');
+const docusignSelector        = state => state.docusign;
 
 export const categoriesSelector = createSelector(
   dataSelector,
@@ -56,7 +59,7 @@ export const employmentSelector = createSelector(
   selectValueSelector,
   formSelector,
   (data, selectValue, form) => {
-    const question = data.getIn(['Personal', 1, 'questions', 0]);  
+    const question = data.getIn(['Personal', 1, 'questions', 0]);
     const answer = question.get('answers').find(answer => answer.get('value') === selectValue);
     let fields = List([
       question.get('name'),
@@ -68,7 +71,7 @@ export const employmentSelector = createSelector(
                             .unshift(question.get('name'));
       dynamicFields = answer.get('dynamicFields').toJS();
     }
-    
+
     return {
       title: data.getIn(['Personal', 1, 'title']),
       description: data.getIn(['Personal', 1, 'description']),
@@ -105,26 +108,62 @@ export const riskSelector = createSelector(
 
 export const bundleSelector = createSelector(
   bundleStateSelector,
-  (bundle) => {
+  termsAcceptedSelector,
+  (bundle, termsAccepted) => {
     return {
       ...bundle,
+      termsAccepted,
       nextLink: '/survey/banks',
       prevLink: '/survey/risks',
     }
   }
 );
 
+export const checkSelector = createSelector(
+  dataSelector,
+  formSelector,
+  (data, form) => {
+    return {
+      questions: data.getIn(['Fund', 2, 'questions']).toJS(),
+      nextLink: '/survey/docusign',
+      prevLink: '/survey/banks',
+      checkForm: form.check,
+    }
+  }
+)
 
+export const transferSelector = createSelector(
+  dataSelector,
+  formSelector,
+  (data, form) => {
+    const formDataExists = form && form.basicinfo ? true : false;
+    return {
+      firstName: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
+      lastName: data.getIn(['Personal', 0, 'questions', 1, 'defaultValue']),
+      address: formDataExists ? form.basicinfo.address.value : '',
+      city: formDataExists ? form.basicinfo.city.value : '',
+      state: formDataExists ? form.basicinfo.state.value : '',
+      zipCode: formDataExists ? form.basicinfo.zip_code.value : '',
+      prevLink: '/survey/banks',
+      nextLink: '/survey/docusign',
+    }
+  }
+);
 
+export const accountsSelector = createSelector(
+  plaidSelector,
+  formSelector,
+  (plaid, form) => {
+    return {
+      accounts: plaid.accounts,
+      plaidForm: form.plaid,
+    }
+  }
+)
 
-
-
-
-
-
-
-
-
-
-
-
+export const docusignPageSelector = createSelector(
+  docusignSelector,
+  (docusign) => {
+    return {...docusign}
+  }
+)

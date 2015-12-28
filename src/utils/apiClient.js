@@ -26,7 +26,7 @@ function setHeaders() {
         client: localStorage.client
       });
   }
-  
+
   return this.set('Accept', 'application/json')
 }
 
@@ -456,3 +456,36 @@ export function cancelTerms(cb = () => {}) {
     });
   });
 };
+
+/**
+ * POST /api/manual_check
+ */
+export function sendCheckData(data, cb) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/manual_check')
+    .send(data)
+    ::setHeaders()
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * POST /api/users/fund_actions
+ */
+export function sendPlaidData(data, cb = () => {}) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/users/fund_actions')
+    .send({
+      'bank_account_id' : data.plaid_account_id,
+      'amount' : data.plaid_amount,
+    })
+    ::setHeaders()
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+}

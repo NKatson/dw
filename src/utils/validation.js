@@ -162,6 +162,8 @@ export function validateSurvey(data) {
     'amountOfTransaction',
     'reason',
     'marital_status',
+    'plaid_account_id',
+    'plaid_amount',
  ];
 
   requiredFields.forEach(fieldName => {
@@ -188,7 +190,7 @@ export function validateSurvey(data) {
 
   // accounts page
   valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
-  valid.checkCurrency('bank_connected_how_much', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
+  valid.checkCurrency('plaid_amount', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
 
   return valid.getErrors();
 }
