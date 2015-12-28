@@ -3,39 +3,38 @@ import { RadioGroup, Radio } from 'react-icheck';
 
 class InputMultiple extends React.Component {
   render () {
-    const { question : { name, label }, handleClick, inputs, selectedValue } = this.props;
-    const props = {};
-    if (handleClick) {
-      props.onClick = handleClick;
-    }
+    const { question, handleClick, inputs, field } = this.props;
     return (
-      <RadioGroup name={name} value={selectedValue} className="input-wrap_with-radio-2">
-        {
-          inputs.map((input, index) => {
-            const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
-                            {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
-                          </label>;
-            return (
-                <Radio
-                    {...input.field}
-                    {...props}
-                    labelWrapperClass="input-wrap input-wrap_with-radio"
-                    key={'option' + index}
-                    id={'option-' + index}
-                    radioClass="iradio_minimal"
-                    increaseArea="20%"
-                    value={input.value}
-                    label={label}
-                  />
-            );
-          })
-        }
-      </RadioGroup>
+      <div>
+        <p>{question.label}</p>
+        <RadioGroup name={question.name}  className="input-wrap_with-radio-2">
+          {
+            inputs.map((input, index) => {
+              const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>
+                              {input.balance ? <span className="common-form__label-text">${input.balance}</span> : null}
+                            </label>;
+              return (
+                  <Radio
+                      className="radio-component-classname"
+                      {...field}
+                      key={'option' + index}
+                      id={'option-' + index}
+                      radioClass="iradio_minimal"
+                      increaseArea="20%"
+                      value={input.value}
+                      label={label}
+                    />
+              );
+            })
+          }
+        </RadioGroup>
+      </div>
     );
   }
 }
 
 InputMultiple.propTypes = {
+  field: PropTypes.object.isRequired,
   question: PropTypes.shape({
     class: PropTypes.string,
     label: PropTypes.string,
@@ -44,7 +43,6 @@ InputMultiple.propTypes = {
   handleClick: PropTypes.func,
   inputs: PropTypes.arrayOf(PropTypes.shape({
      label: PropTypes.string.isRequired,
-     field: PropTypes.object.isRequired,
      value: PropTypes.string,
      defaultChecked: PropTypes.bool,
  })).isRequired,

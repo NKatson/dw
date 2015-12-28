@@ -1,4 +1,5 @@
 import * as api from '../../utils/apiClient';
+import * as surveyActions from './survey';
 
 export const LOGIN_REQUEST            = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS            = 'LOGIN_SUCCESS';
@@ -22,17 +23,16 @@ function loginRequest() {
   };
 }
 
-export function loginSuccess({ data: { email, name, nickname }, accessToken, uid, client, confirmed}) {
+export function loginSuccess({ profile, data: { email, first_name }, accessToken, uid, client}) {
   return {
     type: LOGIN_SUCCESS,
-    confirmed,
+    confirmed: profile && profile.confirmed ? true : false,
     user: {
       email,
-      name,
-      nickname,
       accessToken,
       uid,
       client,
+      firstName: first_name,
     },
   };
 }
@@ -45,7 +45,7 @@ function loginFailure({ errors }) {
 }
 
 export function login(email, password, cb) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(loginRequest());
     api.login({
       email,
@@ -53,7 +53,11 @@ export function login(email, password, cb) {
       cb: (err, body) => {
         if (err) return dispatch(loginFailure(err));
         dispatch(loginSuccess(body)).then(() => {
-          cb();
+          // save state.auth to server
+          const state = getState();
+          api.saveState({ auth: state.auth.toJS()}, () => {
+            cb();
+          })
         });
       },
     });
@@ -87,16 +91,27 @@ function logoutFailure(error) {
   };
 }
 
-export function logout(message, cb) {
-  return dispatch => {
+export function logout(message, currentLink, cb = () => {}) {
+  return (dispatch, getState) => {
     dispatch(logoutRequest());
-    api.logout({
-      cb: (err, body) => {
-        if (err) return dispatch(logoutFailure(err));
-        dispatch(logoutSuccess(message)).then(() => {
-          cb();
+    dispatch(surveyActions.setCurrentLink(currentLink)).then( () => {
+      const state = getState();
+      api.saveState({
+        form: state.form,
+        survey: state.survey.toJS(),
+        auth: state.auth.toJS(),
+        plaid: state.plaid,
+      }, err => {
+        if (err) return console.log('Can\'t save state: ' + err);
+        api.logout({
+          cb: (err, body) => {
+            if (err) return dispatch(logoutFailure(err));
+            dispatch(logoutSuccess(message)).then(() => {
+              cb();
+            });
+          },
         });
-      },
+      })
     });
   };
 }
@@ -122,20 +137,31 @@ function confirmTokenSuccess(message = 'Success!') {
   };
 }
 
+
 export function confirmEmail(token, cb) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(confirmTokenRequest());
     api.confirmEmailToken(token, (err, body) => {
       if (err) {
         dispatch(confirmTokenError(err));
         return cb(err);
       }
+      console.log(body);
+
       dispatch(confirmTokenSuccess()).then(() => {
-        cb();
+        dispatch(loginSuccess(body)).then(() => {
+          const state = getState();
+          api.saveState({
+            auth: state.auth.toJS(),
+          }, (err) => {
+              cb(err);
+           });
+        });
       });
     });
-  }
+  };
 }
+
 
 export function unlockToken(token, cb) {
   return dispatch => {
