@@ -15,18 +15,18 @@ function getCommon(form) {
 
 function currentcyToNumber(value) {
   if (!value) return 0;
+  if (typeof a === 'number') return value;
+  console.log(value);
 
   let val = value.replace(/[,\$\s]/g, '');
   return  parseInt(val);
 }
 
+
 function getEmployment(formData) {
   if (!formData) return {};
   const data = getCommon(formData.employment);
-  if (data.annual_income) {
-    let val = data.annual_income.replace(/[,\$\s]/g, '');
-    data.annual_income = parseInt(val);
-  }
+  data.annual_income = currentcyToNumber(data.annual_income);
   return data;
 }
 
@@ -42,7 +42,6 @@ function getPersonal(formData) {
 
   // employment
   data = Object.assign({}, data, getEmployment(formData));
-  data.annual_income = currentcyToNumber(data.annual_income);
 
   return data;
 }

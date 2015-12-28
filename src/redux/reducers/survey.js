@@ -13,7 +13,6 @@ const initialState = Map({
 export default function survey(state = initialState, action = {}) {
   const data = state.get('data') ? state.get('data').toJS() : {};
   const categoriesNames = Object.keys(data);
-  const currentIndex = state.get('categoryIndex');
 
   switch (action.type) {
   case actions.GET_DATA_REQUEST:
@@ -33,7 +32,6 @@ export default function survey(state = initialState, action = {}) {
       categoryIndex: 0,
       formType: categories.length > 0 ? action.data[categories[0]][0].type : null,
       step: 0,
-      currentLink: '/welcome',
       data: action.data,
     });
   case actions.TOGGLE_SSN:

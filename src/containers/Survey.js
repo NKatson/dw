@@ -28,22 +28,23 @@ class Survey extends React.Component {
   handleLogout(e) {
     e.preventDefault();
     const { state } = this.props;
-    api.saveState({
-      survey: state.survey.toJS(),
-      form: state.form,
-      auth: state.auth.toJS(),
-      bundle: state.bundle,
-    }, err => {
-      if (err) return console.log(err);
-      this.props.dispatch(auth.logout(null, () => {
-        this.context.history.push( '/signin');
-      }));
-    });
+    this.props.dispatch(surveyActions.setCurrentLink(this.props.location.pathname)).then(() => {
+      api.saveState({
+        survey: state.survey,
+        form: state.form,
+        bundle: state.bundle,
+      }, (err) => {
+        if (err) return console.log(err);
+        this.props.dispatch(auth.logout(null, () => {
+          this.context.history.push( '/signin');
+        }));
+      });
+    })
   }
   render () {
     const { showCategories, isDocusign, categories, currentCategoryIndex } = this.props;
     return (
-      <div className="common-page">
+      <div>
           <Header handleLogout={::this.handleLogout} />
           <div className="common-wrap common-wrap_rose">
             <div className={'container container-2 bg-white ' + (isDocusign ? 'docusign' : '')}>
@@ -69,6 +70,10 @@ class Survey extends React.Component {
     );
   }
 }
+
+Survey.contextTypes = {
+  history: RouterPropTypes.history,
+};
 
 Survey.propTypes = {
   dispatch: PropTypes.func.isRequired,

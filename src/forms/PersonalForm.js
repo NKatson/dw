@@ -23,6 +23,7 @@ class PersonalForm extends React.Component {
             {/* first name, last name */}
             <div className="anketa-form__fieldset clearfix">
               <InputText
+                disable
                 additionalClass="disabled pull-left w-230"
                 field={fields[questions[0].name]}
                 placeholder="First name"
@@ -30,6 +31,7 @@ class PersonalForm extends React.Component {
                 defaultValue={questions[0].defaultValue}
               />
               <InputText
+                disable
                 additionalClass="pull-right w-230"
                 field={fields[questions[1].name]}
                 placeholder="Last name"
@@ -127,9 +129,9 @@ class PersonalForm extends React.Component {
 export default reduxForm({
   form: 'basicinfo',
   fields: [
-    'first_name', 
-    'last_name', 
-    'address', 
+    'first_name',
+    'last_name',
+    'address',
     'city',
     'state',
     'address',

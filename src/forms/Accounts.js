@@ -1,12 +1,15 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
-import { accountsSelector } from '../redux/selectors/surveySelectors';
+import { accountsSelector, setCategoryIndex, setCurrentLink } from '../redux/selectors/surveySelectors';
 import { validateSurvey as validate } from '../utils/validation';
 import { InputText } from '../atoms';
 import { InputMultiple, Buttons } from '../components';
 import { savePlaidData } from '../redux/actions/saveActions';
 
 class Accounts extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(setCategoryIndex(3));
+  }
   renderMultiple() {
     const result = [<div className="input-wrap__text">Which account do you want to fund from?</div>, <br />];
     let sum = 0;

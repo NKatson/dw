@@ -15,13 +15,15 @@ const bundleStateSelector     = state => state.bundle;
 const plaidSelector           = state => state.plaid;
 const termsAcceptedSelector   = state => state.survey.get('termsAccepted');
 const docusignSelector        = state => state.docusign;
+const stateSelector           = state => state;
 
 export const categoriesSelector = createSelector(
   dataSelector,
   showCategoriesSelector,
   categoryIndexSelector,
   isDocusignSelector,
-  (data, showCategories, categoryIndex, isDocusign) => {
+  stateSelector,
+  (data, showCategories, categoryIndex, isDocusign, state) => {
     const categories = Object.keys(data.toJS()).map(v => v.toLowerCase());
     return {
       categories: categories.map((cat, index) => {
@@ -35,6 +37,7 @@ export const categoriesSelector = createSelector(
       showCategories,
       currentCategoryIndex: categoryIndex,
       isDocusign,
+      state: state
     }
   }
 );

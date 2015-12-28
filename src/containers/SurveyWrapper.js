@@ -4,6 +4,7 @@ import { PropTypes as RouterPropTypes } from 'react-router';
 import $ from 'jquery';
 
 import { logout, setError } from '../redux/actions/auth';
+import { setCurrentLink } from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 
 class SurveyWrapper extends React.Component {
@@ -27,19 +28,21 @@ class SurveyWrapper extends React.Component {
       }
     });
     const { state } = this.props;
-    api.saveState({
-      survey: state.survey.toJS(),
-      form: state.form,
-      auth: state.auth.toJS(),
-      bundle: state.bundle,
-    }, (err) => {
-      if (err) return console.log(err);
-      const errorMessage = 'You have been logged out due to inactivity.';
-      this.props.dispatch(logout(errorMessage, () => {
-        $('#modalInactivity').modal('hide');
-        this.needLogout = true;
-      }));
-    });
+    this.props.dispatch(setCurrentLink(this.props.location.pathname)).then(() => {
+      api.saveState({
+        survey: state.survey.toJS(),
+        form: state.form,
+        auth: state.auth.toJS(),
+        bundle: state.bundle,
+      }, (err) => {
+        if (err) return console.log(err);
+        const errorMessage = 'You have been logged out due to inactivity.';
+        this.props.dispatch(logout(errorMessage, () => {
+          $('#modalInactivity').modal('hide');
+          this.needLogout = true;
+        }));
+      });
+    })
   }
   handleModalButtonClick(e) {
     e.preventDefault();

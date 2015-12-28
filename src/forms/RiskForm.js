@@ -26,16 +26,16 @@ class RiskForm extends React.Component {
              <p>In 2008 the worst happened!!  The markets lost more than 50% of their value within a few short years (2007-2009).</p>
              <p>If this happened again, would you:</p>
           </div>
-            
+
           {
-            fields[question.name].visited ? 
+            fields[question.name].visited ?
             <div className="wfm-message wfm-message_hint">
                  By 2012 the markets had fully recovered – and since have grown 170% since the low in 2009.
                  WorthFM recommends investing over a longer period time to achieve sustained growth (if you want to change your answer below, its OK).
-             </div> 
+             </div>
              : null
            }
-             
+
           <form className="common-form anketa-form" autoComplete="off">
                <RadioGroup name={question.name}  className="input-wrap_with-radio-2" value={riskValue}>
                  {
@@ -73,7 +73,7 @@ class RiskForm extends React.Component {
 export default reduxForm({
   form: 'risk',
   fields: [
-    'crysis2008', 
+    'crysis2008',
   ],
   validate,
   destroyOnUnmount: false,

@@ -133,6 +133,7 @@ export function validateSurvey(data) {
   const valid = new Validation(data);
 
   const addressRegex = /^[a-zA-Z\- ,'0-9#\-\.]+$/i;
+  const cityRegex = /^[a-zA-Z\- ,'\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{6}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
@@ -175,7 +176,7 @@ export function validateSurvey(data) {
   valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
   valid.checkRegex('address', addressRegex, 'Please type valid address');
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
-  valid.checkRegex('city', addressRegex, 'Please type valid city format');
+  valid.checkRegex('city', cityRegex, 'Please type valid city format');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
   valid.checkDateOfBirth('date_of_birth');
 

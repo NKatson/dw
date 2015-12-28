@@ -102,7 +102,6 @@ export function getForm(cb) {
  */
 export function sendPersonal(data, cb = () => {}) {
   const url = '/api/accounts';
-
   getConfig(config => {
     request
     .post(config.apiHost + url)

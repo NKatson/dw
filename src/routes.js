@@ -60,7 +60,7 @@ export default (store) => {
         <Route path="signup" component={Registration} />
       </Route>
 
-      <Route component={SurveyWrapper}>
+      <Route component={SurveyWrapper} onEnter={requireLogin}>
         <Route path="/survey" component={Survey}>
             <Route path="basicinfo" component={PersonalForm} />
             <Route path="employment" component={EmploymentContainer} />

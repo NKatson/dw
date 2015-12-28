@@ -6,7 +6,7 @@ import $ from 'jquery';
 class InputText extends React.Component {
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
-      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency, tabIndex } = this.props;
+      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency, tabIndex, disable } = this.props;
     const mask = maskPattern || '111-111-1111';
     const isIncome = field ? field.name.substr(field.name.length - 6, field.name.length - 1) === 'income'
     || field.name === 'initial_fund' || field.name === 'amountOfTransaction' : false;
@@ -29,6 +29,7 @@ class InputText extends React.Component {
         />;
     } else {
       component =  <input
+        disabled={disable}
         autoFocus={defaultValue ? true : false}
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder={placeholder}
