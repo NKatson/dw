@@ -15,7 +15,7 @@ class Check extends React.Component {
     saveCheck(this.props.checkForm);
   }
   render() {
-    const { questions, fields, prevLink, nextLink } = this.props;
+    const { questions, fields, prevLink, nextLink, value } = this.props;
     return (
       <div>
         <h2>3. ENTER YOUR BANK ACCOUNT INFORMATION</h2>
@@ -28,6 +28,7 @@ class Check extends React.Component {
               {questions.map(question => {
                 if (question.type === 'radio') {
                   return <InputMultiple
+                          value={value}
                           question={question}
                           field={fields[question.name]}
                           inputs={question.answers}

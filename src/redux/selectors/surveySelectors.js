@@ -38,7 +38,7 @@ export const surveySelector = createSelector(
       showCategories,
       currentCategoryIndex: categoryIndex,
       isDocusign,
-      showWelcomeBack: confirmed && showWelcomeBack,
+      showWelcomeBack: showWelcomeBack,
       firstName: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
     }
   }
@@ -47,7 +47,19 @@ export const surveySelector = createSelector(
 export const personalSelector = createSelector(
   dataSelector,
   showSsnSelector,
-  (data, showSsn) => {
+  formSelector,
+  (data, showSsn, form) => {
+    const initialObject = {
+      first_name: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
+      last_name: data.getIn(['Personal', 0, 'questions', 1, 'defaultValue']),
+    }
+    const formObject = {};
+    for (let key in form.basicinfo) {
+      if (key.charAt(0) !== '_') {
+        formObject[key] = form.basicinfo[key].value;
+      }
+    }
+    
     return {
       questions: data.getIn(['Personal', 0, 'questions']).toJS(),
       title: data.getIn(['Personal', 0, 'title']),
@@ -55,6 +67,7 @@ export const personalSelector = createSelector(
       nextLink: '/survey/employment',
       prevLink: '/welcome',
       showSsn,
+      initialValues: Object.assign({}, initialObject, formObject ),
     }
   }
 );
@@ -133,6 +146,7 @@ export const checkSelector = createSelector(
       nextLink: '/survey/docusign',
       prevLink: '/survey/banks',
       checkForm: form.check,
+      value: form.check && form.check.typeOfAccount ? form.check.typeOfAccount.value : '',
     }
   }
 )
@@ -162,6 +176,7 @@ export const accountsSelector = createSelector(
     return {
       accounts: plaid.accounts,
       plaidForm: form.plaid,
+      value: form && form.plaid && form.plaid.plaid_account_id ? form.plaid.plaid_account_id.value : '',
     }
   }
 )

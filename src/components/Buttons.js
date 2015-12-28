@@ -8,7 +8,7 @@ class Buttons extends React.Component {
     const fields = this.props.fields;
     const formValid = Object.keys(fields).reduce((prev, cur) => {
       let error = fields[cur].error ? 0 : 1;
-      if (cur === 'crysis2008' && fields[cur].visited) {
+      if ((cur === 'crysis2008' || cur === 'plaid_account_id' || cur === 'typeOfAccount') && fields[cur].visited) {
         error = 1;
       }
       return prev * error;

@@ -2,9 +2,13 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Print } from '../atoms';
 import { Buttons } from '../components';
+import { setCategoryIndex } from '../redux/actions/survey';
 import { transferSelector } from '../redux/selectors/surveySelectors';
 
 class Transfer extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(setCategoryIndex(2));
+  }
   render() {
     const { firstName, lastName, address, city, state, zipCode, prevLink, nextLink} = this.props;
     return (

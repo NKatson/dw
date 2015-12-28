@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
-import { accountsSelector, setCategoryIndex, setCurrentLink } from '../redux/selectors/surveySelectors';
+import { setCategoryIndex, setCurrentLink } from '../redux/actions/survey';
+import { accountsSelector } from '../redux/selectors/surveySelectors';
 import { validateSurvey as validate } from '../utils/validation';
 import { InputText } from '../atoms';
 import { InputMultiple, Buttons } from '../components';
@@ -8,12 +9,13 @@ import { savePlaidData } from '../redux/actions/saveActions';
 
 class Accounts extends React.Component {
   componentWillMount() {
-    this.props.dispatch(setCategoryIndex(3));
+    this.props.dispatch(setCategoryIndex(2));
   }
   renderMultiple() {
     const result = [<div className="input-wrap__text">Which account do you want to fund from?</div>, <br />];
     let sum = 0;
-
+    
+    if (!this.props.accounts) return;
     const inputs = this.props.accounts.map(account => {
       sum += account.balance.available;
       return {
@@ -27,6 +29,7 @@ class Accounts extends React.Component {
           name: 'plaid_account_id',
         }}
         inputs={inputs}
+        value={this.props.value}
         field={this.props.fields.plaid_account_id}
          />
      );
@@ -54,7 +57,7 @@ class Accounts extends React.Component {
     savePlaidData(this.props.plaidForm)
   }
   render() {
-    const { fields: { plaid_amount, plaid_account_id  }, accounts } = this.props;
+    const { fields: { plaid_amount, plaid_account_id  }, accounts, value } = this.props;
     return (
       <div>
         <h2>3. CONNECT YOUR BANK</h2>
@@ -69,12 +72,12 @@ class Accounts extends React.Component {
                    />
               </div>
               <div className="anketa-form__fieldset">
-                 {accounts.length === 1 ? <p>We will fund your WorthFM account from your bank:</p> : null}
+                 {accounts && accounts.length === 1 ? <p>We will fund your WorthFM account from your bank:</p> : null}
                  <div className="wfm-from-your-bank">
                     {::this.renderAccounts()}
                  </div>
                </div>
-             {accounts.length > 1 ?
+             {accounts && accounts.length > 1 ?
                <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
                 Your bank login are never stored.</p>
               : null}

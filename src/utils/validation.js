@@ -138,7 +138,10 @@ export function validateSurvey(data) {
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
   const dateOfBirthRegex = /(^\d{2}\/\d{2}\/\d{4}$)/i;
+  const numberRegex = /(^[0-9]*$)/i;
   const requiredFields = [
+    'first_name',
+    'last_name',
     'address',
     'city',
     'zip_code',
@@ -148,6 +151,7 @@ export function validateSurvey(data) {
     'title',
     'industry_kind',
     'state',
+    'typeOfAccount',
     'employment_status',
     'ssn',
     'crysis2008',
@@ -182,6 +186,8 @@ export function validateSurvey(data) {
 
   // check
   valid.checkMax('bankName', 100);
+  valid.checkRegex('bankAccount', numberRegex, 'Please type valid account number format');
+  valid.checkRegex('transitRouting', numberRegex, 'Please type valid transit routing format');
   valid.checkMax('bankAccount', 25);
   valid.checkMax('accountTitle', 150);
   valid.checkLength('transitRouting', 9);

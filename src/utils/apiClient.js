@@ -39,7 +39,6 @@ function saveLocal(res) {
 
   if (uid.length !== 0 & typeof uid !== 'undefined') {
     //  Cookies.remove('uid', uid, {path: '/'});
-      console.log('Set cookie: uid = ' + uid);
       Cookies.set('uid', uid, { expires: 7, path: '/' });
   }
 }
@@ -410,8 +409,6 @@ export function registration({ data, cb }) {
 
       clearLocal();
       saveLocal(res);
-      console.log('registration apiClient:');
-      console.log(localStorage.uid);
 
       return cb(null, {
         ...res.body,
@@ -457,7 +454,7 @@ export function acceptTerms(cb = () => {}) {
 export function cancelTerms(cb = () => {}) {
   getConfig(config => {
     request
-    .delete(config.apiHost + '/api/tos')
+    .del(config.apiHost + '/api/tos')
     ::setHeaders()
     .end((err, res) => {
       checkResponse(err, res, cb);

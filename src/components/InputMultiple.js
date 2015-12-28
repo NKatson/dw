@@ -3,11 +3,11 @@ import { RadioGroup, Radio } from 'react-icheck';
 
 class InputMultiple extends React.Component {
   render () {
-    const { question, handleClick, inputs, field } = this.props;
+    const { question, handleClick, inputs, field, value } = this.props;
     return (
       <div>
         <p>{question.label}</p>
-        <RadioGroup name={question.name}  className="input-wrap_with-radio-2">
+        <RadioGroup name={question.name}  className="input-wrap_with-radio-2" value={value ? value : ''}>
           {
             inputs.map((input, index) => {
               const label = <label htmlFor={'option-' + index}><span className="common-form__label-title">{input.label}</span>

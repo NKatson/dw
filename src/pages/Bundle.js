@@ -93,7 +93,7 @@ class Bundle extends React.Component {
             />
 
           <div className="wfm-not-agree-link">
-                <Link to="/survey/feedback">If you cannot agree to our Term of
+                <Link to="/feedback">If you cannot agree to our Term of
                   Service, please tell us why. We'd like to help.</Link>
             </div>
           </div>

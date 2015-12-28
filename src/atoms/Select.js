@@ -4,7 +4,6 @@ class Select extends React.Component {
   render() {
     const { options, additionalClass, label, handleChange, field, stateSelectValue } = this.props;
     let additionalProps = {};
-    console.log(stateSelectValue);
     if (handleChange) {
       additionalProps.onChange = handleChange;
       additionalProps.value = stateSelectValue ? stateSelectValue : field.value;

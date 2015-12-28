@@ -33,7 +33,9 @@ if (__DEVTOOLS__) {
 } else {
   render(
     <Provider store={store} key="provider">
-      {component}
+      <div>
+        {component}
+      </div>
     </Provider>,
     root
   );

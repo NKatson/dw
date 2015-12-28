@@ -37,8 +37,6 @@ function getPersonal(formData) {
 
   // personal
   data = getCommon(formData.basicinfo);
-  data.first_name = 'Emily';
-  data.last_name = 'Jipson';
 
   // employment
   data = Object.assign({}, data, getEmployment(formData));
