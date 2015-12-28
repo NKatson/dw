@@ -7,3 +7,4 @@ export Question from './Question';
 export ModalButton from './ModalButton';
 export Radio from './Radio';
 export Print from './Print';
+export CategoryDivider from './CategoryDivider';

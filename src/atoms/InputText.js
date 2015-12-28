@@ -6,10 +6,10 @@ import $ from 'jquery';
 class InputText extends React.Component {
   render () {
     const { field, placeholder, additionalClass, icon, type, isNormalized ,
-      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency, tabIndex } = this.props;
+      label, defaultValue, maskPattern, errorMessageClass, inputClass, isCurrency, tabIndex, disable } = this.props;
     const mask = maskPattern || '111-111-1111';
-    const isIncome = field.name.substr(field.name.length - 6, field.name.length - 1) === 'income'
-    || field.name === 'initial_fund' || field.name === 'amountOfTransaction';
+    const isIncome = field ? field.name.substr(field.name.length - 6, field.name.length - 1) === 'income'
+    || field.name === 'initial_fund' || field.name === 'amountOfTransaction' : false;
     let component = null;
     const disabled = ['first_name', 'last_name'];
 
@@ -29,12 +29,12 @@ class InputText extends React.Component {
         />;
     } else {
       component =  <input
-        disabled={disabled.indexOf(field.name) !== -1 ? true : false}
+        disabled={disable}
         autoFocus={defaultValue ? true : false}
         className={'input-text ' + (inputClass ? inputClass : '')}
         placeholder={placeholder}
         type={type ? type : 'text'}
-        value={field.value ? '' : defaultValue}
+        value={field && field.value ? '' : defaultValue}
         {...field}
         autoComplete="off"
         />
@@ -48,11 +48,11 @@ class InputText extends React.Component {
         {...field}
         />
     }
-    const needError = field.error && field.touched ? true : false;
+    const needError = field && field.error && field.touched ? true : false;
     return (
-        <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (needError ? ' error' : '') + (needError && field.error.length > 34 ? ' error_two-lines' : '')}>
+        <div className={'input-wrap ' + (additionalClass ? additionalClass : '') + (needError ? ' error' : '') + (needError && field && field.error.length > 34 ? ' error_two-lines' : '')}>
           {label ?
-            <div className="input-wrap__text">{label} {field.name === 'annual_income'? <p style={{
+            <div className="input-wrap__text">{label} {field && field.name === 'annual_income'? <p style={{
                 display: 'inline',
                 fontSize: '0.8em'
               }}>Your annual income</p> : null}</div>
@@ -61,7 +61,7 @@ class InputText extends React.Component {
           {component}
           {this.props.children}
           {
-            field.error && field.touched ?
+            field && field.error && field.touched ?
               <div className={errorMessageClass ? errorMessageClass : 'input-wrap__error-msg' }>{field.error}</div>
               : null
           }

@@ -8,9 +8,21 @@ import * as api from '../utils/apiClient';
 import { validateSurvey as validate } from '../utils/validation';
 
 class Feedback extends React.Component {
+  constructor(props) {
+    super(props);
+    this.currentLink = '';
+    this.categoryIndex = 1;
+  }
   componentDidMount() {
+    this.currentLink = this.props.currentLink;
+    this.categoryIndex = this.props.categoryIndex;
     this.props.dispatch(setCategoryIndex(3));
     this.props.dispatch(setCurrentLink('/survey/feedback/'));
+  }
+  componentWillUnmount() {
+    console.log(this.currentLink);
+    this.props.dispatch(setCategoryIndex(this.categoryIndex));
+    this.props.dispatch(setCurrentLink(this.currentLink));
   }
   saveState(data) {
     const { state } = this.props;
@@ -37,12 +49,19 @@ class Feedback extends React.Component {
   }
   render() {
     const { fields: { reason, comment }, success, failed } = this.props;
+    const variants = [
+      "I'm not a US Citizen",
+      "I am affiliated with a Broker/Dealer",
+      "I am a 10% shareholder or director in a public company",
+      "I am a senior political officer",
+       "Other (please explain)",
+    ]
     const answers = [
-      {label : "I'm not a US Citizen", value: "1"},
-      {label : "I am affiliated with a Broker/Dealer", value: "2"},
-      {label : "I am a 10% shareholder or director in a public company", value: "3"},
-      {label : "I am a senior political officer", value: "4"},
-      {label : "Other (please explain)", value: "5"},
+      {label : variants[0], value: variants[0]},
+      {label : variants[1], value: variants[1]},
+      {label : variants[2], value: variants[2]},
+      {label : variants[3], value: variants[3]},
+      {label : variants[4], value: variants[4]},
     ]
     let text = "SEND US YOUR FEEDBACK";
     let desc = "Since you did not agree to our Terms of Service, please give us more information. We'd like to figure out how to solve your problem.";
@@ -74,7 +93,7 @@ class Feedback extends React.Component {
 
             <div className="text-center">
                 <div className="common-form__buttons">
-                    <Link to='/survey/invest/q/1' className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
+                    <Link to='/survey/bundle' className="common-form__back-link"><span className="wfm-i wfm-i-arr-left-grey"></span>Go Back</Link>
                     <button
                       onClick={this.props.handleSubmit(::this.handleSubmit)}
                       className='btn btn_yellow '
@@ -101,6 +120,8 @@ function mapStateToProps(state) {
     state: state,
     nextLink: state.survey.get('nextLink'),
     prevLink: state.survey.get('prevLink'),
+    categoryIndex: state.survey.get('categoryIndex'),
+    currentLink: state.survey.get('currentLink'),
     success: state.survey.get('feedbackSuccess'),
     failed: state.survey.get('feedbackFailed'),
   };

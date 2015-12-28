@@ -133,6 +133,7 @@ export function validateSurvey(data) {
   const valid = new Validation(data);
 
   const addressRegex = /^[a-zA-Z\- ,'0-9#\-\.]+$/i;
+  const cityRegex = /^[a-zA-Z\- ,'\-\.]+$/i;
   const zipCodeRegex = /(^\d{5}$)|(^\d{6}$)/i;
   const phoneRegex = /(^\d{3}-\d{3}-\d{4}$)/i;
   const ssnRegex = /(^\d{3}-\d{2}-\d{4}$)/i;
@@ -149,6 +150,7 @@ export function validateSurvey(data) {
     'state',
     'employment_status',
     'ssn',
+    'crysis2008',
     'annual_income',
     'income_source',
     'bank_connected_how_much',
@@ -161,6 +163,8 @@ export function validateSurvey(data) {
     'amountOfTransaction',
     'reason',
     'marital_status',
+    'plaid_account_id',
+    'plaid_amount',
  ];
 
   requiredFields.forEach(fieldName => {
@@ -172,7 +176,7 @@ export function validateSurvey(data) {
   valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
   valid.checkRegex('address', addressRegex, 'Please type valid address');
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
-  valid.checkRegex('city', addressRegex, 'Please type valid city format');
+  valid.checkRegex('city', cityRegex, 'Please type valid city format');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
   valid.checkDateOfBirth('date_of_birth');
 
@@ -187,7 +191,7 @@ export function validateSurvey(data) {
 
   // accounts page
   valid.checkCurrency('annual_income', 8000, 'Please confirm your annual income.');
-  valid.checkCurrency('bank_connected_how_much', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
+  valid.checkCurrency('plaid_amount', 25, 'Minimum amount is $25. Please double check your initial funding amount.');
 
   return valid.getErrors();
 }

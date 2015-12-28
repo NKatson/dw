@@ -18,6 +18,18 @@ function getConfig(cb) {
   });
 }
 
+function setHeaders() {
+  if (localStorage.uid && localStorage.uid.length > 0) {
+    this.set({
+        'access-token': localStorage.accessToken,
+         uid: localStorage.uid,
+        client: localStorage.client
+      });
+  }
+
+  return this.set('Accept', 'application/json')
+}
+
 function saveLocal(res) {
   const { uid, client, client_id} = res.headers;
   localStorage.accessToken = res.headers['access-token'];
@@ -40,6 +52,16 @@ function clearLocal() {
 }
 
 function checkResponse(err, res, cb) {
+
+  if (res.body.errors && res.body.errors.full_messages && res.body.errors.full_messages.length > 0) {
+    const error = res.body.errors.full_messages[0];
+    return cb(error);
+  }
+
+  if (res.body.errors && res.body.errors.base && res.body.errors.base.length > 0) {
+    return cb(res.body.errors.base[0]);
+  }
+
   if (err && typeof res === 'undefined') return cb('Server does not respond');
   if (err) return cb(res.body);
   if (res.body.errors && res.body.errors.length > 0 || res.body.error) return cb(res.body);
@@ -51,8 +73,11 @@ function checkResponse(err, res, cb) {
   return cb(null, res.body);
 }
 
+/*
+======================== API REQUESTS ===================
+ */
+
 export function saveState(state, cb) {
-  console.log(localStorage.uid);
   const url = '/state/create';
   getConfig(config => {
     request
@@ -72,11 +97,10 @@ export function saveState(state, cb) {
  * GET /api/questions
  */
 export function getForm(cb) {
-  const url = '/api/questions';
   getConfig(config => {
     request
-    .get(config.apiHost + url)
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .get(config.apiHost + '/api/questions')
+    ::setHeaders()
     .end((err, res) => {
         checkResponse(err, res, cb);
     });
@@ -88,11 +112,10 @@ export function getForm(cb) {
  */
 export function sendPersonal(data, cb = () => {}) {
   const url = '/api/accounts';
-
   getConfig(config => {
     request
     .post(config.apiHost + url)
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    ::setHeaders()
     .send(data)
     .end((err, res) => {
         checkResponse(err, res, cb);
@@ -101,18 +124,18 @@ export function sendPersonal(data, cb = () => {}) {
 }
 
 /**
- * PATCH /api/accounts/type
+ * PUT /api/accounts/type
  */
 export function sendAccountType(data, cb) {
   const url = '/api/accounts/type';
 
   getConfig(config => {
     request
-    .patch(config.apiHost + url)
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    .put(config.apiHost + url)
+    ::setHeaders()
     .send({
-      'account-type' : data.accountType,
-      'annual_income' : data.income,
+      'account_type' : data.accountType,
+      'joint_annual_income' : data.income,
     })
     .end((err, res) => {
         checkResponse(err, res, cb);
@@ -128,7 +151,7 @@ export function sendQuestions(data, cb = () => {}) {
   getConfig(config => {
     request
       .post(config.apiHost + url)
-      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      ::setHeaders()
       .send(data)
       .end((err, res) => {
           checkResponse(err, res, cb);
@@ -144,8 +167,8 @@ export function login({ email, password, cb }) {
   getConfig(config => {
     request
       .post(config.apiHost + url)
-      .send({email, password, 'access-token': localStorage.accessToken})
-      .set('Accept', 'application/json')
+      ::setHeaders()
+      .send({email, password})
       .end((err, res) => {
         if (err && typeof res === 'undefined') return cb('Server does not respond');
         if (err) return cb(res.body);
@@ -173,7 +196,7 @@ export function getDocusignLink(cb = () => {}) {
   getConfig(config => {
     request
       .get(config.apiHost + docusitnUrl)
-      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      ::setHeaders()
       .query({'return_url': config.host + '/redirect-to-dashboard'})
       .end((err, res) => {
         checkResponse(err, res, cb);
@@ -190,7 +213,7 @@ export function validateDocusign(cb = () => {}) {
   getConfig(config => {
     request
       .get(config.apiHost + validateUrl)
-      .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+      ::setHeaders()
       .end((err, res) => {
         checkResponse(err, res, cb  );
       });
@@ -204,8 +227,8 @@ export function reset({ email, cb }) {
   getConfig(config => {
     request
       .post(config.apiHost + '/api/auth/password')
+      ::setHeaders()
       .send({email: email})
-      .set('Accept', 'application/json')
       .end((err, res) => {
           checkResponse(err, res, cb);
       });
@@ -219,8 +242,8 @@ export function checkResetPasswordToken(token, cb) {
   getConfig(config => {
     request
     .post(config.apiHost + '/api/auth/password/edit')
+    ::setHeaders()
     .send({reset_password_token: token})
-    .set('Accept', 'application/json')
     .end((err, res) => {
         checkResponse(err, res, cb);
     });
@@ -234,9 +257,8 @@ export function confirmEmailToken(token, cb) {
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/confirmation')
-    .query({config: 'default'})
-    .query({confirmation_token: token})
-    .set('Accept', 'application/json')
+    ::setHeaders()
+    .query({config: 'default', confirmation_token: token})
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
@@ -256,9 +278,8 @@ export function unlockToken(token, cb) {
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/unlock')
-    .query({config: 'default'})
-    .query({unlock_token: token})
-    .set('Accept', 'application/json')
+    ::setHeaders()
+    .query({config: 'default', unlock_token: token})
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body.error);
@@ -275,9 +296,8 @@ export function checkPasswordToken(token, cb) {
   getConfig(config => {
     request
     .get(config.apiHost + '/api/auth/password/edit')
-    .query({config: 'default'})
-    .query({reset_password_token: token})
-    .set('Accept', 'application/json')
+    ::setHeaders()
+    .query({config: 'default', reset_password_token: token})
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
@@ -298,9 +318,8 @@ export function confirmPassword({ password, confirmPassword, client, accessToken
   getConfig(config => {
     request
     .put(config.apiHost + '/api/auth/password')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    ::setHeaders()
     .send({password, password_confirmation: confirmPassword})
-    .set('Accept', 'application/json')
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
@@ -318,8 +337,7 @@ export function logout({ user = null, cb = () => {} }) {
   getConfig(config => {
     request
     .del(config.apiHost + '/api/auth/sign_out')
-    .send({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
-    .set('Accept', 'application/json')
+    ::setHeaders()
     .end((err, res) => {
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
@@ -353,6 +371,21 @@ export function plaidAuth(publicToken, cb) {
 }
 
 /**
+ * GET /plaid/banks
+ */
+export function plaidGetBanks(cb) {
+  getConfig(config => {
+    request
+    .get(config.host + '/plaid/banks')
+    .end((err, res) => {
+      if (err && typeof res === 'undefined') return cb('Server does not respond');
+      if (err) return cb(res.body);
+      return cb(null, res.body);
+    });
+  });
+}
+
+/**
  * POST /api/auth
  */
 export function registration({ data, cb }) {
@@ -376,10 +409,9 @@ export function registration({ data, cb }) {
       }
 
       clearLocal();
-
-      localStorage.client = res.headers.client;
-      localStorage.uid = data.email;
-      localStorage.accessToken = res.headers['access-token'];
+      saveLocal(res);
+      console.log('registration apiClient:');
+      console.log(localStorage.uid);
 
       return cb(null, {
         ...res.body,
@@ -397,7 +429,7 @@ export function sendFeedback(data, cb = () => {}) {
   getConfig(config => {
     request
     .post(config.apiHost + '/api/tos/feedback')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    ::setHeaders()
     .send(data)
     .end((err, res) => {
       checkResponse(err, res, cb);
@@ -412,7 +444,7 @@ export function acceptTerms(cb = () => {}) {
   getConfig(config => {
     request
     .put(config.apiHost + '/api/tos/accept')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    ::setHeaders()
     .end((err, res) => {
         checkResponse(err, res, cb);
     });
@@ -426,9 +458,42 @@ export function cancelTerms(cb = () => {}) {
   getConfig(config => {
     request
     .delete(config.apiHost + '/api/tos')
-    .set({'access-token': localStorage.accessToken, uid: localStorage.uid, client: localStorage.client})
+    ::setHeaders()
     .end((err, res) => {
       checkResponse(err, res, cb);
     });
   });
 };
+
+/**
+ * POST /api/manual_check
+ */
+export function sendCheckData(data, cb) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/manual_check')
+    .send(data)
+    ::setHeaders()
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+}
+
+/**
+ * POST /api/users/fund_actions
+ */
+export function sendPlaidData(data, cb = () => {}) {
+  getConfig(config => {
+    request
+    .post(config.apiHost + '/api/users/fund_actions')
+    .send({
+      'bank_account_id' : data.plaid_account_id,
+      'amount' : data.plaid_amount,
+    })
+    ::setHeaders()
+    .end((err, res) => {
+      checkResponse(err, res, cb);
+    });
+  });
+}

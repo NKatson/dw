@@ -1,4 +1,5 @@
 import * as api from '../../utils/apiClient';
+import { loginSuccess } from  './auth';
 
 export const RESET_REQUEST            = 'RESET_REQUEST';
 export const RESET_SUCCESS            = 'RESET_SUCCESS';
@@ -29,11 +30,13 @@ function confirmTokenError() {
 }
 
 function confirmTokenSuccess(body) {
+  console.log('CTS');
+  console.log(body);
   return {
     type: CONFIRM_TOKEN_SUCCESS,
-    client_id: body.client_id,
     email: body.email,
-    token: body.token
+    client_id: body.client_id,
+    token: body.token,
   };
 }
 
@@ -89,6 +92,8 @@ export function checkPasswordToken(token, cb) {
     dispatch(confirmTokenRequest());
 
     api.checkPasswordToken(token, (err, body) => {
+      console.log('CPT');
+      console.log(body);
       if (err) return dispatch(confirmTokenError()).then(() => cb('error'));
       dispatch(confirmTokenSuccess(body)).then(() => cb(null));
     });
@@ -96,14 +101,23 @@ export function checkPasswordToken(token, cb) {
 }
 
 export function confirm(data, cb) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(resetRequest());
     api.confirmPassword({
       ...data,
       cb: (err, body) => {
         if (err) return dispatch(confirmFailure(err));
+        console.log('start...');
         dispatch(confirmSuccess(body)).then(() => {
-          cb();
+          console.log(body);
+          console.log('callb1');
+          dispatch(loginSuccess(body)).then(() => {
+            console.log('callb2');
+              const state = getState();
+              api.saveState({ auth: state.auth.toJS()}, err => {
+                  cb(err);
+              })
+          });
         });
       }
     });
