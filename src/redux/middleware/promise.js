@@ -19,6 +19,7 @@ export default (store) => next => action => {
     survey.FEEDBACK_FAILED,
     survey.FEEDBACK_SUCCESS,
     survey.FILL_STATE,
+    survey.SET_CURRENT_LINK,
   ];
 
   if (actions.indexOf(action.type) !== -1) {

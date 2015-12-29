@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { PropTypes as RouterPropTypes, Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Header, Footer } from '../components';
+import { Header, Footer } from '../partials';
+import { Question } from '../atoms';
 import { logout } from '../redux/actions/auth';
 import * as api from '../utils/apiClient';
 import { getData, showWelcomeBack } from '../redux/actions/survey';
@@ -55,8 +56,8 @@ class Welcome extends React.Component {
   }
   handleLogout(e) {
     e.preventDefault();
-    this.props.dispatch(logout(null, () => {
-        this.context.history.push( '/signin');
+    this.props.dispatch(logout(null, '/welcome', () => {
+        this.context.history.push('/signin');
     }));
   }
   render() {
@@ -93,8 +94,9 @@ class Welcome extends React.Component {
             </div>
 
             <div className="text-center pad-10">
-                <Link to="/survey" className="btn btn_yellow">Get started <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
+                <Link to="/survey/basicinfo" className="btn btn_yellow">Get started <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
             </div>
+            <Question />
           </div>
         </div>
         <Footer />

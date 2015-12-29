@@ -10,9 +10,6 @@ export const SELECT_CHANGE        = 'SELECT_CHANGE';
 export const SUBMIT_NEXT          = 'SUBMIT_NEXT';
 export const ACCOUNT_TYPE_CHANGED = 'ACCOUNT_TYPE_CHANGED';
 
-export const CHANGING_QUESTION    = 'CHANGING_QUESTION'
-export const CHANGE_QUESTION      = 'CHANGE_QUESTION';
-
 export const SEND_DATA            = 'SEND_DATA';
 export const DISABLE_NEXT         = 'DISABLE_NEXT';
 export const ENABLE_NEXT          = 'ENABLE_NEXT';
@@ -78,20 +75,6 @@ export function accountTypeChanged(type) {
   return {
     type: ACCOUNT_TYPE_CHANGED,
     accountType: type,
-  }
-}
-
-export function changingQuestion() {
-  return {
-    type: CHANGING_QUESTION,
-  }
-}
-
-export function beginChangeQuestion(category, number) {
-  return {
-    type: CHANGE_QUESTION,
-    category,
-    number,
   }
 }
 
@@ -186,14 +169,6 @@ export function setShowCategories(show) {
   return {
     type: SET_SHOW_CATEGORIES,
     show,
-  }
-}
-
-export function changeQuestion(cat, number, cb) {
-  return dispatch => {
-    dispatch(beginChangeQuestion(cat, number)).then(() => {
-      cb();
-    });
   }
 }
 

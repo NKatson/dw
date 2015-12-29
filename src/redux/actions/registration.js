@@ -17,7 +17,6 @@ function registrationSuccess() {
   };
 }
 
-
 function registrationFailure(error) {
   return {
     type: REGISTRATION_FAILURE,
@@ -26,7 +25,7 @@ function registrationFailure(error) {
 }
 
 export function registration(data, cb) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(registrationRequest());
     api.registration({
       data,
@@ -35,7 +34,10 @@ export function registration(data, cb) {
 
         dispatch(registrationSuccess());
         dispatch(loginSuccess(body)).then(() => {
-          cb();
+          const state = getState();
+          api.saveState({ auth: state.auth.toJS()}, () => {
+            cb(null);
+          })
         });
       },
     });

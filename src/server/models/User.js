@@ -10,19 +10,28 @@ var UserSchema = new mongoose.Schema({
 });
 
 
-UserSchema.statics.findOneByUid = function(uid, next) {
-  this.findOne({ uid: uid }, (err, user) => {
+UserSchema.statics.findOrCreate = function(uid, next) {
+  this.findOne({ uid: uid }, (err, object) => {
 		if (err) return next(err);
+		if (object) return next(null, object);
 
-		if (!user) {
-			return next({ message: 'User not found.' });
-		}
-		next(null, user);
+    const user = new this({
+      uid,
+    });
+
+    user.save(err => {
+      if (err) return next(err);
+      next(null, user);
+    });
 	});
 }
 
-UserSchema.statics.createOrUpdate = function(object, next) {
-  this.update({ uid: { $eq: object.uid } }, object, { upsert: true }, next);
+UserSchema.statics.updateState = function(user, state, next) {
+  user.state = Object.assign({}, user.state, state);
+  user.save(err => {
+    if (err) return next(err);
+    next(null, user);
+  });
 }
 
 module.exports = mongoose.model('User', UserSchema);

@@ -19,13 +19,6 @@ const component = (
   <Router routes={getRoutes(store)} history={history} />
 );
 
-render(
-  <Provider store={store} key="provider">
-    {component}
-  </Provider>,
-  root
-);
-
 if (__DEVTOOLS__) {
   const DevTools = require('./containers/DevTools');
   render(
@@ -33,6 +26,15 @@ if (__DEVTOOLS__) {
       <div>
         {component}
          <DevTools />
+      </div>
+    </Provider>,
+    root
+  );
+} else {
+  render(
+    <Provider store={store} key="provider">
+      <div>
+        {component}
       </div>
     </Provider>,
     root
