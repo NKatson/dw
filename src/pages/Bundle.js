@@ -3,30 +3,24 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import { Checkbox } from '../atoms';
-import { RothModal } from '../components';
+import { RothModal, Buttons } from '../components';
+import { bundleSelector } from '../redux/selectors/surveySelectors';
 import { joint, buttonClick, showModal } from '../redux/actions/bundle';
 import * as surveyActions from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 
-class BundleForm extends React.Component {
+class Bundle extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(surveyActions.setCategoryIndex(1));
+  }
   showModal() {
     this.props.dispatch(showModal());
   }
-  sendData(e) {
-    e.preventDefault();
-    const { nextLink, state, accountType, income, termsAccepted } = this.props;
-    const port = window.location.port.length > 0 ? ':' + window.location.port : '';
-    // api.sendAccountType({});
-
-    api.saveState({
-      survey: state.survey.toJS(),
-      form: state.form,
-      auth: state.auth.toJS(),
-      bundle: state.bundle,
-    }, (err) => {
-      if (err) return console.log(err);
-        window.location.href = `http://${window.location.hostname}${port}${nextLink}`;
-     });
+  sendData() {
+    const { accountType, income } = this.props;
+    api.sendAccountType({
+      accountType, income
+    }, err => {});
   }
   handleTermsToggle(e) {
     const isAccepted = e.target.checked;
@@ -91,17 +85,15 @@ class BundleForm extends React.Component {
           <RothModal {...this.props} employeeIncome={employeeIncome}  />
 
           <div className="text-center">
-            <div className="common-form__buttons">
-              {this.props.children}
-              <Link
-                to={nextLink}
-                onClick={::this.sendData}
-                className={'btn btn_yellow ' + (termsAccepted ? '' : 'disabled')}
-                >Next <span className="wfm-i wfm-i-arr-right-grey"></span></Link>
-            </div>
+            <Buttons
+              onNextClick={::this.sendData}
+              disabled={!this.props.termsAccepted}
+              nextLink={this.props.nextLink}
+              prevLink={this.props.prevLink}
+            />
 
           <div className="wfm-not-agree-link">
-                <Link to="/survey/feedback">If you cannot agree to our Term of
+                <Link to="/feedback">If you cannot agree to our Term of
                   Service, please tell us why. We'd like to help.</Link>
             </div>
           </div>
@@ -111,8 +103,4 @@ class BundleForm extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {...state.bundle, state};
-}
-
-export default connect(mapStateToProps)(BundleForm);
+export default connect(bundleSelector)(Bundle);

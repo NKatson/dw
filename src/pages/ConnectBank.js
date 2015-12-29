@@ -1,13 +1,26 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, History, PropTypes as RouterPropTypes } from 'react-router';
-import ConnectBankError from './ConnectBankError';
+
+import { Buttons } from '../components';
+import { ConnectBankError } from '../partials';
 import * as api from '../utils/apiClient';
-import { auth, exit, reset } from '../redux/actions/plaid';
+import { setCategoryIndex } from '../redux/actions/survey';
+import { auth, exit, reset, setBanks } from '../redux/actions/plaid';
 import { Question } from '../atoms';
 
 class ConnectBank extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(setCategoryIndex(2));
+  }
   componentDidMount() {
+    if (this.props.banks.length === 0) {
+      console.log('yep');
+      api.plaidGetBanks((err, data) => {
+        if (err) return console.log(err);
+        this.props.dispatch(setBanks(data));
+      });
+    }
     this.linkHandler = Plaid.create({
         clientName: 'demo',
         env: 'tartan',
@@ -24,7 +37,7 @@ class ConnectBank extends React.Component {
                 plaid: state.plaid,
               }, (err) => {
                 if (err) return console.log(err);
-                this.context.history.replaceState(null, '/survey/fund/q/1');
+                this.context.history.replaceState(null, '/survey/accounts');
               });
             }));
         },
@@ -32,6 +45,9 @@ class ConnectBank extends React.Component {
           this.props.dispatch(exit());
         }
       });
+  }
+  handleBanksSearch() {
+
   }
   handleBankClick(e) {
     e.preventDefault();
@@ -46,7 +62,7 @@ class ConnectBank extends React.Component {
   }
   renderBanks() {
     const { banks, bankTypes } = this.props;
-    if (!banks) return;
+    if (!banks || !bankTypes) return;
 
     return banks.filter(bank => {
       return bankTypes.indexOf(bank.type) !== -1;
@@ -78,22 +94,21 @@ class ConnectBank extends React.Component {
               </div>
               <div className="input-wrap">
                   <div className="input-wrap__text">Search all banks:</div>
-                  <input onKeyUp={::this.props.handleBanksSearch} type="text" className="input-text" placeholder="Enter Your Bank Name" />
+                  <input onKeyUp={::this.handleBanksSearch} type="text" className="input-text" placeholder="Enter Your Bank Name" />
                   {this.props.searchBanks.map((bank, index) => {
                     return <p key={bank + index}>{bank.name}</p>
                   })}
               </div>
               <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
                   Your bank login are never stored.</p>
-                <p>You can also fund your account by sending a <Link to='/survey/fund/q/3'>wire transfer</Link> or <Link to='/survey/fund/q/4'>check</Link>. You can also enter your
-                  <Link to='/survey/fund/q/2'> banking information</Link>.</p>
-                <div className="text-center">
-                  {this.props.children}
-                </div>
+                <p>You can also fund your account by sending a <Link to='/survey/transfer'>wire transfer</Link> or <Link to='/survey/mail'>check</Link>. You can also enter your
+                  <Link to='/survey/check'> banking information</Link>.</p>
+                    <Buttons
+                      prevLink='/survey/bundle'
+                    />
             </form>
           </div>
       }
-      <Question />
       </div>
     );
   }
@@ -104,16 +119,14 @@ ConnectBank.contextTypes = {
 };
 
 ConnectBank.propTypes = {
-  handleBanksSearch: PropTypes.func.isRequired,
   banks: PropTypes.array.isRequired,
   searchBanks: PropTypes.array.isRequired,
   exit: PropTypes.bool.isRequired,
 }
 
-function mapDispatchToProps(dispatch) {
+export default connect(state => {
   return {
-    dispatch: dispatch,
-  }
-}
-
-export default connect(null, mapDispatchToProps)(ConnectBank);
+    state: state,
+    ...state.plaid
+  };
+})(ConnectBank);

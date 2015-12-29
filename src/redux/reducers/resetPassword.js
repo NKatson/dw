@@ -33,9 +33,7 @@ export default function reset(state = initialState, action = {}) {
     }));
   case actions.CONFIRM_TOKEN_SUCCESS:
     return state.merge(Map({
-      token: action.token,
-      client_id: action.client_id,
-      email: action.email,
+      data: action.data,
       confirmingToken: false,
       confirmTokenError: null,
       tokenConfirmed: true,

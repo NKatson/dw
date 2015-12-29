@@ -22,7 +22,6 @@ class RothModal extends React.Component {
   }
   handleButtonClick() {
     const { step, income, dispatch, employeeIncome, header, success } = this.props;
-
     // change accountType and close
     if (success === true) {
       this.props.dispatch(changeAccount());

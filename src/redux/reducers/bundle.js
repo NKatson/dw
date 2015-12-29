@@ -26,7 +26,7 @@ export default function bundle(state = initialState, action = {}) {
 
       if (state.step === 1 && state.joint === 'yes') {
         question = null;
-        if (state.income > 183000) {
+        if (state.income >= 183000) {
           header = 'Sorry. Your income exceeds government levels for Roth IRA eligibility.';
           success = false;
         } else {
@@ -37,7 +37,7 @@ export default function bundle(state = initialState, action = {}) {
 
       if (!state.step && state.joint === 'no') {
         question = null;
-        if (action.employeeIncome > 163000) {
+        if (action.employeeIncome >= 116000) {
           header = 'Sorry. Your income exceeds government levels for Roth IRA eligibility.';
           success = false;
         } else {
@@ -64,7 +64,7 @@ export default function bundle(state = initialState, action = {}) {
       return Object.assign({}, state, {
         accountText: 'Roth IRA',
         accountLink: 'Traditional IRA',
-        accountType: state.joint === 'yes' ? 'joint' : 'individual',
+        accountType: state.joint === 'yes' ? 'joint_roth' : 'individual_roth',
       });
     case actions.UPDATE_INCOME:
 

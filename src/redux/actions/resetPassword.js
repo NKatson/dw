@@ -1,4 +1,5 @@
 import * as api from '../../utils/apiClient';
+import * as authActions from './auth';
 
 export const RESET_REQUEST            = 'RESET_REQUEST';
 export const RESET_SUCCESS            = 'RESET_SUCCESS';
@@ -31,9 +32,7 @@ function confirmTokenError() {
 function confirmTokenSuccess(body) {
   return {
     type: CONFIRM_TOKEN_SUCCESS,
-    client_id: body.client_id,
-    email: body.email,
-    token: body.token
+    data: body,
   };
 }
 
@@ -47,7 +46,7 @@ export function resetSuccess({ message }) {
 function resetFailure({ errors }) {
   return {
     type: RESET_FAILURE,
-    error: errors.length > 0 ? errors[0] : 'Unexpected error.',
+    error: errors && errors.length > 0 ? errors[0] : 'Unexpected error.',
   };
 }
 
@@ -85,18 +84,26 @@ export function reset(email) {
 }
 
 export function checkPasswordToken(token, cb) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(confirmTokenRequest());
 
     api.checkPasswordToken(token, (err, body) => {
       if (err) return dispatch(confirmTokenError()).then(() => cb('error'));
-      dispatch(confirmTokenSuccess(body)).then(() => cb(null));
+      dispatch(confirmTokenSuccess(body));
+      dispatch(authActions.loginSuccess(body)).then(() => {
+        const state = getState();
+        api.saveState({
+          auth: state.auth.toJS(),
+        }, (err) => {
+            cb(err);
+         });
+      });
     });
   };
 }
 
 export function confirm(data, cb) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(resetRequest());
     api.confirmPassword({
       ...data,

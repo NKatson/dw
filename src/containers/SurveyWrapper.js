@@ -4,9 +4,10 @@ import { PropTypes as RouterPropTypes } from 'react-router';
 import $ from 'jquery';
 
 import { logout, setError } from '../redux/actions/auth';
+import { setCurrentLink } from '../redux/actions/survey';
 import * as api from '../utils/apiClient';
 
-class AppWrapper extends React.Component {
+class SurveyWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.needUpdateTimer = true;
@@ -27,19 +28,21 @@ class AppWrapper extends React.Component {
       }
     });
     const { state } = this.props;
-    api.saveState({
-      survey: state.survey.toJS(),
-      form: state.form,
-      auth: state.auth.toJS(),
-      bundle: state.bundle,
-    }, (err) => {
-      if (err) return console.log(err);
-      const errorMessage = 'You have been logged out due to inactivity.';
-      this.props.dispatch(logout(errorMessage, () => {
-        $('#modalInactivity').modal('hide');
-        this.needLogout = true;
-      }));
-    });
+    this.props.dispatch(setCurrentLink(this.props.location.pathname)).then(() => {
+      api.saveState({
+        survey: state.survey.toJS(),
+        form: state.form,
+        auth: state.auth.toJS(),
+        bundle: state.bundle,
+      }, (err) => {
+        if (err) return console.log(err);
+        const errorMessage = 'You have been logged out due to inactivity.';
+        this.props.dispatch(logout(errorMessage, () => {
+          $('#modalInactivity').modal('hide');
+          this.needLogout = true;
+        }));
+      });
+    })
   }
   handleModalButtonClick(e) {
     e.preventDefault();
@@ -75,34 +78,19 @@ class AppWrapper extends React.Component {
       }
     //}
     return (
-      <div {...sessionProps} >
+      <div className="wfm-main-wrap common-page">
         {this.props.children}
-        <div className="modal fade wfm-common-modal" id="modalInactivity" role="dialog" aria-labelledby="myModalLabel">
-          <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                  <button onClick={::this.handleModalButtonClick} type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <div className="modal-body">
-                      <h2>Your online session will end in 2 minutes due to inactivity</h2>
-                      <p>As a security precaution, if there is no activity, the session will end and you will be brought to the homepage.</p>
-                      <p>If you are still working, chose OK to continue.</p>
-                      <div className="wfm-common-modal__buttons text-center">
-                        <a href="#" onClick={::this.handleModalButtonClick}
-                          className="btn btn_yellow btn_blue-text">OK <span className="wfm-i wfm-i-arr-right-blue"></span></a></div>
-                  </div>
-              </div>
-          </div>
-        </div>
       </div>
     );
   }
 }
 
-AppWrapper.contextTypes = {
+SurveyWrapper.contextTypes = {
   history: RouterPropTypes.history,
 };
 
 
-AppWrapper.propTypes = {
+SurveyWrapper.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
@@ -113,4 +101,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(AppWrapper);
+export default connect(mapStateToProps)(SurveyWrapper);

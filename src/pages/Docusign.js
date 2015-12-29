@@ -1,8 +1,14 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { docusignPageSelector } from '../redux/selectors/surveySelectors';
+import { setCategoryIndex } from '../redux/actions/survey';
 import * as actions from '../redux/actions/docusign';
 import * as api from '../utils/apiClient';
 
 class Docusign extends React.Component {
+  componentWillMount() {
+    this.props.dispatch(setCategoryIndex(3));
+  }
   componentDidMount() {
     const { isDocusign, dispatch } = this.props;
 
@@ -62,4 +68,4 @@ class Docusign extends React.Component {
   }
 }
 
-export default Docusign;
+export default connect(docusignPageSelector)(Docusign);
