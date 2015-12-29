@@ -180,7 +180,7 @@ export function validateSurvey(data) {
   valid.checkRegex('ssn', ssnRegex, 'Please type valide SSN');
   valid.checkRegex('address', addressRegex, 'Please type valid address');
   valid.checkRegex('phone', phoneRegex, 'Please type valid phone format');
-  valid.checkRegex('city', cityRegex, 'Please type valid city format');
+  valid.checkRegex('city', cityRegex, 'Please, use a proper city name');
   valid.checkRegex('zip_code', zipCodeRegex, '5 or 6 numbers');
   valid.checkDateOfBirth('date_of_birth');
 

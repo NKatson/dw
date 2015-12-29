@@ -16,11 +16,10 @@ class Feedback extends React.Component {
   componentDidMount() {
     this.currentLink = this.props.currentLink;
     this.categoryIndex = this.props.categoryIndex;
-    this.props.dispatch(setCategoryIndex(3));
+    this.props.dispatch(setCategoryIndex(2));
     this.props.dispatch(setCurrentLink('/survey/feedback/'));
   }
   componentWillUnmount() {
-    console.log(this.currentLink);
     this.props.dispatch(setCategoryIndex(this.categoryIndex));
     this.props.dispatch(setCurrentLink(this.currentLink));
   }

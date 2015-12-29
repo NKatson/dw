@@ -17,6 +17,9 @@ class InputMultiple extends React.Component {
                   <Radio
                       className="radio-component-classname"
                       {...field}
+                      onClick={(e) => {
+                        field.onChange(e);
+                      }}
                       key={'option' + index}
                       id={'option-' + index}
                       radioClass="iradio_minimal"

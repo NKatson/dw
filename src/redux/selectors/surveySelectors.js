@@ -25,7 +25,10 @@ export const surveySelector = createSelector(
   showWelcomeBackSelector,
   confirmedSelector,
   (data, showCategories, categoryIndex, isDocusign, showWelcomeBack, confirmed) => {
-    const categories = Object.keys(data.toJS()).map(v => v.toLowerCase());
+    let categories = [];
+    if (data) {
+      categories = Object.keys(data.toJS()).map(v => v.toLowerCase());
+    }
     return {
       categories: categories.map((cat, index) => {
         return {
@@ -59,7 +62,7 @@ export const personalSelector = createSelector(
         formObject[key] = form.basicinfo[key].value;
       }
     }
-    
+
     return {
       questions: data.getIn(['Personal', 0, 'questions']).toJS(),
       title: data.getIn(['Personal', 0, 'title']),
@@ -90,7 +93,29 @@ export const employmentSelector = createSelector(
       dynamicFields = answer.get('dynamicFields').toJS();
     }
 
-    return {
+    const initialValues = {};
+    const formObject = {}
+    for (let key in form.employment) {
+      if (key.charAt(0) !== '_') {
+        formObject[key] = form.employment[key].value;
+      }
+    }
+
+    if (selectValue === 'Self-Employed') {
+      initialValues.employer  = formObject.employer || 'I Own My Business';
+    }
+
+    if (selectValue === 'Employed') {
+      if (formObject.employer === 'I Own My Business') {
+        if (form.employment.employer.visited) {
+            initialValues.employer = formObject.employer;
+        } else {
+          initialValues.employer = '';
+        }
+      }
+    }
+
+    const result = {
       title: data.getIn(['Personal', 1, 'title']),
       description: data.getIn(['Personal', 1, 'description']),
       nextLink: '/survey/risks',
@@ -100,7 +125,10 @@ export const employmentSelector = createSelector(
       fields: fields.toJS(),
       dynamicFields,
       form,
+      initialValues: Object.assign({}, formObject, initialValues),
     }
+
+    return result;
   }
 );
 
@@ -119,7 +147,7 @@ export const riskSelector = createSelector(
       prevLink: '/survey/employment',
       selectValue,
       riskValue,
-      riskForm: form.risk
+      riskForm: form.risk,
     }
   }
 );
@@ -127,12 +155,16 @@ export const riskSelector = createSelector(
 export const bundleSelector = createSelector(
   bundleStateSelector,
   termsAcceptedSelector,
-  (bundle, termsAccepted) => {
+  formSelector,
+  (bundle, termsAccepted, form) => {
+    const riskValue = form.risk && form.risk.crysis2008 ? form.risk.crysis2008.value : null;
+    const val = form.employment && form.employment.annual_income ? form.employment.annual_income.value.replace(/[,\$\s]/g, '') : 0;
     return {
       ...bundle,
       termsAccepted,
       nextLink: '/survey/banks',
       prevLink: '/survey/risks',
+      employeeIncome: parseInt(val),
     }
   }
 );

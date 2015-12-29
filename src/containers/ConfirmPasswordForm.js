@@ -30,9 +30,9 @@ class ConfirmPasswordForm extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    const { dispatch, fields: { password, confirmPassword }, token, client_id, email, currentLink} = this.props;
+    const { dispatch, fields: { password, confirmPassword }, currentLink, data: {client_id, token, email}} = this.props;
     const { query: {client_id: client, token: accessToken, uid } } = this.props.location;
-    console.log(client_id, email, token);
+
     if (client_id && email && token) {
       dispatch(confirm({
         password: password.value,
@@ -125,9 +125,7 @@ function mapStateToProps(state) {
   return {
     confirmingToken: resetPassword.get('confirmingToken'),
     confirmTokenError: resetPassword.get('confirmTokenError'),
-    token: resetPassword.get('token'),
-    client_id: resetPassword.get('client_id'),
-    email: resetPassword.get('email'),
+    data: resetPassword.get('data'),
     resetting: resetPassword.get('resetting'),
     confirmError: resetPassword.get('confirmError'),
     successMessage: resetPassword.get('message'),

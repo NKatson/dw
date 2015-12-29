@@ -14,7 +14,7 @@ class Accounts extends React.Component {
   renderMultiple() {
     const result = [<div className="input-wrap__text">Which account do you want to fund from?</div>, <br />];
     let sum = 0;
-    
+
     if (!this.props.accounts) return;
     const inputs = this.props.accounts.map(account => {
       sum += account.balance.available;

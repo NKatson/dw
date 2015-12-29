@@ -17,9 +17,14 @@ class EmploymentContainer extends React.Component {
     savePersonal(this.props.form);
   }
   render () {
-    const { title, description, nextLink, prevLink, selectValue, fields, question, dynamicFields } = this.props;
+    const { title, description, nextLink, prevLink, selectValue, fields, question, dynamicFields, initialValues } = this.props;
+    const pr = {};
+    if (initialValues) {
+      pr.initialValues = initialValues;
+    }
     return (
       <DynamicForm
+        {...pr}
         title={title}
         dynamicFields={dynamicFields}
         description={description}

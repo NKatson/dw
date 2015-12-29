@@ -23,7 +23,15 @@ function loginRequest() {
   };
 }
 
-export function loginSuccess({ profile, data: { email, first_name }, accessToken, uid, client}) {
+export function loginSuccess({ profile, data, accessToken, uid, client}) {
+  let email = profile && profile.email ? profile.email : '';
+  if (data && data.email) {
+    email = data.email;
+  }
+  let first_name = profile && profile.first_name ? profile.first_name : '';
+  if (data && data.fist_name) {
+    fist_name = data.fist_name;
+  }
   return {
     type: LOGIN_SUCCESS,
     confirmed: profile && profile.confirmed ? true : false,
@@ -137,7 +145,6 @@ function confirmTokenSuccess(message = 'Success!') {
   };
 }
 
-
 export function confirmEmail(token, cb) {
   return (dispatch, getState) => {
     dispatch(confirmTokenRequest());
@@ -146,8 +153,6 @@ export function confirmEmail(token, cb) {
         dispatch(confirmTokenError(err));
         return cb(err);
       }
-      console.log(body);
-
       dispatch(confirmTokenSuccess()).then(() => {
         dispatch(loginSuccess(body)).then(() => {
           const state = getState();
@@ -161,7 +166,6 @@ export function confirmEmail(token, cb) {
     });
   };
 }
-
 
 export function unlockToken(token, cb) {
   return dispatch => {

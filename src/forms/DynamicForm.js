@@ -12,7 +12,6 @@ class DynamicForm extends React.Component {
                key={question.name}
                label={question.label}
                field={fields[question.name]}
-               defaultValue={question.defaultValue && question.name==='employer' ? question.defaultValue : '' }
                type={question.type}
                placeholder={question.placeholder}
              />;

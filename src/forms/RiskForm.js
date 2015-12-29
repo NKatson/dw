@@ -9,6 +9,12 @@ import * as surveyActions from '../redux/actions/survey';
 import { saveQuestions } from '../redux/actions/saveActions';
 
 class RiskForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showBlue: false
+    };
+  }
   componentWillMount() {
     this.props.dispatch(surveyActions.setCategoryIndex(1));
   }
@@ -28,7 +34,7 @@ class RiskForm extends React.Component {
           </div>
 
           {
-            fields[question.name].visited ?
+            fields[question.name].visited || this.state.showBlue ?
             <div className="wfm-message wfm-message_hint">
                  By 2012 the markets had fully recovered – and since have grown 170% since the low in 2009.
                  WorthFM recommends investing over a longer period time to achieve sustained growth (if you want to change your answer below, its OK).
@@ -46,6 +52,12 @@ class RiskForm extends React.Component {
                          <Radio
                              className="radio-component-classname"
                              {...fields[question.name]}
+                             onClick={(e) => {
+                               fields[question.name].onChange(e);
+                               this.setState({
+                                 showBlue: true
+                               });
+                             }}
                              labelWrapperClass="input-wrap input-wrap_with-radio"
                              key={'option' + index}
                              id={'option-' + index}
