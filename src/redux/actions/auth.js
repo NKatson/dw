@@ -23,24 +23,33 @@ function loginRequest() {
   };
 }
 
-export function loginSuccess({ profile, data, accessToken, uid, client}) {
-  let email = profile && profile.email ? profile.email : '';
-  if (data && data.email) {
-    email = data.email;
+export function loginSuccess({
+  profile,
+  data,
+  accessToken,
+  uid,
+  client,
+  email: bodyEmail,
+}) {
+  const source = profile || data;
+
+  const firstName = source && source.first_name ? source.first_name : '';
+  const confirmed = source && source.confirmed ? true : false;
+  const email = bodyEmail || source.email || uid;
+
+  if (!uid) {
+    uid = bodyEmail;
   }
-  let first_name = profile && profile.first_name ? profile.first_name : '';
-  if (data && data.fist_name) {
-    fist_name = data.fist_name;
-  }
+
   return {
     type: LOGIN_SUCCESS,
-    confirmed: profile && profile.confirmed ? true : false,
     user: {
+      confirmed,
       email,
       accessToken,
       uid,
       client,
-      firstName: first_name,
+      firstName,
     },
   };
 }

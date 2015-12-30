@@ -16,6 +16,7 @@ const termsAcceptedSelector   = state => state.survey.get('termsAccepted');
 const docusignSelector        = state => state.docusign;
 const showWelcomeBackSelector = state => state.survey.get('showWelcomeBack');
 const confirmedSelector       = state => state.auth.get('confirmed');
+const userSelector            = state => state.auth.get('user');
 
 export const surveySelector = createSelector(
   dataSelector,
@@ -24,7 +25,8 @@ export const surveySelector = createSelector(
   isDocusignSelector,
   showWelcomeBackSelector,
   confirmedSelector,
-  (data, showCategories, categoryIndex, isDocusign, showWelcomeBack, confirmed) => {
+  userSelector,
+  (data, showCategories, categoryIndex, isDocusign, showWelcomeBack, confirmed, user) => {
     let categories = [];
     if (data) {
       categories = Object.keys(data.toJS()).map(v => v.toLowerCase());
@@ -42,7 +44,7 @@ export const surveySelector = createSelector(
       currentCategoryIndex: categoryIndex,
       isDocusign,
       showWelcomeBack: showWelcomeBack,
-      firstName: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
+      firstName: user && user.get('firstName') ? user.get('firstName') : '',
     }
   }
 );
@@ -189,8 +191,8 @@ export const transferSelector = createSelector(
   (data, form) => {
     const formDataExists = form && form.basicinfo ? true : false;
     return {
-      firstName: data.getIn(['Personal', 0, 'questions', 0, 'defaultValue']),
-      lastName: data.getIn(['Personal', 0, 'questions', 1, 'defaultValue']),
+      firstName: formDataExists ? form.basicinfo.first_name.value : '',
+      lastName: formDataExists ? form.basicinfo.last_name.value : '',
       address: formDataExists ? form.basicinfo.address.value : '',
       city: formDataExists ? form.basicinfo.city.value : '',
       state: formDataExists ? form.basicinfo.state.value : '',

@@ -8,7 +8,7 @@ let router = Router();
  * Create state for user
  */
 router.post('/create', (req, res, next) => {
-  const uid = req.cookies.uid;
+const uid = req.cookies.uid || req.body.uid;
   if (!uid || uid.length === 0) return next('Error: uid is null');
 
   const state = req.body.state;

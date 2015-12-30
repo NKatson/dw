@@ -43,10 +43,10 @@ export function resetSuccess({ message }) {
   };
 }
 
-function resetFailure({ errors }) {
+function resetFailure(err) {
   return {
     type: RESET_FAILURE,
-    error: errors && errors.length > 0 ? errors[0] : 'Unexpected error.',
+    error: err,
   };
 }
 
@@ -57,10 +57,10 @@ function confirmSuccess() {
   }
 }
 
-function confirmFailure({ errors }) {
+function confirmFailure(error) {
   return {
     type: CONFIRM_PASSWORD_FAILURE,
-    error: errors && errors.length > 0 ? errors[0] : 'Unexpected error.',
+    error,
   };
 }
 
@@ -88,10 +88,16 @@ export function checkPasswordToken(token, cb) {
     dispatch(confirmTokenRequest());
 
     api.checkPasswordToken(token, (err, body) => {
+      console.log(err);
       if (err) return dispatch(confirmTokenError()).then(() => cb('error'));
+      console.log('this...');
+      console.log(body);
       dispatch(confirmTokenSuccess(body));
       dispatch(authActions.loginSuccess(body)).then(() => {
+        console.log('Login success!');
+        console.log(localStorage.uid);
         const state = getState();
+
         api.saveState({
           auth: state.auth.toJS(),
         }, (err) => {

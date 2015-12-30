@@ -19,6 +19,7 @@ export default function auth(state = initialState, action = {}) {
     }));
   case actions.LOGIN_SUCCESS:
     return state.merge(Map({
+      loggingIn: false,
       loggedIn: true,
       user: action.user,
     }));

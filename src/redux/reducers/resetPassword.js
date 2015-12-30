@@ -37,6 +37,7 @@ export default function reset(state = initialState, action = {}) {
       confirmingToken: false,
       confirmTokenError: null,
       tokenConfirmed: true,
+      confirmError: null,
     }));
   case actions.CONFIRM_PASSWORD_FAILURE:
     return state.merge(Map({
@@ -47,6 +48,8 @@ export default function reset(state = initialState, action = {}) {
     return state.merge(Map({
       message: action.message,
       resetting: false,
+      confirmError: null,
+      confirmTokenError: null,
     }));
   case actions.TIMER:
     return state.merge(Map({

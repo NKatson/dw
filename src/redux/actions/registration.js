@@ -33,10 +33,11 @@ export function registration(data, cb) {
         if (err) return dispatch(registrationFailure(err));
 
         dispatch(registrationSuccess());
+        console.log(body);
         dispatch(loginSuccess(body)).then(() => {
           const state = getState();
           api.saveState({ auth: state.auth.toJS()}, () => {
-            cb(null);
+            //cb(null);
           })
         });
       },

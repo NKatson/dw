@@ -51,7 +51,6 @@ function clearLocal() {
 }
 
 function checkResponse(err, res, cb) {
-
   if (res.body.errors && res.body.errors.full_messages && res.body.errors.full_messages.length > 0) {
     const error = res.body.errors.full_messages[0];
     return cb(error);
@@ -78,6 +77,8 @@ function checkResponse(err, res, cb) {
 
 export function saveState(state, cb) {
   const url = '/state/create';
+  console.log('save state');
+  console.log('uid: ' + localStorage.uid);
   getConfig(config => {
     request
     .post(config.host + url)
@@ -235,21 +236,6 @@ export function reset({ email, cb }) {
 }
 
 /**
- * POST /api/auth/password/edit
- */
-export function checkResetPasswordToken(token, cb) {
-  getConfig(config => {
-    request
-    .post(config.apiHost + '/api/auth/password/edit')
-    ::setHeaders()
-    .send({reset_password_token: token})
-    .end((err, res) => {
-        checkResponse(err, res, cb);
-    });
-  });
-}
-
-/**
  * GET /api/auth/confirmation
  */
 export function confirmEmailToken(token, cb) {
@@ -271,7 +257,7 @@ export function confirmEmailToken(token, cb) {
 
 
 /**
- * GET /api/auth/confirmation
+ * GET /api/auth/unlock
  */
 export function unlockToken(token, cb) {
   getConfig(config => {
@@ -298,9 +284,17 @@ export function checkPasswordToken(token, cb) {
     ::setHeaders()
     .query({config: 'default', reset_password_token: token})
     .end((err, res) => {
+      console.log('/api/auth/password/edit');
+      console.log(res.body);
       if (err && typeof res === 'undefined') return cb('Server does not respond');
       if (err) return cb(res.body);
       if ((res.body.errors && res.body.errors.length > 0) || res.body.error) return cb(res.body);
+
+      localStorage.accessToken = res.body.token;
+      localStorage.client = res.body.client_id;
+      localStorage.uid = res.body.email;
+
+      Cookies.set('uid', res.body.email, { expires: 7, path: '/' });
 
       return cb(null, res.body);
     });
@@ -310,21 +304,15 @@ export function checkPasswordToken(token, cb) {
  * PUT /api/auth/password
  */
 export function confirmPassword({ password, confirmPassword, client, accessToken, uid, cb }) {
-  localStorage.accessToken = accessToken;
-  localStorage.client = client;
-  localStorage.uid = uid;
-
   getConfig(config => {
     request
     .put(config.apiHost + '/api/auth/password')
     ::setHeaders()
     .send({password, password_confirmation: confirmPassword})
     .end((err, res) => {
-      if (err && typeof res === 'undefined') return cb('Server does not respond');
-      if (err) return cb(res.body);
-      if (res.errors && res.errors.length > 0) return cb(res.body);
-      saveLocal(res);
-      return cb(null, { message: 'Success! Your password is updated and you will be logged into your account.'});
+      console.log('/api/auth/password');
+      console.log(res.body);
+      checkResponse(err, res, cb);
     });
   });
 }
@@ -410,10 +398,7 @@ export function registration({ data, cb }) {
       clearLocal();
       saveLocal(res);
 
-      return cb(null, {
-        ...res.body,
-        accessToken: res.headers['access-token'],
-      });
+      return cb(null, res.body);
     });
   });
 }
