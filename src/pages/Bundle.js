@@ -36,28 +36,28 @@ class Bundle extends React.Component {
     return (
       <div>
         <h2>2. LET’S OPEN YOUR WORTHFM ACCOUNT</h2>
-        <p>Your WorthFM account bundle contains a Savings, Investing, and Retirement plan that is personalized for you &mdash; leading to simple and balanced financial bliss. </p>
+        <p>Your WorthFM account bundle contains three accounts: one for saving, investing, and retirement - all personalized for you.</p>
         <div className="wfm-account-plans">
             <div className="wfm-account-plan">
                 <div className="wfm-account-plan__pic"><img src={require('../../static/images/plan-savings.jpg')} alt="" /></div>
-                <div className="wfm-account-plan__title">Emergency Savings</div>
+                <div className="wfm-account-plan__title">Savings</div>
                 <div className="wfm-account-plan__text">
-                    Your WorthFM rainy day account is there whenever you need it. FDIC insured to $500,000 at TD Bank.
+                    No financial picture is balanced without a savings account you can tap for emergencies or short-term goals. Money there when you need it.
                 </div>
             </div>
             <div className="wfm-account-plan">
                 <div className="wfm-account-plan__pic"><img src={require('../../static/images/plan-investing.jpg')} alt="" /></div>
                 <div className="wfm-account-plan__title">Investing</div>
                 <div className="wfm-account-plan__text">
-                    Your WorthFM sunrise account finds thos extra dollars and puts them to work for you. Because life is full of brilliance. Invested at TD Ameritrade.
+                    Here’s where you can make your money start working for you for the long-term. Because a dollar can be more than just a dollar. All WorthFM investing accounts are backed by TD Ameritrade. 
                 </div>
             </div>
             <div className="wfm-account-plan">
                 <div className="wfm-account-plan__pic"><img src={require('../../static/images/plan-retirement.jpg')} alt="" /></div>
                 <div className="wfm-account-plan__title">Retirement</div>
                 <div className="wfm-account-plan__text">
-                    Your Worth FM sunset account offers you confidence in a secure future. This account is set up as a {this.props.accountText} at TD Ameritrade and can be enabled from your WorthFM homepage.
-                    <a onClick={::this.showModal} href="#">Want a {this.props.accountLink} instead?</a>
+                    It never hurts to plan for your future. This account is set up as a {this.props.accountText} backed by TD Ameritrade. By default, it’s turned off, but you can turn it on whenever you want from your WorthFM dashboard.
+                    <a onClick={::this.showModal} href="#">I want a {this.props.accountLink} instead</a>
                 </div>
             </div>
         </div>

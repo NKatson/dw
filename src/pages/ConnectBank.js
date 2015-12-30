@@ -87,7 +87,7 @@ class ConnectBank extends React.Component {
           this.props.exit ? <ConnectBankError reconnect={::this.reconnect} /> :
           <div>
             <h2>3. CONNECT YOUR BANK</h2>
-            <p>Securely connect your bank account to your WorthFM account. When you fund your WorthFM account, your personalized plan automagically creates balance between your savings, investments, and retirement.</p>
+            <p>It’s easy to fund your WorthFM account when you connect your bank account. You decide the amount, we do the rest.</p>
             <form className="common-form anketa-form">
               <div className="wfm-banks-list">
                 {::this.renderBanks()}
@@ -100,8 +100,8 @@ class ConnectBank extends React.Component {
                   })}
               </div>
               <p className="faded-text pad-14">WorthFM uses bank level security and strict 128-encryption.<br />
-                  Your bank login are never stored.</p>
-                <p>You can also fund your account by sending a <Link to='/survey/transfer'>wire transfer</Link> or <Link to='/survey/mail'>check</Link>. You can also enter your
+                  Your bank information is never stored.</p>
+                <p>You can also fund your account by sending a <Link to='/survey/transfer'>wire transfer</Link> or <Link to='/survey/mail'>check</Link>. Or, manually enter your
                   <Link to='/survey/check'> banking information</Link>.</p>
                     <Buttons
                       prevLink='/survey/bundle'

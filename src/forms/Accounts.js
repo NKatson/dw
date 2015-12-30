@@ -12,7 +12,7 @@ class Accounts extends React.Component {
     this.props.dispatch(setCategoryIndex(2));
   }
   renderMultiple() {
-    const result = [<div className="input-wrap__text">Which account do you want to fund from?</div>, <br />];
+    const result = [<div className="input-wrap__text">Which account do you want to link?</div>, <br />];
     let sum = 0;
 
     if (!this.props.accounts) return;
